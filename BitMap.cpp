@@ -397,7 +397,7 @@ int BitMap::Rank(int pos)
 
 }
 
-
+//get designated position(index) bit value
 int BitMap::GetBit(u64 * data,int index)
 {
 	int anchor = index/64;
@@ -418,7 +418,7 @@ int BitMap::GetRuns(u64 * data,int &index,int &bit)
 	while(totle_runs < block_size)
 	{
 		u16 x= GetBits(data,index,16);//index不联动
-/		if(bit==1)
+		if(bit==1)
 			x=(~x);
 		runs = Zeros(x);
 		totle_runs +=runs;
@@ -637,7 +637,7 @@ int BitMap::GammaDecode(u64 * buff,int & index)
 }
 int BitMap::FixedDecode(u64 * buff,int &index)
 {
-
+	return 0;
 }
 
 //从buff的index位置开始,读取bits位数据,返回.
