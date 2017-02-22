@@ -131,7 +131,7 @@ void BitMap::Coding()
 		memset(runs_tmp,0,block_size*4);
 		k=0;
  		runs=0;
-		 //做一个块
+		 //
 		while(bits < block_size && index < bitLen)
 		{
 
@@ -157,6 +157,7 @@ void BitMap::Coding()
 			rl_g = rl_g + 2*blog(runs_tmp[i])-1;
 
 		int thred=20;
+		//todo judge
 		int len = min(rl_g,block_size-thred);
 
 		if(k==1)
@@ -408,7 +409,7 @@ int BitMap::GetBit(u64 * data,int index)
 
 //2014.5.8:16:53:这三段程序的性能相当.
 //
-int BitMap::GetRuns(u64 * data,int &index,int &bit)
+int BitMap::GetRuns(u64 * data,int &indPex,int &bit)
 {
 	bit = GetBit(data,index);
 	index = index +1;
