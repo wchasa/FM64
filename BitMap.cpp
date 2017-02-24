@@ -99,6 +99,8 @@ void BitMap::Coding()
 //wch add
     nbit 	   = new InArray(2*(bitLen/step1)+2,blog(step1-step2));
 	Flag	   = new InArray(2*(bitLen/step1)+2,1);
+	int maxrl=0;
+	int maxtotal =0;
 //wch add
 
 	int rank=0;
@@ -129,6 +131,7 @@ void BitMap::Coding()
 		runs = 0;
 		firstbit = GetBit(data,index);
 		memset(runs_tmp,0,block_size*4);
+		maxrl=0;
 		k=0;
  		runs=0;
 		 //
@@ -152,20 +155,33 @@ void BitMap::Coding()
 				rank = rank -runs+step;
 			runs_tmp[k-1] = step;
 		}
-
+		/*
 		for(int i=0;i<k;i++)
 			rl_g = rl_g + 2*blog(runs_tmp[i])-1;
+		*/
+		//wch 
 
+		for(int i=0;i<k;i++)
+			{
+				rl_g = rl_g + 2*blog(runs_tmp[i])-1;
+				maxrl = max(maxrl,runs_tmp[i]);
+			}
+			maxtotal =blog(maxrl)*k;
+			//maxrl =2*blog(maxrl)-1+blog(maxrl)*k;
+		//wch
 		int thred=20;
 		//todo judge
 		int len = min(rl_g,block_size-thred);
-
+		if (maxtotal<len&&k!=1)
+		{
+			cout<<"11";
+		}
 		if(k==1)
 		{
 			if(firstbit==0)
-				coding_style->SetValue((index-1)/block_size,3);
+				coding_style->SetValue((index-1)/block_size,3);//ALL0
 			else
-				coding_style->SetValue((index-1)/block_size,4);
+				coding_style->SetValue((index-1)/block_size,4);//ALL1
 			space = space +0;
 		}
 
@@ -189,13 +205,26 @@ void BitMap::Coding()
 			for(int kk=0;kk<num;kk++,j++)
 				BitCopy(temp,index2,data[j]);
 		}
-
-		else//rl_gamma
+		//p (int[256])*runs_tmp
+		// else if(maxrl>len)//rl_gamma
+		// {
+		// 	if(firstbit == 0)
+		// 		coding_style->SetValue((index-1)/block_size,0);//RLG0
+		// 	else
+		// 		coding_style->SetValue((index-1)/block_size,1);//RLG1
+		// 	space =space + rl_g;
+		// 	for(int i=0;i<k;i++)
+		// 	{
+		// 		//cout<<runs_tmp[i]<<endl;
+		// 		Append_g(temp,index2,runs_tmp[i]);
+		// 	}
+		// }
+		else//fixcoding
 		{
 			if(firstbit == 0)
-				coding_style->SetValue((index-1)/block_size,0);
+				coding_style->SetValue((index-1)/block_size,5);//Fix0
 			else
-				coding_style->SetValue((index-1)/block_size,1);
+				coding_style->SetValue((index-1)/block_size,6);//Fix1
 			space =space + rl_g;
 			for(int i=0;i<k;i++)
 			{
@@ -203,7 +232,6 @@ void BitMap::Coding()
 				Append_g(temp,index2,runs_tmp[i]);
 			}
 		}
-	
 		//打表顺序，superblock在前,block在后.
 		if(index % step1 == 0)
 		{
@@ -409,7 +437,7 @@ int BitMap::GetBit(u64 * data,int index)
 
 //2014.5.8:16:53:这三段程序的性能相当.
 //
-int BitMap::GetRuns(u64 * data,int &indPex,int &bit)
+int BitMap::GetRuns(u64 * data,int &index,int &bit)
 {
 	bit = GetBit(data,index);
 	index = index +1;
