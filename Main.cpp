@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     result[0] = "";
     path = "";
     command = "";
-    path = "/home/wch/codebase/Adaptive-FM-index/1.pdf";
+    path = "./2-50M.pdf";
     //path2 ="/home/wch/CMake Practice.pdf";
     if (csa != NULL)
 	delete csa;

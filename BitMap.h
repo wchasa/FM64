@@ -84,7 +84,7 @@ class BitMap
 		int GetRuns(u64 * data,int &index,int &bit);
 		//index
 		void Append_g(u64 * temp,int &index,u32 value);
-	//	void Append_f(u64 * temp,int &index,u32 value);
+		void Append_f(u64 * temp,int &index,u32 value,int maxrl);
 		//把u64类型的value拷贝到data串的index处.
 		void BitCopy(u64 * temp,int &index,u64 value);
 

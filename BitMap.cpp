@@ -76,7 +76,19 @@ int BitMap::SizeInByte()
 	}
 	return size;
 }
+// void BitMap::Coding()
+// {
+// 	u64 * temp = new u64[256];
+// 	memset(temp,0,256*8);
+// 	//u64 * temp = new u64[256];
+// 	int index2 = 0;
+// 	for(int i =0;i<64;i++)
+// 	{
+// 		//Append_f(temp,index2,runs_tmp[i],maxrl);
+// 		Append_f(temp,index2,i,6);
+// 	}
 
+// }
 
 void BitMap::Coding()
 {
@@ -132,6 +144,7 @@ void BitMap::Coding()
 		firstbit = GetBit(data,index);
 		memset(runs_tmp,0,block_size*4);
 		maxrl=0;
+		maxtotal =0;
 		k=0;
  		runs=0;
 		 //
@@ -155,10 +168,6 @@ void BitMap::Coding()
 				rank = rank -runs+step;
 			runs_tmp[k-1] = step;
 		}
-		/*
-		for(int i=0;i<k;i++)
-			rl_g = rl_g + 2*blog(runs_tmp[i])-1;
-		*/
 		//wch 
 
 		for(int i=0;i<k;i++)
@@ -166,16 +175,18 @@ void BitMap::Coding()
 				rl_g = rl_g + 2*blog(runs_tmp[i])-1;
 				maxrl = max(maxrl,runs_tmp[i]);
 			}
-			maxtotal =blog(maxrl)*k;
-			//maxrl =2*blog(maxrl)-1+blog(maxrl)*k;
+			//maxtotal =blog(maxrl)*k;
+			maxrl = blog(maxrl);//maxrl bit length
+			maxtotal =2*maxrl-1+maxrl*k;
 		//wch
 		int thred=20;
 		//todo judge
 		int len = min(rl_g,block_size-thred);
-		if (maxtotal<len&&k!=1)
-		{
-			cout<<"11";
-		}
+		// if (maxtotal<len&&k!=1)
+		// {
+		// 	maxtotal =2*blog(maxrl)-1+blog(maxrl)*k;
+		// 	cout<<"11";
+		// }
 		if(k==1)
 		{
 			if(firstbit==0)
@@ -206,19 +217,19 @@ void BitMap::Coding()
 				BitCopy(temp,index2,data[j]);
 		}
 		//p (int[256])*runs_tmp
-		// else if(maxrl>len)//rl_gamma
-		// {
-		// 	if(firstbit == 0)
-		// 		coding_style->SetValue((index-1)/block_size,0);//RLG0
-		// 	else
-		// 		coding_style->SetValue((index-1)/block_size,1);//RLG1
-		// 	space =space + rl_g;
-		// 	for(int i=0;i<k;i++)
-		// 	{
-		// 		//cout<<runs_tmp[i]<<endl;
-		// 		Append_g(temp,index2,runs_tmp[i]);
-		// 	}
-		// }
+		else if(maxtotal>=len)//rl_gamma
+		{
+			if(firstbit == 0)
+				coding_style->SetValue((index-1)/block_size,0);//RLG0
+			else
+				coding_style->SetValue((index-1)/block_size,1);//RLG1
+			space =space + rl_g;
+			for(int i=0;i<k;i++)
+			{
+				//cout<<runs_tmp[i]<<endl;
+				Append_g(temp,index2,runs_tmp[i]);
+			}
+		}
 		else//fixcoding
 		{
 			if(firstbit == 0)
@@ -229,7 +240,7 @@ void BitMap::Coding()
 			for(int i=0;i<k;i++)
 			{
 				//cout<<runs_tmp[i]<<endl;
-				Append_g(temp,index2,runs_tmp[i]);
+				Append_f(temp,index2,runs_tmp[i],maxrl);
 			}
 		}
 		//打表顺序，superblock在前,block在后.
@@ -466,7 +477,7 @@ void BitMap::Append_g(u64 *temp,int &index,u32 value)
 	int zerosnum = blog(value)-1;
 	index+=zerosnum;
 	int onesnum = zerosnum+1;
-	if(index%64 + onesnum < 65)
+	if(index%64 + onesnum < 65)//in the same longlong
 	{
 		temp[index/64] = (temp[index/64] | (y<<(64-(index%64 + onesnum))));
 	}
@@ -479,7 +490,27 @@ void BitMap::Append_g(u64 *temp,int &index,u32 value)
 	}
 	index = index + onesnum;
 }
-
+//fix code and add to temp
+void BitMap::Append_f(u64 *temp,int &index,u32 value,int maxrl)
+{
+	u64 y=value;
+	int valuenum = blog(value);
+	int zerosnum = maxrl-valuenum;
+	index+=zerosnum;
+	int onesnum = valuenum;
+	if(index%64 + onesnum < 65)//in the same longlong
+	{
+		temp[index/64] = (temp[index/64] | (y<<(64-(index%64 + onesnum))));
+	}
+	else
+	{
+		int first = 64 - index%64;
+		int second = onesnum - first;
+		temp[index/64] = (temp[index/64] | (y>>second));
+		temp [index/64 +1] = (temp[index/64+1] | (y<<(64-second)));
+	}
+	index = index + onesnum;
+}
 
 
 void BitMap::BitCopy(u64 * temp,int & index,u64 value)
