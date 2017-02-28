@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 		else if(result[0]=="size")
 		{
 			if(csa!=NULL)
-				cout<<csa->compressRatioForCount()<<endl;
+				cout<<"File Size :"<<csa->getN()<<",TreeSize:"<<csa->sizeInByteForCount()<<",CompressRate"<<csa->compressRatioForCount()<<endl;
 			else
 				cout<<"build a FM first"<<endl;
 		}

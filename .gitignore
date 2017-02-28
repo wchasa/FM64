@@ -6,4 +6,5 @@
 *.a
 >>>>>>> drawbacksearch
 *.txt
-!.gitignore
+*.pdf
+*.fm
