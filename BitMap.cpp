@@ -12,6 +12,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include"BitMap.h"
 #include<math.h>
 #include<iostream>
+#include <iomanip>
 using namespace std;
 #define lookuptable
 inline int popcnt(unsigned long long int x)
@@ -118,6 +119,14 @@ void BitMap::Coding()
 	superblock->SetValue(1,0);
 	block->SetValue(0,0);
 	block->SetValue(1,0);
+	//test
+	for(int i=0;i<256;i++)
+	{
+		rl_g = blog(i)+2*blog(blog(i))-2;
+		cout<<setw(10)<<i<<","<<setw(10)<<rl_g<<","<<setw(10)<<2*blog(i)-1<<endl;
+	}
+
+	//test
 	//todo
 	while(index < bitLen)
 	{
@@ -154,8 +163,8 @@ void BitMap::Coding()
 		}
 
 		for(int i=0;i<k;i++)
-			rl_g = rl_g + 2*blog(runs_tmp[i])-1;
-
+			//rl_g = rl_g + 2*blog(runs_tmp[i])-1;
+			rl_g = rl_g +blog(runs_tmp[i])+2*blog(blog(runs_tmp[i]))-2;
 		int thred=20;
 		int len = min(rl_g,block_size-thred);
 
@@ -199,7 +208,7 @@ void BitMap::Coding()
 			for(int i=0;i<k;i++)
 			{
 				//cout<<runs_tmp[i]<<endl;
-				Append_g(temp,index2,runs_tmp[i]);
+				Append_delta(temp,index2,runs_tmp[i]);
 			}
 		}
 	
@@ -418,7 +427,7 @@ int BitMap::GetRuns(u64 * data,int &index,int &bit)
 	while(totle_runs < block_size)
 	{
 		u16 x= GetBits(data,index,16);//index不联动
-/		if(bit==1)
+		if(bit==1)
 			x=(~x);
 		runs = Zeros(x);
 		totle_runs +=runs;
@@ -431,13 +440,26 @@ int BitMap::GetRuns(u64 * data,int &index,int &bit)
 
 
 //gamma编码,index联动
-void BitMap::Append_g(u64 *temp,int &index,u32 value)
+void BitMap::Append_delta(u64 *temp,int &index,u32 value)
 {
 	u64 y=value;
-	int zerosnum = blog(value)-1;
+	int zerosnum = blog(blog(value))-1;
 	index+=zerosnum;
-	int onesnum = zerosnum+1;
+	int onesnum=blog(blog(value)+1);
 	if(index%64 + onesnum < 65)
+	{
+		temp[index/64] = (temp[index/64] | (y<<(64-(index%64 + onesnum))));
+	}
+	else
+	{
+		int first = 64 - index%64;
+		int second = onesnum - first;
+		temp[index/64] = (temp[index/64] | (y>>second));
+		temp [index/64 +1] = (temp[index/64+1] | (y<<(64-second)));
+	}
+	index = index + onesnum;
+	onesnum = blog(value)-1;
+    if(index%64 + onesnum < 65)
 	{
 		temp[index/64] = (temp[index/64] | (y<<(64-(index%64 + onesnum))));
 	}
