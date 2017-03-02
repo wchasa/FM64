@@ -14,6 +14,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<iostream>
 using namespace std;
 #define lookuptable
+#define golombK 3
 inline int popcnt(unsigned long long int x)
 {
 	x = x -((x & 0xAAAAAAAAAAAAAAAA)>>1);
@@ -101,6 +102,18 @@ void BitMap::Coding()
 	Flag	   = new InArray(2*(bitLen/step1)+2,1);
 //wch add
 
+//test
+	// int temmmmm=0;
+	// for(int i=0;i<256;i++)
+	// {
+	// 	int i123 = 2*blog(i+(1<<golombK))-1-golombK;
+	// 	cout<<dec<<"i="<<i<<",len="<<i123<<endl;
+	// 	memset(temp,0,u64Len*8);
+	// 	temmmmm = 0;
+	// 	Append_golomb(temp,temmmmm,i,golombK);
+	// 	cout<<hex<<temp[0]<<endl;
+	// }
+//
 	int rank=0;
 	int space=0;
 	int bits =0;
@@ -154,8 +167,8 @@ void BitMap::Coding()
 		}
 
 		for(int i=0;i<k;i++)
-			rl_g = rl_g + 2*blog(runs_tmp[i])-1;
-
+			//rl_g = rl_g + 2*blog(runs_tmp[i])-1;
+			rl_g = rl_g +2*blog(runs_tmp[i]+(1<<golombK))-1-golombK;
 		int thred=20;
 		int len = min(rl_g,block_size-thred);
 
@@ -199,7 +212,7 @@ void BitMap::Coding()
 			for(int i=0;i<k;i++)
 			{
 				//cout<<runs_tmp[i]<<endl;
-				Append_g(temp,index2,runs_tmp[i]);
+				Append_golomb(temp,index2,runs_tmp[i],golombK);
 			}
 		}
 	
@@ -418,7 +431,7 @@ int BitMap::GetRuns(u64 * data,int &index,int &bit)
 	while(totle_runs < block_size)
 	{
 		u16 x= GetBits(data,index,16);//index不联动
-/		if(bit==1)
+		if(bit==1)
 			x=(~x);
 		runs = Zeros(x);
 		totle_runs +=runs;
@@ -431,12 +444,12 @@ int BitMap::GetRuns(u64 * data,int &index,int &bit)
 
 
 //gamma编码,index联动
-void BitMap::Append_g(u64 *temp,int &index,u32 value)
+void BitMap::Append_golomb(u64 *temp,int &index,u32 value,int k)
 {
-	u64 y=value;
-	int zerosnum = blog(value)-1;
+	u64 y=value+(1<<k);
+	int zerosnum = blog(y)-1-k;
 	index+=zerosnum;
-	int onesnum = zerosnum+1;
+	int onesnum = zerosnum+1+k;
 	if(index%64 + onesnum < 65)
 	{
 		temp[index/64] = (temp[index/64] | (y<<(64-(index%64 + onesnum))));

@@ -413,7 +413,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	num = fread(T,sizeof(uchar),n,fp);
 	T[n-1]=0;
 	fclose(fp);
-	memset(charFreq,0,256*sizeof(int));
+	memset(charFreq,0,256*sizeof(i64));
 	memset(charMap,0,256*sizeof(bool));
 	for(saidx64_t i=0;i<n;i++)
 		charFreq[T[i]]++;
