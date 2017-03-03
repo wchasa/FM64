@@ -224,6 +224,7 @@ void BitMap::Coding()
 			else
 				coding_style->SetValue((index-1)/block_size,1);//RLG1
 			space =space + rl_g;
+
 			for(int i=0;i<k;i++)
 			{
 				//cout<<runs_tmp[i]<<endl;
@@ -237,6 +238,7 @@ void BitMap::Coding()
 			else
 				coding_style->SetValue((index-1)/block_size,6);//Fix1
 			space =space + maxtotal;
+			Append_g(temp,index2,maxrl);
 			for(int i=0;i<k;i++)
 			{
 				//cout<<runs_tmp[i]<<endl;
