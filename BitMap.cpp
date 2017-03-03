@@ -120,11 +120,11 @@ void BitMap::Coding()
 	block->SetValue(0,0);
 	block->SetValue(1,0);
 	//test
-	for(int i=0;i<256;i++)
-	{
-		rl_g = blog(i)+2*blog(blog(i))-2;
-		cout<<setw(10)<<i<<","<<setw(10)<<rl_g<<","<<setw(10)<<2*blog(i)-1<<endl;
-	}
+	// for(int i=0;i<256;i++)
+	// {
+	// 	rl_g = blog(i)+2*blog(blog(i))-2;
+	// 	cout<<setw(10)<<i<<","<<setw(10)<<rl_g<<","<<setw(10)<<2*blog(i)-1<<endl;
+	// }
 
 	//test
 	//todo
