@@ -41,7 +41,14 @@ int GammaDecode(u64 * buff,int & index,ABS_FM * t)
 	index = index + bits;
 	return x>>(32-bits);
 }
-
+int FixDecode(u64 * buff,int & index,ABS_FM * t)
+{
+	u32 x = GetBits(buff,index,32);
+	int runs = Zeros(x>>16,t);
+	int bits = (runs<<1)+1;
+	index = index + bits;
+	return x>>(32-bits);
+}
 ABS_FM::ABS_FM(const char * filename,int block_size,int D)
 {
 	this->block_size = block_size;

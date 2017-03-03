@@ -291,7 +291,7 @@ BitMap::~BitMap()
 	delete coding_style;
 }
 
-
+//todo
 int BitMap::Rank(int pos,int & bit)
 {
 	if(pos < 0 || pos > bitLen)
