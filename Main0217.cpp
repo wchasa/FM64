@@ -14,6 +14,7 @@
 #include<ctime>
 #include<fstream>
 #include<iostream>
+#include<time.h>
 //#define READSIZE 1024*1024*5
 using namespace std;
 void usage();
@@ -27,6 +28,7 @@ void showpos(int * pos,int num);
 int main(int argc, char* argv[])
 {
 	usage();
+	double stime,etime;
 	string command;
 	string  result[2];
 	char filename[100]={'\0'};
@@ -47,7 +49,11 @@ int main(int argc, char* argv[])
 			if(csa!=NULL)
 				delete csa;
 			csa=NULL;
+			stime=clock();
 			csa=new FM(result[1].data());
+			etime=clock();
+			tcost = (double)(tend-tstart)/CLOCKS_PER_SEC;
+			cout<<"build done!,take "<<tcost<<"seconds"<<endl;
 		}
 		else if(result[0]=="count")
 		{
@@ -89,7 +95,7 @@ int main(int argc, char* argv[])
 		else if(result[0]=="size")
 		{
 			if(csa!=NULL)
-				cout<<csa->compressRatioForCount()<<endl;
+				cout<<"File Size :"<<csa->getN()<<",TreeSize:"<<csa->sizeInByteForCount()<<",CompressRate"<<csa->compressRatioForCount()<<endl;
 			else
 				cout<<"build a FM first"<<endl;
 		}
