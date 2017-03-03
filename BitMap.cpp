@@ -418,7 +418,7 @@ int BitMap::GetRuns(u64 * data,int &index,int &bit)
 	while(totle_runs < block_size)
 	{
 		u16 x= GetBits(data,index,16);//index不联动
-/		if(bit==1)
+		if(bit==1)
 			x=(~x);
 		runs = Zeros(x);
 		totle_runs +=runs;
