@@ -445,7 +445,7 @@ void BitMap::Append_delta(u64 *temp,int &index,u32 value)
 	u64 y=value;
 	int zerosnum = blog(blog(value))-1;
 	index+=zerosnum;
-	int onesnum=blog(blog(value)+1);
+	int onesnum=blog(blog(value));
 	if(index%64 + onesnum < 65)
 	{
 		temp[index/64] = (temp[index/64] | (y<<(64-(index%64 + onesnum))));
