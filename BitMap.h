@@ -77,7 +77,7 @@ class BitMap
 		//gamma解
 		
 
-		int FixedDecode(u64 * buff,int &index);
+		int FixedDecode(u64 * buff,int &index,int Len);
 		int GammaDecode(u64 * buff,int &index);
  		
 		//得到0,1串中的runs长度，bit标示该runs是针对谁的
@@ -93,7 +93,7 @@ class BitMap
 		void RL_Rank(u64 * buff,int &index,int bits_left,int bits_right,int &rank_left,int &rank_right,int rl_type);
 		int  RL_Rank(u64 * buff,int &index,int bits_num,int rl_type);
 		int  RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit);
-	
+		//返回容量编码的串中，由index位置开始，bits位内的0的个数.
 		int RL0_Rank(u64 * buff,int &index,int bits_num);
 		int RL0_Bit(u64 * buff,int &index,int bits);
 		int RL0_Rank(u64 * buff,int &index,int bits,int &bit);
@@ -101,6 +101,12 @@ class BitMap
 		int RL1_Rank(u64 * buff,int &index,int bits);
 		int RL1_Bit(u64 * buff,int & index,int bits);
 		int RL1_Rank(u64 * buff,int &index,int bits,int &bit);
+		//返回容量编码的串中，由index位置开始，bits位内的1的个数.
+		int FRL1_Bit(u64 * buff,int &index,int bits_num);
+		//int RL1_Bit(u64 * buff,int & index,int bits);
+		//int RL1_Rank(u64 * buff,int &index,int bits,int &bit);
+		
+		int FRL0_Bit(u64 * buff,int &index,int bits_num);
 		//buff从index位置开始是直接存储的，从index位置开始，bits
 		//位内有几个1.
 		void Plain_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int&rank_right);

@@ -105,7 +105,7 @@ void BitMap::Coding()
 	int step2 = block_size;//bsize
 	//int block_width = blog(block_size);
 	superblock = new InArray(2*(bitLen/step1)+2,blog(bitLen));
-//todo
+//
 	block      = new InArray(2*(bitLen/step2)+2,blog(step1-step2));
 	coding_style      = new InArray(bitLen/step2+1,3);
 //wch add
@@ -341,6 +341,8 @@ int BitMap::Rank(int pos,int & bit)
 			case 2:bit=Plain_Bit(buff,index,overloop);break;
 			case 3:bit=0;break;
 			case 4:bit=1;break;
+			case 5:bit=FRL0_Bit(buff,index,overloop);break;
+			case 6:bit=FRL1_Bit(buff,index,overloop);break;
 		}
 		return rank;
 
@@ -382,6 +384,8 @@ void BitMap::Rank(int pos_left,int pos_right,int &rank_left,int &rank_right)
 				case 2:Plain_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right);break;
 				case 3:break;
 				case 4:rank_left +=overloop_left;rank_right += overloop_right;break;
+				//case 5:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,0);break;
+				//case 6:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,1);break;
 			}
 			return ;
 		}
@@ -392,6 +396,8 @@ void BitMap::Rank(int pos_left,int pos_right,int &rank_left,int &rank_right)
 			case 2:rank_right += Plain_Rank(buff,index,overloop_right);break;
 			case 3:break;
 			case 4:rank_right += overloop_right;break;
+			//case 5:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,0);break;
+			//case 6:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,1);break;
 		}
 	}
 	else
@@ -577,7 +583,32 @@ int BitMap::RL0_Bit(u64 * buff,int & index,int bits_num)
 			return 1;
 	}
 }
-
+int BitMap::FRL0_Bit(u64 * buff,int & index,int bits_num)
+{
+	//int rank = 0;
+	int bit_count =0;
+	//int bits = 0;
+	//int  bits = 0;
+	//get block len
+	int len = 0; 
+	int value = 0;	
+	u32 x = GetBits(buff,index,32);
+	int runs = Zeros(x>>16);
+	int bits = (runs<<1)+1;
+	index = index + bits;
+	value = x>>(32-bits);
+	while(true)
+	{
+		bits=GammaDecode(buff,index);
+		bit_count = bit_count + bits;
+		if(bit_count >= bits_num)
+			return  0;
+		bits=GammaDecode(buff,index);
+		bit_count = bit_count + bits;
+		if(bit_count >= bits_num)
+			return 1;
+	}
+}
 int BitMap::RL1_Rank(u64 * buff,int &index,int bits_num)
 {
 	int bit =0;
@@ -626,7 +657,30 @@ int BitMap::RL1_Bit(u64 * buff,int &index,int bits_num)
 	}
 }
 
-
+int BitMap::FRL1_Bit(u64 * buff,int &index,int bits_num)
+{
+	int bit_count = 0;
+	//int  bits = 0;
+	//get block len
+	int len = 0; 
+	int value = 0;	
+	u32 x = GetBits(buff,index,32);
+	int runs = Zeros(x>>16);
+	int bits = (runs<<1)+1;
+	index = index + bits;
+	value = x>>(32-bits);
+	while(true)
+	{
+		 bits = FixedDecode(buff,index,len);
+		 bit_count = bit_count + bits;
+		 if(bit_count >= bits_num)
+			 return 1;
+		 bits = FixedDecode(buff,index,len);
+		 bit_count = bit_count + bits;
+		 if(bit_count >= bits_num)
+			 return 0;
+	}
+}
 //palin类型的比例较低，所以两种方式的区别不大.
 void BitMap::Plain_Rank(u64 *buff,int &index,int bits_left,int bits_right,int & rank_left,int &rank_right)
 {
@@ -697,9 +751,13 @@ int BitMap::GammaDecode(u64 * buff,int & index)
 	index = index + bits;
 	return x>>(32-bits);
 }
-int BitMap::FixedDecode(u64 * buff,int &index)
+int BitMap::FixedDecode(u64 * buff,int &index,int Len)
 {
-	return 0;
+	u32 x = GetBits(buff,index,32);
+	//int runs = Len;
+	int bits = Len;
+	index = index + bits;
+	return x>>(32-bits);
 }
 
 //从buff的index位置开始,读取bits位数据,返回.
@@ -718,9 +776,7 @@ u64 BitMap::GetBits(u64 * buff,int &index,int bits)
 }
 
 int BitMap::GetZerosRuns(u64 * buff,int &index)
-{
-	
-	u32 x = GetBits(buff,index,16);
+{(buff,index,16);
 	int runs = Zeros(x);
 	index = index + runs;
 	return runs;
