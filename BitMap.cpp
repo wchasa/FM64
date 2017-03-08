@@ -300,7 +300,7 @@ int BitMap::Rank(int pos,int & bit)
 		exit(0);
 	}
 
-	if((pos+1)%block_size!=0)
+	if((pos+1)%block_size!=0)//
 	{
 		int block_anchor = (pos+1)/block_size;
 		int superblock_anchor = (pos+1)/super_block_size;
@@ -320,10 +320,12 @@ int BitMap::Rank(int pos,int & bit)
 			case 2:rank = Plain_Rank(buff,index,overloop,bit);break;
 			case 3:rank = 0;bit=0;break;
 			case 4:rank = overloop;bit = 1;break;
+			case 5:rank = FRL_Rank(buff,index,overloop,0,bit);break;
+			case 6:rank = FRL_Rank(buff,index,overloop,1,bit);break;
 		}
 		return rank_base + rank;
 	}
-	else
+	else//
 	{
 		int rank1   = superblock->GetValue(((pos+1)/super_block_size)*2);
 		int offset1 = superblock->GetValue((pos/super_block_size)*2+1);

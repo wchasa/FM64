@@ -1,0 +1,9 @@
+#0  BitMap::Rank (this=0x6b7920, pos=47258, bit=@0x7fffffffdb98: 0) at BitMap.cpp:303
+#1  0x0000000000404dd4 in ABS_FM::Occ (this=0x632480, occ=@0x7fffffffdbe0: 0, label=@0x7fffffffdbdf: 0 '\000', pos=47258) at ABS_WT.cpp:380
+#2  0x0000000000404c3b in ABS_FM::LF (this=0x632480, i=47258) at ABS_WT.cpp:339
+#3  0x00000000004048f1 in ABS_FM::Lookup (this=0x632480, i=47258) at ABS_WT.cpp:232
+#4  0x0000000000404651 in ABS_FM::Locating (this=0x632480, pattern=0x7fffffffdda0 "ass", num=@0x7fffffffdd1c: 3) at ABS_WT.cpp:189
+#5  0x0000000000402e14 in WT_Handle::Locating (this=0x632440, pattern=0x7fffffffdda0 "ass", num=@0x7fffffffdd1c: 3) at WT_Handle.h:33
+#6  0x0000000000402ce2 in FM::locating (this=0x632440, pattern=0x7fffffffdda0 "ass", num=@0x7fffffffdd1c: 3) at FM.cpp:79
+#7  0x0000000000401ffb in main (argc=1, argv=0x7fffffffdf88) at Main0217.cpp:71
+

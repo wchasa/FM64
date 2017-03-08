@@ -5,13 +5,13 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/my_fm",
+            "program": "${workspaceRoot}/my_fm_addFixcode",
             "args": [],
           //  "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
           //  "environment": [],
            // "externalConsole": true,
-            //"preLaunchTask":"my_fm",
+            "preLaunchTask":"my_fm",
             "linux": {
                 "MIMode": "gdb"
             },

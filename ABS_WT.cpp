@@ -167,7 +167,7 @@ void ABS_FM::Counting(const char * pattern,int & num)
 {
 	int Left=1;
 	int Right =0;
-	DrawBackSearch(pattern,Left,Right);
+	DrawBackSearch(pattern,Left,Right);//count
 //	cout<<"Counting "<<Left<<" "<<Right<<endl;
 	if(Right < Left)
 		num = 0;
