@@ -877,10 +877,10 @@ int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)
 		while(true)
 		{
 			anchor = (x>>48)<<2;
-			runs =R[anchor];
+		    runs =R[anchor];
 			if(runs >0)
 			{
-				step =R[1+anchor];
+				step =R[1+anchor];//index need to move step bits 
 				already = already + step;
 				if(already > 64)
 				{
@@ -889,8 +889,8 @@ int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)
 					already = 0;
 					continue;
 				}
-				bits = R[2+anchor];
-				r=R[3+anchor];
+				bits = R[2+anchor];//this R has bits origin code
+				r=R[3+anchor];//this R has number r 1;
 				bits=(bits==0)?256:bits;
 				if((runs_num & 0x01) ==rl_type)
 					rank = rank + r;
