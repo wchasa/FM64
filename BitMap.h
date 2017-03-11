@@ -105,8 +105,10 @@ class BitMap
 		int FRL1_Bit(u64 * buff,int &index,int bits_num);
 		//int RL1_Bit(u64 * buff,int & index,int bits);
 		//int RL1_Rank(u64 * buff,int &index,int bits,int &bit);
-		
+		int FRL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit);
+		int FRL_Rank(u64 * buff,int &index,int bits_num,int rl_type);
 		int FRL0_Bit(u64 * buff,int &index,int bits_num);
+
 		//buff从index位置开始是直接存储的，从index位置开始，bits
 		//位内有几个1.
 		void Plain_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int&rank_right);

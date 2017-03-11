@@ -386,8 +386,8 @@ void BitMap::Rank(int pos_left,int pos_right,int &rank_left,int &rank_right)
 				case 2:Plain_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right);break;
 				case 3:break;
 				case 4:rank_left +=overloop_left;rank_right += overloop_right;break;
-				//case 5:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,0);break;
-				//case 6:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,1);break;
+				case 5:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,0);break;
+				case 6:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,1);break;
 			}
 			return ;
 		}
@@ -434,13 +434,15 @@ int BitMap::Rank(int pos)
 	int index = (offset & 0x3f);
 	if(overloop > 0)
 	{
-		switch(type)
+		switch(type)//todo
 		{
-			case 0:rank_base += RL_Rank(buff,index,overloop,0);break;
-			case 1:rank_base += RL_Rank(buff,index,overloop,1);break;
-			case 2:rank_base += Plain_Rank(buff,index,overloop);break;
-			case 3:break;
-			case 4:rank_base += overloop;break;
+			case 0:rank_base += RL_Rank(buff,index,overloop,0);break;//rg0
+			case 1:rank_base += RL_Rank(buff,index,overloop,1);break;//rg1
+			case 2:rank_base += Plain_Rank(buff,index,overloop);break;//plain
+			case 3:break;//ALL0
+			case 4:rank_base += overloop;break;//ALL1
+			case 5:rank_base += FRL_Rank(buff,index,overloop,0);break;//fix0
+			case 6:rank_base += FRL_Rank(buff,index,overloop,0);break;//fix1
 		}
 	}
 	return rank_base;
@@ -859,6 +861,39 @@ int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type)
 	return RL_Rank(buff,index,bits_num,rl_type,bit);
 }
 
+int BitMap::FRL_Rank(u64 * buff,int &index,int bits_num,int rl_type)
+{
+	int bit=0;
+	return FRL_Rank(buff,index,bits_num,rl_type,bit);
+}
+int BitMap::FRL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)
+{
+	int rank1  = 0;
+	int value  = 0;
+	int len    = 0; 
+	int Fixlen = 0;	
+	u32 x      = GetBits(buff,index,64);
+	int runs   = Zeros(x>>48);
+	int bits   = (runs<<1)+1;
+	index      = index + bits;
+	Fixlen     = x>>(64-bits);
+
+	while(true)
+	{
+		if(rl_type==1)
+		{
+			value  = x>>(64-index)&&((1<<Fixlen+1)-1);
+			rank1 += value;
+		}
+		index+=Fixlen;
+		rl_type = 1-rl_type;
+		bits_num-=value;
+		if(bits_num<=0)
+		{
+			return rank1;
+		}
+	}
+}
 
 int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)
 {
