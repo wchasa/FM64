@@ -14,6 +14,7 @@ the Free Software Foundation; either version 2 or later of the License.
 //#include"ds_ssort.h"
 #include<string.h>
 #include<map>
+#include <iomanip>
 //#define READSIZE 1024*1024*50
 u64 GetBits(u64 * buff,int &index,int bits)
 {
@@ -149,7 +150,7 @@ void ABS_FM::DrawBackSearch(const char * pattern,int & Left,int &Right)
 		i=i-1;
 	*/
 		Occ(c,Left-1,Right,occ_left,occ_right);
-//		cout<<occ_left<<","<<occ_right<<","<<occ_right-occ_left<<endl;
+		//cout<<"occ_left:"<<occ_left<<",occ_right"<<occ_right<<",value"<<occ_right-occ_left<<endl;
 		Left = C[coding]+occ_left;
 		Right = C[coding]+occ_right-1;
 		i=i-1;
@@ -225,12 +226,14 @@ unsigned char* ABS_FM::Extracting(int pos,int len)
 
 int ABS_FM::Lookup(int i)
 {
+	//cout<<"lookup init i="<<i<<endl;
 	int step = 0;
 	int D = this->D;
 	while(i%D!=0)
 	{
 		i=LF(i);
 		step =step +1;
+		//cout<<"loop i="<<setw(10)<<i<<"  step="<<setw(10)<<step<<endl;	
 	}
 	i=i/D;
 	return (SAL->GetValue(i)+step)%n;
@@ -252,9 +255,9 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 			if(pos_left>-1 && pos_right >-1&&(pos_left<pos_right)) //left right 都有待查找
 			//if(pos_left>-1 && pos_right >-1) //left right 都有待查找
 			//wch
-			{
-			
+			{			
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
+				//cout<<"char="<<c<<";pos_right="<<pos_right<<";pos_left"<<pos_left<<endl;
 				pos_left = rank_left -1;
 				pos_right = rank_right -1;
 			
@@ -369,22 +372,27 @@ unsigned char ABS_FM::L(int i)
 	return r->Label();
 
 }
-
+int flag = 0;
 int ABS_FM::Occ(int & occ , unsigned char & label,int pos)
 {
 	BitMap * r = root;
+	//cout<<"occ:root"<<endl;
 	int bit =0;
 	int rank =0;
 	while(r->Left())
 	{
+		flag++;
 		rank = r->Rank(pos,bit);
+		//cout<<setw(20)<<flag<<"  pos="<<setw(10)<<pos<<",Bit = "<<bit<<",rank="<<setw(10)<<rank<<endl;
 		if(bit==1)
 		{
+			//cout<<"r"<<endl;
 			pos = rank -1;
 			r =r ->Right();
 		}
 		else
 		{
+			//cout<<"l"<<endl;
 			pos = (pos+1) - rank -1;
 			r = r->Left();
 		}

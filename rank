@@ -1,0 +1,233 @@
+occ_left:899,occ_right902,value3
+occ_left:514,occ_right517,value3
+lookup init i=47344
+                   1  pos=     47344,Bit = 0,rank=     29276
+                   2  pos=     18068,Bit = 0,rank=      9351
+                   3  pos=      8717,Bit = 1,rank=      4821
+                   4  pos=      4820,Bit = 0,rank=      2647
+                   5  pos=      2173,Bit = 1,rank=       964
+                   6  pos=       963,Bit = 0,rank=       692
+loop i=     48607  step=         1
+                   7  pos=     48607,Bit = 0,rank=     29365
+                   8  pos=     19242,Bit = 1,rank=     10110
+                   9  pos=     10109,Bit = 0,rank=      5386
+                  10  pos=      4723,Bit = 1,rank=      2159
+                  11  pos=      2158,Bit = 0,rank=      1136
+                  12  pos=      1022,Bit = 1,rank=       552
+                  13  pos=       551,Bit = 1,rank=       269
+loop i=     52714  step=         2
+                  14  pos=     52714,Bit = 1,rank=     29697
+loop i=     29696  step=         3
+lookup init i=47345
+                  15  pos=     47345,Bit = 0,rank=     29276
+                  16  pos=     18069,Bit = 0,rank=      9351
+                  17  pos=      8718,Bit = 1,rank=      4822
+                  18  pos=      4821,Bit = 0,rank=      2647
+                  19  pos=      2174,Bit = 1,rank=       965
+                  20  pos=       964,Bit = 0,rank=       692
+loop i=     48608  step=         1
+lookup init i=47346
+                  21  pos=     47346,Bit = 0,rank=     29276
+                  22  pos=     18070,Bit = 1,rank=      9352
+                  23  pos=      9351,Bit = 1,rank=      4914
+                  24  pos=      4913,Bit = 1,rank=      2257
+                  25  pos=      2256,Bit = 1,rank=       965
+                  26  pos=       964,Bit = 0,rank=       365
+                  27  pos=       599,Bit = 0,rank=       236
+                  28  pos=       363,Bit = 0,rank=       279
+loop i=     52221  step=         1
+                  29  pos=     52221,Bit = 1,rank=     29670
+loop i=     29669  step=         2
+                  30  pos=     29669,Bit = 0,rank=     21976
+                  31  pos=      7693,Bit = 1,rank=      3979
+                  32  pos=      3978,Bit = 0,rank=      1392
+                  33  pos=      2586,Bit = 1,rank=       534
+                  34  pos=       533,Bit = 0,rank=       275
+                  35  pos=       258,Bit = 1,rank=        77
+                  36  pos=        76,Bit = 1,rank=        31
+loop i=     52476  step=         3
+                  37  pos=     52476,Bit = 0,rank=     29690
+                  38  pos=     22786,Bit = 1,rank=     12395
+                  39  pos=     12394,Bit = 0,rank=      6389
+                  40  pos=      6005,Bit = 1,rank=      2926
+                  41  pos=      2925,Bit = 1,rank=      1505
+                  42  pos=      1504,Bit = 1,rank=       730
+loop i=     54116  step=         4
+                  43  pos=     54116,Bit = 0,rank=     29777
+                  44  pos=     24339,Bit = 1,rank=     13602
+                  45  pos=     13601,Bit = 1,rank=      6986
+                  46  pos=      6985,Bit = 1,rank=      3725
+                  47  pos=      3724,Bit = 1,rank=      1817
+                  48  pos=      1816,Bit = 0,rank=      1043
+                  49  pos=       773,Bit = 0,rank=       253
+                  50  pos=       520,Bit = 0,rank=       280
+loop i=     52377  step=         5
+                  51  pos=     52377,Bit = 0,rank=     29675
+                  52  pos=     22702,Bit = 1,rank=     12328
+                  53  pos=     12327,Bit = 1,rank=      6346
+                  54  pos=      6345,Bit = 0,rank=      3231
+                  55  pos=      3114,Bit = 1,rank=      1400
+                  56  pos=      1399,Bit = 0,rank=       570
+loop i=     46583  step=         6
+                  57  pos=     46583,Bit = 0,rank=     29230
+                  58  pos=     17353,Bit = 1,rank=      8879
+                  59  pos=      8878,Bit = 1,rank=      4732
+                  60  pos=      4731,Bit = 1,rank=      2121
+                  61  pos=      2120,Bit = 0,rank=       881
+rl_type=         0;value=        17
+rl_type=         1;value=        34
+rl_type=         0;value=         3
+rl_type=         1;value=        48
+rl_type=         0;value=        20
+rl_type=         1;value=         8
+rl_type=         0;value=         3
+rl_type=         1;value=        16
+rl_type=         0;value=         3
+rl_type=         1;value=        19
+rl_type=         0;value=         9
+rl_type=         1;value=        10
+rl_type=         0;value=        14
+                  62  pos=      1239,Bit = 1,rank=       475
+                  63  pos=       474,Bit = 0,rank=       365
+loop i=     51238  step=         7
+                  64  pos=     51238,Bit = 0,rank=     29633
+                  65  pos=     21605,Bit = 1,rank=     11595
+                  66  pos=     11594,Bit = 0,rank=      6077
+                  67  pos=      5517,Bit = 1,rank=      2722
+                  68  pos=      2721,Bit = 0,rank=      1436
+                  69  pos=      1285,Bit = 0,rank=       678
+rl_type=         0;value=        44
+                  70  pos=       607,Bit = 1,rank=       209
+loop i=     51894  step=         8
+                  71  pos=     51894,Bit = 0,rank=     29644
+                  72  pos=     22250,Bit = 1,rank=     12050
+                  73  pos=     12049,Bit = 0,rank=      6231
+                  74  pos=      5818,Bit = 0,rank=      2835
+                  75  pos=      2983,Bit = 0,rank=      1721
+                  76  pos=      1262,Bit = 0,rank=       705
+loop i=     50187  step=         9
+                  77  pos=     50187,Bit = 0,rank=     29528
+                  78  pos=     20659,Bit = 1,rank=     11035
+                  79  pos=     11034,Bit = 0,rank=      5809
+                  80  pos=      5225,Bit = 1,rank=      2492
+                  81  pos=      2491,Bit = 1,rank=      1359
+                  82  pos=      1358,Bit = 1,rank=       624
+loop i=     54010  step=        10
+                  83  pos=     54010,Bit = 0,rank=     29761
+                  84  pos=     24249,Bit = 1,rank=     13519
+                  85  pos=     13518,Bit = 1,rank=      6931
+                  86  pos=      6930,Bit = 1,rank=      3671
+                  87  pos=      3670,Bit = 1,rank=      1767
+                  88  pos=      1766,Bit = 0,rank=      1030
+                  89  pos=       736,Bit = 0,rank=       252
+                  90  pos=       484,Bit = 0,rank=       280
+loop i=     52341  step=        11
+                  91  pos=     52341,Bit = 0,rank=     29675
+                  92  pos=     22666,Bit = 0,rank=     12323
+                  93  pos=     10343,Bit = 1,rank=      5494
+                  94  pos=      5493,Bit = 0,rank=      2897
+                  95  pos=      2596,Bit = 1,rank=      1218
+                  96  pos=      1217,Bit = 0,rank=       717
+loop i=     48836  step=        12
+                  97  pos=     48836,Bit = 0,rank=     29366
+                  98  pos=     19470,Bit = 1,rank=     10257
+                  99  pos=     10256,Bit = 0,rank=      5424
+                 100  pos=      4832,Bit = 0,rank=      2247
+                 101  pos=      2585,Bit = 0,rank=      1717
+                 102  pos=       868,Bit = 1,rank=       558
+                 103  pos=       557,Bit = 1,rank=       160
+loop i=     47753  step=        13
+                 104  pos=     47753,Bit = 0,rank=     29314
+                 105  pos=     18439,Bit = 0,rank=      9595
+                 106  pos=      8844,Bit = 0,rank=      4857
+                 107  pos=      3987,Bit = 0,rank=      1976
+                 108  pos=      2011,Bit = 1,rank=      1077
+                 109  pos=      1076,Bit = 1,rank=       555
+                 110  pos=       554,Bit = 1,rank=       241
+                 111  pos=       240,Bit = 1,rank=        82
+loop i=     54995  step=        14
+                 112  pos=     54995,Bit = 0,rank=     29902
+                 113  pos=     25093,Bit = 0,rank=     14177
+                 114  pos=     10916,Bit = 1,rank=      5830
+                 115  pos=      5829,Bit = 0,rank=      2981
+                 116  pos=      2848,Bit = 1,rank=      1415
+                 117  pos=      1414,Bit = 0,rank=       719
+loop i=     49031  step=        15
+                 118  pos=     49031,Bit = 1,rank=     29368
+loop i=     29367  step=        16
+                 119  pos=     29367,Bit = 0,rank=     21812
+                 120  pos=      7555,Bit = 1,rank=      3899
+                 121  pos=      3898,Bit = 0,rank=      1374
+                 122  pos=      2524,Bit = 1,rank=       487
+                 123  pos=       486,Bit = 1,rank=       242
+                 124  pos=       241,Bit = 1,rank=        83
+loop i=     53469  step=        17
+                 125  pos=     53469,Bit = 0,rank=     29749
+                 126  pos=     23720,Bit = 1,rank=     13115
+                 127  pos=     13114,Bit = 1,rank=      6725
+                 128  pos=      6724,Bit = 0,rank=      3499
+                 129  pos=      3225,Bit = 1,rank=      1506
+                 130  pos=      1505,Bit = 0,rank=       572
+loop i=     46687  step=        18
+                 131  pos=     46687,Bit = 0,rank=     29232
+                 132  pos=     17455,Bit = 1,rank=      8951
+                 133  pos=      8950,Bit = 0,rank=      4785
+                 134  pos=      4165,Bit = 1,rank=      1701
+                 135  pos=      1700,Bit = 1,rank=       941
+                 136  pos=       940,Bit = 1,rank=       382
+loop i=     53768  step=        19
+                 137  pos=     53768,Bit = 0,rank=     29758
+                 138  pos=     24010,Bit = 1,rank=     13311
+                 139  pos=     13310,Bit = 0,rank=      6836
+                 140  pos=      6474,Bit = 0,rank=      3259
+                 141  pos=      3215,Bit = 0,rank=      1723
+                 142  pos=      1492,Bit = 1,rank=       786
+                 143  pos=       785,Bit = 1,rank=       385
+loop i=     47978  step=        20
+                 144  pos=     47978,Bit = 0,rank=     29333
+                 145  pos=     18645,Bit = 1,rank=      9727
+                 146  pos=      9726,Bit = 1,rank=      5131
+                 147  pos=      5130,Bit = 1,rank=      2400
+                 148  pos=      2399,Bit = 0,rank=      1046
+                 149  pos=      1353,Bit = 0,rank=       579
+                 150  pos=       774,Bit = 0,rank=       477
+                 151  pos=       297,Bit = 0,rank=       217
+loop i=     54410  step=        21
+                 152  pos=     54410,Bit = 0,rank=     29793
+                 153  pos=     24617,Bit = 1,rank=     13813
+                 154  pos=     13812,Bit = 0,rank=      7105
+                 155  pos=      6707,Bit = 1,rank=      3380
+                 156  pos=      3379,Bit = 0,rank=      1799
+                 157  pos=      1580,Bit = 1,rank=       795
+                 158  pos=       794,Bit = 1,rank=       458
+loop i=     52903  step=        22
+                 159  pos=     52903,Bit = 0,rank=     29702
+                 160  pos=     23201,Bit = 1,rank=     12708
+                 161  pos=     12707,Bit = 0,rank=      6528
+                 162  pos=      6179,Bit = 1,rank=      3097
+                 163  pos=      3096,Bit = 1,rank=      1622
+                 164  pos=      1621,Bit = 1,rank=       834
+loop i=     54220  step=        23
+                 165  pos=     54220,Bit = 0,rank=     29777
+                 166  pos=     24443,Bit = 1,rank=     13698
+                 167  pos=     13697,Bit = 0,rank=      7061
+                 168  pos=      6636,Bit = 1,rank=      3366
+                 169  pos=      3365,Bit = 1,rank=      1792
+                 170  pos=      1791,Bit = 0,rank=       902
+                 171  pos=       889,Bit = 1,rank=       456
+loop i=     53366  step=        24
+                 172  pos=     53366,Bit = 0,rank=     29744
+                 173  pos=     23622,Bit = 1,rank=     13033
+                 174  pos=     13032,Bit = 1,rank=      6671
+                 175  pos=      6670,Bit = 1,rank=      3476
+                 176  pos=      3475,Bit = 0,rank=      1713
+                 177  pos=      1762,Bit = 1,rank=       778
+                 178  pos=       777,Bit = 0,rank=       418
+loop i=     51488  step=        25
+occs:3
+20908
+23347
+27588
+string search patten /home/wch/FM.o
+occs:0
+>

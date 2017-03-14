@@ -1,12 +1,13 @@
-010 0001010 1 0000100
-2   10        1   total 9
-move 11
-
-RLG0 0
-RLG1 1
-plain 2
-ALL0 3
-ALL1 4
-Fix0 5
-Fix1 6
-
+rl_type=         0;value=        17
+rl_type=         1;value=        34
+rl_type=         0;value=         3
+rl_type=         1;value=        48
+rl_type=         0;value=        20
+rl_type=         1;value=         8
+rl_type=         0;value=         3
+rl_type=         1;value=        16
+rl_type=         0;value=         3
+rl_type=         1;value=        19
+rl_type=         0;value=         9
+rl_type=         1;value=        10
+rl_type=         0;value=        14

@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "C++ Launch",
             "type": "cppdbg",
@@ -11,7 +12,7 @@
             "cwd": "${workspaceRoot}",
           //  "environment": [],
            // "externalConsole": true,
-            "preLaunchTask":"my_fm",
+           // "preLaunchTask":"my_fm",
             "linux": {
                 "MIMode": "gdb"
             },

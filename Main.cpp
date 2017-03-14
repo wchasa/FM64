@@ -27,19 +27,20 @@ int main(int argc, char *argv[])
     string command;
     string result[2];
     string path,path2;
-    string patten = "ABBA";
+    string patten = "att";
     char filename[100] = {'\0'};
     char indexname[100] = {'\0'};
     FM *csa = NULL;
     result[0] = "";
     path = "";
     command = "";
-    path = "./2-50M.pdf";
+    path = "/home/wch/FM.o";
     //path2 ="/home/wch/CMake Practice.pdf";
     if (csa != NULL)
 	delete csa;
     csa = NULL;
     csa = new FM(path.data());
+    
     //csa->save(path2.data());
     //csa=new FM();
 	//csa->load(path2.data());
@@ -56,10 +57,10 @@ int main(int argc, char *argv[])
 
 			if (csa != NULL)
 			{
-            //  csa->counting(patten.data(),num);
+             //csa->counting(patten.data(),num);
 			 pos = csa->locating(patten.data(), num);
              showpos(pos,num);
-			cout << "occs:" << num << endl;
+			//cout << "occs:" << num << endl;
 
 		//	showpos(pos, num);
 			delete[] pos;
@@ -68,8 +69,8 @@ int main(int argc, char *argv[])
 			cout << "build a FM first" << endl;
 		}
     }
-    cout << "string search patten " << path << endl;
     vector<int> ivector;
+    cout << "string search patten " << path << endl;
     FILE *fp = fopen(path.data(), "r+");
     if (fp == NULL)
     {

@@ -12,6 +12,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include"BitMap.h"
 #include<math.h>
 #include<iostream>
+#include <iomanip> 
 using namespace std;
 #define lookuptable
 inline int popcnt(unsigned long long int x)
@@ -20,6 +21,16 @@ inline int popcnt(unsigned long long int x)
 	x = (x & 0x3333333333333333)+((x>>2) & 0x3333333333333333);
 	x =((x+(x>>4)) & 0x0F0F0F0F0F0F0F0F);
 	return (x*0x0101010101010101)>>56;
+}
+int blog64(u64 x)
+{
+	int ans = 0;
+	while(x>0)
+	{
+		ans++;
+		x=x>>1;
+	}
+	return ans;
 }
 
 int blog(int x)
@@ -177,7 +188,7 @@ void BitMap::Coding()
 			}
 			//maxtotal =blog(maxrl)*k;
 			maxrl = blog(maxrl);//maxrl bit length
-			maxtotal =2*maxrl-1+maxrl*k;
+			maxtotal =2*blog(maxrl)-1+maxrl*k;
 		//wch
 		int thred=20;
 		//todo judge
@@ -323,6 +334,7 @@ int BitMap::Rank(int pos,int & bit)
 			case 5:rank = FRL_Rank(buff,index,overloop,0,bit);break;
 			case 6:rank = FRL_Rank(buff,index,overloop,1,bit);break;
 		}
+		//cout<<"Rank="<<rank_base+rank<<endl;
 		return rank_base + rank;
 	}
 	else//
@@ -346,6 +358,7 @@ int BitMap::Rank(int pos,int & bit)
 			case 5:bit=FRL0_Bit(buff,index,overloop);break;
 			case 6:bit=FRL1_Bit(buff,index,overloop);break;
 		}
+		//cout<<"Rank="<<rank<<endl;
 		return rank;
 
 	}
@@ -398,8 +411,8 @@ void BitMap::Rank(int pos_left,int pos_right,int &rank_left,int &rank_right)
 			case 2:rank_right += Plain_Rank(buff,index,overloop_right);break;
 			case 3:break;
 			case 4:rank_right += overloop_right;break;
-			//case 5:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,0);break;
-			//case 6:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,1);break;
+			case 5:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,0);break;
+			case 6:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,1);break;
 		}
 	}
 	else
@@ -704,7 +717,6 @@ void BitMap::Plain_Rank(u64 *buff,int &index,int bits_left,int bits_right,int & 
 
 }
 
-
 int BitMap::Plain_Rank(u64 * buff,int &index,int bits_num,int &bit)
 {
 	if((index &0x3f) + bits_num < 65)
@@ -719,15 +731,12 @@ int BitMap::Plain_Rank(u64 * buff,int &index,int bits_num,int &bit)
 	u64 temp = (buff[index>>6]<<(index&0x3f));
 	rank = rank + popcnt(temp);
 	bits_num = bits_num - head;
-	
 	int times = bits_num>>6;
 	int i=0;
 	for(i=0;i<times;i++)
 	rank = rank + popcnt(buff[i+(index>>6)+1]);
-	
 	if((bits_num&0x3f)!=0)
 		rank = rank + popcnt((buff[i+(index>>6)+1] >> (64-(bits_num&0x3f))));
-	
 	index = index + head + bits_num - 1;
 	bit=(buff[index>>6]>>(63-(index&0x3f)))&0x01;
 	return rank;
@@ -780,11 +789,11 @@ u64 BitMap::GetBits(u64 * buff,int &index,int bits)
 }
 
 int BitMap::GetZerosRuns(u64 * buff,int &index)
-{(buff,index,16);
-	int runs = Zeros(x);
-	index = index + runs;
-	return runs;
-
+{
+        u32 x = GetBits(buff,index,16);
+        int runs = Zeros(x);
+        index = index + runs;
+        return runs;
 }
 
 
@@ -868,39 +877,55 @@ int BitMap::FRL_Rank(u64 * buff,int &index,int bits_num,int rl_type)
 }
 int BitMap::FRL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)
 {
+	//cout<<"FRL_Rank"<<endl;
+	int offset = 0;
 	int rank1  = 0;
 	int value  = 0;
 	int len    = 0; 
 	int Fixlen = 0;	
-	u32 x      = GetBits(buff,index,64);
-	int runs   = Zeros(x>>48);
+	u64 x      = GetBits(buff,index,64);
+	int runs   = 64-blog64(x);
 	int bits   = (runs<<1)+1;
-	index      = index + bits;
+	offset 	  +=  bits;
+	index     +=  bits;
 	Fixlen     = x>>(64-bits);
 
 	while(true)
 	{
-		if(rl_type==1)
+		 if(offset+Fixlen>64)
 		{
-			value  = x>>(64-index)&&((1<<Fixlen+1)-1);
+		  x =  GetBits(buff,index,64);
+		  offset = 0;
+		}
+		index  += Fixlen;
+		offset += Fixlen;
+		value   =  (x>>(64-offset))&((1<<(Fixlen))-1);
+		if(bits_num-value<=0)
+		{
+			if(rl_type == 1)
+				rank1 += bits_num;
+			break;
+		}
+		else
+		{
+			bits_num-=value;
+		}
+		if(rl_type == 1)
 			rank1 += value;
-		}
-		index+=Fixlen;
+	//	cout<<"rl_type="<<setw(10)<<rl_type<<";value="<<setw(10)<<value<<endl;
 		rl_type = 1-rl_type;
-		bits_num-=value;
-		if(bits_num<=0)
-		{
-			return rank1;
-		}
+		
 	}
+	bit = rl_type;
+	return rank1;
 }
-
 int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)
 {
+	//cout<<"RL_Rank"<<endl;
 	int rank=0;
 	int r=0;
 	int already = 0;
-	u64 x = GetBits(buff,index,64);
+	u64 x = GetBits(buff,index,64);//index有错 -4 后对了
 	int bits = 0;//通过查找表可以解码的被编码的0,1串的长度
 	int step = 0;//
 	int runs =0 ;//本次解码的runs数目
@@ -1008,6 +1033,11 @@ int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)
 		runs_num++;
 		x=(x<<step);
 	}
+}
+
+void BitMap::FRL_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int &rank_right,int rl_type)
+{
+
 }
 
 void BitMap::RL_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int &rank_right,int rl_type)
