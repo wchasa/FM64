@@ -20,6 +20,8 @@
         "initializer_list": "cpp",
         "new": "cpp",
         "typeinfo": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "sstream": "cpp",
+        "istream": "cpp"
     }
 }

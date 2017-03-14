@@ -1,11 +1,12 @@
 //wch
 #include <stdlib.h>
-#include <string.h>
 #include "FM.h"
 #include <ctime>
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include<iomanip>
+#include <string>
 using namespace std;
 void usage();
 void helpbuild();
@@ -21,98 +22,141 @@ void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 int main(int argc, char *argv[])
 {
-    int *pos;
-    int num = 0;
-    //	usage();
-    string command;
-    string result[2];
-    string path,path2;
-    string patten = "hundred and thirty";
-    char filename[100] = {'\0'};
-    char indexname[100] = {'\0'};
     FM *csa = NULL;
-    result[0] = "";
-    path = "";
-    command = "";
-    path = "bible";
-    //path2 ="/home/wch/CMake Practice.pdf";
-    if (csa != NULL)
-	delete csa;
-    csa = NULL;
-    csa = new FM(path.data());
-    
-    //csa->save(path2.data());
-    //csa=new FM();
-	//csa->load(path2.data());
-    int bit = 'M';
- //	int rankresult = csa->wt.fm->GetRoot()->Rank(100,bit);
- //   int strankresult = stupidRank(csa->wt.fm->bwt,1024*1024,bit,100);
- //  csa->wt.fm->bwt[2];
- // bwt
- // cout << "Rank(100,bit) =  " << rankresult << endl;
- // cout << "stupidRank(100,bit) =  " << strankresult << endl;
-    if (csa != NULL)
-    {
-		{
-
-			if (csa != NULL)
-			{
-             //csa->counting(patten.data(),num);
-			 pos = csa->locating(patten.data(), num);
-             showpos(pos,num);
-			//cout << "occs:" << num << endl;
-
-		//	showpos(pos, num);
-			delete[] pos;
-			}
-			else
-			cout << "build a FM first" << endl;
-		}
-    }
-    vector<int> ivector;
-    cout << "string search patten " << path << endl;
-    FILE *fp = fopen(path.data(), "r+");
-    if (fp == NULL)
-    {
-		cout << "Be sure the file is available" << endl;
+    string strpath,str;
+    cout<<"input file path:";
+    getline(cin,strpath);
+    //cin>>strpath;
+    FILE * fp = fopen(strpath.c_str(),"r+");
+    if(fp==NULL)
+	{
+		cout<<"Be sure the file is available"<<endl;
 		exit(0);
-    }
-    fseek(fp, 0, SEEK_END);
-    long count = ftell(fp) + 1;
-    unsigned char *T = new unsigned char[count];
-    fseek(fp, 0, SEEK_SET);
-    
-    int e = 0;
-    int num2 = 0;
-    while ((e = fread(T + num2, sizeof(uchar), count - 1 - num2, fp)) != 0)
-	num2 = num2 + e;
-    if (num2 != count - 1)
+	}
+    fseek(fp,0,SEEK_END);
+	int n = ftell(fp)+1;
+	unsigned char * T = new unsigned char[n];
+	fseeko(fp,0,SEEK_SET);
+	int e=0;
+	int num=0;
+	num = fread(T,sizeof(unsigned char),n,fp);
+	T[n-1]=0;
+	fclose(fp);
+    //const unsigned char* cpc =T;
+    string strtxt((char*)T);
+    csa = new FM(strpath.data());
+    str ="";
+    while(true)
     {
-		cout << "Read source file failed" << endl;
-		exit(0);
+        cout<<"input search patten:";
+ //       cin>>noskipws>>str;
+        //cout<<">";
+        getline(cin,str);
+       // getline(cin,str);
+        int* pos = csa->locating(str.data(), num);
+        cout<<"patten showup :"<<num<<endl;
+        showpos(pos,num);
+        int i = strtxt.find(str);
+        int p = 0;
+        while(i>= 0)
+        {
+            if(pos[p++]!=i)
+                cout<<"strFind"<<setw(10)<<i<<endl;
+            i = strtxt.find(str,i+1);
+
+        }
     }
-    T[count - 1] = 0;
-    string str((char *)T);
-    int ipos = str.find(patten);
-    //pos = csa->locating(patten.data(), num);
-    // for(int i =0;i<num;i++)
-    // {
-    //     string strtemp = str.substr(pos[i],4);
-    //     cout << strtemp<<endl;
-    // }
-   
-    while (ipos != -1)
-    {
-		ivector.push_back(ipos);
-		ipos = str.find(patten, ipos + 1);
-		
-    }
-   showpos(ivector);
-   compare(ivector, pos, num);
-    cout << ">";
-    char c;
-    cin >> c;
-    return 0;
+//    int *pos;
+//    int num = 0;
+//    //	usage();
+//    string command;
+//    string result[2];
+//    string path,path2;
+//    string patten = "ABBA";
+//    char filename[100] = {'\0'};
+//    char indexname[100] = {'\0'};
+//    FM *csa = NULL;
+//    result[0] = "";
+//    path = "";
+//    command = "";
+//    path = "/home/wch/CMake Practice.pdf";
+//    //path2 ="/home/wch/CMake Practice.pdf";
+//    if (csa != NULL)
+//	delete csa;
+//    csa = NULL;
+//    csa = new FM(path.data());
+//    //csa->save(path2.data());
+//    //csa=new FM();
+//	//csa->load(path2.data());
+//    int bit = 'M';
+// //	int rankresult = csa->wt.fm->GetRoot()->Rank(100,bit);
+// //   int strankresult = stupidRank(csa->wt.fm->bwt,1024*1024,bit,100);
+// //  csa->wt.fm->bwt[2];
+// // bwt
+// // cout << "Rank(100,bit) =  " << rankresult << endl;
+// // cout << "stupidRank(100,bit) =  " << strankresult << endl;
+//    if (csa != NULL)
+//    {
+//		{
+//
+//			if (csa != NULL)
+//			{
+//            //  csa->counting(patten.data(),num);
+//			 pos = csa->locating(patten.data(), num);
+//             showpos(pos,num);
+//			cout << "occs:" << num << endl;
+//
+//		//	showpos(pos, num);
+//			delete[] pos;
+//			}
+//			else
+//			cout << "build a FM first" << endl;
+//		}
+//    }
+//    cout << "string search patten " << path << endl;
+//    vector<int> ivector;
+//    FILE *fp = fopen(path.data(), "r+");
+//    if (fp == NULL)
+//    {
+//		cout << "Be sure the file is available" << endl;
+//		exit(0);
+//    }
+//    fseek(fp, 0, SEEK_END);
+//    long count = ftell(fp) + 1;
+//    unsigned char *T = new unsigned char[count];
+//    fseek(fp, 0, SEEK_SET);
+//    
+//    int e = 0;
+//    int num2 = 0;
+//    while ((e = fread(T + num2, sizeof(uchar), count - 1 - num2, fp)) != 0)
+//	num2 = num2 + e;
+//    if (num2 != count - 1)
+//    {
+//		cout << "Read source file failed" << endl;
+//		exit(0);
+//    }
+//    T[count - 1] = 0;
+//    string str((char *)T);
+//    int ipos = str.find(patten);
+//    //pos = csa->locating(patten.data(), num);
+//    // for(int i =0;i<num;i++)
+//    // {
+//    //     string strtemp = str.substr(pos[i],4);
+//    //     cout << strtemp<<endl;
+//    // }
+//   
+//    while (ipos != -1)
+//    {
+//		ivector.push_back(ipos);
+//		ipos = str.find(patten, ipos + 1);
+//		
+//    }
+//   showpos(ivector);
+//   compare(ivector, pos, num);
+//    cout << ">";
+//    char c;
+//    cin >> c;
+//    return 0;
 }
 int stupidRank(unsigned char* c,int length,int& ch,int pos)
 {
