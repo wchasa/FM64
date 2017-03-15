@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     string command;
     string result[2];
     string path,path2;
-    string patten = "hundred and thirty";
+    string patten = "firmament in the midst";
     char filename[100] = {'\0'};
     char indexname[100] = {'\0'};
     FM *csa = NULL;

@@ -425,7 +425,7 @@ void BitMap::Rank(int pos_left,int pos_right,int &rank_left,int &rank_right)
 
 
 int BitMap::Rank(int pos)
-{
+{//bug:type value is different;
 	if (pos<0 || pos > bitLen)
 	{
 		cerr<<"BitMap::Rank  error paramater"<<endl;
@@ -455,10 +455,10 @@ int BitMap::Rank(int pos)
 			case 3:break;//ALL0
 			case 4:rank_base += overloop;break;//ALL1
 			case 5:rank_base += FRL_Rank(buff,index,overloop,0);break;//fix0
-			case 6:rank_base += FRL_Rank(buff,index,overloop,0);break;//fix1
+			case 6:rank_base += FRL_Rank(buff,index,overloop,1);break;//fix1
 		}
 	}
-	return rank_base;
+	return rank_base;//right 139093//
 
 }
 
@@ -925,7 +925,7 @@ int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)
 	int rank=0;
 	int r=0;
 	int already = 0;
-	u64 x = GetBits(buff,index,64);//index有错 -4 后对了
+	u64 x = GetBits(buff,index,64);
 	int bits = 0;//通过查找表可以解码的被编码的0,1串的长度
 	int step = 0;//
 	int runs =0 ;//本次解码的runs数目
@@ -1034,10 +1034,67 @@ int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)
 		x=(x<<step);
 	}
 }
-
+//todo
 void BitMap::FRL_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int &rank_right,int rl_type)
 {
+/*	
+	int old_index = index;
+	rank_left+=RL_Rank(buff,old_index,bits_left,rl_type);
+	//index = old_index;
+	rank_right+=RL_Rank(buff,index,bits_right,rl_type);
+*/
+	//bool left  = 0;
+	int offset = 0;
+	int rank1  = 0;
+	int value  = 0;
+	int len    = 0; 
+	int Fixlen = 0;	
+	u64 x      = GetBits(buff,index,64);
+	int runs   = 64-blog64(x);
+	int bits   = (runs<<1)+1;
+	offset 	  +=  bits;
+	index     +=  bits;
+	Fixlen     = x>>(64-bits);
 
+	while(true)
+	{
+		 if(offset+Fixlen>64)
+		{
+		  x =  GetBits(buff,index,64);
+		  offset = 0;
+		}
+		index  += Fixlen;
+		offset += Fixlen;
+		value   =  (x>>(64-offset))&((1<<(Fixlen))-1);
+		if(bits_left-value<=0)
+		{
+			if(rl_type == 1)
+				{
+					//rank1 += bits_left;
+					rank_left += (rank1 + bits_left);
+					rank_right += (rank1 + bits_right);
+				}
+				else
+				{
+					rank_left += rank1;
+					rank_right += rank1;
+				}
+			break;
+		}
+		else
+		{
+			bits_left = bits_left - value;//对于左，右，bits数都要减少
+			bits_right = bits_right- value;
+			//bits_num-=value;
+		}
+		if(rl_type == 1)
+			rank1 += value;
+	//	cout<<"rl_type="<<setw(10)<<rl_type<<";value="<<setw(10)<<value<<endl;
+		rl_type = 1-rl_type;
+		
+	}
+	//bit = rl_type;
+	//return rank1;
 }
 
 void BitMap::RL_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int &rank_right,int rl_type)

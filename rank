@@ -1,233 +1,119 @@
-occ_left:899,occ_right902,value3
-occ_left:514,occ_right517,value3
-lookup init i=47344
-                   1  pos=     47344,Bit = 0,rank=     29276
-                   2  pos=     18068,Bit = 0,rank=      9351
-                   3  pos=      8717,Bit = 1,rank=      4821
-                   4  pos=      4820,Bit = 0,rank=      2647
-                   5  pos=      2173,Bit = 1,rank=       964
-                   6  pos=       963,Bit = 0,rank=       692
-loop i=     48607  step=         1
-                   7  pos=     48607,Bit = 0,rank=     29365
-                   8  pos=     19242,Bit = 1,rank=     10110
-                   9  pos=     10109,Bit = 0,rank=      5386
-                  10  pos=      4723,Bit = 1,rank=      2159
-                  11  pos=      2158,Bit = 0,rank=      1136
-                  12  pos=      1022,Bit = 1,rank=       552
-                  13  pos=       551,Bit = 1,rank=       269
-loop i=     52714  step=         2
-                  14  pos=     52714,Bit = 1,rank=     29697
-loop i=     29696  step=         3
-lookup init i=47345
-                  15  pos=     47345,Bit = 0,rank=     29276
-                  16  pos=     18069,Bit = 0,rank=      9351
-                  17  pos=      8718,Bit = 1,rank=      4822
-                  18  pos=      4821,Bit = 0,rank=      2647
-                  19  pos=      2174,Bit = 1,rank=       965
-                  20  pos=       964,Bit = 0,rank=       692
-loop i=     48608  step=         1
-lookup init i=47346
-                  21  pos=     47346,Bit = 0,rank=     29276
-                  22  pos=     18070,Bit = 1,rank=      9352
-                  23  pos=      9351,Bit = 1,rank=      4914
-                  24  pos=      4913,Bit = 1,rank=      2257
-                  25  pos=      2256,Bit = 1,rank=       965
-                  26  pos=       964,Bit = 0,rank=       365
-                  27  pos=       599,Bit = 0,rank=       236
-                  28  pos=       363,Bit = 0,rank=       279
-loop i=     52221  step=         1
-                  29  pos=     52221,Bit = 1,rank=     29670
-loop i=     29669  step=         2
-                  30  pos=     29669,Bit = 0,rank=     21976
-                  31  pos=      7693,Bit = 1,rank=      3979
-                  32  pos=      3978,Bit = 0,rank=      1392
-                  33  pos=      2586,Bit = 1,rank=       534
-                  34  pos=       533,Bit = 0,rank=       275
-                  35  pos=       258,Bit = 1,rank=        77
-                  36  pos=        76,Bit = 1,rank=        31
-loop i=     52476  step=         3
-                  37  pos=     52476,Bit = 0,rank=     29690
-                  38  pos=     22786,Bit = 1,rank=     12395
-                  39  pos=     12394,Bit = 0,rank=      6389
-                  40  pos=      6005,Bit = 1,rank=      2926
-                  41  pos=      2925,Bit = 1,rank=      1505
-                  42  pos=      1504,Bit = 1,rank=       730
-loop i=     54116  step=         4
-                  43  pos=     54116,Bit = 0,rank=     29777
-                  44  pos=     24339,Bit = 1,rank=     13602
-                  45  pos=     13601,Bit = 1,rank=      6986
-                  46  pos=      6985,Bit = 1,rank=      3725
-                  47  pos=      3724,Bit = 1,rank=      1817
-                  48  pos=      1816,Bit = 0,rank=      1043
-                  49  pos=       773,Bit = 0,rank=       253
-                  50  pos=       520,Bit = 0,rank=       280
-loop i=     52377  step=         5
-                  51  pos=     52377,Bit = 0,rank=     29675
-                  52  pos=     22702,Bit = 1,rank=     12328
-                  53  pos=     12327,Bit = 1,rank=      6346
-                  54  pos=      6345,Bit = 0,rank=      3231
-                  55  pos=      3114,Bit = 1,rank=      1400
-                  56  pos=      1399,Bit = 0,rank=       570
-loop i=     46583  step=         6
-                  57  pos=     46583,Bit = 0,rank=     29230
-                  58  pos=     17353,Bit = 1,rank=      8879
-                  59  pos=      8878,Bit = 1,rank=      4732
-                  60  pos=      4731,Bit = 1,rank=      2121
-                  61  pos=      2120,Bit = 0,rank=       881
-rl_type=         0;value=        17
-rl_type=         1;value=        34
-rl_type=         0;value=         3
-rl_type=         1;value=        48
-rl_type=         0;value=        20
-rl_type=         1;value=         8
-rl_type=         0;value=         3
-rl_type=         1;value=        16
-rl_type=         0;value=         3
-rl_type=         1;value=        19
-rl_type=         0;value=         9
-rl_type=         1;value=        10
-rl_type=         0;value=        14
-                  62  pos=      1239,Bit = 1,rank=       475
-                  63  pos=       474,Bit = 0,rank=       365
-loop i=     51238  step=         7
-                  64  pos=     51238,Bit = 0,rank=     29633
-                  65  pos=     21605,Bit = 1,rank=     11595
-                  66  pos=     11594,Bit = 0,rank=      6077
-                  67  pos=      5517,Bit = 1,rank=      2722
-                  68  pos=      2721,Bit = 0,rank=      1436
-                  69  pos=      1285,Bit = 0,rank=       678
-rl_type=         0;value=        44
-                  70  pos=       607,Bit = 1,rank=       209
-loop i=     51894  step=         8
-                  71  pos=     51894,Bit = 0,rank=     29644
-                  72  pos=     22250,Bit = 1,rank=     12050
-                  73  pos=     12049,Bit = 0,rank=      6231
-                  74  pos=      5818,Bit = 0,rank=      2835
-                  75  pos=      2983,Bit = 0,rank=      1721
-                  76  pos=      1262,Bit = 0,rank=       705
-loop i=     50187  step=         9
-                  77  pos=     50187,Bit = 0,rank=     29528
-                  78  pos=     20659,Bit = 1,rank=     11035
-                  79  pos=     11034,Bit = 0,rank=      5809
-                  80  pos=      5225,Bit = 1,rank=      2492
-                  81  pos=      2491,Bit = 1,rank=      1359
-                  82  pos=      1358,Bit = 1,rank=       624
-loop i=     54010  step=        10
-                  83  pos=     54010,Bit = 0,rank=     29761
-                  84  pos=     24249,Bit = 1,rank=     13519
-                  85  pos=     13518,Bit = 1,rank=      6931
-                  86  pos=      6930,Bit = 1,rank=      3671
-                  87  pos=      3670,Bit = 1,rank=      1767
-                  88  pos=      1766,Bit = 0,rank=      1030
-                  89  pos=       736,Bit = 0,rank=       252
-                  90  pos=       484,Bit = 0,rank=       280
-loop i=     52341  step=        11
-                  91  pos=     52341,Bit = 0,rank=     29675
-                  92  pos=     22666,Bit = 0,rank=     12323
-                  93  pos=     10343,Bit = 1,rank=      5494
-                  94  pos=      5493,Bit = 0,rank=      2897
-                  95  pos=      2596,Bit = 1,rank=      1218
-                  96  pos=      1217,Bit = 0,rank=       717
-loop i=     48836  step=        12
-                  97  pos=     48836,Bit = 0,rank=     29366
-                  98  pos=     19470,Bit = 1,rank=     10257
-                  99  pos=     10256,Bit = 0,rank=      5424
-                 100  pos=      4832,Bit = 0,rank=      2247
-                 101  pos=      2585,Bit = 0,rank=      1717
-                 102  pos=       868,Bit = 1,rank=       558
-                 103  pos=       557,Bit = 1,rank=       160
-loop i=     47753  step=        13
-                 104  pos=     47753,Bit = 0,rank=     29314
-                 105  pos=     18439,Bit = 0,rank=      9595
-                 106  pos=      8844,Bit = 0,rank=      4857
-                 107  pos=      3987,Bit = 0,rank=      1976
-                 108  pos=      2011,Bit = 1,rank=      1077
-                 109  pos=      1076,Bit = 1,rank=       555
-                 110  pos=       554,Bit = 1,rank=       241
-                 111  pos=       240,Bit = 1,rank=        82
-loop i=     54995  step=        14
-                 112  pos=     54995,Bit = 0,rank=     29902
-                 113  pos=     25093,Bit = 0,rank=     14177
-                 114  pos=     10916,Bit = 1,rank=      5830
-                 115  pos=      5829,Bit = 0,rank=      2981
-                 116  pos=      2848,Bit = 1,rank=      1415
-                 117  pos=      1414,Bit = 0,rank=       719
-loop i=     49031  step=        15
-                 118  pos=     49031,Bit = 1,rank=     29368
-loop i=     29367  step=        16
-                 119  pos=     29367,Bit = 0,rank=     21812
-                 120  pos=      7555,Bit = 1,rank=      3899
-                 121  pos=      3898,Bit = 0,rank=      1374
-                 122  pos=      2524,Bit = 1,rank=       487
-                 123  pos=       486,Bit = 1,rank=       242
-                 124  pos=       241,Bit = 1,rank=        83
-loop i=     53469  step=        17
-                 125  pos=     53469,Bit = 0,rank=     29749
-                 126  pos=     23720,Bit = 1,rank=     13115
-                 127  pos=     13114,Bit = 1,rank=      6725
-                 128  pos=      6724,Bit = 0,rank=      3499
-                 129  pos=      3225,Bit = 1,rank=      1506
-                 130  pos=      1505,Bit = 0,rank=       572
-loop i=     46687  step=        18
-                 131  pos=     46687,Bit = 0,rank=     29232
-                 132  pos=     17455,Bit = 1,rank=      8951
-                 133  pos=      8950,Bit = 0,rank=      4785
-                 134  pos=      4165,Bit = 1,rank=      1701
-                 135  pos=      1700,Bit = 1,rank=       941
-                 136  pos=       940,Bit = 1,rank=       382
-loop i=     53768  step=        19
-                 137  pos=     53768,Bit = 0,rank=     29758
-                 138  pos=     24010,Bit = 1,rank=     13311
-                 139  pos=     13310,Bit = 0,rank=      6836
-                 140  pos=      6474,Bit = 0,rank=      3259
-                 141  pos=      3215,Bit = 0,rank=      1723
-                 142  pos=      1492,Bit = 1,rank=       786
-                 143  pos=       785,Bit = 1,rank=       385
-loop i=     47978  step=        20
-                 144  pos=     47978,Bit = 0,rank=     29333
-                 145  pos=     18645,Bit = 1,rank=      9727
-                 146  pos=      9726,Bit = 1,rank=      5131
-                 147  pos=      5130,Bit = 1,rank=      2400
-                 148  pos=      2399,Bit = 0,rank=      1046
-                 149  pos=      1353,Bit = 0,rank=       579
-                 150  pos=       774,Bit = 0,rank=       477
-                 151  pos=       297,Bit = 0,rank=       217
-loop i=     54410  step=        21
-                 152  pos=     54410,Bit = 0,rank=     29793
-                 153  pos=     24617,Bit = 1,rank=     13813
-                 154  pos=     13812,Bit = 0,rank=      7105
-                 155  pos=      6707,Bit = 1,rank=      3380
-                 156  pos=      3379,Bit = 0,rank=      1799
-                 157  pos=      1580,Bit = 1,rank=       795
-                 158  pos=       794,Bit = 1,rank=       458
-loop i=     52903  step=        22
-                 159  pos=     52903,Bit = 0,rank=     29702
-                 160  pos=     23201,Bit = 1,rank=     12708
-                 161  pos=     12707,Bit = 0,rank=      6528
-                 162  pos=      6179,Bit = 1,rank=      3097
-                 163  pos=      3096,Bit = 1,rank=      1622
-                 164  pos=      1621,Bit = 1,rank=       834
-loop i=     54220  step=        23
-                 165  pos=     54220,Bit = 0,rank=     29777
-                 166  pos=     24443,Bit = 1,rank=     13698
-                 167  pos=     13697,Bit = 0,rank=      7061
-                 168  pos=      6636,Bit = 1,rank=      3366
-                 169  pos=      3365,Bit = 1,rank=      1792
-                 170  pos=      1791,Bit = 0,rank=       902
-                 171  pos=       889,Bit = 1,rank=       456
-loop i=     53366  step=        24
-                 172  pos=     53366,Bit = 0,rank=     29744
-                 173  pos=     23622,Bit = 1,rank=     13033
-                 174  pos=     13032,Bit = 1,rank=      6671
-                 175  pos=      6670,Bit = 1,rank=      3476
-                 176  pos=      3475,Bit = 0,rank=      1713
-                 177  pos=      1762,Bit = 1,rank=       778
-                 178  pos=       777,Bit = 0,rank=       418
-loop i=     51488  step=        25
-occs:3
-20908
-23347
-27588
-string search patten /home/wch/FM.o
+Left=   3516925,Right=   3816557,299632
+0.char=         s;rank_right=   2338533;rank_left=   2220311
+1.char=         s;rank_right=   1318467;rank_left=   1239563
+2.char=         s;rank_right=    719617;rank_left=    663381
+3.char=         s;rank_right=    377344;rank_left=    363971
+4.char=         s;rank_right=    173830;rank_left=    154960
+0.occ_left:    154960,occ_right    173830,value18870
+5.char=         d;rank_right=   2218368;rank_left=   2206247
+6.char=         d;rank_right=   1238032;rank_left=   1230274
+7.char=         d;rank_right=    537507;rank_left=    536827
+8.char=         d;rank_right=    281142;rank_left=    280512
+9.char=         d;rank_right=    139108;rank_left=    139093
+1.occ_left:    141419,occ_right    142034,value615
+10.char=         i;rank_right=    931949;rank_left=    931335
+11.char=         i;rank_right=    507559;rank_left=    506966
+12.char=         i;rank_right=    313889;rank_left=    313296
+13.char=         i;rank_right=    208745;rank_left=    208660
+14.char=         i;rank_right=     83253;rank_left=     83253
+2.occ_left:     21383,occ_right     21891,value508
+15.char=         m;rank_right=   1482714;rank_left=   1482206
+16.char=         m;rank_right=    804498;rank_left=    804498
+17.char=         m;rank_right=    428132;rank_left=    427648
+18.char=         m;rank_right=    221587;rank_left=    221103
+19.char=         m;rank_right=     97096;rank_left=     96733
+20.char=         m;rank_right=     43666;rank_left=     43666
+3.occ_left:     53067,occ_right     53430,value363
+21.char=          ;rank_right=   1686284;rank_left=   1686284
+22.char=          ;rank_right=    591623;rank_left=    591623
+4.occ_left:    398828,occ_right    399191,value363
+23.char=         e;rank_right=    292597;rank_left=    292234
+24.char=         e;rank_right=    163609;rank_left=    163246
+25.char=         e;rank_right=     97693;rank_left=     97330
+26.char=         e;rank_right=     74856;rank_left=     74493
+5.occ_left:     74493,occ_right     74856,value363
+27.char=         h;rank_right=    994633;rank_left=    994270
+28.char=         h;rank_right=    518472;rank_left=    518472
+29.char=         h;rank_right=    296324;rank_left=    295961
+30.char=         h;rank_right=    176283;rank_left=    176283
+6.occ_left:    119678,occ_right    120041,value363
+31.char=         t;rank_right=   1358986;rank_left=   1358623
+32.char=         t;rank_right=    715796;rank_left=    715433
+33.char=         t;rank_right=    383720;rank_left=    383720
+34.char=         t;rank_right=    167532;rank_left=    167532
+7.occ_left:    164181,occ_right    164544,value363
+35.char=          ;rank_right=   2311005;rank_left=   2311005
+36.char=          ;rank_right=    767501;rank_left=    767501
+8.occ_left:    602600,occ_right    602963,value363
+37.char=         n;rank_right=    444915;rank_left=    444846
+38.char=         n;rank_right=    158050;rank_left=    157756
+39.char=         n;rank_right=     72134;rank_left=     72095
+40.char=         n;rank_right=     33429;rank_left=     33174
+9.occ_left:     33174,occ_right     33429,value255
+41.char=         i;rank_right=   1720073;rank_left=   1719819
+42.char=         i;rank_right=    923722;rank_left=    923468
+43.char=         i;rank_right=    472426;rank_left=    472172
+44.char=         i;rank_right=    269441;rank_left=    269441
+45.char=         i;rank_right=    132235;rank_left=    132235
+10.occ_left:     70496,occ_right     70750,value254
+46.char=          ;rank_right=   1516232;rank_left=   1516232
+47.char=          ;rank_right=    519479;rank_left=    519479
+11.occ_left:    343922,occ_right    344176,value254
+48.char=         t;rank_right=    250241;rank_left=    250044
+49.char=         t;rank_right=    135048;rank_left=    134940
+50.char=         t;rank_right=     79864;rank_left=     79782
+51.char=         t;rank_right=     32603;rank_left=     32595
+12.occ_left:     22563,occ_right     22581,value18
+52.char=         n;rank_right=   2237660;rank_left=   2237648
+53.char=         n;rank_right=    752224;rank_left=    752218
+54.char=         n;rank_right=    387936;rank_left=    387933
+55.char=         n;rank_right=    192356;rank_left=    192353
+13.occ_left:    192353,occ_right    192356,value3
+56.char=         e;rank_right=   1843630;rank_left=   1843627
+57.char=         e;rank_right=    979117;rank_left=    979114
+58.char=         e;rank_right=    518832;rank_left=    518829
+59.char=         e;rank_right=    283069;rank_left=    283066
+14.occ_left:    283066,occ_right    283069,value3
+60.char=         m;rank_right=   1151867;rank_left=   1151864
+61.char=         m;rank_right=    578271;rank_left=    578270
+62.char=         m;rank_right=    375830;rank_left=    375829
+63.char=         m;rank_right=    199758;rank_left=    199757
+64.char=         m;rank_right=     82776;rank_left=     82775
+65.char=         m;rank_right=     33113;rank_left=     33113
+15.occ_left:     49662,occ_right     49663,value1
+66.char=         a;rank_right=   1684550;rank_left=   1684549
+67.char=         a;rank_right=    898127;rank_left=    898127
+68.char=         a;rank_right=    472658;rank_left=    472658
+69.char=         a;rank_right=    222471;rank_left=    222471
+16.occ_left:     91293,occ_right     91294,value1
+70.char=         m;rank_right=    763970;rank_left=    763969
+71.char=         m;rank_right=    416758;rank_left=    416758
+72.char=         m;rank_right=    204421;rank_left=    204420
+73.char=         m;rank_right=    154098;rank_left=    154097
+74.char=         m;rank_right=     49025;rank_left=     49024
+75.char=         m;rank_right=     23242;rank_left=     23242
+17.occ_left:     25782,occ_right     25783,value1
+76.char=         r;rank_right=   1675518;rank_left=   1675517
+77.char=         r;rank_right=    895013;rank_left=    895012
+78.char=         r;rank_right=    446654;rank_left=    446654
+79.char=         r;rank_right=    196418;rank_left=    196417
+80.char=         r;rank_right=     81087;rank_left=     81087
+18.occ_left:    115330,occ_right    115331,value1
+81.char=         i;rank_right=   2084696;rank_left=   2084695
+82.char=         i;rank_right=   1138984;rank_left=   1138983
+83.char=         i;rank_right=    596349;rank_left=    596348
+84.char=         i;rank_right=    329018;rank_left=    329018
+85.char=         i;rank_right=    148176;rank_left=    148176
+19.occ_left:    119154,occ_right    119155,value1
+86.char=         f;rank_right=   1546632;rank_left=   1546632
+87pos_right=    831587
+88pos_right=    431054
+89pos_right=    181267
+90pos_right=     72377
+91pos_right=     52630
+20.occ_left:   1546632,occ_right     52631,value-1494001
 occs:0
+string search patten bible
+occs:1
+488
 >

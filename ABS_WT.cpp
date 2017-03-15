@@ -103,7 +103,7 @@ int ABS_FM::TreeSizeInByte(BitMap * r)
 	size = size + r->SizeInByte();
 	return size;
 }
-
+int flag3=0;
 void ABS_FM::DrawBackSearch(const char * pattern,int & Left,int &Right)
 {
 	int len = strlen(pattern);
@@ -130,7 +130,7 @@ void ABS_FM::DrawBackSearch(const char * pattern,int & Left,int &Right)
 	//wei
 	Left = C[coding];
 	Right = C[coding+1]-1;
-//	cout<<Left<<","<<Right<<","<<Right-Left<<endl;
+	cout<<"Left="<<setw(10)<<Left<<","<<"Right="<<setw(10)<<Right<<","<<Right-Left<<endl;
 	i=i-1;
 	while ((Left <= Right) and (i>=0))
 	{
@@ -150,7 +150,8 @@ void ABS_FM::DrawBackSearch(const char * pattern,int & Left,int &Right)
 		i=i-1;
 	*/
 		Occ(c,Left-1,Right,occ_left,occ_right);
-		//cout<<"occ_left:"<<occ_left<<",occ_right"<<occ_right<<",value"<<occ_right-occ_left<<endl;
+		//cout<<"Left="<<setw(10)<<Left<<","<<"Right="<<setw(10)<<Right<<","<<Right-Left<<endl;
+		cout<<flag3++<<".occ_left:"<<setw(10)<<occ_left<<",occ_right"<<setw(10)<<occ_right<<",value"<<occ_right-occ_left<<endl;
 		Left = C[coding]+occ_left;
 		Right = C[coding]+occ_right-1;
 		i=i-1;
@@ -239,6 +240,7 @@ int ABS_FM::Lookup(int i)
 	return (SAL->GetValue(i)+step)%n;
 }
 
+int flag2 =0;
 //返回L串中c字符在位置pos_left 和pos_right之前出现的次数，结果由rank_left 和rank_right带回.
 void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &rank_right)
 {
@@ -247,8 +249,7 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 	char code = '0';
 	while(r->Left())
 	{
-		code = codeTable[c][level];
-		
+		code = codeTable[c][level];		
 		if(code == '1')//编码是1,走右分支
 		{
 			//wch
@@ -257,7 +258,7 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 			//wch
 			{			
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
-				//cout<<"char="<<c<<";pos_right="<<pos_right<<";pos_left"<<pos_left<<endl;
+				cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
 				pos_left = rank_left -1;
 				pos_right = rank_right -1;
 			
@@ -268,6 +269,7 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 			else if(pos_right > -1)//只查右分支
 			{
 				pos_right=r->Rank(pos_right)-1;
+				cout<<flag2++<<"pos_right="<<setw(10)<<pos_right<<endl;
 			}
 			else//该跳出循环了,此时pos_left 和pos_right都是-1.
 			{
@@ -281,8 +283,10 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 			//if(pos_left>-1 && pos_right >-1)
 			{
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
+				cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
 				pos_left = (pos_left+1) - rank_left-1;
 				pos_right= (pos_right+1)- rank_right-1;
+
 			/*
 				pos_left = (pos_left+1)-r->Rank(pos_left)-1;
 				pos_right= (pos_right+1)-r->Rank(pos_right)-1;
@@ -291,6 +295,7 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 			else if(pos_right > -1)
 			{
 				pos_right = (pos_right+1)-r->Rank(pos_right)-1;
+				cout<<flag2++<<"pos_right="<<setw(10)<<pos_right<<endl;
 			}
 			else
 			{
