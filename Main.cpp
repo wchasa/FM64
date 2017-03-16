@@ -27,7 +27,8 @@ int main(int argc, char *argv[])
     string command;
     string result[2];
     string path,path2;
-    string patten = "firmament in the midst";
+    string patten = "And say unto Tyrus";
+    cout<<patten<<endl;
     char filename[100] = {'\0'};
     char indexname[100] = {'\0'};
     FM *csa = NULL;

@@ -130,7 +130,7 @@ void ABS_FM::DrawBackSearch(const char * pattern,int & Left,int &Right)
 	//wei
 	Left = C[coding];
 	Right = C[coding+1]-1;
-	cout<<"Left="<<setw(10)<<Left<<","<<"Right="<<setw(10)<<Right<<","<<Right-Left<<endl;
+	//cout<<"Left="<<setw(10)<<Left<<","<<"Right="<<setw(10)<<Right<<","<<Right-Left<<endl;//flag
 	i=i-1;
 	while ((Left <= Right) and (i>=0))
 	{
@@ -150,8 +150,7 @@ void ABS_FM::DrawBackSearch(const char * pattern,int & Left,int &Right)
 		i=i-1;
 	*/
 		Occ(c,Left-1,Right,occ_left,occ_right);
-		//cout<<"Left="<<setw(10)<<Left<<","<<"Right="<<setw(10)<<Right<<","<<Right-Left<<endl;
-		cout<<flag3++<<".occ_left:"<<setw(10)<<occ_left<<",occ_right"<<setw(10)<<occ_right<<",value"<<occ_right-occ_left<<endl;
+		//cout<<flag3++<<".occ_left:"<<setw(10)<<occ_left<<",occ_right"<<setw(10)<<occ_right<<",value"<<occ_right-occ_left<<endl;
 		Left = C[coding]+occ_left;
 		Right = C[coding]+occ_right-1;
 		i=i-1;
@@ -184,7 +183,10 @@ int * ABS_FM::Locating(const char * pattern,int &num)
 	int Right = 0;
 	DrawBackSearch(pattern,Left,Right);
 	if(Right < Left )
+	{
+		num=0;
 		return NULL;
+	}
 	num = Right - Left + 1;
 	int *pos =new int[num];
 	for(int i=0;i<num;i++)
@@ -224,7 +226,7 @@ unsigned char* ABS_FM::Extracting(int pos,int len)
 	return sequence;
 }
 
-
+int flag=0;
 int ABS_FM::Lookup(int i)
 {
 	//cout<<"lookup init i="<<i<<endl;
@@ -234,7 +236,7 @@ int ABS_FM::Lookup(int i)
 	{
 		i=LF(i);
 		step =step +1;
-		//cout<<"loop i="<<setw(10)<<i<<"  step="<<setw(10)<<step<<endl;	
+		//cout<<flag++<<".loop i="<<setw(10)<<i<<"  step="<<setw(10)<<step<<endl;	
 	}
 	i=i/D;
 	return (SAL->GetValue(i)+step)%n;
@@ -250,7 +252,7 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 	while(r->Left())
 	{
 		code = codeTable[c][level];		
-		if(code == '1')//编码是1,走右分支
+ 		if(code == '1')//编码是1,走右分支
 		{
 			//wch
 			if(pos_left>-1 && pos_right >-1&&(pos_left<pos_right)) //left right 都有待查找
@@ -258,7 +260,7 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 			//wch
 			{			
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
-				cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
+				//cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
 				pos_left = rank_left -1;
 				pos_right = rank_right -1;
 			
@@ -269,7 +271,7 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 			else if(pos_right > -1)//只查右分支
 			{
 				pos_right=r->Rank(pos_right)-1;
-				cout<<flag2++<<"pos_right="<<setw(10)<<pos_right<<endl;
+				//cout<<flag2++<<"pos_right="<<setw(10)<<pos_right<<endl;
 			}
 			else//该跳出循环了,此时pos_left 和pos_right都是-1.
 			{
@@ -283,7 +285,7 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 			//if(pos_left>-1 && pos_right >-1)
 			{
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
-				cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
+				//cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
 				pos_left = (pos_left+1) - rank_left-1;
 				pos_right= (pos_right+1)- rank_right-1;
 
@@ -295,7 +297,7 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 			else if(pos_right > -1)
 			{
 				pos_right = (pos_right+1)-r->Rank(pos_right)-1;
-				cout<<flag2++<<"pos_right="<<setw(10)<<pos_right<<endl;
+		//		cout<<flag2++<<"pos_right="<<setw(10)<<pos_right<<endl;
 			}
 			else
 			{
@@ -377,7 +379,7 @@ unsigned char ABS_FM::L(int i)
 	return r->Label();
 
 }
-int flag = 0;
+int flag4 = 0;
 int ABS_FM::Occ(int & occ , unsigned char & label,int pos)
 {
 	BitMap * r = root;
@@ -386,9 +388,8 @@ int ABS_FM::Occ(int & occ , unsigned char & label,int pos)
 	int rank =0;
 	while(r->Left())
 	{
-		flag++;
 		rank = r->Rank(pos,bit);
-		//cout<<setw(20)<<flag<<"  pos="<<setw(10)<<pos<<",Bit = "<<bit<<",rank="<<setw(10)<<rank<<endl;
+		//cout<<setw(20)<<flag4++<<"  pos="<<setw(10)<<pos<<",Bit = "<<bit<<",rank="<<setw(10)<<rank<<endl;
 		if(bit==1)
 		{
 			//cout<<"r"<<endl;

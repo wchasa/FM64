@@ -616,11 +616,11 @@ int BitMap::FRL0_Bit(u64 * buff,int & index,int bits_num)
 	value = x>>(32-bits);
 	while(true)
 	{
-		bits=GammaDecode(buff,index);
+		bits=FixedDecode(buff,index,value);
 		bit_count = bit_count + bits;
 		if(bit_count >= bits_num)
 			return  0;
-		bits=GammaDecode(buff,index);
+		bits=FixedDecode(buff,index,value);
 		bit_count = bit_count + bits;
 		if(bit_count >= bits_num)
 			return 1;
@@ -688,14 +688,14 @@ int BitMap::FRL1_Bit(u64 * buff,int &index,int bits_num)
 	value = x>>(32-bits);
 	while(true)
 	{
-		 bits = FixedDecode(buff,index,len);
-		 bit_count = bit_count + bits;
-		 if(bit_count >= bits_num)
-			 return 1;
-		 bits = FixedDecode(buff,index,len);
-		 bit_count = bit_count + bits;
-		 if(bit_count >= bits_num)
-			 return 0;
+		bits=FixedDecode(buff,index,value);
+		bit_count = bit_count + bits;
+		if(bit_count >= bits_num)
+			return  1;
+		bits=FixedDecode(buff,index,value);
+		bit_count = bit_count + bits;
+		if(bit_count >= bits_num)
+			return 0;
 	}
 }
 //palin类型的比例较低，所以两种方式的区别不大.
@@ -1043,7 +1043,7 @@ void BitMap::FRL_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &ran
 	//index = old_index;
 	rank_right+=RL_Rank(buff,index,bits_right,rl_type);
 */
-	//bool left  = 0;
+	bool left  = true;
 	int offset = 0;
 	int rank1  = 0;
 	int value  = 0;
@@ -1066,29 +1066,35 @@ void BitMap::FRL_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &ran
 		index  += Fixlen;
 		offset += Fixlen;
 		value   =  (x>>(64-offset))&((1<<(Fixlen))-1);
-		if(bits_left-value<=0)
+		bits_left = bits_left - value;//对于左，右，bits数都要减少
+		bits_right = bits_right- value;
+		if(rl_type == 1)
+			rank1 += value;
+		if(left && bits_left<=0)
 		{
 			if(rl_type == 1)
 				{
 					//rank1 += bits_left;
 					rank_left += (rank1 + bits_left);
-					rank_right += (rank1 + bits_right);
+				//	rank_right += (rank1 + bits_right);
 				}
 				else
 				{
 					rank_left += rank1;
-					rank_right += rank1;
+				//	rank_right += rank1;
 				}
-			break;
+				left=false;
+			
 		}
-		else
+		if(bits_right<=0)
 		{
-			bits_left = bits_left - value;//对于左，右，bits数都要减少
-			bits_right = bits_right- value;
-			//bits_num-=value;
+			if(rl_type == 1)
+				rank_right += (rank1 + bits_right);
+			else
+				rank_right += rank1;
+			return ;
 		}
-		if(rl_type == 1)
-			rank1 += value;
+
 	//	cout<<"rl_type="<<setw(10)<<rl_type<<";value="<<setw(10)<<value<<endl;
 		rl_type = 1-rl_type;
 		

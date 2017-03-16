@@ -24,10 +24,12 @@ int main(int argc, char *argv[])
 {
     FM *csa = NULL;
     string strpath,str;
+	//strpath ="./bible";
     cout<<"input file path:";
     getline(cin,strpath);
-    //cin>>strpath;
     FILE * fp = fopen(strpath.c_str(),"r+");
+	FILE * fpw = fopen("result.txt","w+");
+	//FILE * fp = fopen("./bible","r+");
     if(fp==NULL)
 	{
 		cout<<"Be sure the file is available"<<endl;
@@ -45,27 +47,49 @@ int main(int argc, char *argv[])
     //const unsigned char* cpc =T;
     string strtxt((char*)T);
     csa = new FM(strpath.data());
-    str ="";
-    while(true)
+   // str ="fell on her face, a";
+    //while(true)
+	for(int i2 =0;i2<1000;i2++)
     {
-        cout<<"input search patten:";
- //       cin>>noskipws>>str;
-        //cout<<">";
-        getline(cin,str);
-       // getline(cin,str);
+	   	str = strtxt.substr(rand()%n,20);
+		cout<<"Patten:"<<str<<endl;
         int* pos = csa->locating(str.data(), num);
-        cout<<"patten showup :"<<num<<endl;
-        showpos(pos,num);
+		
+        cout<<setw(20)<<"locating"<<num<<endl;
+        //showpos(pos,num);
         int i = strtxt.find(str);
         int p = 0;
+		if(num<=0)
+		{
+			cout<<"locate havnt find"<<endl;
+			fprintf(fpw,"%s\r\n",str.c_str());
+			continue;
+		}
+		quick_sort(pos,0,num-1);
+		int stringFind=0;
         while(i>= 0)
-        {
+        {	
+		    stringFind++;
             if(pos[p++]!=i)
-                cout<<"strFind"<<setw(10)<<i<<endl;
+            {
+				cout<<setw(10)<<"strFind"<<setw(10)<<i;
+				cout<<setw(10)<<"locate"<<setw(10)<<pos[p-1]<<endl;
+				//fpw.write((str+"\r\n").c_str);
+				
+				fprintf(fpw,"%s\r\n",str.c_str());
+				break;
+			}
+
             i = strtxt.find(str,i+1);
 
         }
+		cout<<setw(20)<<"stringFind="<<stringFind<<endl;
+		cout<<"---------------------------"<<endl;
+		//;
     }
+	fclose(fpw);
+}
+
 //    int *pos;
 //    int num = 0;
 //    //	usage();
@@ -157,7 +181,7 @@ int main(int argc, char *argv[])
 //    char c;
 //    cin >> c;
 //    return 0;
-}
+
 int stupidRank(unsigned char* c,int length,int& ch,int pos)
 {
     int occTimes = 0;
