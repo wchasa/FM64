@@ -43,6 +43,7 @@ class ABS_FM
 		virtual ~ABS_FM();
 		void Counting(const char * partten,int &num);
 		int * Locating(const char * pattern,int &num);
+		int * Locating_parrel(const char * pattern,int &num);
 		unsigned char* Extracting(int pos,int len);
 		int Load(loadkit & s);
 		int Save(savekit & s);

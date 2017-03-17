@@ -15,6 +15,11 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<string.h>
 #include<map>
 #include <iomanip>
+#include <sys/shm.h>
+#include <error.h>
+#include <string.h>
+#include <sys/wait.h>
+#define SIZE 1024
 //#define READSIZE 1024*1024*50
 u64 GetBits(u64 * buff,int &index,int bits)
 {
@@ -193,7 +198,67 @@ int * ABS_FM::Locating(const char * pattern,int &num)
 		pos[i]=Lookup(Left + i);
 	return pos;
 }
-
+int * ABS_FM::Locating_parrel(const char * pattern,int &num)
+{
+	int *shmaddr ;
+	pid_t fpid1,fpid2;
+	int Left=1;
+	int Right = 0;
+	DrawBackSearch(pattern,Left,Right);
+	if(Right < Left )
+	{
+		num=0;
+		return NULL;
+	}
+	num = Right - Left + 1;
+	int *pos =new int[num];
+	//add parrel
+	int shmid ;
+    shmid = shmget(IPC_PRIVATE, num*sizeof(int), IPC_CREAT|0600 ) ;
+	 if ( shmid < 0 )
+      {
+        //perror("get shm  ipc_id error") ;
+      	perror("Error:");
+		return NULL ;
+      }
+	 fpid1  = fork();
+	 if (fpid1 < 0)  
+        printf("error in fork!");  
+      else if(fpid1==0)
+	  {
+		for(int i=0;i<num/2;i++)
+			{
+				pos[i]=Lookup(Left + i);
+		//		cout<<i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
+			}
+		shmaddr = (int*)shmat( shmid, NULL, 0 ) ;	
+		memcpy(shmaddr,pos,sizeof(int)*num/2);
+		exit(0);		
+	  }
+      fpid2 = fork(); 
+	  if (fpid2 < 0)  
+      	printf("error in fork!");  
+      else if(fpid2==0)
+	  {
+		for(int i=num/2;i<num;i++)
+		{
+			pos[i]=Lookup(Left + i);
+		//	cout<<i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
+		}
+			
+		shmaddr = (int*)shmat( shmid, NULL, 0 ) ;	
+		memcpy(shmaddr+num/2,pos+num/2,sizeof(int)*num/2);
+		exit(0);		
+	  }
+	  int st1, st2; 
+      waitpid( fpid1, &st1, 0); 
+      waitpid( fpid2, &st2, 0); 
+	  shmaddr = (int *) shmat(shmid, NULL, 0 );
+	  memcpy(pos,shmaddr,num*sizeof(int));
+	  shmctl(shmid, IPC_RMID, NULL);
+	  //delete[] pos;
+	return pos;
+}
 
 unsigned char* ABS_FM::Extracting(int pos,int len)
 {

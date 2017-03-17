@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     string command;
     string result[2];
     string path,path2;
-    string patten = "And say unto Tyrus";
+    string patten = "together of";
     cout<<patten<<endl;
     char filename[100] = {'\0'};
     char indexname[100] = {'\0'};
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 			 pos = csa->locating(patten.data(), num);
              showpos(pos,num);
 			//cout << "occs:" << num << endl;
-
+           // shmctl(pos, IPC_RMID, NULL) ;
 		//	showpos(pos, num);
 			delete[] pos;
 			}
@@ -98,6 +98,7 @@ int main(int argc, char *argv[])
     //pos = csa->locating(patten.data(), num);
     // for(int i =0;i<num;i++)
     // {
+    
     //     string strtemp = str.substr(pos[i],4);
     //     cout << strtemp<<endl;
     // }

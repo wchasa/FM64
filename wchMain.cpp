@@ -22,6 +22,7 @@ void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 int main(int argc, char *argv[])
 {
+	double stime,etime,tcost;
     FM *csa = NULL;
     string strpath,str;
 	//strpath ="./bible";
@@ -47,9 +48,20 @@ int main(int argc, char *argv[])
     //const unsigned char* cpc =T;
     string strtxt((char*)T);
     csa = new FM(strpath.data());
+	stime = clock();
+	for(int i2 =0;i2<10;i2++)
+	{
+		str = strtxt.substr(rand()%n,10);
+		//cout<<"Patten:"<<str<<endl;
+        int* pos = csa->locating(str.data(), num);
+		//cout<<"Pid:"<<getpid()<<endl;
+	}
+	etime = clock();
+    tcost = (double)(etime-stime);
+    cout<<"parrel:"<<setw(10)<<tcost<<"sec,"<<getpid()<<endl;
    // str ="fell on her face, a";
     //while(true)
-	for(int i2 =0;i2<1000;i2++)
+	/*for(int i2 =0;i2<1000;i2++)
     {
 	   	str = strtxt.substr(rand()%n,20);
 		cout<<"Patten:"<<str<<endl;
@@ -86,7 +98,7 @@ int main(int argc, char *argv[])
 		cout<<setw(20)<<"stringFind="<<stringFind<<endl;
 		cout<<"---------------------------"<<endl;
 		//;
-    }
+    }*/
 	fclose(fpw);
 }
 
