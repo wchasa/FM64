@@ -19,9 +19,13 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<math.h>
 #include<iostream>
 using namespace std;
+
 class BitMap
 {
 	public:
+		static int Gamacount ;
+		static int Fixcount  ;
+		static int Plaincount;
 		BitMap(unsigned long long int * bitbuff,int bit_len,int level,int block_size=1024,unsigned char label='\0',uchar ** tables=NULL);
 		//bit_len:0,1串的实际长度，单位bit
 		//level:层数

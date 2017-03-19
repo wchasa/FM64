@@ -19,6 +19,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include <error.h>
 #include <string.h>
 #include <sys/wait.h>
+
 #define SIZE 1024
 //#define READSIZE 1024*1024*50
 u64 GetBits(u64 * buff,int &index,int bits)
@@ -47,6 +48,7 @@ int GammaDecode(u64 * buff,int & index,ABS_FM * t)
 	index = index + bits;
 	return x>>(32-bits);
 }
+
 
 ABS_FM::ABS_FM(const char * filename,int block_size,int D)
 {
@@ -81,6 +83,17 @@ ABS_FM::~ABS_FM()
 int ABS_FM::SizeInByte()
 {
 	return TreeSizeInByte(root) + SAL->GetMemorySize() + RankL->GetMemorySize();
+}
+void ABS_FM::Codedistributionn(int &Plain,int &Gama,int &Fix)
+{
+	/*int Gamacount  = 0;
+	int Fixcount   = 0;
+	int Plaincount = 0;
+	while (root !=NULL)
+	{
+		coding_style->GetValue()
+	}
+	*/
 }
 BitMap* ABS_FM::GetRoot()
 {
@@ -883,6 +896,7 @@ int ABS_FM::LoadWTTree(loadkit &s,uchar **tables)
 {
 	//读取数据，map的int域对应该节点的位置
 	int nodecount = 2*alphabetsize -1;
+   
 //	cout<<alphabetsize<<endl;
 //	s.loadi32(nodecount);
 	int * p = new int[nodecount];

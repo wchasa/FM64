@@ -78,7 +78,10 @@ int * FM::locating(const char * pattern,int & num)
 {
 	return wt.Locating(pattern,num);
 }
-
+int * FM::Locating_parrel(const char * pattern,int & num)
+{
+	return wt.Locating_parrel(pattern,num);
+}
 
 unsigned char * FM::extracting(int pos,int len)
 {

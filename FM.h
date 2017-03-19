@@ -51,6 +51,7 @@ class FM
 		
 		void counting(const char *pattern,int &num);
 		int * locating(const char *pattern,int & num);
+		int * Locating_parrel(const char *pattern,int & num);
 		unsigned char * extracting(int pos,int len);
 		
 		int load(const char * indexfile);

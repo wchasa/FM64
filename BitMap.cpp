@@ -67,6 +67,7 @@ BitMap::BitMap(unsigned long long int * bitbuff,int bit_len,int level,int block_
 		this->Z = tables[0];
 		this->R = tables[1];
 		Coding();
+		
 		buff =NULL;
 	}
 
@@ -100,7 +101,9 @@ int BitMap::SizeInByte()
 // 	}
 
 // }
-
+int	BitMap::Fixcount   = 0;
+int BitMap::Gamacount  = 0;
+int BitMap::Plaincount = 0;
 void BitMap::Coding()
 {
 	int u64Len =0;
@@ -209,6 +212,7 @@ void BitMap::Coding()
 
 		else if(len == (block_size-thred) || index == bitLen)//plain
 		{
+			Plaincount++;
 			coding_style->SetValue((index-1)/block_size,2);
 			int j=0;
 			int num=0;
@@ -230,6 +234,7 @@ void BitMap::Coding()
 		//p (int[256])*runs_tmp
 		else if(maxtotal>=len)//rl_gamma
 		{
+			Gamacount++;
 			if(firstbit == 0)
 				coding_style->SetValue((index-1)/block_size,0);//RLG0
 			else
@@ -244,6 +249,7 @@ void BitMap::Coding()
 		}
 		else//fixcoding
 		{
+			Fixcount++;
 			if(firstbit == 0)
 				coding_style->SetValue((index-1)/block_size,5);//Fix0
 			else
@@ -287,7 +293,7 @@ void BitMap::Coding()
 	memset(data,0,u64_len_real*8);
 	memcpy(data,temp,(u64_len_real-1)*8);
 	delete [] temp;
-
+	//cout<<"Plain:"<<setw(10)<<Plaincount<<",RLcount"<<setw(10)<<Gamacount<<",FixCount="<<setw(10)<<Fixcount<<endl;
 }
 
 BitMap::~BitMap()

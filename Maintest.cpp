@@ -21,6 +21,7 @@ void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
+
 int main(int argc, char *argv[])
 {
     double stime,etime,tcost;
@@ -52,6 +53,7 @@ int main(int argc, char *argv[])
         cout<<StrLine<<endl;
         cout<<tcost<<"sec"<<endl;
         cout<<"File Size :"<<csa->getN()<<",TreeSize:"<<csa->sizeInByteForCount()<<",CompressRate"<<csa->compressRatioForCount()<<endl;
+        
         delete csa;
     }   
  //    char filename[100] = {'\0'};

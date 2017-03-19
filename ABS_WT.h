@@ -26,7 +26,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include <stdio.h>
 #include <unistd.h>
 #include<string.h>
-#include"BitMap.h"
+#include"BitMap.h"	
 #include"InArray.h"
 #include"loadkit.h"
 #include"savekit.h"
@@ -53,6 +53,8 @@ class ABS_FM
 		int GetN(){return n;}
 		int SizeInByte();
 		int SizeInByte_count();
+		void Codedistributionn(int &Plain,int &Gama,int &Fix);
+		
 		BitMap* GetRoot();
 		unsigned char * bwt;
 	protected:

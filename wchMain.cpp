@@ -8,6 +8,7 @@
 #include<iomanip>
 #include <string>
 using namespace std;
+#define MAX 1000
 void usage();
 void helpbuild();
 void helpload();
@@ -48,8 +49,9 @@ int main(int argc, char *argv[])
     //const unsigned char* cpc =T;
     string strtxt((char*)T);
     csa = new FM(strpath.data());
+	//cout<<"Plain:"<<setw(10)<<Plaincount<<"";
 	stime = clock();
-	for(int i2 =0;i2<10;i2++)
+	for(int i2 =0;i2<MAX;i2++)
 	{
 		str = strtxt.substr(rand()%n,10);
 		//cout<<"Patten:"<<str<<endl;
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
 	}
 	etime = clock();
     tcost = (double)(etime-stime);
-    cout<<"parrel:"<<setw(10)<<tcost<<"sec,"<<getpid()<<endl;
+    cout<<"parrel:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
    // str ="fell on her face, a";
     //while(true)
 	/*for(int i2 =0;i2<1000;i2++)

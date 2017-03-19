@@ -31,6 +31,7 @@ class WT_Handle
 		
 		void Counting(const char * pattern,int &num) { fm->Counting(pattern,num); };
 		int * Locating(const char * pattern,int &num){ return fm->Locating(pattern,num); };
+		int * Locating_parrel(const char * pattern,int &num){ return fm->Locating_parrel(pattern,num); };
 		unsigned char *Extracting(int pos,int len){ return fm->Extracting(pos,len);};
 		int Load(loadkit & s) { return fm->Load(s);};
 		int Save(savekit & s){ return fm->Save(s);};
