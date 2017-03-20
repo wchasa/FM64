@@ -23,10 +23,10 @@ using namespace std;
 class BitMap
 {
 	public:
-		static int Gamacount ;
-		static int Fixcount  ;
-		static int Plaincount;
-		BitMap(unsigned long long int * bitbuff,int bit_len,int level,int block_size=1024,unsigned char label='\0',uchar ** tables=NULL);
+		static i64 Gamacount ;
+		static i64 Fixcount  ;
+		static i64 Plaincount;
+		BitMap(unsigned long long int * bitbuff,i64 bit_len,int level,int block_size=1024,unsigned char label='\0',uchar ** tables=NULL);
 		//bit_len:0,1串的实际长度，单位bit
 		//level:层数
 		//block_size:块大小
@@ -36,9 +36,9 @@ class BitMap
 		BitMap(uchar ** tables):Z(tables[0]),R(tables[1]){}
 		~BitMap();
 
-		int Rank(int pos);
-		int Rank(int pos,int &bit);
-		void Rank(int pos_left,int pos_right,int &rank_left,int &rank_right);
+		i64 Rank(i64 pos);
+		i64 Rank(i64 pos,i64 &bit);
+		void Rank(i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right);
 
 
 		void Left(BitMap * left);
@@ -56,7 +56,7 @@ class BitMap
 		unsigned char Label();
 		int Load(loadkit & s);
 		int Save(savekit & S);
-		int SizeInByte();
+		i64 SizeInByte();
 	private:
 		uchar* Z;
 		//uchar* R1;
@@ -69,56 +69,56 @@ class BitMap
 		void Coding();
 
 		//得到存储在data中的0,1串中的第index位
-		int GetBit(u64 * data,int index);
+		int GetBit(u64 * data,i64 index);
 		//从buff保存的0.1串中，由index位置开始，返回后续bits位表示的
 		//数值.
 
 		u16 Zeros(u16 x){return (Z[x>>8]==8)?Z[x>>8]+Z[(uchar)x]:Z[x>>8];}
-		u64 GetBits(u64 * buff,int &index,int bits);
+		u64 GetBits(u64 * buff,i64 &index,int bits);
 	
 		//得到0的runs.
-		int GetZerosRuns(u64 * buff,int &index);
+		i64 GetZerosRuns(u64 * buff,i64 &index);
 		//gamma解
 		
 
-		int FixedDecode(u64 * buff,int &index,int Len);
-		int GammaDecode(u64 * buff,int &index);
+		i64 FixedDecode(u64 * buff,int &index,int Len);
+		i64 GammaDecode(u64 * buff,int &index);
  		
 		//得到0,1串中的runs长度，bit标示该runs是针对谁的
-		int GetRuns(u64 * data,int &index,int &bit);
-		//index
-		void Append_g(u64 * temp,int &index,u32 value);
-		void Append_f(u64 * temp,int &index,u32 value,int maxrl);
+		i64 GetRuns(u64 * data,i64 &index,int &bit);
+		//index64
+		void Append_g(u64 * temp,i64 &index,u32 value);
+		void Append_f(u64 * temp,i64 &index,u32 value,int maxrl);
 		//把u64类型的value拷贝到data串的index处.
 		void BitCopy(u64 * temp,int &index,u64 value);
 
 		//返回rl0编码的串中，由index位置开始，长度位bits
 		//内的1的个数.
-		void RL_Rank(u64 * buff,int &index,int bits_left,int bits_right,int &rank_left,int &rank_right,int rl_type);
-		int  RL_Rank(u64 * buff,int &index,int bits_num,int rl_type);
-		int  RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit);
+		void RL_Rank(u64 * buff,i64 &index,i64 bits_left,i64 bits_right,i64 &rank_left,i64 &rank_right,int rl_type);
+		i64  RL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type);
+		i64  RL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type,int &bit);
+		i64 FRL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type,int &bit);
+		i64 FRL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type);
+        void FRL_Rank(u64 *buff,i64 &index,i64 bits_left,i64 bits_right,i64 &rank_left,i64 &rank_right,int rl_type);
 		//返回容量编码的串中，由index位置开始，bits位内的0的个数.
-		int RL0_Rank(u64 * buff,int &index,int bits_num);
-		int RL0_Bit(u64 * buff,int &index,int bits);
-		int RL0_Rank(u64 * buff,int &index,int bits,int &bit);
+		i64 RL0_Rank(u64 * buff,i64 &index,i64 bits_num);
+		i64 RL0_Rank(u64 * buff,i64 &index,i64 bits,i64 &bit);
 		//返回容量编码的串中，由index位置开始，bits位内的1的个数.
-		int RL1_Rank(u64 * buff,int &index,int bits);
-		int RL1_Bit(u64 * buff,int & index,int bits);
-		int RL1_Rank(u64 * buff,int &index,int bits,int &bit);
+		i64 RL1_Rank(u64 * buff,i64 &index,i64 bits);
+		i64 RL1_Rank(u64 * buff,i64 &index,i64 bits,int &bit);
 		//返回容量编码的串中，由index位置开始，bits位内的1的个数.
-		int FRL1_Bit(u64 * buff,int &index,int bits_num);
+		i64 RL1_Bit(u64 * buff,i64 & index,i64 bits);
+		i64 RL0_Bit(u64 * buff,i64 &index,i64 bits);
+		i64 FRL1_Bit(u64 * buff,i64 &index,i64 bits_num);
+		i64 FRL0_Bit(u64 * buff,i64 &index,i64 bits_num);
 		//int RL1_Bit(u64 * buff,int & index,int bits);
 		//int RL1_Rank(u64 * buff,int &index,int bits,int &bit);
-		int FRL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit);
-		int FRL_Rank(u64 * buff,int &index,int bits_num,int rl_type);
-		int FRL0_Bit(u64 * buff,int &index,int bits_num);
-        void FRL_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int &rank_right,int rl_type);
 		//buff从index位置开始是直接存储的，从index位置开始，bits
 		//位内有几个1.
-		void Plain_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int&rank_right);
-		int Plain_Rank(u64 * buff,int &index,int bits);
-		int Plain_Bit(u64 * buff,int &index,int bits);
-		int Plain_Rank(u64 * buff,int &index,int bits,int & bit);
+		void Plain_Rank(u64 *buff,i64 &index,i64 bits_left,i64 bits_right,i64 &rank_left,i64&rank_right);
+		i64 Plain_Rank(u64 * buff,i64 &index,i64 bits);
+		i64 Plain_Bit(u64 * buff,i64 &index,i64 bits);
+		i64 Plain_Rank(u64 * buff,i64 &index,i64 bits,int & bit);
 
 		
 		int level;//该串的层数.

@@ -8,7 +8,7 @@
 #include<iomanip>
 #include <string>
 using namespace std;
-#define MAX 1000
+#define MAX 3
 void usage();
 void helpbuild();
 void helpload();
@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
     string strpath,str;
 	//strpath ="./bible";
     cout<<"input file path:";
-    //getline(cin,strpath);
-	strpath = "/home/wch/testfile/einstein.en.txt";
+    //getline(cin,strpath);/home/wch/codebase
+	strpath = "/home/wch/codebase/sources";
     FILE * fp = fopen(strpath.c_str(),"r+");
 	FILE * fpw = fopen("result.txt","w+");
 	//FILE * fp = fopen("./bible","r+");
@@ -48,32 +48,41 @@ int main(int argc, char *argv[])
 	//T[n-1]=0;
     //const unsigned char* cpc =T;
     //string strtxt((char*)T);
+	stime = clock();
     csa = new FM(strpath.data());
+	etime = clock();
+	tcost = etime-stime;
+	cout<<"build takes:"<<setw(10)<<tcost/CLOCKS_PER_SEC<<"sec"<<endl;
 	cout<<"build complete;"<<endl;
 	//cout<<"Plain:"<<setw(10)<<Plaincount<<"";
-	for(int i2 =0;i2<MAX;i2++)
-	{
-		//str = strtxt.substr(rand()%n,10);
-		fseek(fp,rand()%n,SEEK_SET);
-		fread(searchT,sizeof(unsigned char),10,fp);
-		//((char*)T);
-		//cout<<"Patten:"<<str<<endl;
-		stime = clock();
-		int *pos = csa->locating((const char*)searchT, num);
-		etime = clock();
-		tcost += (double)(etime - stime);
-		//cout<<"Pid:"<<getpid()<<endl;
-	}
+	tcost = 0;
+//	for(int i2 =0;i2<MAX;i2++)
+//	{
+//		//str = strtxt.substr(rand()%n,10);
+//		fseek(fp,rand()%n,SEEK_SET);
+//		fread(searchT,sizeof(unsigned char),15,fp);
+//		//((char*)T);
+//		//str = searchT;
+//		//cout<<"Patten:"<<searchT<<endl;
+//		stime = clock();
+//		int *pos = csa->locating((const char*)searchT, num);
+//		//cout<<"Count:"<<setw(10)<<num<<endl;
+//		etime = clock();
+//		tcost += (double)(etime - stime);
+//		//cout<<"Pid:"<<getpid()<<endl;
+//	}
     cout<<"chuan:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+    tcost = 0;
     for (int i2 = 0; i2 < MAX; i2++)
     {
 	//str = strtxt.substr(rand()%n,10);
 		fseek(fp, rand() % n, SEEK_SET);
-		fread(searchT, sizeof(unsigned char), 10, fp);
+		fread(searchT, sizeof(unsigned char), 15, fp);
 		//((char*)T);
-		//cout<<"Patten:"<<str<<endl;
+		//cout<<"Patten:"<<searchT<<endl;
 		stime = clock();
 		int *pos = csa->Locating_parrel((const char *)searchT, num);
+		//cout<<"Count:"<<setw(10)<<num<<endl;
 		etime = clock();
 		tcost += (double)(etime - stime);
 		//cout<<"Pid:"<<getpid()<<endl;

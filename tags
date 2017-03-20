@@ -13,7 +13,8 @@ BalanceTreeInit	./Balance_WT.cpp	/^int Balance_FM::BalanceTreeInit(balanceTree t
 BitCopy	./BitMap.cpp	/^void BitMap::BitCopy(u64 * temp,int & index,u64 value)$/;"	f	class:BitMap
 BitMap	./BitMap.cpp	/^BitMap::BitMap(unsigned long long int * bitbuff,int bit_len,int level,int block_size,unsigned char label,uchar ** tables)$/;"	f	class:BitMap
 BuildTree	./ABS_WT.cpp	/^int ABS_FM::BuildTree(int speedlevel)$/;"	f	class:ABS_FM
-Codedistributionn	./ABS_WT.cpp	/^void ABS_FM::Codedistributionn(int &Plain,int &Gama,int &Fix)$/;"	f	class:ABS_FM
+Codedistribution	./ABS_WT.cpp	/^void ABS_FM::Codedistribution(int &Plain,int &Gama,int &Fix)$/;"	f	class:ABS_FM
+Codedistribution	./FM.cpp	/^void FM::Codedistribution(int &Plain,int &Gama,int &Fix)$/;"	f	class:FM
 Coding	./BitMap.cpp	/^void BitMap::Coding()$/;"	f	class:BitMap
 ComputerCharDepth	./Hutacker_WT.cpp	/^int Hutacker_FM::ComputerCharDepth(hutackerTree root,int * charDepth)$/;"	f	class:Hutacker_FM
 Counting	./ABS_WT.cpp	/^void ABS_FM::Counting(const char * pattern,int & num)$/;"	f	class:ABS_FM
@@ -74,15 +75,16 @@ Locating	./ABS_WT.cpp	/^int * ABS_FM::Locating(const char * pattern,int &num)$/;
 Locating_parrel	./ABS_WT.cpp	/^int * ABS_FM::Locating_parrel(const char * pattern,int &num)$/;"	f	class:ABS_FM
 Locating_parrel	./FM.cpp	/^int * FM::Locating_parrel(const char * pattern,int & num)$/;"	f	class:FM
 Lookup	./ABS_WT.cpp	/^int ABS_FM::Lookup(int i)$/;"	f	class:ABS_FM
+MAX	./Maintest.cpp	13;"	d	file:
 MAX	./wchMain.cpp	11;"	d	file:
 MergeNode	./Huffman_WT.cpp	/^int Huffman_FM::MergeNode(huffNode_t *node1,huffNode_t *node2,huffNode_t * father)$/;"	f	class:Huffman_FM
 MergeNodes	./Hutacker_WT.cpp	/^int Hutacker_FM::MergeNodes(hutaNode_t ** hutaNodesPPtr,int index1,int index2,int nNodes)$/;"	f	class:Hutacker_FM
 MultiCharBalCode	./Balance_WT.cpp	/^int Balance_FM::MultiCharBalCode(balanceTree root)$/;"	f	class:Balance_FM
 MultiCharHuffCode	./Huffman_WT.cpp	/^int Huffman_FM::MultiCharHuffCode(huffmanTree tree)$/;"	f	class:Huffman_FM
 MultiCharHutackerCode	./Hutacker_WT.cpp	/^int Hutacker_FM::MultiCharHutackerCode(hutackerTree root)$/;"	f	class:Hutacker_FM
-Occ	./ABS_WT.cpp	/^int ABS_FM::Occ(int & occ , unsigned char & label,int pos)$/;"	f	class:ABS_FM
-Occ	./ABS_WT.cpp	/^int ABS_FM::Occ(unsigned char c,int pos)$/;"	f	class:ABS_FM
-Occ	./ABS_WT.cpp	/^void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &rank_right)$/;"	f	class:ABS_FM
+Occ	./ABS_WT.cpp	/^i64 ABS_FM::Occ(i64 & occ , unsigned char & label,i64 pos)$/;"	f	class:ABS_FM
+Occ	./ABS_WT.cpp	/^i64 ABS_FM::Occ(unsigned char c,i64 pos)$/;"	f	class:ABS_FM
+Occ	./ABS_WT.cpp	/^void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)$/;"	f	class:ABS_FM
 Plain_Bit	./BitMap.cpp	/^int BitMap::Plain_Bit(u64 * buff,int &index,int bits_num)$/;"	f	class:BitMap
 Plain_Rank	./BitMap.cpp	/^int BitMap::Plain_Rank(u64 * buff,int &index,int bits_num)$/;"	f	class:BitMap
 Plain_Rank	./BitMap.cpp	/^int BitMap::Plain_Rank(u64 * buff,int &index,int bits_num,int &bit)$/;"	f	class:BitMap
@@ -97,8 +99,8 @@ RL1_Rank	./BitMap.cpp	/^int BitMap::RL1_Rank(u64 * buff,int &index,int bits_num,
 RL_Rank	./BitMap.cpp	/^int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type)$/;"	f	class:BitMap
 RL_Rank	./BitMap.cpp	/^int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)$/;"	f	class:BitMap
 RL_Rank	./BitMap.cpp	/^void BitMap::RL_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int &rank_right,int rl_type)$/;"	f	class:BitMap
+Rank	./BitMap.cpp	/^int BitMap::Rank(i64 pos,i64 & bit)$/;"	f	class:BitMap
 Rank	./BitMap.cpp	/^int BitMap::Rank(int pos)$/;"	f	class:BitMap
-Rank	./BitMap.cpp	/^int BitMap::Rank(int pos,int & bit)$/;"	f	class:BitMap
 Rank	./BitMap.cpp	/^void BitMap::Rank(int pos_left,int pos_right,int &rank_left,int &rank_right)$/;"	f	class:BitMap
 RecurseCreate	./Balance_WT.cpp	/^int Balance_FM::RecurseCreate(balanceTree root)$/;"	f	class:Balance_FM
 Right	./BitMap.cpp	/^void BitMap::Right(BitMap * right)$/;"	f	class:BitMap

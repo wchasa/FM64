@@ -77,19 +77,19 @@ class ABS_FM
 		bool charMap[256];
 		// if charMap[i] is true,char[i] is a member of alphabet
 		
-		int * C;// Cumulative Frequency sum
+		i64 * C;// Cumulative Frequency sum
 		//wch
 		//uchar *code;
 		i16 *code;
 		//wch
 		i64 charFreq[CHAR_SET_SIZE];
-		int alphabetsize;
+		i32 alphabetsize;
 		char codeTable[CHAR_SET_SIZE][CODE_MAX_LEN];
 
-		int Occ(int &rank,unsigned char &label,int pos);
-		int Occ(unsigned char c,int pos);
-		void Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &rank_right);
-		int LF(int i);
+		i64 Occ(i64 &rank,unsigned char &label,i64 pos);
+		i64 Occ(unsigned char c,i64 pos);
+		void Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right);
+		i64 LF(i64 i);
 		unsigned char L(int i);
 		void DrawBackSearch(const char * pattern,int &Left,int & Right);
 		int Lookup(int i);

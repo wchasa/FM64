@@ -22,7 +22,7 @@ the Free Software Foundation; either version 2 or later of the License.
 
 #define SIZE 1024
 //#define READSIZE 1024*1024*50
-u64 GetBits(u64 * buff,int &index,int bits)
+u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
 		return (buff[index>>6] >>( 64 -((index&0x3f) + bits))) & ((0x01ull<<bits)- 1);
@@ -40,7 +40,7 @@ int Zeros(u16 x,ABS_FM *t)
 		return t->Z[x>>8];
 }
 
-int GammaDecode(u64 * buff,int & index,ABS_FM * t)
+i64 GammaDecode(u64 * buff,i64 & index,ABS_FM * t)
 {
 	u32 x = GetBits(buff,index,32);
 	int runs = Zeros(x>>16,t);
@@ -128,8 +128,8 @@ int flag3=0;
 void ABS_FM::DrawBackSearch(const char * pattern,int & Left,int &Right)
 {
 	int len = strlen(pattern);
-	int occ_left=0;
-	int occ_right=0;
+	i64 occ_left=0;
+	i64 occ_right=0;
 	if(len <=0)
 	{
 		Left =1;
@@ -245,7 +245,7 @@ int * ABS_FM::Locating_parrel(const char * pattern,int &num)
 		for(int i=0;i<num/2;i++)
 			{
 				pos[i]=Lookup(Left + i);
-		//		cout<<i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
+				cout<<i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
 			}
 		shmaddr = (int*)shmat( shmid, NULL, 0 ) ;	
 		memcpy(shmaddr,pos,sizeof(int)*num/2);
@@ -325,7 +325,7 @@ int ABS_FM::Lookup(int i)
 
 int flag2 =0;
 //返回L串中c字符在位置pos_left 和pos_right之前出现的次数，结果由rank_left 和rank_right带回.
-void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &rank_right)
+void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
 {
 	BitMap *r = root;
 	int level=0;
@@ -392,7 +392,7 @@ void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &
 	rank_right= pos_right+1;
 	return ;
 }
-int ABS_FM::Occ(unsigned char c,int pos)
+i64 ABS_FM::Occ(unsigned char c,i64 pos)
 {
 	BitMap * r = root;
 	int level = 0;
@@ -416,7 +416,7 @@ int ABS_FM::Occ(unsigned char c,int pos)
 }
 
 
-int ABS_FM::LF(int i)
+i64 ABS_FM::LF(i64 i)
 {
 /*
 	unsigned char c = L(i);
@@ -425,7 +425,7 @@ int ABS_FM::LF(int i)
 	return C[coding]+Occ(c,i)-1;
 */
 	
-	int occ =0;
+	i64 occ =0;
 	unsigned char label =0;
 	Occ(occ,label,i);
 	int coding = code[label];
@@ -437,7 +437,7 @@ int ABS_FM::LF(int i)
 unsigned char ABS_FM::L(int i)
 {
 	BitMap * r = root;
-	int bit =0;
+	i64 bit =0;
 	int rank = 0;
 	
 	while(r->Left())
@@ -461,12 +461,12 @@ unsigned char ABS_FM::L(int i)
 
 }
 int flag4 = 0;
-int ABS_FM::Occ(int & occ , unsigned char & label,int pos)
+i64 ABS_FM::Occ(i64 & occ , unsigned char & label,i64 pos)
 {
 	BitMap * r = root;
 	//cout<<"occ:root"<<endl;
-	int bit =0;
-	int rank =0;
+	i64 bit =0;
+	i64 rank =0;
 	while(r->Left())
 	{
 		rank = r->Rank(pos,bit);
@@ -508,7 +508,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	num = fread(T,sizeof(uchar),n,fp);
 	T[n-1]=0;
 	fclose(fp);
-	memset(charFreq,0,256*sizeof(int));
+	memset(charFreq,0,256*sizeof(i64));
 	memset(charMap,0,256*sizeof(bool));
 	for(saidx64_t i=0;i<n;i++)
 		charFreq[T[i]]++;
@@ -520,7 +520,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 			this->charMap[i]=true;
 		}
 	this->code = new short[256];
-	this->C = new int[alphabetsize+1];
+	this->C = new i64[alphabetsize+1];
 	memset(C,0,(alphabetsize+1)*4);
 	this->C[alphabetsize] = n;
 	this->C[0] = 0;
@@ -954,8 +954,8 @@ int ABS_FM::Load(loadkit &s)
 	s.loadi32(this->D);
 
 	//for C
-	this->C = new int[alphabetsize+1];
-	s.loadi32array(this->C,alphabetsize+1);
+	this->C = new i64[alphabetsize+1];
+	s.loadi64array(this->C,alphabetsize+1);
 	//for code
 	//wch
 	//this->code = new uchar[256];
@@ -1010,13 +1010,13 @@ int ABS_FM::Load(loadkit &s)
 }
 int ABS_FM::Save(savekit &s)
 {
-	s.writei32(n);
+	s.writei64(n);
 	s.writei32(alphabetsize);
 	s.writei32(D);//SA的采样率
 	
 	//C表
 	//s.writei32(alphabetsize+1);
-	s.writei32array(C,alphabetsize+1);
+	s.writei64array(C,alphabetsize+1);
 	//code表
 	//s.writei32(256);
 	//wch
