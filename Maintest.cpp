@@ -66,12 +66,12 @@ int main(int argc, char *argv[])
         }
         fseek(fp2, 0, SEEK_END);
         int n = ftell(fp2) + 1;
-        unsigned char * T = new unsigned char[n];
+        unsigned char * pattenT = new unsigned char[1024];
         fseeko(fp2, 0, SEEK_SET);
         int e=0;
         int num = 0;
-        num = fread(T,sizeof(unsigned char),n,fp2);
-        T[n - 1] = 0;
+        //num = fread(T,sizeof(unsigned char),n,fp2);
+        //T[n - 1] = 0;
        
     //const unsigned char* cpc =T;
         string strtxt((char *)T),str;

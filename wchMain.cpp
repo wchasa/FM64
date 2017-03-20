@@ -28,7 +28,8 @@ int main(int argc, char *argv[])
     string strpath,str;
 	//strpath ="./bible";
     cout<<"input file path:";
-    getline(cin,strpath);
+    //getline(cin,strpath);
+	strpath = "/home/wch/testfile/einstein.en.txt";
     FILE * fp = fopen(strpath.c_str(),"r+");
 	FILE * fpw = fopen("result.txt","w+");
 	//FILE * fp = fopen("./bible","r+");
@@ -39,28 +40,45 @@ int main(int argc, char *argv[])
 	}
     fseek(fp,0,SEEK_END);
 	int n = ftell(fp)+1;
-	unsigned char * T = new unsigned char[n];
+	unsigned char * searchT = new unsigned char[1024];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
 	int num=0;
-	num = fread(T,sizeof(unsigned char),n,fp);
-	T[n-1]=0;
-	fclose(fp);
+	//num = fread(T,sizeof(unsigned char),n,fp);
+	//T[n-1]=0;
     //const unsigned char* cpc =T;
-    string strtxt((char*)T);
+    //string strtxt((char*)T);
     csa = new FM(strpath.data());
+	cout<<"build complete;"<<endl;
 	//cout<<"Plain:"<<setw(10)<<Plaincount<<"";
-	stime = clock();
 	for(int i2 =0;i2<MAX;i2++)
 	{
-		str = strtxt.substr(rand()%n,10);
+		//str = strtxt.substr(rand()%n,10);
+		fseek(fp,rand()%n,SEEK_SET);
+		fread(searchT,sizeof(unsigned char),10,fp);
+		//((char*)T);
 		//cout<<"Patten:"<<str<<endl;
-        int* pos = csa->locating(str.data(), num);
+		stime = clock();
+		int *pos = csa->locating((const char*)searchT, num);
+		etime = clock();
+		tcost += (double)(etime - stime);
 		//cout<<"Pid:"<<getpid()<<endl;
 	}
-	etime = clock();
-    tcost = (double)(etime-stime);
-    cout<<"parrel:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+    cout<<"chuan:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+    for (int i2 = 0; i2 < MAX; i2++)
+    {
+	//str = strtxt.substr(rand()%n,10);
+		fseek(fp, rand() % n, SEEK_SET);
+		fread(searchT, sizeof(unsigned char), 10, fp);
+		//((char*)T);
+		//cout<<"Patten:"<<str<<endl;
+		stime = clock();
+		int *pos = csa->Locating_parrel((const char *)searchT, num);
+		etime = clock();
+		tcost += (double)(etime - stime);
+		//cout<<"Pid:"<<getpid()<<endl;
+	}
+    cout<<"bing:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
 	int Plaincount,Gamacount,Fixcount;
 	csa->Codedistribution(Plaincount,Gamacount,Fixcount);
 	cout<<"Plaincount="<<setw(10)<<Plaincount<<",Gamacount="<<setw(10)<<Gamacount<<",Fixcode="<<setw(10)<<Fixcount<<endl;
@@ -104,6 +122,7 @@ int main(int argc, char *argv[])
 		cout<<"---------------------------"<<endl;
 		//;
     }*/
+	fclose(fp);
 	fclose(fpw);
 }
 
