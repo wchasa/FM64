@@ -28,6 +28,20 @@ int FM::sizeInByte()
 	return wt.SizeInByte();
 }
 
+void FM::Codedistribution(int &Plain,int &Gama,int &Fix)
+{
+	/*int Gamacount  = 0;
+	int Fixcount   = 0;
+	int Plaincount = 0;
+	while (root !=NULL)
+	{
+		coding_style->GetValue()
+	}
+	*/
+	Plain = BitMap::Plaincount;
+	Gama  = BitMap::Gamacount;
+	Fix   = BitMap::Fixcount;
+}
 int FM::sizeInByteForCount()
 {
 	return wt.SizeInByte_count();
@@ -36,7 +50,6 @@ int FM::sizeInByteForCount()
 double FM::compressRatioForCount(){
 	return sizeInByteForCount()/(getN()*1.0);
 }
-
 double FM::compressRatio(){
 	return sizeInByte()/(getN()*1.0);
 }

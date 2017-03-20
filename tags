@@ -1,0 +1,245 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ABS_FM	./ABS_WT.cpp	/^ABS_FM::ABS_FM(const char * filename,int block_size,int D)$/;"	f	class:ABS_FM
+Append_f	./BitMap.cpp	/^void BitMap::Append_f(u64 *temp,int &index,u32 value,int maxrl)$/;"	f	class:BitMap
+Append_g	./BitMap.cpp	/^void BitMap::Append_g(u64 *temp,int &index,u32 value)$/;"	f	class:BitMap
+BWT	./ABS_WT.cpp	/^int ABS_FM::BWT(unsigned char *T,int * SA,unsigned char * bwt,int len)$/;"	f	class:ABS_FM
+BWT64	./ABS_WT.cpp	/^int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t len)$/;"	f	class:ABS_FM
+BalanceTreeInit	./Balance_WT.cpp	/^int Balance_FM::BalanceTreeInit(balanceTree tree)$/;"	f	class:Balance_FM
+BitCopy	./BitMap.cpp	/^void BitMap::BitCopy(u64 * temp,int & index,u64 value)$/;"	f	class:BitMap
+BitMap	./BitMap.cpp	/^BitMap::BitMap(unsigned long long int * bitbuff,int bit_len,int level,int block_size,unsigned char label,uchar ** tables)$/;"	f	class:BitMap
+BuildTree	./ABS_WT.cpp	/^int ABS_FM::BuildTree(int speedlevel)$/;"	f	class:ABS_FM
+Codedistributionn	./ABS_WT.cpp	/^void ABS_FM::Codedistributionn(int &Plain,int &Gama,int &Fix)$/;"	f	class:ABS_FM
+Coding	./BitMap.cpp	/^void BitMap::Coding()$/;"	f	class:BitMap
+ComputerCharDepth	./Hutacker_WT.cpp	/^int Hutacker_FM::ComputerCharDepth(hutackerTree root,int * charDepth)$/;"	f	class:Hutacker_FM
+Counting	./ABS_WT.cpp	/^void ABS_FM::Counting(const char * pattern,int & num)$/;"	f	class:ABS_FM
+CreateBalanceTree	./Balance_WT.cpp	/^balanceTree Balance_FM::CreateBalanceTree()$/;"	f	class:Balance_FM
+CreateHuffTree	./Huffman_WT.cpp	/^huffmanTree Huffman_FM::CreateHuffTree()$/;"	f	class:Huffman_FM
+CreateHutackerTree	./Hutacker_WT.cpp	/^hutackerTree Hutacker_FM::CreateHutackerTree()$/;"	f	class:Hutacker_FM
+CreateWaveletTree	./ABS_WT.cpp	/^BitMap * ABS_FM::CreateWaveletTree(unsigned char * bwt,int n)$/;"	f	class:ABS_FM
+DestroyBalTree	./Balance_WT.cpp	/^int Balance_FM::DestroyBalTree(balanceTree tree)$/;"	f	class:Balance_FM
+DestroyHuffTree	./Huffman_WT.cpp	/^int Huffman_FM::DestroyHuffTree(huffmanTree tree)$/;"	f	class:Huffman_FM
+DestroyHutackerTree	./Hutacker_WT.cpp	/^int Hutacker_FM::DestroyHutackerTree(hutackerTree root)$/;"	f	class:Hutacker_FM
+DestroyWaveletTree	./ABS_WT.cpp	/^int ABS_FM::DestroyWaveletTree()$/;"	f	class:ABS_FM
+DrawBackSearch	./ABS_WT.cpp	/^void ABS_FM::DrawBackSearch(const char * pattern,int & Left,int &Right)$/;"	f	class:ABS_FM
+Extracting	./ABS_WT.cpp	/^unsigned char* ABS_FM::Extracting(int pos,int len)$/;"	f	class:ABS_FM
+FM	./FM.cpp	/^FM::FM():wt(){}$/;"	f	class:FM
+FM	./FM.cpp	/^FM::FM(const char *filename,int speedlevel):wt(filename,256,32,1,speedlevel){}$/;"	f	class:FM
+FRL0_Bit	./BitMap.cpp	/^int BitMap::FRL0_Bit(u64 * buff,int & index,int bits_num)$/;"	f	class:BitMap
+FRL1_Bit	./BitMap.cpp	/^int BitMap::FRL1_Bit(u64 * buff,int &index,int bits_num)$/;"	f	class:BitMap
+FRL_Rank	./BitMap.cpp	/^int BitMap::FRL_Rank(u64 * buff,int &index,int bits_num,int rl_type)$/;"	f	class:BitMap
+FRL_Rank	./BitMap.cpp	/^int BitMap::FRL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)$/;"	f	class:BitMap
+FRL_Rank	./BitMap.cpp	/^void BitMap::FRL_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int &rank_right,int rl_type)$/;"	f	class:BitMap
+FindMini	./Huffman_WT.cpp	/^int Huffman_FM::FindMini(int * index,huffNode_t **nodesPPtr,int nNodes)$/;"	f	class:Huffman_FM
+FindMiniTwoNodes	./Hutacker_WT.cpp	/^int Hutacker_FM::FindMiniTwoNodes(hutaNode_t ** huNodesPPtr,int nNodes,int * index1,int *index2)$/;"	f	class:Hutacker_FM
+Fixcount	./BitMap.cpp	/^int	BitMap::Fixcount   = 0;$/;"	m	class:BitMap	file:
+FixedDecode	./BitMap.cpp	/^int BitMap::FixedDecode(u64 * buff,int &index,int Len)$/;"	f	class:BitMap
+FullFillWTNode	./ABS_WT.cpp	/^BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,int len,int level)$/;"	f	class:ABS_FM
+Gamacount	./BitMap.cpp	/^int BitMap::Gamacount  = 0;$/;"	m	class:BitMap	file:
+GammaDecode	./ABS_WT.cpp	/^int GammaDecode(u64 * buff,int & index,ABS_FM * t)$/;"	f
+GammaDecode	./BitMap.cpp	/^int BitMap::GammaDecode(u64 * buff,int & index)$/;"	f	class:BitMap
+GenerateBalCode	./Balance_WT.cpp	/^int Balance_FM::GenerateBalCode(balanceTree tree)$/;"	f	class:Balance_FM
+GenerateHuffCode	./Huffman_WT.cpp	/^int Huffman_FM::GenerateHuffCode(huffmanTree tree)$/;"	f	class:Huffman_FM
+GenerateHutackerCode	./Hutacker_WT.cpp	/^int Hutacker_FM::GenerateHutackerCode(hutackerTree root)$/;"	f	class:Hutacker_FM
+GetBit	./BitMap.cpp	/^int BitMap::GetBit(u64 * data,int index)$/;"	f	class:BitMap
+GetBits	./ABS_WT.cpp	/^u64 GetBits(u64 * buff,int &index,int bits)$/;"	f
+GetBits	./BitMap.cpp	/^u64 BitMap::GetBits(u64 * buff,int &index,int bits)$/;"	f	class:BitMap
+GetDataWidth	./InArray.cpp	/^i32 InArray::GetDataWidth() $/;"	f	class:InArray
+GetHuffmanTreeHeight	./Huffman_WT.cpp	/^int Huffman_FM::GetHuffmanTreeHeight(huffmanTree root)$/;"	f	class:Huffman_FM
+GetHutackerTreeHeight	./Hutacker_WT.cpp	/^int Hutacker_FM::GetHutackerTreeHeight(hutackerTree root)$/;"	f	class:Hutacker_FM
+GetMemorySize	./InArray.cpp	/^i32 InArray::GetMemorySize() $/;"	f	class:InArray
+GetNum	./InArray.cpp	/^i32 InArray::GetNum ()$/;"	f	class:InArray
+GetRoot	./ABS_WT.cpp	/^BitMap* ABS_FM::GetRoot()$/;"	f	class:ABS_FM
+GetRuns	./BitMap.cpp	/^int BitMap::GetRuns(u64 * data,int &index,int &bit)$/;"	f	class:BitMap
+GetValue	./InArray.cpp	/^i32 InArray::GetValue(i32 index)$/;"	f	class:InArray
+GetZerosRuns	./BitMap.cpp	/^int BitMap::GetZerosRuns(u64 * buff,int &index)$/;"	f	class:BitMap
+Getfile	./ABS_WT.cpp	/^unsigned char * ABS_FM::Getfile(const char *filename)$/;"	f	class:ABS_FM
+HuffNodesInit	./Huffman_WT.cpp	/^int Huffman_FM::HuffNodesInit(huffNode_t ** nodesPPtr)$/;"	f	class:Huffman_FM
+HutackerNodesInit	./Hutacker_WT.cpp	/^int Hutacker_FM::HutackerNodesInit(hutaNode_t ** hutNodesPPtr)$/;"	f	class:Hutacker_FM
+InArray	./InArray.cpp	/^InArray::InArray()$/;"	f	class:InArray
+InArray	./InArray.cpp	/^InArray::InArray(i32 data_num, i32 data_width) $/;"	f	class:InArray
+Inittable	./ABS_WT.cpp	/^void ABS_FM::Inittable()$/;"	f	class:ABS_FM
+L	./ABS_WT.cpp	/^unsigned char ABS_FM::L(int i)$/;"	f	class:ABS_FM
+LF	./ABS_WT.cpp	/^int ABS_FM::LF(int i)$/;"	f	class:ABS_FM
+Label	./BitMap.cpp	/^unsigned char BitMap::Label()$/;"	f	class:BitMap
+Left	./BitMap.cpp	/^void BitMap::Left(BitMap * left)$/;"	f	class:BitMap
+Load	./ABS_WT.cpp	/^int ABS_FM::Load(loadkit &s)$/;"	f	class:ABS_FM
+Load	./BitMap.cpp	/^int BitMap::Load(loadkit & s)$/;"	f	class:BitMap
+LoadWTTree	./ABS_WT.cpp	/^int ABS_FM::LoadWTTree(loadkit &s,uchar **tables)$/;"	f	class:ABS_FM
+Locating	./ABS_WT.cpp	/^int * ABS_FM::Locating(const char * pattern,int &num)$/;"	f	class:ABS_FM
+Locating_parrel	./ABS_WT.cpp	/^int * ABS_FM::Locating_parrel(const char * pattern,int &num)$/;"	f	class:ABS_FM
+Locating_parrel	./FM.cpp	/^int * FM::Locating_parrel(const char * pattern,int & num)$/;"	f	class:FM
+Lookup	./ABS_WT.cpp	/^int ABS_FM::Lookup(int i)$/;"	f	class:ABS_FM
+MAX	./wchMain.cpp	11;"	d	file:
+MergeNode	./Huffman_WT.cpp	/^int Huffman_FM::MergeNode(huffNode_t *node1,huffNode_t *node2,huffNode_t * father)$/;"	f	class:Huffman_FM
+MergeNodes	./Hutacker_WT.cpp	/^int Hutacker_FM::MergeNodes(hutaNode_t ** hutaNodesPPtr,int index1,int index2,int nNodes)$/;"	f	class:Hutacker_FM
+MultiCharBalCode	./Balance_WT.cpp	/^int Balance_FM::MultiCharBalCode(balanceTree root)$/;"	f	class:Balance_FM
+MultiCharHuffCode	./Huffman_WT.cpp	/^int Huffman_FM::MultiCharHuffCode(huffmanTree tree)$/;"	f	class:Huffman_FM
+MultiCharHutackerCode	./Hutacker_WT.cpp	/^int Hutacker_FM::MultiCharHutackerCode(hutackerTree root)$/;"	f	class:Hutacker_FM
+Occ	./ABS_WT.cpp	/^int ABS_FM::Occ(int & occ , unsigned char & label,int pos)$/;"	f	class:ABS_FM
+Occ	./ABS_WT.cpp	/^int ABS_FM::Occ(unsigned char c,int pos)$/;"	f	class:ABS_FM
+Occ	./ABS_WT.cpp	/^void ABS_FM::Occ(unsigned char c,int pos_left,int pos_right,int &rank_left,int &rank_right)$/;"	f	class:ABS_FM
+Plain_Bit	./BitMap.cpp	/^int BitMap::Plain_Bit(u64 * buff,int &index,int bits_num)$/;"	f	class:BitMap
+Plain_Rank	./BitMap.cpp	/^int BitMap::Plain_Rank(u64 * buff,int &index,int bits_num)$/;"	f	class:BitMap
+Plain_Rank	./BitMap.cpp	/^int BitMap::Plain_Rank(u64 * buff,int &index,int bits_num,int &bit)$/;"	f	class:BitMap
+Plain_Rank	./BitMap.cpp	/^void BitMap::Plain_Rank(u64 *buff,int &index,int bits_left,int bits_right,int & rank_left,int &rank_right)$/;"	f	class:BitMap
+Plaincount	./BitMap.cpp	/^int BitMap::Plaincount = 0;$/;"	m	class:BitMap	file:
+RL0_Bit	./BitMap.cpp	/^int BitMap::RL0_Bit(u64 * buff,int & index,int bits_num)$/;"	f	class:BitMap
+RL0_Rank	./BitMap.cpp	/^int BitMap::RL0_Rank(u64 * buff,int & index,int bits_num,int &bit)$/;"	f	class:BitMap
+RL0_Rank	./BitMap.cpp	/^int BitMap::RL0_Rank(u64 *buff,int &index,int bits_num)$/;"	f	class:BitMap
+RL1_Bit	./BitMap.cpp	/^int BitMap::RL1_Bit(u64 * buff,int &index,int bits_num)$/;"	f	class:BitMap
+RL1_Rank	./BitMap.cpp	/^int BitMap::RL1_Rank(u64 * buff,int &index,int bits_num)$/;"	f	class:BitMap
+RL1_Rank	./BitMap.cpp	/^int BitMap::RL1_Rank(u64 * buff,int &index,int bits_num,int & bit)$/;"	f	class:BitMap
+RL_Rank	./BitMap.cpp	/^int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type)$/;"	f	class:BitMap
+RL_Rank	./BitMap.cpp	/^int BitMap::RL_Rank(u64 * buff,int &index,int bits_num,int rl_type,int &bit)$/;"	f	class:BitMap
+RL_Rank	./BitMap.cpp	/^void BitMap::RL_Rank(u64 *buff,int &index,int bits_left,int bits_right,int &rank_left,int &rank_right,int rl_type)$/;"	f	class:BitMap
+Rank	./BitMap.cpp	/^int BitMap::Rank(int pos)$/;"	f	class:BitMap
+Rank	./BitMap.cpp	/^int BitMap::Rank(int pos,int & bit)$/;"	f	class:BitMap
+Rank	./BitMap.cpp	/^void BitMap::Rank(int pos_left,int pos_right,int &rank_left,int &rank_right)$/;"	f	class:BitMap
+RecurseCreate	./Balance_WT.cpp	/^int Balance_FM::RecurseCreate(balanceTree root)$/;"	f	class:Balance_FM
+Right	./BitMap.cpp	/^void BitMap::Right(BitMap * right)$/;"	f	class:BitMap
+SIZE	./ABS_WT.cpp	23;"	d	file:
+Save	./ABS_WT.cpp	/^int ABS_FM::Save(savekit &s)$/;"	f	class:ABS_FM
+Save	./BitMap.cpp	/^int BitMap::Save(savekit & s)$/;"	f	class:BitMap
+SaveNodeData	./ABS_WT.cpp	/^int ABS_FM::SaveNodeData(BitMap *r,savekit &s)$/;"	f	class:ABS_FM
+SaveNodePosition	./ABS_WT.cpp	/^int ABS_FM::SaveNodePosition(BitMap * r,u32 position,savekit &s)$/;"	f	class:ABS_FM
+SaveWTTree	./ABS_WT.cpp	/^int ABS_FM::SaveWTTree(savekit &s)$/;"	f	class:ABS_FM
+SetValue	./InArray.cpp	/^void InArray::SetValue (i32 index, i32 v)$/;"	f	class:InArray
+SigCharBalCode	./Balance_WT.cpp	/^int Balance_FM::SigCharBalCode(balanceTree tree)$/;"	f	class:Balance_FM
+SiglCharHuffCode	./Huffman_WT.cpp	/^int Huffman_FM::SiglCharHuffCode(huffmanTree tree)$/;"	f	class:Huffman_FM
+SingleCharHutackerCode	./Hutacker_WT.cpp	/^int Hutacker_FM::SingleCharHutackerCode(hutackerTree root)$/;"	f	class:Hutacker_FM
+SizeInByte	./ABS_WT.cpp	/^int ABS_FM::SizeInByte()$/;"	f	class:ABS_FM
+SizeInByte	./BitMap.cpp	/^int BitMap::SizeInByte()$/;"	f	class:BitMap
+SizeInByte_count	./ABS_WT.cpp	/^int ABS_FM::SizeInByte_count()$/;"	f	class:ABS_FM
+Test_L	./ABS_WT.cpp	/^void ABS_FM::Test_L()$/;"	f	class:ABS_FM
+Test_Occ	./ABS_WT.cpp	/^void ABS_FM::Test_Occ()$/;"	f	class:ABS_FM
+Test_Shape	./ABS_WT.cpp	/^void ABS_FM::Test_Shape(BitMap * r)$/;"	f	class:ABS_FM
+TreeCode	./Balance_WT.cpp	/^int Balance_FM::TreeCode()$/;"	f	class:Balance_FM
+TreeCode	./Huffman_WT.cpp	/^int Huffman_FM::TreeCode()$/;"	f	class:Huffman_FM
+TreeCode	./Hutacker_WT.cpp	/^int Hutacker_FM::TreeCode()$/;"	f	class:Hutacker_FM
+TreeNodeCount	./ABS_WT.cpp	/^int ABS_FM::TreeNodeCount(BitMap * r)$/;"	f	class:ABS_FM
+TreeSizeInByte	./ABS_WT.cpp	/^int ABS_FM::TreeSizeInByte(BitMap * r)$/;"	f	class:ABS_FM
+UseCount	./UseCount.cpp	/^UseCount::UseCount():p(new int(1)){}$/;"	f	class:UseCount
+UseCount	./UseCount.cpp	/^UseCount::UseCount(const UseCount &u):p(u.p){++*p;}$/;"	f	class:UseCount
+WT_Handle	./WT_Handle.cpp	/^WT_Handle::WT_Handle():fm(new ABS_FM()),u(){}$/;"	f	class:WT_Handle
+WT_Handle	./WT_Handle.cpp	/^WT_Handle::WT_Handle(const WT_Handle &h):fm(h.fm),u(h.u){}$/;"	f	class:WT_Handle
+WT_Handle	./WT_Handle.cpp	/^WT_Handle::WT_Handle(const char * filename,int block_size,int D,int shape,int speedlevel)$/;"	f	class:WT_Handle
+Zeros	./ABS_WT.cpp	/^int Zeros(u16 x,ABS_FM *t)$/;"	f
+blog	./ABS_WT.cpp	/^int ABS_FM::blog(int x)$/;"	f	class:ABS_FM
+blog	./BitMap.cpp	/^int blog(int x)$/;"	f
+blog64	./BitMap.cpp	/^int blog64(u64 x)$/;"	f
+close	./loadkit.cpp	/^void loadkit::close()$/;"	f	class:loadkit
+close	./savekit.cpp	/^void savekit::close()$/;"	f	class:savekit
+compare	./Main.cpp	/^void compare(vector<int> ivector, int *pos, int num)$/;"	f
+compare	./Maintest.cpp	/^void compare(vector<int> ivector, int *pos, int num)$/;"	f
+compare	./wchMain.cpp	/^void compare(vector<int> ivector, int *pos, int num)$/;"	f
+compressRatio	./FM.cpp	/^double FM::compressRatio(){$/;"	f	class:FM
+compressRatioForCount	./FM.cpp	/^double FM::compressRatioForCount(){$/;"	f	class:FM
+counting	./FM.cpp	/^void FM::counting(const char * pattern,int &num)$/;"	f	class:FM
+extracting	./FM.cpp	/^unsigned char * FM::extracting(int pos,int len)$/;"	f	class:FM
+flag	./ABS_WT.cpp	/^int flag=0;$/;"	v
+flag2	./ABS_WT.cpp	/^int flag2 =0;$/;"	v
+flag3	./ABS_WT.cpp	/^int flag3=0;$/;"	v
+flag4	./ABS_WT.cpp	/^int flag4 = 0;$/;"	v
+getAlphabetSize	./FM.cpp	/^int FM::getAlphabetSize(){$/;"	f	class:FM
+getN	./FM.cpp	/^int FM::getN(){$/;"	f	class:FM
+helpbuild	./Main.cpp	/^void helpbuild()$/;"	f
+helpbuild	./Main0217.cpp	/^void helpbuild()$/;"	f
+helpbuild	./Maintest.cpp	/^void helpbuild()$/;"	f
+helpbuild	./wchMain.cpp	/^void helpbuild()$/;"	f
+helpcount	./Main.cpp	/^void helpcount()$/;"	f
+helpcount	./Main0217.cpp	/^void helpcount()$/;"	f
+helpcount	./Maintest.cpp	/^void helpcount()$/;"	f
+helpcount	./wchMain.cpp	/^void helpcount()$/;"	f
+helpload	./Main.cpp	/^void helpload()$/;"	f
+helpload	./Main0217.cpp	/^void helpload()$/;"	f
+helpload	./Maintest.cpp	/^void helpload()$/;"	f
+helpload	./wchMain.cpp	/^void helpload()$/;"	f
+helplocate	./Main.cpp	/^void helplocate()$/;"	f
+helplocate	./Main0217.cpp	/^void helplocate()$/;"	f
+helplocate	./Maintest.cpp	/^void helplocate()$/;"	f
+helplocate	./wchMain.cpp	/^void helplocate()$/;"	f
+helpsave	./Main.cpp	/^void helpsave()$/;"	f
+helpsave	./Main0217.cpp	/^void helpsave()$/;"	f
+helpsave	./Maintest.cpp	/^void helpsave()$/;"	f
+helpsave	./wchMain.cpp	/^void helpsave()$/;"	f
+load	./FM.cpp	/^int FM::load(const char * indexfile)$/;"	f	class:FM
+load	./InArray.cpp	/^i32 InArray::load(loadkit & s)$/;"	f	class:InArray
+loadi16	./loadkit.cpp	/^i32 loadkit::loadi16(i16 & value)$/;"	f	class:loadkit
+loadi16array	./loadkit.cpp	/^i32 loadkit::loadi16array(i16 * value,i32 len)$/;"	f	class:loadkit
+loadi32	./loadkit.cpp	/^i32 loadkit::loadi32(int & value)$/;"	f	class:loadkit
+loadi32array	./loadkit.cpp	/^i32 loadkit::loadi32array(i32 * value,i32 len)$/;"	f	class:loadkit
+loadi64	./loadkit.cpp	/^i32 loadkit::loadi64(i64 & value)$/;"	f	class:loadkit
+loadi64array	./loadkit.cpp	/^i32 loadkit::loadi64array(i64 * value,i32 len)$/;"	f	class:loadkit
+loadkit	./loadkit.cpp	/^loadkit::loadkit(const char * file)$/;"	f	class:loadkit
+loadu16	./loadkit.cpp	/^i32 loadkit::loadu16(u16 & value)$/;"	f	class:loadkit
+loadu16array	./loadkit.cpp	/^i32 loadkit::loadu16array(u16 * value,i32 len)$/;"	f	class:loadkit
+loadu32	./loadkit.cpp	/^i32 loadkit::loadu32(u32 & value)$/;"	f	class:loadkit
+loadu32array	./loadkit.cpp	/^i32 loadkit::loadu32array(u32 * value,i32 len)$/;"	f	class:loadkit
+loadu64	./loadkit.cpp	/^i32 loadkit::loadu64(u64 & value)$/;"	f	class:loadkit
+loadu64array	./loadkit.cpp	/^i32 loadkit::loadu64array(u64 * value,i32 len)$/;"	f	class:loadkit
+loadu8	./loadkit.cpp	/^i32 loadkit::loadu8(u8 & value)$/;"	f	class:loadkit
+loadu8array	./loadkit.cpp	/^i32 loadkit::loadu8array(u8 * value,i32 len)$/;"	f	class:loadkit
+locating	./FM.cpp	/^int * FM::locating(const char * pattern,int & num)$/;"	f	class:FM
+lookuptable	./BitMap.cpp	17;"	d	file:
+main	./Main.cpp	/^int main(int argc, char *argv[])$/;"	f
+main	./Main0217.cpp	/^int main(int argc, char* argv[])$/;"	f
+main	./Maintest.cpp	/^int main(int argc, char *argv[])$/;"	f
+main	./main_backup.cpp	/^int main(int argc,char ** argvs)$/;"	f
+main	./wchMain.cpp	/^int main(int argc, char *argv[])$/;"	f
+only	./UseCount.cpp	/^bool UseCount::only() {return *p==1;}$/;"	f	class:UseCount
+operator =	./WT_Handle.cpp	/^WT_Handle & WT_Handle::WT_Handle:: operator =(const WT_Handle & h)$/;"	f	class:WT_Handle::WT_Handle
+popcnt	./BitMap.cpp	/^inline int popcnt(unsigned long long int x)$/;"	f
+quick_sort	./Main.cpp	/^void quick_sort(int *s, int l, int r)$/;"	f
+quick_sort	./Maintest.cpp	/^void quick_sort(int *s, int l, int r)$/;"	f
+quick_sort	./wchMain.cpp	/^void quick_sort(int *s, int l, int r)$/;"	f
+reattach	./UseCount.cpp	/^bool UseCount::reattach(const UseCount & u)$/;"	f	class:UseCount
+save	./FM.cpp	/^int FM::save(const char * indexfile)$/;"	f	class:FM
+savekit	./savekit.cpp	/^savekit::savekit(const char * file)$/;"	f	class:savekit
+showpos	./Main.cpp	/^void showpos(int *pos, int num)$/;"	f
+showpos	./Main.cpp	/^void showpos(vector<int> ivector)$/;"	f
+showpos	./Main0217.cpp	/^void showpos(int * pos,int num)$/;"	f
+showpos	./Maintest.cpp	/^void showpos(int *pos, int num)$/;"	f
+showpos	./Maintest.cpp	/^void showpos(vector<int> ivector)$/;"	f
+showpos	./wchMain.cpp	/^void showpos(int *pos, int num)$/;"	f
+showpos	./wchMain.cpp	/^void showpos(vector<int> ivector)$/;"	f
+sizeInByte	./FM.cpp	/^int FM::sizeInByte()$/;"	f	class:FM
+sizeInByteForCount	./FM.cpp	/^int FM::sizeInByteForCount()$/;"	f	class:FM
+splitcommand	./Main.cpp	/^void splitcommand(string command, string result[])$/;"	f
+splitcommand	./Main0217.cpp	/^void splitcommand(string command,string result[])$/;"	f
+splitcommand	./Maintest.cpp	/^void splitcommand(string command, string result[])$/;"	f
+splitcommand	./wchMain.cpp	/^void splitcommand(string command, string result[])$/;"	f
+stupidRank	./Main.cpp	/^int stupidRank(unsigned char* c,int length,int& ch,int pos)$/;"	f
+stupidRank	./Maintest.cpp	/^int stupidRank(unsigned char* c,int length,int& ch,int pos)$/;"	f
+stupidRank	./wchMain.cpp	/^int stupidRank(unsigned char* c,int length,int& ch,int pos)$/;"	f
+times	./main_backup.cpp	6;"	d	file:
+usage	./Main.cpp	/^void usage()$/;"	f
+usage	./Main0217.cpp	/^void usage()$/;"	f
+usage	./Maintest.cpp	/^void usage()$/;"	f
+usage	./wchMain.cpp	/^void usage()$/;"	f
+write	./InArray.cpp	/^i32 InArray::write(savekit & s)$/;"	f	class:InArray
+writei16	./savekit.cpp	/^ i32 savekit::writei16(i16 value)$/;"	f	class:savekit
+writei16array	./savekit.cpp	/^ i32 savekit::writei16array(i16 * value,i32 len)$/;"	f	class:savekit
+writei32	./savekit.cpp	/^i32 savekit::writei32( i32 value)$/;"	f	class:savekit
+writei32array	./savekit.cpp	/^ i32 savekit::writei32array(i32 * value,i32 len)$/;"	f	class:savekit
+writei64	./savekit.cpp	/^i32 savekit::writei64(i64 value)$/;"	f	class:savekit
+writei64array	./savekit.cpp	/^ i32 savekit::writei64array(i64 * value,i32 len)$/;"	f	class:savekit
+writeu16	./savekit.cpp	/^ i32 savekit::writeu16(u16 value)$/;"	f	class:savekit
+writeu16array	./savekit.cpp	/^ i32 savekit::writeu16array(u16 * value,i32 len)$/;"	f	class:savekit
+writeu32	./savekit.cpp	/^ i32 savekit::writeu32(u32 value)$/;"	f	class:savekit
+writeu32array	./savekit.cpp	/^ i32 savekit::writeu32array(u32* value,i32 len)$/;"	f	class:savekit
+writeu64	./savekit.cpp	/^i32 savekit::writeu64(u64 value)$/;"	f	class:savekit
+writeu64array	./savekit.cpp	/^ i32 savekit::writeu64array(u64 * value,i32 len)$/;"	f	class:savekit
+writeu8	./savekit.cpp	/^i32 savekit::writeu8(u8 value)$/;"	f	class:savekit
+writeu8array	./savekit.cpp	/^i32 savekit::writeu8array(u8 * value,i32 len)$/;"	f	class:savekit
+~ABS_FM	./ABS_WT.cpp	/^ABS_FM::~ABS_FM()$/;"	f	class:ABS_FM
+~BitMap	./BitMap.cpp	/^BitMap::~BitMap()$/;"	f	class:BitMap
+~InArray	./InArray.cpp	/^InArray::~InArray(void)$/;"	f	class:InArray
+~UseCount	./UseCount.cpp	/^UseCount::~UseCount(){if(--*p==0) delete p;}$/;"	f	class:UseCount
+~WT_Handle	./WT_Handle.cpp	/^WT_Handle::~WT_Handle()$/;"	f	class:WT_Handle
+~loadkit	./loadkit.cpp	/^loadkit::~loadkit()$/;"	f	class:loadkit
+~savekit	./savekit.cpp	/^savekit::~savekit()$/;"	f	class:savekit

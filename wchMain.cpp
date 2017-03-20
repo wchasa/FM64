@@ -61,6 +61,9 @@ int main(int argc, char *argv[])
 	etime = clock();
     tcost = (double)(etime-stime);
     cout<<"parrel:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+	int Plaincount,Gamacount,Fixcount;
+	csa->Codedistribution(Plaincount,Gamacount,Fixcount);
+	cout<<"Plaincount="<<setw(10)<<Plaincount<<",Gamacount="<<setw(10)<<Gamacount<<",Fixcode="<<setw(10)<<Fixcount<<endl;
    // str ="fell on her face, a";
     //while(true)
 	/*for(int i2 =0;i2<1000;i2++)

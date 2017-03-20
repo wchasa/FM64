@@ -1,5 +1,6 @@
 //wch
 #include <stdlib.h>
+#include<iomanip>
 #include <string.h>
 #include "FM.h"
 #include <ctime>
@@ -9,6 +10,7 @@
 #include <stdio.h> 
 #include <time.h>
 using namespace std;
+#define MAX 100
 void usage();
 void helpbuild();
 void helpload();
@@ -21,9 +23,9 @@ void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
-
 int main(int argc, char *argv[])
 {
+    cout<<"This is add Fixcode FM"<<endl;
     double stime,etime,tcost;
     int *pos;
     int num = 0;
@@ -41,20 +43,62 @@ int main(int argc, char *argv[])
         printf("Open Falied!");   
         return -1;   
     }   
-    while (!feof(fp))                                   //循环读取每一行，直到文件尾  
-    {   
+    while (!feof(fp))                                   //循环读取每一行，直到文件尾
+    {
         fgets(StrLine,1024,fp); 
         StrLine[strlen(StrLine)-1]='\0';
         csa = NULL;
         stime= clock();
-        csa = new FM(StrLine);   
+        csa = new FM(StrLine);
+        etime = clock();       
+        tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
+        cout << StrLine << endl;
+        cout << tcost << "sec" << endl;
+        cout << "File Size =" <<setw(20)<< csa->getN() << "Byte,TreeSize =" <<setw(20)<< csa->sizeInByteForCount() << "Byte,CompressRate = " <<setw(20)<< csa->compressRatioForCount() << endl;
+        int Plaincount, Gamacount, Fixcount;
+        csa->Codedistribution(Plaincount, Gamacount, Fixcount);
+        cout << "Plaincount=" << setw(10) << Plaincount << ",Gamacount=" << setw(10) << Gamacount << ",Fixcode=" << setw(10) << Fixcount << endl;
+        FILE *fp2;
+        if ((fp2 = fopen(StrLine, "r")) == NULL) //判断文件是否存在及可读
+        {
+            printf("Open Falied!");
+            return -1;
+        }
+        fseek(fp2, 0, SEEK_END);
+        int n = ftell(fp2) + 1;
+        unsigned char * T = new unsigned char[n];
+        fseeko(fp2, 0, SEEK_SET);
+        int e=0;
+        int num = 0;
+        num = fread(T,sizeof(unsigned char),n,fp2);
+        T[n - 1] = 0;
+       
+    //const unsigned char* cpc =T;
+        string strtxt((char *)T),str;
+        stime = clock();
+        for (int i2 = 0; i2 < MAX; i2++)
+        {
+            str = strtxt.substr(rand() % n, 10);
+            //cout<<"Patten:"<<str<<endl;
+            int *pos = csa->locating(str.data(), num);
+            //cout<<"Pid:"<<getpid()<<endl;
+        }
         etime = clock();
-        tcost = (double)(etime-stime)/CLOCKS_PER_SEC;
-        cout<<StrLine<<endl;
-        cout<<tcost<<"sec"<<endl;
-        cout<<"File Size :"<<csa->getN()<<",TreeSize:"<<csa->sizeInByteForCount()<<",CompressRate"<<csa->compressRatioForCount()<<endl;
-        
+        tcost = (double)(etime - stime);
+        cout << "chuanxing:" << setw(10) << tcost / CLOCKS_PER_SEC / MAX << "sec" << endl;
+        stime = clock();
+        for (int i2 = 0; i2 < MAX; i2++)
+        {
+            str = strtxt.substr(rand() % n, 10);
+            //cout<<"Patten:"<<str<<endl;
+            int *pos = csa->Locating_parrel(str.data(), num);
+            //cout<<"Pid:"<<getpid()<<endl;
+        }
+        etime = clock();
+        tcost = (double)(etime - stime);
+        cout << "parrel:" << setw(10) << tcost / CLOCKS_PER_SEC / MAX << "sec" << endl;
         delete csa;
+         fclose(fp2);
     }   
  //    char filename[100] = {'\0'};
  //    char indexname[100] = {'\0'};
@@ -93,8 +137,7 @@ void showpos(int *pos, int num)
 	    cout << "-----------------more---------------------";
 	    system("stty raw");
 	    command = getchar();
-	    cout << endl
-		 << '\r';
+	    cout << endl<< '\r';
 	    system("stty cooked");
 	    if (command == 27)
 	    {

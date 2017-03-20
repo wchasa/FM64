@@ -84,7 +84,7 @@ int ABS_FM::SizeInByte()
 {
 	return TreeSizeInByte(root) + SAL->GetMemorySize() + RankL->GetMemorySize();
 }
-void ABS_FM::Codedistributionn(int &Plain,int &Gama,int &Fix)
+void ABS_FM::Codedistribution(int &Plain,int &Gama,int &Fix)
 {
 	/*int Gamacount  = 0;
 	int Fixcount   = 0;
@@ -94,6 +94,9 @@ void ABS_FM::Codedistributionn(int &Plain,int &Gama,int &Fix)
 		coding_style->GetValue()
 	}
 	*/
+	Plain = BitMap::Plaincount;
+	Gama  = BitMap::Gamacount;
+	Fix   = BitMap::Fixcount;
 }
 BitMap* ABS_FM::GetRoot()
 {

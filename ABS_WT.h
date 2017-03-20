@@ -53,7 +53,7 @@ class ABS_FM
 		int GetN(){return n;}
 		int SizeInByte();
 		int SizeInByte_count();
-		void Codedistributionn(int &Plain,int &Gama,int &Fix);
+		void Codedistribution(int &Plain,int &Gama,int &Fix);
 		
 		BitMap* GetRoot();
 		unsigned char * bwt;

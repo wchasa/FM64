@@ -56,7 +56,7 @@ class FM
 		
 		int load(const char * indexfile);
 		int save(const char * indexfile);
-
+		void Codedistribution(int &Plain, int &Gama, int &Fix);
 		int getN();
 		int getAlphabetSize();
 		int sizeInByte();
