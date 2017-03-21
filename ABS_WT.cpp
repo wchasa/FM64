@@ -437,7 +437,7 @@ i64 ABS_FM::LF(i64 i)
 unsigned char ABS_FM::L(int i)
 {
 	BitMap * r = root;
-	i64 bit =0;
+	int bit =0;
 	int rank = 0;
 	
 	while(r->Left())
@@ -465,7 +465,7 @@ i64 ABS_FM::Occ(i64 & occ , unsigned char & label,i64 pos)
 {
 	BitMap * r = root;
 	//cout<<"occ:root"<<endl;
-	i64 bit =0;
+	int bit =0;
 	i64 rank =0;
 	while(r->Left())
 	{
@@ -828,7 +828,7 @@ void ABS_FM::Inittable()
 	//这些表
 	u64 B[2]={0xffffffffffffffffull,0xffffffffffffffffull};
 	int sum =0;//gamma编码的和,含义为原串被编码的bits数目。
-	int step=0;//16bits可以完整解码的bits数,该值不会大于16.
+	i64 step=0;//16bits可以完整解码的bits数,该值不会大于16.
 	int rank = 0;//16bits表示的几个完整的runs,假设第一个runs是1-runs,这几个runs的rank值。
 	int runs = 0 ;//runs 个数.
 	

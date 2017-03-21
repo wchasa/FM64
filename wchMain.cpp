@@ -21,15 +21,16 @@ void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
+//this main  compare result of locate
 int main(int argc, char *argv[])
 {
 	double stime,etime,tcost;
     FM *csa = NULL;
     string strpath,str;
-	//strpath ="./bible";
+	strpath ="./bible";
     cout<<"input file path:";
     //getline(cin,strpath);/home/wch/codebase
-	strpath = "/home/wch/codebase/sources";
+	//strpath = "/home/wch/codebase/sources";
     FILE * fp = fopen(strpath.c_str(),"r+");
 	FILE * fpw = fopen("result.txt","w+");
 	//FILE * fp = fopen("./bible","r+");
@@ -40,14 +41,13 @@ int main(int argc, char *argv[])
 	}
     fseek(fp,0,SEEK_END);
 	int n = ftell(fp)+1;
-	unsigned char * searchT = new unsigned char[1024];
+	unsigned char * T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
 	int num=0;
-	//num = fread(T,sizeof(unsigned char),n,fp);
-	//T[n-1]=0;
-    //const unsigned char* cpc =T;
-    //string strtxt((char*)T);
+	num = fread(T,sizeof(unsigned char),n,fp);
+	T[n-1]=0;
+    string strtxt((char*)T);
 	stime = clock();
     csa = new FM(strpath.data());
 	etime = clock();
@@ -71,29 +71,29 @@ int main(int argc, char *argv[])
 //		tcost += (double)(etime - stime);
 //		//cout<<"Pid:"<<getpid()<<endl;
 //	}
-    cout<<"chuan:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
-    tcost = 0;
-    for (int i2 = 0; i2 < MAX; i2++)
-    {
-	//str = strtxt.substr(rand()%n,10);
-		fseek(fp, rand() % n, SEEK_SET);
-		fread(searchT, sizeof(unsigned char), 15, fp);
-		//((char*)T);
-		//cout<<"Patten:"<<searchT<<endl;
-		stime = clock();
-		int *pos = csa->Locating_parrel((const char *)searchT, num);
-		//cout<<"Count:"<<setw(10)<<num<<endl;
-		etime = clock();
-		tcost += (double)(etime - stime);
-		//cout<<"Pid:"<<getpid()<<endl;
-	}
-    cout<<"bing:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
-	int Plaincount,Gamacount,Fixcount;
-	csa->Codedistribution(Plaincount,Gamacount,Fixcount);
-	cout<<"Plaincount="<<setw(10)<<Plaincount<<",Gamacount="<<setw(10)<<Gamacount<<",Fixcode="<<setw(10)<<Fixcount<<endl;
+//    cout<<"chuan:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+//    tcost = 0;
+//    for (int i2 = 0; i2 < MAX; i2++)
+//    {
+//	//str = strtxt.substr(rand()%n,10);
+//		fseek(fp, rand() % n, SEEK_SET);
+//		fread(searchT, sizeof(unsigned char), 15, fp);
+//		//((char*)T);
+//		//cout<<"Patten:"<<searchT<<endl;
+//		stime = clock();
+//		int *pos = csa->Locating_parrel((const char *)searchT, num);
+//		//cout<<"Count:"<<setw(10)<<num<<endl;
+//		etime = clock();
+//		tcost += (double)(etime - stime);
+//		//cout<<"Pid:"<<getpid()<<endl;
+//	}
+//    cout<<"bing:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+//	int Plaincount,Gamacount,Fixcount;
+//	csa->Codedistribution(Plaincount,Gamacount,Fixcount);
+//	cout<<"Plaincount="<<setw(10)<<Plaincount<<",Gamacount="<<setw(10)<<Gamacount<<",Fixcode="<<setw(10)<<Fixcount<<endl;
    // str ="fell on her face, a";
     //while(true)
-	/*for(int i2 =0;i2<1000;i2++)
+	for(int i2 =0;i2<1000;i2++)
     {
 	   	str = strtxt.substr(rand()%n,20);
 		cout<<"Patten:"<<str<<endl;
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 		cout<<setw(20)<<"stringFind="<<stringFind<<endl;
 		cout<<"---------------------------"<<endl;
 		//;
-    }*/
+    }
 	fclose(fp);
 	fclose(fpw);
 }

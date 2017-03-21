@@ -309,7 +309,7 @@ BitMap::~BitMap()
 }
 
 //todo
-i64 BitMap::Rank(i64 pos,i64 & bit)
+i64 BitMap::Rank(i64 pos,int & bit)
 {
 	if(pos < 0 || pos > bitLen)
 	{
@@ -328,8 +328,8 @@ i64 BitMap::Rank(i64 pos,i64 & bit)
 		int offset            = offset1 + block->GetValue(block_anchor*2+1);
 		buff                  = data +(offset>>6);
 		int overloop          = (pos+1)%block_size ;
-		int index             = (offset &0x3f);
-		int rank              = 0;
+		i64 index             = (offset &0x3f);
+		i64 rank              = 0;
 		switch(type)
 		{
 			case 0:rank = RL_Rank(buff,index,overloop,0,bit);break;
@@ -350,7 +350,7 @@ i64 BitMap::Rank(i64 pos,i64 & bit)
 		int rank = rank1 + block->GetValue(((pos+1)/block_size)*2);
 		int offset = offset1 + block->GetValue((pos/block_size)*2+1);
 
-		int index = (offset&0x3f);
+		i64 index = (offset&0x3f);
 		buff = data+(offset>>6);
 		int type = coding_style->GetValue(pos/block_size);
 		int overloop = block_size;
@@ -391,10 +391,10 @@ void BitMap::Rank(i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
 		int rank_base = superblock->GetValue(superblock_anchor<<1)+block->GetValue(block_anchor<<1);
 		int offset = superblock->GetValue((superblock_anchor<<1)+1)+block->GetValue((block_anchor<<1)+1);
 		int type = coding_style->GetValue(block_anchor);
-		i64 overloop_left = (pos_left+1)%block_size;
-		i64 overloop_right= (pos_right+1)%block_size;
+		int overloop_left = (pos_left+1)%block_size;
+		int overloop_right= (pos_right+1)%block_size;
 		buff = data+ (offset>>6);
-		int index = (offset&0x3f);
+		i64 index = (offset&0x3f);
 		rank_left = rank_right =rank_base;
 		if(overloop_left!=0)
 		{
@@ -450,7 +450,7 @@ i64 BitMap::Rank(i64 pos)
 	
 	buff = data + (offset>>6);
 	int overloop = (pos+1)%block_size ;
-	int index = (offset & 0x3f);
+	i64 index = (offset & 0x3f);
 	if(overloop > 0)
 	{
 		switch(type)//todo
@@ -469,7 +469,7 @@ i64 BitMap::Rank(i64 pos)
 }
 
 //get designated position(index) bit value
-int BitMap::GetBit(u64 * data,int index)
+int BitMap::GetBit(u64 * data,i64 index)
 {
 	int anchor = index/64;
 	int pos = 63-index%64;
@@ -544,7 +544,7 @@ void BitMap::Append_f(u64 *temp,i64 &index,u32 value,int maxrl)
 }
 
 
-void BitMap::BitCopy(u64 * temp,int & index,u64 value)
+void BitMap::BitCopy(u64 * temp,i64 & index,u64 value)
 {
 	if(index%64!=0)
 	{
@@ -558,13 +558,13 @@ void BitMap::BitCopy(u64 * temp,int & index,u64 value)
 	index = index +64;
 }
 
-i64 BitMap::RL0_Rank(u64 *buff,i64 &index,in64bits_num)
+i64 BitMap::RL0_Rank(u64 * buff,i64 &index,i64 bits_num)
 {
 	int bit=0;
 	return RL0_Rank(buff,index,bits_num,bit);
 }
 
-i64 BitMap::RL0_Rank(u64 * buff,i64 &index,i64 bits,i64 &bit)
+i64 BitMap::RL0_Rank(u64 * buff,i64 &index,i64 bits_num,int &bit)
 {
 	i64 rank = 0;
 	i64 bit_count = 0;
@@ -589,7 +589,7 @@ i64 BitMap::RL0_Rank(u64 * buff,i64 &index,i64 bits,i64 &bit)
 	}
 }
 
-i64 BitMap::RL0_Bit(u64 * buff,i64 &index,i64 bits)
+i64 BitMap::RL0_Bit(u64 * buff,i64 &index,i64 bits_num)
 {
 	//int rank = 0;
 	int bit_count =0;
@@ -606,7 +606,7 @@ i64 BitMap::RL0_Bit(u64 * buff,i64 &index,i64 bits)
 			return 1;
 	}
 }
-i64 BitMap::FRL0_Bit(u64 * buff,int & index,int bits_num)
+i64 BitMap::FRL0_Bit(u64 * buff,i64 &index,i64 bits_num)
 {
 	//int rank = 0;
 	int bit_count =0;
@@ -638,7 +638,7 @@ i64 BitMap::RL1_Rank(u64 * buff,i64 &index,i64 bits_num)
 	return RL1_Rank(buff,index,bits_num,bit);
 }
 
-i64 BitMap::RL1_Rank(u64 * buff,int &index,int bits_num,int & bit)
+i64 BitMap::RL1_Rank(u64 * buff,i64 &index,i64 bits_num,int &bit)
 {
 	int rank = 0;
 	int bit_count = 0 ;
@@ -663,7 +663,7 @@ i64 BitMap::RL1_Rank(u64 * buff,int &index,int bits_num,int & bit)
 	}
 }
 
-i64 BitMap::RL1_Bit(u64 * buff,int &index,int bits_num)
+i64 BitMap::RL1_Bit(u64 * buff,i64 &index,i64 bits_num)
 {
 	int bit_count = 0 ;
 	int  bits = 0;
@@ -680,7 +680,7 @@ i64 BitMap::RL1_Bit(u64 * buff,int &index,int bits_num)
 	}
 }
 
-i64 BitMap::FRL1_Bit(u64 * buff,int &index,int bits_num)
+i64 BitMap::FRL1_Bit(u64 * buff,i64 &index,i64 bits_num)
 {
 	int bit_count = 0;
 	//int  bits = 0;
@@ -705,7 +705,7 @@ i64 BitMap::FRL1_Bit(u64 * buff,int &index,int bits_num)
 	}
 }
 //palin类型的比例较低，所以两种方式的区别不大.
-void BitMap::Plain_Rank(u64 *buff,int &index,int bits_left,int bits_right,int & rank_left,int &rank_right)
+void BitMap::Plain_Rank(u64 *buff,i64 &index,i64 bits_left,i64 bits_right,i64 &rank_left,i64&rank_right)
 {
 	
 	int rank = Plain_Rank(buff,index,bits_left);
@@ -723,7 +723,7 @@ void BitMap::Plain_Rank(u64 *buff,int &index,int bits_left,int bits_right,int & 
 
 }
 
-i64 BitMap::Plain_Rank(u64 * buff,int &index,int bits_num,int &bit)
+i64 BitMap::Plain_Rank(u64 * buff,i64 &index,i64 bits_num,int &bit)
 {
 	if((index &0x3f) + bits_num < 65)
 	{
@@ -748,7 +748,7 @@ i64 BitMap::Plain_Rank(u64 * buff,int &index,int bits_num,int &bit)
 	return rank;
 }
 
-int BitMap::Plain_Bit(u64 * buff,int &index,int bits_num)
+i64 BitMap::Plain_Bit(u64 * buff,i64 &index,i64 bits_num)
 {
 	index = index + bits_num - 1;
 	return (buff[index>>6]>>(63-(index&0x3f)))&0x01;
@@ -756,13 +756,13 @@ int BitMap::Plain_Bit(u64 * buff,int &index,int bits_num)
 
 
 
-int BitMap::Plain_Rank(u64 * buff,int &index,int bits_num)
+i64 BitMap::Plain_Rank(u64 * buff,i64 &index,i64 bits_num)
 {
 	int bit=0;
 	return Plain_Rank(buff,index,bits_num,bit);
 }
 
-i64 BitMap::GammaDecode(u64 * buff,int & index)
+i64 BitMap::GammaDecode(u64 * buff,i64 & index)
 {
 	u32 x = GetBits(buff,index,32);
 	int runs = Zeros(x>>16);
@@ -870,18 +870,18 @@ int BitMap::Save(savekit & s)
 	return 0;
 }
 
-i64 BitMap::RL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type)
+i64 BitMap::RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type)
 {
 	int bit=0;
 	return RL_Rank(buff,index,bits_num,rl_type,bit);
 }
 
-i64 BitMap::FRL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type)
+i64 BitMap::FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type)
 {
 	int bit=0;
 	return FRL_Rank(buff,index,bits_num,rl_type,bit);
 }
-i64 BitMap::FRL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type,int &bit)
+i64 BitMap::FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 {
 	//cout<<"FRL_Rank"<<endl;
 	int offset = 0;
@@ -925,7 +925,7 @@ i64 BitMap::FRL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type,int &bit)
 	bit = rl_type;
 	return rank1;
 }
-i64 BitMap::RL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type,int &bit)
+i64 BitMap::RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 {
 	//cout<<"RL_Rank"<<endl;
 	i64 rank=0;
@@ -1041,7 +1041,7 @@ i64 BitMap::RL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type,int &bit)
 	}
 }
 //todo
-void BitMap::FRL_Rank(u64 *buff,i64 &index,i64 bits_left,i64 bits_right,i64 &rank_left,i64 &rank_right,int rl_type)
+void BitMap::FRL_Rank(u64 *buff,i64 &index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type)
 {
 /*	
 	int old_index = index;
@@ -1109,7 +1109,7 @@ void BitMap::FRL_Rank(u64 *buff,i64 &index,i64 bits_left,i64 bits_right,i64 &ran
 	//return rank1;
 }
 
-void BitMap::RL_Rank(u64 * buff,i64 &index,i64 bits_left,i64 bits_right,i64 &rank_left,i64 &rank_right,int rl_type)
+void BitMap::RL_Rank(u64 * buff,i64 & index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type)
 {
 /*	
 	int old_index = index;

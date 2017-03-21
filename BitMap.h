@@ -37,7 +37,7 @@ class BitMap
 		~BitMap();
 
 		i64 Rank(i64 pos);
-		i64 Rank(i64 pos,i64 &bit);
+		i64 Rank(i64 pos,int &bit);
 		void Rank(i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right);
 
 
@@ -81,8 +81,8 @@ class BitMap
 		//gamma解
 		
 
-		i64 FixedDecode(u64 * buff,int &index,int Len);
-		i64 GammaDecode(u64 * buff,int &index);
+		i64 FixedDecode(u64 * buff,i64 &index,i64 Len);
+		i64 GammaDecode(u64 * buff,i64 &index);
  		
 		//得到0,1串中的runs长度，bit标示该runs是针对谁的
 		i64 GetRuns(u64 * data,i64 &index,int &bit);
@@ -90,27 +90,27 @@ class BitMap
 		void Append_g(u64 * temp,i64 &index,u32 value);
 		void Append_f(u64 * temp,i64 &index,u32 value,int maxrl);
 		//把u64类型的value拷贝到data串的index处.
-		void BitCopy(u64 * temp,int &index,u64 value);
+		void BitCopy(u64 * temp,i64 &index,u64 value);
 
 		//返回rl0编码的串中，由index位置开始，长度位bits
 		//内的1的个数.
-		void RL_Rank(u64 * buff,i64 &index,i64 bits_left,i64 bits_right,i64 &rank_left,i64 &rank_right,int rl_type);
-		i64  RL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type);
-		i64  RL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type,int &bit);
-		i64 FRL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type,int &bit);
-		i64 FRL_Rank(u64 * buff,i64 &index,i64 bits_num,int rl_type);
-        void FRL_Rank(u64 *buff,i64 &index,i64 bits_left,i64 bits_right,i64 &rank_left,i64 &rank_right,int rl_type);
+		void RL_Rank(u64 * buff,i64 & index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type);
+		i64  RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type);
+		i64  RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit);
+		i64 FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit);
+		i64 FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type);
+        void FRL_Rank(u64 *buff,i64 & index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type);
 		//返回容量编码的串中，由index位置开始，bits位内的0的个数.
-		i64 RL0_Rank(u64 * buff,i64 &index,i64 bits_num);
-		i64 RL0_Rank(u64 * buff,i64 &index,i64 bits,i64 &bit);
+		i64 RL0_Rank(u64 * buff,i64 & index,i64 bits_num);
+		i64 RL0_Rank(u64 * buff,i64 & index,i64 bits_num,int &bit);
 		//返回容量编码的串中，由index位置开始，bits位内的1的个数.
-		i64 RL1_Rank(u64 * buff,i64 &index,i64 bits);
-		i64 RL1_Rank(u64 * buff,i64 &index,i64 bits,int &bit);
+		i64 RL1_Rank(u64 * buff,i64 & index,i64 bits);
+		i64 RL1_Rank(u64 * buff,i64 & index,i64 bits,int &bit);
 		//返回容量编码的串中，由index位置开始，bits位内的1的个数.
-		i64 RL1_Bit(u64 * buff,i64 & index,i64 bits);
-		i64 RL0_Bit(u64 * buff,i64 &index,i64 bits);
-		i64 FRL1_Bit(u64 * buff,i64 &index,i64 bits_num);
-		i64 FRL0_Bit(u64 * buff,i64 &index,i64 bits_num);
+		i64 RL1_Bit(u64 * buff,i64 & index,i64 bits_num);
+		i64 RL0_Bit(u64 * buff,i64 & index,i64 bits_num);
+		i64 FRL1_Bit(u64 * buff,i64 & index,i64 bits_num);
+		i64 FRL0_Bit(u64 * buff,i64 & index,i64 bits_num);
 		//int RL1_Bit(u64 * buff,int & index,int bits);
 		//int RL1_Rank(u64 * buff,int &index,int bits,int &bit);
 		//buff从index位置开始是直接存储的，从index位置开始，bits
