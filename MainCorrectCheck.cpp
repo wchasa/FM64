@@ -16,10 +16,10 @@ void helpsave();
 void helpcount();
 void helplocate();
 void splitcommand(string command, string result[]);
-void quick_sort(int *s, int l, int r);
-void compare(vector<int> ivector, int *pos, int num);
-void showpos(vector<int> ivector);
-void showpos(int *pos, int num);
+void quick_sort(i64 *s, i64 l, i64 r);
+void compare(vector<i64> ivector, i64 *pos, i64 num);
+void showpos(vector<i64> ivector);
+void showpos(i64 *pos, i64 num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 //this main  compare result of locate
 int main(int argc, char *argv[])
@@ -27,9 +27,9 @@ int main(int argc, char *argv[])
 	double stime,etime,stime1,etime1,tcost,tcost2;
     FM *csa = NULL;
     string strpathFM,strpathfile,str;
-	strpathFM ="/home/wch/testfile/ein.fm";
-	//strpathfile ="./bible";
-	strpathfile ="/home/wch/testfile/einstein.en.txt";
+	//strpathFM ="/home/wch/testfile/ein.fm";
+	strpathfile ="./bible";
+	//strpathfile ="/home/wch/testfile/einstein.en.txt";
     cout<<"input file path:";
     //getline(cin,strpath);/home/wch/codebase
 	//strpath = "/home/wch/codebase/sources";
@@ -43,20 +43,20 @@ int main(int argc, char *argv[])
 	}
     fseek(fp,0,SEEK_END);
 	int n = ftell(fp)+1;
-	unsigned char *searchT = new unsigned char[n];
+	unsigned char *T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e   = 0;
 	i64 num = 0,num2 = 0;
-	//num = fread(T,sizeof(unsigned char),n,fp);
-	//T[n-1]=0;
-   // string strtxt((char*)T);
+	num = fread(T,sizeof(unsigned char),n,fp);
+	T[n-1]=0;
+    string strtxt((char*)T);
 	stime = clock();
 	if (csa != NULL)
 	    delete csa;
-	//csa = new FM(strpathfile.c_str());
+	csa = new FM(strpathfile.c_str());
 
-	csa = new FM();
-	csa->load(strpathFM.data());
+	//csa = new FM();
+	//csa->load(strpathFM.data());
 	etime = clock();
 	tcost = etime-stime;
 	cout<<"build takes:"<<setw(10)<<tcost/CLOCKS_PER_SEC<<"sec"<<endl;
@@ -65,48 +65,48 @@ int main(int argc, char *argv[])
 	tcost = 0;
 	stime1 = clock();
 //	engthen his for""
-	for(int i2 =0;i2<MAX;i2++)
-	{
-		//str = strtxt.substr(rand()%n,10);
-		stime = clock();
-		fseek(fp,rand()%n-100,SEEK_SET);
-		fread(searchT,sizeof(unsigned char),15,fp);
-		etime = clock();
-		tcost2 += (double)(etime - stime);
-		//((char*)T);
-		//str = searchT;
-		cout<<setw(20)<<"Patten:"<<searchT<<endl;
-		stime = clock();
-	    i64 *pos = csa->Locating_parrel((const char *)searchT, num);
-	    cout<<setw(20)<<"CountP:"<<setw(10)<<num<<endl;
-	    etime = clock();
-	    tcost += (double)(etime - stime);
-
-		stime = clock();
-		i64 *pos2 = csa->locating((const char*)searchT, num2);
-		cout<<setw(20)<<"CountB:"<<setw(10)<<num<<endl;
-		etime = clock();
-		tcost += (double)(etime - stime);
-		//cout<<"ChuanPid:"<<getpid()<<endl;f
-		if(num!=num2)
-		{
-			cout<<"count diff!"<<endl;
-		}
-		for(int i=0;i<num;i++)
-		{
-			if(pos[i]!=pos2[i])
-			{
-			    cout << "Pos=" << setw(10) << pos[i] << ".Pos2=" << setw(10) << pos2[i] << endl;
-			    cout << "Pos:" << setw(10) << i << ".Wrong Patten:" << setw(20) << searchT << endl;
-			}
-		}
-	}
-	etime1 = clock();
-    cout<<"totalchuan:"<<setw(10)<<(etime1-stime1)/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
-    cout<<"chuan:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
-	cout<<"chuanread :"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
-    tcost = 0;
-	tcost2 =0;
+//	for(int i2 =0;i2<MAX;i2++)
+//	{
+//		//str = strtxt.substr(rand()%n,10);
+//		stime = clock();
+//		fseek(fp,rand()%n-100,SEEK_SET);
+//		fread(searchT,sizeof(unsigned char),15,fp);
+//		etime = clock();
+//		tcost2 += (double)(etime - stime);
+//		//((char*)T);
+//		//str = searchT;
+//		cout<<setw(20)<<"Patten:"<<searchT<<endl;
+//		stime = clock();
+//	    i64 *pos = csa->Locating_parrel((const char *)searchT, num);
+//	    cout<<setw(20)<<"CountP:"<<setw(10)<<num<<endl;
+//	    etime = clock();
+//	    tcost += (double)(etime - stime);
+//
+//		stime = clock();
+//		i64 *pos2 = csa->locating((const char*)searchT, num2);
+//		cout<<setw(20)<<"CountB:"<<setw(10)<<num<<endl;
+//		etime = clock();
+//		tcost += (double)(etime - stime);
+//		//cout<<"ChuanPid:"<<getpid()<<endl;f
+//		if(num!=num2)
+//		{
+//			cout<<"count diff!"<<endl;
+//		}
+//		for(int i=0;i<num;i++)
+//		{
+//			if(pos[i]!=pos2[i])
+//			{
+//			    cout << "Pos=" << setw(10) << pos[i] << ".Pos2=" << setw(10) << pos2[i] << endl;
+//			    cout << "Pos:" << setw(10) << i << ".Wrong Patten:" << setw(20) << searchT << endl;
+//			}
+//		}
+//	}
+//	etime1 = clock();
+//    cout<<"totalchuan:"<<setw(10)<<(etime1-stime1)/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+//    cout<<"chuan:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+//	cout<<"chuanread :"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+//    tcost = 0;
+//	tcost2 =0;
 //	stime1 = clock();
 //	for (int i2 = 0; i2 < MAX; i2++)
 //	{
@@ -126,53 +126,53 @@ int main(int argc, char *argv[])
 //	    //cout<<"Pid:"<<getpid()<<endl;
 //	}
 //	etime1 = clock();
-
-    cout<<"totalbing:"<<setw(10)<<(etime1-stime1)/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
-    cout<<"bing:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
-	cout<<"chuanread :"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
-	int Plaincount,Gamacount,Fixcount;
-	csa->Codedistribution(Plaincount,Gamacount,Fixcount);
-	cout<<"Plaincount="<<setw(10)<<Plaincount<<",Gamacount="<<setw(10)<<Gamacount<<",Fixcode="<<setw(10)<<Fixcount<<endl;
+//
+//    cout<<"totalbing:"<<setw(10)<<(etime1-stime1)/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+//    cout<<"bing:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+//	cout<<"chuanread :"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+//	int Plaincount,Gamacount,Fixcount;
+//	csa->Codedistribution(Plaincount,Gamacount,Fixcount);
+//	cout<<"Plaincount="<<setw(10)<<Plaincount<<",Gamacount="<<setw(10)<<Gamacount<<",Fixcode="<<setw(10)<<Fixcount<<endl;
    // str ="fell on her face, a";
     //while(true)
-//	for(int i2 =0;i2<1000;i2++)
-//    {
-//	   	str = strtxt.substr(rand()%n,20);
-//		cout<<"Patten:"<<str<<endl;
-//        int* pos = csa->locating(str.data(), num);
-//		
-//        cout<<setw(20)<<"locating"<<num<<endl;
-//        //showpos(pos,num);
-//        int i = strtxt.find(str);
-//        int p = 0;
-//		if(num<=0)
-//		{
-//			cout<<"locate havnt find"<<endl;
-//			fprintf(fpw,"%s\r\n",str.c_str());
-//			continue;
-//		}
-//		quick_sort(pos,0,num-1);
-//		int stringFind=0;
-//        while(i>= 0)
-//        {	
-//		    stringFind++;
-//            if(pos[p++]!=i)
-//            {
-//				cout<<setw(10)<<"strFind"<<setw(10)<<i;
-//				cout<<setw(10)<<"locate"<<setw(10)<<pos[p-1]<<endl;
-//				//fpw.write((str+"\r\n").c_str);
-//				
-//				fprintf(fpw,"%s\r\n",str.c_str());
-//				break;
-//			}
-//
-//            i = strtxt.find(str,i+1);
-//
-//        }
-//		cout<<setw(20)<<"stringFind="<<stringFind<<endl;
-//		cout<<"---------------------------"<<endl;
-//		//;
-//    }
+	for(int i2 =0;i2<1000;i2++)
+    {
+	   	str = strtxt.substr(rand()%n,20);
+		//cout<<"Patten:"<<str<<endl;
+        i64* pos = csa->locating(str.data(), num);
+		
+       // cout<<setw(20)<<"locating"<<num<<endl;
+        //showpos(pos,num);
+        int i = strtxt.find(str);
+        int p = 0;
+		if(num<=0)
+		{
+			cout<<"locate havnt find"<<endl;
+			fprintf(fpw,"%s\r\n",str.c_str());
+			continue;
+		}
+		quick_sort(pos,0,num-1);
+		int stringFind=0;
+        while(i>= 0)
+        {	
+		    stringFind++;
+            if(pos[p++]!=i)
+            {
+				cout<<setw(10)<<"strFind"<<setw(10)<<i;
+				cout<<setw(10)<<"locate"<<setw(10)<<pos[p-1]<<endl;
+				//fpw.write((str+"\r\n").c_str);
+				
+				fprintf(fpw,"%s\r\n",str.c_str());
+				break;
+			}
+
+            i = strtxt.find(str,i+1);
+
+        }
+		//cout<<setw(20)<<"stringFind="<<stringFind<<endl;
+		//cout<<"---------------------------"<<endl;
+		//;
+    }
 	fclose(fp);
 	fclose(fpw);
 }
@@ -278,7 +278,7 @@ int stupidRank(unsigned char* c,int length,int& ch,int pos)
 	}
     return occTimes;
 }
-void showpos(int *pos, int num)
+void showpos(i64 *pos, i64 num)
 {
 	quick_sort(pos,0,num-1);
     cout << "occs:" << num << endl;
@@ -302,7 +302,7 @@ void showpos(int *pos, int num)
 	}
     }
 }
-void compare(vector<int> ivector, int *pos, int num)
+void compare(vector<i64> ivector, i64 *pos, i64 num)
 {
     quick_sort(pos, 0, num - 1);
     vector<int> mismatchIndex;
@@ -408,7 +408,7 @@ void helpsave()
     cout << "	XX: the FM-index file, the command will save the csa in file XX" << endl;
 }
 //快速排序
-void quick_sort(int *s, int l, int r)
+void quick_sort(i64 *s, i64 l, i64 r)
 {
     if (l < r)
     {

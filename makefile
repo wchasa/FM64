@@ -8,8 +8,8 @@ Mult:div MainMulti.o fm.a
 
 my_fm_1:div Main1.o fm.a
 	g++ -std=gnu++11 -g -o0 Main1.o fm.a   -o my_fm
-Single:div MainSingle.o fm.a
-	g++ -std=gnu++11 -g -o0 MainSingle.o fm.a   -o my_fm
+correctcheck:div MainCorrectCheck.o fm.a
+	g++ -std=gnu++11 -g -o0 MainCorrectCheck.o fm.a   -o my_fm
 
 fm.a:ABS_WT.o Balance_WT.o Huffman_WT.o Hutacker_WT.o FM.o BitMap.o UseCount.o WT_Handle.o InArray.o loadkit.o savekit.o divsufsort.o sssort.o trsort.o utils.o
 	ar rc fm.a ABS_WT.o Balance_WT.o Huffman_WT.o Hutacker_WT.o FM.o BitMap.o UseCount.o WT_Handle.o  InArray.o loadkit.o savekit.o divsufsort.o sssort.o trsort.o utils.o
@@ -20,8 +20,8 @@ fm.a:ABS_WT.o Balance_WT.o Huffman_WT.o Hutacker_WT.o FM.o BitMap.o UseCount.o W
 Main.o:Main.cpp  FM.h
 	g++ -std=gnu++11 -g -O0 -c  Main.cpp
 
-MainSingle.o:MainSingle.cpp  FM.h
-	g++ -std=gnu++11 -g -O0 -c  MainSingle.cpp
+MainCorrectCheck.o:MainCorrectCheck.cpp  FM.h
+	g++ -std=gnu++11 -g -O0 -c  MainCorrectCheck.cpp
 	
 MainMulti.o:MainMulti.cpp  FM.h
 	g++ -std=gnu++11 -g -O0 -c  MainMulti.cpp
