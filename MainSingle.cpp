@@ -8,7 +8,7 @@
 #include<iomanip>
 #include <string>
 using namespace std;
-#define MAX 3
+#define MAX 100
 void usage();
 void helpbuild();
 void helpload();
@@ -24,14 +24,16 @@ int stupidRank(unsigned char* c,int length,int& ch,int pos);
 //this main  compare result of locate
 int main(int argc, char *argv[])
 {
-	double stime,etime,tcost;
+	double stime,etime,stime1,etime1,tcost,tcost2;
     FM *csa = NULL;
-    string strpath,str;
-	strpath ="./bible";
+    string strpathFM,strpathfile,str;
+	strpathFM ="/home/wch/testfile/ein.fm";
+	strpathfile ="./bible";
+	//strpathfile ="/home/wch/testfile/einstein.en.txt";
     cout<<"input file path:";
     //getline(cin,strpath);/home/wch/codebase
 	//strpath = "/home/wch/codebase/sources";
-    FILE * fp = fopen(strpath.c_str(),"r+");
+    FILE * fp = fopen(strpathfile.c_str(),"r+");
 	FILE * fpw = fopen("result.txt","w+");
 	//FILE * fp = fopen("./bible","r+");
     if(fp==NULL)
@@ -41,96 +43,129 @@ int main(int argc, char *argv[])
 	}
     fseek(fp,0,SEEK_END);
 	int n = ftell(fp)+1;
-	unsigned char * T = new unsigned char[n];
+	unsigned char *searchT = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
-	int e=0;
-	int num=0;
-	num = fread(T,sizeof(unsigned char),n,fp);
-	T[n-1]=0;
-    string strtxt((char*)T);
+	int e   = 0;
+	int num = 0,num2 = 0;
+	//num = fread(T,sizeof(unsigned char),n,fp);
+	//T[n-1]=0;
+   // string strtxt((char*)T);
 	stime = clock();
-    csa = new FM(strpath.data());
+	if (csa != NULL)
+	    delete csa;
+	csa = new FM(strpathfile.c_str());
+	//csa->load(strpathFM.data());
 	etime = clock();
 	tcost = etime-stime;
 	cout<<"build takes:"<<setw(10)<<tcost/CLOCKS_PER_SEC<<"sec"<<endl;
 	cout<<"build complete;"<<endl;
 	//cout<<"Plain:"<<setw(10)<<Plaincount<<"";
 	tcost = 0;
-//	for(int i2 =0;i2<MAX;i2++)
+	stime1 = clock();
+	for(int i2 =0;i2<MAX;i2++)
+	{
+		//str = strtxt.substr(rand()%n,10);
+		stime = clock();
+		fseek(fp,rand()%n-100,SEEK_SET);
+		fread(searchT,sizeof(unsigned char),15,fp);
+		etime = clock();
+		tcost2 += (double)(etime - stime);
+		//((char*)T);
+		//str = searchT;
+		cout<<setw(20)<<"Patten:"<<searchT<<endl;
+		stime = clock();
+	    int *pos = csa->Locating_parrel((const char *)searchT, num);
+	    cout<<setw(20)<<"CountP:"<<setw(10)<<num<<endl;
+	    etime = clock();
+	    tcost += (double)(etime - stime);
+
+		stime = clock();
+		int *pos2 = csa->locating((const char*)searchT, num2);
+		cout<<setw(20)<<"CountB:"<<setw(10)<<num<<endl;
+		etime = clock();
+		tcost += (double)(etime - stime);
+		//cout<<"ChuanPid:"<<getpid()<<endl;
+		for(int i=0;i<num;i++)
+		{
+			if(pos[i]!=pos2[i])
+			{
+			    cout << "Pos=" << setw(10) << pos[i] << ".Pos2=" << setw(10) << pos2[i] << endl;
+			    cout << "Pos:" << setw(10) << i << ".Wrong Patten:" << setw(20) << searchT << endl;
+			}
+		}
+	}
+	etime1 = clock();
+    cout<<"totalchuan:"<<setw(10)<<(etime1-stime1)/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+    cout<<"chuan:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+	cout<<"chuanread :"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+    tcost = 0;
+	tcost2 =0;
+//	stime1 = clock();
+//	for (int i2 = 0; i2 < MAX; i2++)
 //	{
-//		//str = strtxt.substr(rand()%n,10);
-//		fseek(fp,rand()%n,SEEK_SET);
-//		fread(searchT,sizeof(unsigned char),15,fp);
-//		//((char*)T);
-//		//str = searchT;
-//		//cout<<"Patten:"<<searchT<<endl;
-//		stime = clock();
-//		int *pos = csa->locating((const char*)searchT, num);
-//		//cout<<"Count:"<<setw(10)<<num<<endl;
-//		etime = clock();
-//		tcost += (double)(etime - stime);
-//		//cout<<"Pid:"<<getpid()<<endl;
+//	    //str = strtxt.substr(rand()%n,10);
+//	    stime = clock();
+//	    fseek(fp, rand() % n, SEEK_SET);
+//	    fread(searchT, sizeof(unsigned char), 15, fp);
+//	    etime = clock();
+//	    tcost2 += (double)(etime - stime);
+//	    //((char*)T);
+//	    //cout<<"Patten:"<<searchT<<endl;
+//	    stime = clock();
+//	    int *pos = csa->Locating_parrel((const char *)searchT, num);
+//	    //cout<<setw(20)<<"Count:"<<setw(10)<<num<<endl;
+//	    etime = clock();
+//	    tcost += (double)(etime - stime);
+//	    //cout<<"Pid:"<<getpid()<<endl;
 //	}
-//    cout<<"chuan:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
-//    tcost = 0;
-//    for (int i2 = 0; i2 < MAX; i2++)
-//    {
-//	//str = strtxt.substr(rand()%n,10);
-//		fseek(fp, rand() % n, SEEK_SET);
-//		fread(searchT, sizeof(unsigned char), 15, fp);
-//		//((char*)T);
-//		//cout<<"Patten:"<<searchT<<endl;
-//		stime = clock();
-//		int *pos = csa->Locating_parrel((const char *)searchT, num);
-//		//cout<<"Count:"<<setw(10)<<num<<endl;
-//		etime = clock();
-//		tcost += (double)(etime - stime);
-//		//cout<<"Pid:"<<getpid()<<endl;
-//	}
-//    cout<<"bing:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
-//	int Plaincount,Gamacount,Fixcount;
-//	csa->Codedistribution(Plaincount,Gamacount,Fixcount);
-//	cout<<"Plaincount="<<setw(10)<<Plaincount<<",Gamacount="<<setw(10)<<Gamacount<<",Fixcode="<<setw(10)<<Fixcount<<endl;
+//	etime1 = clock();
+
+    cout<<"totalbing:"<<setw(10)<<(etime1-stime1)/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+    cout<<"bing:"<<setw(10)<<tcost/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+	cout<<"chuanread :"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+	int Plaincount,Gamacount,Fixcount;
+	csa->Codedistribution(Plaincount,Gamacount,Fixcount);
+	cout<<"Plaincount="<<setw(10)<<Plaincount<<",Gamacount="<<setw(10)<<Gamacount<<",Fixcode="<<setw(10)<<Fixcount<<endl;
    // str ="fell on her face, a";
     //while(true)
-	for(int i2 =0;i2<1000;i2++)
-    {
-	   	str = strtxt.substr(rand()%n,20);
-		cout<<"Patten:"<<str<<endl;
-        int* pos = csa->locating(str.data(), num);
-		
-        cout<<setw(20)<<"locating"<<num<<endl;
-        //showpos(pos,num);
-        int i = strtxt.find(str);
-        int p = 0;
-		if(num<=0)
-		{
-			cout<<"locate havnt find"<<endl;
-			fprintf(fpw,"%s\r\n",str.c_str());
-			continue;
-		}
-		quick_sort(pos,0,num-1);
-		int stringFind=0;
-        while(i>= 0)
-        {	
-		    stringFind++;
-            if(pos[p++]!=i)
-            {
-				cout<<setw(10)<<"strFind"<<setw(10)<<i;
-				cout<<setw(10)<<"locate"<<setw(10)<<pos[p-1]<<endl;
-				//fpw.write((str+"\r\n").c_str);
-				
-				fprintf(fpw,"%s\r\n",str.c_str());
-				break;
-			}
-
-            i = strtxt.find(str,i+1);
-
-        }
-		cout<<setw(20)<<"stringFind="<<stringFind<<endl;
-		cout<<"---------------------------"<<endl;
-		//;
-    }
+//	for(int i2 =0;i2<1000;i2++)
+//    {
+//	   	str = strtxt.substr(rand()%n,20);
+//		cout<<"Patten:"<<str<<endl;
+//        int* pos = csa->locating(str.data(), num);
+//		
+//        cout<<setw(20)<<"locating"<<num<<endl;
+//        //showpos(pos,num);
+//        int i = strtxt.find(str);
+//        int p = 0;
+//		if(num<=0)
+//		{
+//			cout<<"locate havnt find"<<endl;
+//			fprintf(fpw,"%s\r\n",str.c_str());
+//			continue;
+//		}
+//		quick_sort(pos,0,num-1);
+//		int stringFind=0;
+//        while(i>= 0)
+//        {	
+//		    stringFind++;
+//            if(pos[p++]!=i)
+//            {
+//				cout<<setw(10)<<"strFind"<<setw(10)<<i;
+//				cout<<setw(10)<<"locate"<<setw(10)<<pos[p-1]<<endl;
+//				//fpw.write((str+"\r\n").c_str);
+//				
+//				fprintf(fpw,"%s\r\n",str.c_str());
+//				break;
+//			}
+//
+//            i = strtxt.find(str,i+1);
+//
+//        }
+//		cout<<setw(20)<<"stringFind="<<stringFind<<endl;
+//		cout<<"---------------------------"<<endl;
+//		//;
+//    }
 	fclose(fp);
 	fclose(fpw);
 }

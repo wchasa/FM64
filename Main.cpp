@@ -1,281 +1,271 @@
-//wch
 #include <stdlib.h>
-#include <string.h>
-#include "FM.h"
-#include <ctime>
-#include <fstream>
-#include <iostream>
 #include <vector>
-using namespace std;
 
+#include <algorithm>
+//#include "Transform.h"
+#include <iostream>
+#include <tuple>
+#include <stdio.h>
+#include <cstring>
+#include <time.h>
+#include<stdlib.h>
+#include<string.h>
+#include"FM.h"
+#include<ctime>
+#include<fstream>
+#include<iostream>
+//#define READSIZE 1024*1024*5
+using namespace std;
 void usage();
 void helpbuild();
 void helpload();
 void helpsave();
 void helpcount();
 void helplocate();
-void splitcommand(string command, string result[]);
-void quick_sort(int *s, int l, int r);
-void compare(vector<int> ivector, int *pos, int num);
-void showpos(vector<int> ivector);
-void showpos(int *pos, int num);
-int stupidRank(unsigned char* c,int length,int& ch,int pos);
-int main(int argc, char *argv[])
+void splitcommand(string command,string result[]);
+void showpos(int * pos,int num);
+int main(int argc, char* argv[])
 {
-    int *pos;
-    int num = 0;
-    //	usage();
-    string command;
-    string result[2];
-    string path,path2;
-    string patten = "together of";
-    cout<<patten<<endl;
-    char filename[100] = {'\0'};
-    char indexname[100] = {'\0'};
-    FM *csa = NULL;
-    result[0] = "";
-    path = "";
-    command = "";
-    path = "bible";
-    //path2 ="/home/wch/CMake Practice.pdf";
-    if (csa != NULL)
-	delete csa;
-    csa = NULL;
-    csa = new FM(path.data());
-    
-    //csa->save(path2.data());
-    //csa=new FM();
-	//csa->load(path2.data());
-    int bit = 'M';
- //	int rankresult = csa->wt.fm->GetRoot()->Rank(100,bit);
- //   int strankresult = stupidRank(csa->wt.fm->bwt,1024*1024,bit,100);
- //  csa->wt.fm->bwt[2];
- // bwt
- // cout << "Rank(100,bit) =  " << rankresult << endl;
- // cout << "stupidRank(100,bit) =  " << strankresult << endl;
-    if (csa != NULL)
-    {
+	usage();
+	string command;
+	string  result[2];
+	char filename[100]={'\0'};
+	char indexname[100]={'\0'};
+	FM *csa=NULL;
+	while(1)
+	{
+		result[0]="";
+		result[1]="";
+		command="";
+		cout<<">";
+		getline(cin,command);
+		splitcommand(command,result);
+		if(result[0]=="quit")
+			break;
+		else if(result[0]=="build")
 		{
-
-			if (csa != NULL)
+			if(csa!=NULL)
+				delete csa;
+			csa=NULL;
+			csa=new FM(result[1].data());
+		}
+		else if(result[0]=="count")
+		{
+			int  num=0;
+			if(csa!=NULL)
 			{
-             //csa->counting(patten.data(),num);
-			 pos = csa->locating(patten.data(), num);
-             showpos(pos,num);
-			//cout << "occs:" << num << endl;
-           // shmctl(pos, IPC_RMID, NULL) ;
-		//	showpos(pos, num);
-			delete[] pos;
+				csa->counting(result[1].data(),num);
+				cout<<"occs: "<<num<<endl;
 			}
 			else
-			cout << "build a FM first" << endl;
+			{
+				cout<<"build a FM first"<<endl;
+			}
 		}
-    }
-    vector<int> ivector;
-    cout << "string search patten " << path << endl;
-    FILE *fp = fopen(path.data(), "r+");
-    if (fp == NULL)
-    {
-		cout << "Be sure the file is available" << endl;
-		exit(0);
-    }
-    fseek(fp, 0, SEEK_END);
-    long count = ftell(fp) + 1;
-    unsigned char *T = new unsigned char[count];
-    fseek(fp, 0, SEEK_SET);
-    
-    int e = 0;
-    int num2 = 0;
-    while ((e = fread(T + num2, sizeof(uchar), count - 1 - num2, fp)) != 0)
-	num2 = num2 + e;
-    if (num2 != count - 1)
-    {
-		cout << "Read source file failed" << endl;
-		exit(0);
-    }
-    T[count - 1] = 0;
-    string str((char *)T);
-    int ipos = str.find(patten);
-    //pos = csa->locating(patten.data(), num);
-    // for(int i =0;i<num;i++)
-    // {
-    
-    //     string strtemp = str.substr(pos[i],4);
-    //     cout << strtemp<<endl;
-    // }
-   
-    while (ipos != -1)
-    {
-		ivector.push_back(ipos);
-		ipos = str.find(patten, ipos + 1);
+		else if(result[0]=="locate")
+		{
+			int * pos;
+			int num=0;
+			if(csa!=NULL)
+			{
+				pos=csa->locating(result[1].data(),num);
+				showpos(pos,num);
+				delete [] pos;
+			}
+			else
+				cout<<"build a FM first"<<endl;
+		}
+		else if(result[0]=="load")
+		{
+			if(csa!=NULL)
+				delete csa;
+			csa=new FM();
+			csa->load(result[1].data());
+		}
+		else if(result[0]=="save")
+		{
+			csa->save(result[1].data());
+		}
+		else if(result[0]=="size")
+		{
+			if(csa!=NULL)
+				cout<<"File Size :"<<csa->getN()<<",TreeSize:"<<csa->sizeInByteForCount()<<",CompressRate"<<csa->compressRatioForCount()<<endl;
+			else
+				cout<<"build a FM first"<<endl;
+		}
+		else if(result[0]=="help")
+		{
+			if(result[1]=="build")
+				helpbuild();
+			if(result[1]=="count")
+				helpcount();
+			if(result[1]=="locate")
+				helplocate();
+			if(result[1]=="load")
+				helpload();
+			if(result[1]=="save")
+				helpsave();
+		}
+		else
+			usage();
+	}
+	return 0;
+}
+// int main(int argc, char* argv[])
+// {
+// 	int times =1000;
+// 	int ii=0;
+// 	FILE* fp;
+// 	time_t end, start;
+// 	double duration;
+// 	double duration2;
+// 	vector<string> pathList;
+// 	//pathList.push_back("/home/wch/testdata/dna");
+// 	//pathList.push_back("E:\\��������\\��������\\highly-repetive\\einstein.en.txt");
+// 	pathList.push_back("/home/wch/testdata/FIle/dna");
+// 	pathList.push_back("/home/wch/testdata/FIle/proteins");
+// 	pathList.push_back("/home/wch/testdata/FIle/para");
+// 	pathList.push_back("/home/wch/testdata/FIle/english");
+// 	for (int i = 0; i < pathList.size(); i++)
+// 	{
+// 		cout<<"---------------------------------------------"<<endl;
+// 		fp = fopen( pathList[i].c_str(), "r");
+// 		if (fp==NULL)
+// 		{
+// 			printf("The file %s is not exist.", pathList[i].c_str());
+// 			continue;
+// 		}
+// 		fseek(fp, 0L, SEEK_END);
+// 		long size = ftell(fp);
+// 		fseek(fp, 0, SEEK_SET);
+// 		size = size < READSIZE ? size : READSIZE;
+// 		unsigned char* list = new unsigned char[size+1];
+// 		long count = fread(list, sizeof(char), size, fp);
+// 		fclose(fp);
+// 		printf("File Name: %s\nbefore compress size :%5fKB\n", pathList[i].c_str(), static_cast<double>(count / 1024));
+// 		list[count] = '\0';
+// 		FM *csa=NULL;
+// 		start = clock();
+// 		csa=new FM(pathList[i].c_str());
+// 		end = clock();
+// 		duration =(end-start)/CLOCKS_PER_SEC;
 		
-    }
-   showpos(ivector);
-   compare(ivector, pos, num);
-    cout << ">";
-    char c;
-    cin >> c;
-    return 0;
-}
-int stupidRank(unsigned char* c,int length,int& ch,int pos)
+// 		cout<<"Adaptive-FM durationOF constructwavelettre："<<duration<<"S"<<endl;
+// 		cout<<"Adaptive-FM compress rate:"<<csa->compressRatioForCount()<<endl;
+// 			for (ii = 0; ii < times; ii++)
+// 			{
+
+// 				srand(time(NULL));
+// 				int r = rand() % READSIZE;
+// 				//int r = 2;
+// 				char ch[10];
+// 				memcpy(ch, list+ r, 10);
+// 				string strpatten(ch);
+// 				strpatten = strpatten.substr(0, 10);
+// 				//strpatten._BUF_SIZE = ch;
+// 				start = clock();
+// 				int num = 0;
+// 				csa->counting(strpatten.data(),num);
+// 				end = clock();
+// 				duration += end - start;
+
+// 				if( num > 0)
+// 				{
+// 					//printf("the patten exist %d times", get<1>(postuple)-get<0>(postuple)+1);
+// 					//printf(", their position are as follows :");
+// 					start = clock();
+// 					int *pos=csa->locating(strpatten.data(),num);
+// 					//vector<unsigned int> i = tree->locate(postuple);
+// 					end = clock();
+// 					duration2 += end - start ;
+// 				//printf("\ndurationOF locate %fms\n", duration);
+// 				}
+// 			}	
+// 			duration = static_cast<double>(duration) / times/1000;
+// 			duration2 = static_cast<double>(duration2) / times/1000;
+// 			printf("\nAdaptive-FM durationOF count %fms\n", duration);
+// 			printf("\nAdaptive-FM durationOF locat %fms\n", duration2);
+// 			cout << "\end!\n";
+// 		}
+// }
+void showpos(int * pos,int num)
 {
-    int occTimes = 0;
-    for (int i = 0; i < (pos < length ? pos : length); i++)	{
-		if (c[i] == ch)
-	    occTimes++;
-	}
-    return occTimes;
-}
-void showpos(int *pos, int num)
-{
-	quick_sort(pos,0,num-1);
-    cout << "occs:" << num << endl;
-    for (long int i = 0; i < num; i++)
-    {
-	cout << pos[i] << endl;
-	if ((i + 1) % 20 == 0)
+	cout<<"occs:"<<num<<endl;
+	for(long int i=0;i<num;i++)
 	{
-	    char command;
-	    cout << "-----------------more---------------------";
-	    system("stty raw");
-	    command = getchar();
-	    cout << endl
-		 << '\r';
-	    system("stty cooked");
-	    if (command == 27)
-	    {
-		cout << endl;
-		return;
-	    }
+		cout<<pos[i]<<endl;
+		if((i+1)%20==0)
+		{
+			char command;
+			cout<<"-----------------more---------------------";
+			system("stty raw");
+			command=getchar();
+     		cout<<endl<<'\r';
+			system("stty cooked");
+			if(command==27)
+			{
+				cout<<endl;
+				return ;
+			}
+		}
 	}
-    }
-}
-void compare(vector<int> ivector, int *pos, int num)
-{
-    quick_sort(pos, 0, num - 1);
-    vector<int> mismatchIndex;
-    if (ivector.size() == num)
-    {
-	int index = 0;
-	while (index < num)
-	{
-	    if (ivector[index] != pos[index])
-		mismatchIndex.push_back(ivector[index]);
-	}
-	if (mismatchIndex.size() > 0)
-	{
-	    cout << "the mismatch pos number is:" << ivector.size() << endl
-		 << "the mismatch pos are as follows:" << endl;
-	    for (int i = 0; i < mismatchIndex.size(); i++)
-	    {
-		cout << mismatchIndex[i] << ",";
-		if ((i + 1) % 10 == 0)
-		    cout << endl;
-	    }
-	}
-    }
-}
-void showpos(vector<int> ivector)
-{
-    cout << "occs:" << ivector.size() << endl;
-    for (long int i = 0; i < ivector.size(); i++)
-    {
-	cout << ivector[i] << endl;
-	if ((i + 1) % 20 == 0)
-	{
-	    char command;
-	    cout << "-----------------more---------------------";
-	    system("stty raw");
-	    command = getchar();
-	    cout << endl
-		 << '\r';
-	    system("stty cooked");
-	    if (command == 27)
-	    {
-		cout << endl;
-		return;
-	    }
-	}
-    }
 }
 
-void splitcommand(string command, string result[])
+
+void splitcommand(string command,string result[])
 {
 
-    int i = 0;
-    int start = 0;
-    int len = command.length();
-    result[0] = command;
-    for (i = 0; i < len; i++)
-    {
-	if (command.at(i) != ' ')
-	    continue;
-	result[0] = command.substr(0, i);
-	start = i + 1;
-	break;
-    }
-    result[1] = command.substr(start, len);
+	int i=0;
+	int start=0;
+	int len=command.length();
+	result[0]=command;
+	for(i=0;i<len;i++)
+	{
+		if(command.at(i)!=' ')
+			continue;
+		result[0]=command.substr(0,i);
+		start=i+1;
+		break;
+	}
+	result[1]=command.substr(start,len);
 }
 
 void usage()
 {
-    cout << "--------------------------------------------------------------------------------------" << endl;
-    cout << "The flowing commands are supported " << endl;
-    cout << "	help XX: show the details for the command XX" << endl;
-    cout << "	build XX:build the index of file XX" << endl;
-    cout << "	load  XX: load the index file XX" << endl;
-    cout << "	save XX: write the csa to a index file XX" << endl;
-    cout << "	count XX: count the pattern XX's occs" << endl;
-    cout << "	locate YY: enum eyery  position of the pattern" << endl;
-    cout << "	size: the size of the csa" << endl;
-    cout << "	quit: say goodbye" << endl;
+	cout<<"--------------------------------------------------------------------------------------"<<endl;
+	cout<<"The flowing commands are supported "<<endl;
+	cout<<"	help XX: show the details for the command XX"<<endl;
+	cout<<"	build XX:build the index of file XX"<<endl;
+	cout<<"	load  XX: load the index file XX"<<endl;
+	cout<<"	save XX: write the csa to a index file XX"<<endl;
+	cout<<"	count XX: count the pattern XX's occs" <<endl;
+	cout<<"	locate YY: enum eyery  position of the pattern"<<endl;
+	cout<<"	size: the size of the csa"<<endl;
+	cout<<"	quit: say goodbye"<<endl;
+
 }
 void helpbuild()
 {
-    cout << "build XX" << endl;
-    cout << "	XX:the source file,it's you responsibility to provide a correct path" << endl;
+	cout<<"build XX"<<endl;
+	cout<<"	XX:the source file,it's you responsibility to provide a correct path"<<endl;
 }
 void helpcount()
 {
-    cout << "count XX" << endl;
-    cout << "	XX:the pattern.you have the responsibility to ensure the index csa is nearby,otherwise,nothing you will get" << endl;
+	cout<<"count XX"<<endl;
+	cout<<"	XX:the pattern.you have the responsibility to ensure the index csa is nearby,otherwise,nothing you will get"<<endl;
 }
 void helplocate()
 {
-    cout << "locate XX" << endl;
-    cout << "	XX: the pattern.it's like count, and you can scan the positions of all the occs in a manner like the system command -more-" << endl;
+	cout<<"locate XX"<<endl;
+	cout<<"	XX: the pattern.it's like count, and you can scan the positions of all the occs in a manner like the system command -more-"<<endl;
 }
 void helpload()
 {
-    cout << "load XX" << endl;
-    cout << "	XX: the FM-index file, the command will read the index file and build a csa secretly" << endl;
+	cout<<"load XX"<<endl;
+	cout<<"	XX: the FM-index file, the command will read the index file and build a csa secretly"<<endl;
 }
 void helpsave()
 {
-    cout << "save XX" << endl;
-    cout << "	XX: the FM-index file, the command will save the csa in file XX" << endl;
-}
-//快速排序
-void quick_sort(int *s, int l, int r)
-{
-    if (l < r)
-    {
-	//Swap(s[l], s[(l + r) / 2]); //将中间的这个数和第一个数交换 参见注1
-	int i = l, j = r, x = s[l];
-	while (i < j)
-	{
-	    while (i < j && s[j] >= x) // 从右向左找第一个小于x的数
-		j--;
-	    if (i < j)
-		s[i++] = s[j];
-
-	    while (i < j && s[i] < x) // 从左向右找第一个大于等于x的数
-		i++;
-	    if (i < j)
-		s[j--] = s[i];
-	}
-	s[i] = x;
-	quick_sort(s, l, i - 1); // 递归调用
-	quick_sort(s, i + 1, r);
-    }
+	cout<<"save XX"<<endl;
+	cout<<"	XX: the FM-index file, the command will save the csa in file XX"<<endl;
 }
