@@ -245,7 +245,7 @@ int * ABS_FM::Locating_parrel(const char * pattern,int &num)
 		for(int i=0;i<num/2;i++)
 			{
 				pos[i]=Lookup(Left + i);
-				cout<<i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
+			//	cout<<i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
 			}
 		shmaddr = (int*)shmat( shmid, NULL, 0 ) ;	
 		memcpy(shmaddr,pos,sizeof(int)*num/2);
@@ -259,7 +259,7 @@ int * ABS_FM::Locating_parrel(const char * pattern,int &num)
 		for(int i=num/2;i<num;i++)
 		{
 			pos[i]=Lookup(Left + i);
-		//	cout<<i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
+			//cout<<i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
 		}
 			
 		shmaddr = (int*)shmat( shmid, NULL, 0 ) ;	

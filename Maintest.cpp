@@ -46,7 +46,10 @@ int main(int argc, char *argv[])
     while (!feof(fp))                                   //循环读取每一行，直到文件尾
     {
         fgets(StrLine,1024,fp); 
+        if(StrLine[0]=='#')
+            continue;
         StrLine[strlen(StrLine)-1]='\0';
+        cout<<"FileName:"<<StrLine<<endl;
         csa = NULL;
         stime= clock();
         csa = new FM(StrLine);
@@ -66,53 +69,58 @@ int main(int argc, char *argv[])
         }
         fseek(fp2, 0, SEEK_END);
         int n = ftell(fp2) + 1;
-        unsigned char * pattenT = new unsigned char[1024];
+        unsigned char * searchT = new unsigned char[1024];
         fseeko(fp2, 0, SEEK_SET);
         int e=0;
         int num = 0;
         //num = fread(T,sizeof(unsigned char),n,fp2);
         //T[n - 1] = 0;
        
-    //const unsigned char* cpc =T;
-        string strtxt((char *)T),str;
+        //string strtxt((char *)pattenT),str;
         stime = clock();
         for (int i2 = 0; i2 < MAX; i2++)
         {
-            str = strtxt.substr(rand() % n, 10);
+
+            fseek(fp2, rand() % n, SEEK_SET);
+            fread(searchT, sizeof(unsigned char), 15, fp2);
+            //((char*)T);
+            //str = searchT;
+            cout<<setw(30)<<"Patten:"<<searchT<<endl;
+            stime = clock();
+            int *pos = csa->locating((const char *)searchT, num);
+            //cout<<"Count:"<<setw(10)<<num<<endl;
+            etime = clock();
+            tcost += (double)(etime - stime);
+            //str = strtxt.substr(rand() % (n-100), 10);
             //cout<<"Patten:"<<str<<endl;
-            int *pos = csa->locating(str.data(), num);
+            //int *pos = csa->locating(str.data(), num);
             //cout<<"Pid:"<<getpid()<<endl;
         }
-        etime = clock();
-        tcost = (double)(etime - stime);
+       // etime = clock();
+       // tcost = (double)(etime - stime);
         cout << "chuanxing:" << setw(10) << tcost / CLOCKS_PER_SEC / MAX << "sec" << endl;
-        stime = clock();
+       // stime = clock();
+        tcost=0;
         for (int i2 = 0; i2 < MAX; i2++)
         {
-            str = strtxt.substr(rand() % n, 10);
-            //cout<<"Patten:"<<str<<endl;
-            int *pos = csa->Locating_parrel(str.data(), num);
-            //cout<<"Pid:"<<getpid()<<endl;
+            fseek(fp2, rand() % n, SEEK_SET);
+            fread(searchT, sizeof(unsigned char), 15, fp2);
+            //((char*)T);
+            //str = searchT;
+            cout<<setw(30)<<"Patten:"<<searchT<<endl;
+            stime = clock();
+            int *pos = csa->Locating_parrel((const char *)searchT, num);
+            //cout<<"Count:"<<setw(10)<<num<<endl;
+            etime = clock();
+            tcost += (double)(etime - stime);
         }
-        etime = clock();
-        tcost = (double)(etime - stime);
+       // etime = clock();
+        //tcost = (double)(etime - stime);
         cout << "parrel:" << setw(10) << tcost / CLOCKS_PER_SEC / MAX << "sec" << endl;
         delete csa;
          fclose(fp2);
     }   
- //    char filename[100] = {'\0'};
- //    char indexname[100] = {'\0'};
- //    FM *csa = NULL;
- //    result[0] = "";
- //    path = "";
- //    command = "";
- //    path = "/home/wch/CMake Practice.pdf";
- //    //path2 ="/home/wch/CMake Practice.pdf";
- //    if (csa != NULL)
-	// delete csa;
- //    csa = NULL;
- //    csa = new FM(path.data());
-	
+    fclose(fp);
     return 0;
 }
 int stupidRank(unsigned char* c,int length,int& ch,int pos)
