@@ -49,18 +49,18 @@ class FM
 		FM(const FM & h):wt(h.wt){}
 		FM& operator =(const FM&h){wt=h.wt;return *this;};
 		
-		void counting(const char *pattern,int &num);
-		int * locating(const char *pattern,int & num);
-		int * Locating_parrel(const char *pattern,int & num);
+		void counting(const char *pattern,i64 &num);
+		i64 * locating(const char *pattern,i64 & num);
+		i64 * Locating_parrel(const char *pattern,i64 & num);
 		unsigned char * extracting(int pos,int len);
 		
 		int load(const char * indexfile);
 		int save(const char * indexfile);
 		void Codedistribution(int &Plain, int &Gama, int &Fix);
-		int getN();
+		i64 getN();
 		int getAlphabetSize();
-		int sizeInByte();
-		int sizeInByteForCount();
+		i64 sizeInByte();
+		i64 sizeInByteForCount();
 		double compressRatio();
 		double compressRatioForCount();
 		WT_Handle wt;

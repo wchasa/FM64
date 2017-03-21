@@ -6,7 +6,7 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/my_fm_Fixcode",
+            "program": "${workspaceRoot}/Single",
             "args": [],
           //  "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

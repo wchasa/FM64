@@ -41,10 +41,10 @@ class ABS_FM
 		ABS_FM(const char * filename,int block_size=256,int D=32);
 		ABS_FM(){};
 		virtual ~ABS_FM();
-		void Counting(const char * partten,int &num);
-		int * Locating(const char * pattern,int &num);
-		int * Locating_parrel(const char * pattern,int &num);
-		unsigned char* Extracting(int pos,int len);
+		void Counting(const char * partten,i64 &num);
+		i64 * Locating(const char * pattern,i64 &num);
+		i64 * Locating_parrel(const char * pattern,i64 &num);
+		unsigned char* Extracting(i64 pos,i64 len);
 		int Load(loadkit & s);
 		int Save(savekit & s);
 		int BuildTree(int speedlevel=1);
@@ -91,8 +91,8 @@ class ABS_FM
 		void Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right);
 		i64 LF(i64 i);
 		unsigned char L(int i);
-		void DrawBackSearch(const char * pattern,int &Left,int & Right);
-		int Lookup(int i);
+		void DrawBackSearch(const char * pattern,i64 &Left,i64 & Right);
+		i64 Lookup(i64 i);
 
 		virtual int TreeCode(){return -1;};
 

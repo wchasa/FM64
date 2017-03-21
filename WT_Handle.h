@@ -29,10 +29,10 @@ class WT_Handle
 		WT_Handle & operator = (const WT_Handle & );
 		~WT_Handle();
 		
-		void Counting(const char * pattern,int &num) { fm->Counting(pattern,num); };
-		int * Locating(const char * pattern,int &num){ return fm->Locating(pattern,num); };
-		int * Locating_parrel(const char * pattern,int &num){ return fm->Locating_parrel(pattern,num); };
-		unsigned char *Extracting(int pos,int len){ return fm->Extracting(pos,len);};
+		void Counting(const char * pattern,i64 &num) { fm->Counting(pattern,num); };
+		i64 * Locating(const char * pattern,i64 &num){ return fm->Locating(pattern,num); };
+		i64 * Locating_parrel(const char * pattern,i64 &num){ return fm->Locating_parrel(pattern,num); };
+		unsigned char *Extracting(i64 pos,i64 len){ return fm->Extracting(pos,len);};
 		int Load(loadkit & s) { return fm->Load(s);};
 		int Save(savekit & s){ return fm->Save(s);};
 

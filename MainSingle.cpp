@@ -8,7 +8,7 @@
 #include<iomanip>
 #include <string>
 using namespace std;
-#define MAX 100
+#define MAX 1000
 void usage();
 void helpbuild();
 void helpload();
@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
     FM *csa = NULL;
     string strpathFM,strpathfile,str;
 	strpathFM ="/home/wch/testfile/ein.fm";
-	strpathfile ="./bible";
-	//strpathfile ="/home/wch/testfile/einstein.en.txt";
+	//strpathfile ="./bible";
+	strpathfile ="/home/wch/testfile/einstein.en.txt";
     cout<<"input file path:";
     //getline(cin,strpath);/home/wch/codebase
 	//strpath = "/home/wch/codebase/sources";
@@ -46,15 +46,17 @@ int main(int argc, char *argv[])
 	unsigned char *searchT = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e   = 0;
-	int num = 0,num2 = 0;
+	i64 num = 0,num2 = 0;
 	//num = fread(T,sizeof(unsigned char),n,fp);
 	//T[n-1]=0;
    // string strtxt((char*)T);
 	stime = clock();
 	if (csa != NULL)
 	    delete csa;
-	csa = new FM(strpathfile.c_str());
-	//csa->load(strpathFM.data());
+	//csa = new FM(strpathfile.c_str());
+
+	csa = new FM();
+	csa->load(strpathFM.data());
 	etime = clock();
 	tcost = etime-stime;
 	cout<<"build takes:"<<setw(10)<<tcost/CLOCKS_PER_SEC<<"sec"<<endl;
@@ -62,6 +64,7 @@ int main(int argc, char *argv[])
 	//cout<<"Plain:"<<setw(10)<<Plaincount<<"";
 	tcost = 0;
 	stime1 = clock();
+//	engthen his for""
 	for(int i2 =0;i2<MAX;i2++)
 	{
 		//str = strtxt.substr(rand()%n,10);
@@ -74,17 +77,21 @@ int main(int argc, char *argv[])
 		//str = searchT;
 		cout<<setw(20)<<"Patten:"<<searchT<<endl;
 		stime = clock();
-	    int *pos = csa->Locating_parrel((const char *)searchT, num);
+	    i64 *pos = csa->Locating_parrel((const char *)searchT, num);
 	    cout<<setw(20)<<"CountP:"<<setw(10)<<num<<endl;
 	    etime = clock();
 	    tcost += (double)(etime - stime);
 
 		stime = clock();
-		int *pos2 = csa->locating((const char*)searchT, num2);
+		i64 *pos2 = csa->locating((const char*)searchT, num2);
 		cout<<setw(20)<<"CountB:"<<setw(10)<<num<<endl;
 		etime = clock();
 		tcost += (double)(etime - stime);
-		//cout<<"ChuanPid:"<<getpid()<<endl;
+		//cout<<"ChuanPid:"<<getpid()<<endl;f
+		if(num!=num2)
+		{
+			cout<<"count diff!"<<endl;
+		}
 		for(int i=0;i<num;i++)
 		{
 			if(pos[i]!=pos2[i])

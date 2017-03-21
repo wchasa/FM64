@@ -1,742 +1,455 @@
-the coasts thereof
-0.char=         o;rank_right=   1249615;rank_left=   1235278
-1.char=         o;rank_right=    468120;rank_left=    429622
-2.char=         o;rank_right=    210470;rank_left=    172802
-3.char=         o;rank_right=     81952;rank_left=     45624
-0.occ_left:     45624,occ_right     81952,value36328
-4.char=         e;rank_right=   1899890;rank_left=   1898761
-5.char=         e;rank_right=   1026823;rank_left=   1025696
-6.char=         e;rank_right=    531177;rank_left=    530203
-7.char=         e;rank_right=    288965;rank_left=    288007
-1.occ_left:    288007,occ_right    288965,value958
-8.char=         r;rank_right=   1156953;rank_left=   1155995
-9.char=         r;rank_right=    580294;rank_left=    579336
-10.char=         r;rank_right=    342980;rank_left=    342980
-11.char=         r;rank_right=    152221;rank_left=    151263
-12.char=         r;rank_right=     59836;rank_left=     59836
-2.occ_left:     91427,occ_right     92385,value958
-13.char=         e;rank_right=   2070356;rank_left=   2069398
-14.char=         e;rank_right=   1132298;rank_left=   1131340
-15.char=         e;rank_right=    592039;rank_left=    591081
-16.char=         e;rank_right=    325542;rank_left=    324584
-3.occ_left:    324584,occ_right    325542,value958
-17.char=         h;rank_right=   1190059;rank_left=   1189101
-18.char=         h;rank_right=    587780;rank_left=    587780
-19.char=         h;rank_right=    395291;rank_left=    394333
-20.char=         h;rank_right=    205916;rank_left=    205916
-4.occ_left:    188417,occ_right    189375,value958
-21.char=         t;rank_right=   1415844;rank_left=   1414888
-22.char=         t;rank_right=    765273;rank_left=    764387
-23.char=         t;rank_right=    385398;rank_left=    385398
-24.char=         t;rank_right=    167537;rank_left=    167537
-5.occ_left:    211452,occ_right    212338,value886
-25.char=          ;rank_right=   2314954;rank_left=   2314954
-26.char=          ;rank_right=    769301;rank_left=    769301
-6.occ_left:    644122,occ_right    645008,value886
-27.char=         s;rank_right=    473210;rank_left=    472448
-28.char=         s;rank_right=    279120;rank_left=    278472
-29.char=         s;rank_right=    163110;rank_left=    162644
-30.char=         s;rank_right=    120019;rank_left=    119931
-31.char=         s;rank_right=     42780;rank_left=     42402
-7.occ_left:     42402,occ_right     42780,value378
-32.char=         t;rank_right=   2155538;rank_left=   2155242
-33.char=         t;rank_right=   1189473;rank_left=   1189207
-34.char=         t;rank_right=    629908;rank_left=    629756
-35.char=         t;rank_right=    272164;rank_left=    272110
-8.occ_left:    287341,occ_right    287401,value60
-36.char=         s;rank_right=   2330141;rank_left=   2330106
-37.char=         s;rank_right=   1311925;rank_left=   1311890
-38.char=         s;rank_right=    714212;rank_left=    714179
-39.char=         s;rank_right=    375976;rank_left=    375970
-40.char=         s;rank_right=    172982;rank_left=    172958
-9.occ_left:    172958,occ_right    172982,value24
-41.char=         a;rank_right=   2217865;rank_left=   2217852
-42.char=         a;rank_right=   1237721;rank_left=   1237716
-43.char=         a;rank_right=    537507;rank_left=    537507
-44.char=         a;rank_right=    249054;rank_left=    249054
-10.occ_left:    193575,occ_right    193583,value8
-45.char=         o;rank_right=    805043;rank_left=    805041
-46.char=         o;rank_right=    251878;rank_left=    251872
-47.char=         o;rank_right=    116370;rank_left=    116364
-48.char=         o;rank_right=     34879;rank_left=     34873
-11.occ_left:     34873,occ_right     34879,value6
-49.char=         c;rank_right=   1896615;rank_left=   1896615
-50.char=         c;rank_right=    627483;rank_left=    627477
-51.char=         c;rank_right=    313389;rank_left=    313383
-52.char=         c;rank_right=    130222;rank_left=    130222
-53.char=         c;rank_right=     98323;rank_left=     98323
-54.char=         c;rank_right=     48523;rank_left=     48523
-12.occ_left:     36315,occ_right     36321,value6
-55.char=          ;rank_right=    880070;rank_left=    880070
-56.char=          ;rank_right=    266593;rank_left=    266593
-13.occ_left:    211581,occ_right    211587,value6
-57.char=         e;rank_right=    150145;rank_left=    150139
-58.char=         e;rank_right=     70285;rank_left=     70279
-59.char=         e;rank_right=     39721;rank_left=     39715
-60.char=         e;rank_right=     30496;rank_left=     30490
-14.occ_left:     30490,occ_right     30496,value6
-61.char=         h;rank_right=    958311;rank_left=    958305
-62.char=         h;rank_right=    511863;rank_left=    511863
-63.char=         h;rank_right=    269616;rank_left=    269610
-64.char=         h;rank_right=    173842;rank_left=    173842
-15.occ_left:     95768,occ_right     95774,value6
-65.char=         t;rank_right=   1337818;rank_left=   1337812
-66.char=         t;rank_right=    695142;rank_left=    695136
-67.char=         t;rank_right=    383406;rank_left=    383406
-68.char=         t;rank_right=    167532;rank_left=    167532
-16.occ_left:    144198,occ_right    144204,value6
-                   0  pos=   3661123,Bit = 0,rank=   2310986
-                   1  pos=   1350137,Bit = 0,rank=    767499
-0.loop i=    613022  step=         1
-                   2  pos=    613022,Bit = 1,rank=    431980
-                   3  pos=    431979,Bit = 0,rank=    255073
-                   4  pos=    176906,Bit = 1,rank=    101787
-                   5  pos=    101786,Bit = 1,rank=     82360
-                   6  pos=     82359,Bit = 0,rank=     20845
-1.loop i=   1434760  step=         2
-                   7  pos=   1434760,Bit = 0,rank=    901141
-                   8  pos=    533619,Bit = 1,rank=    312360
-                   9  pos=    312359,Bit = 0,rank=    129796
-                  10  pos=    182563,Bit = 1,rank=    104011
-2.loop i=   2802042  step=         3
-                  11  pos=   2802042,Bit = 1,rank=   1781752
-                  12  pos=   1781751,Bit = 0,rank=    942512
-                  13  pos=    839239,Bit = 0,rank=    473980
-                  14  pos=    365259,Bit = 0,rank=    233171
-3.loop i=   1162413  step=         4
-                  15  pos=   1162413,Bit = 0,rank=    772814
-                  16  pos=    389599,Bit = 0,rank=    245181
-4.loop i=    174802  step=         5
-                  17  pos=    174802,Bit = 1,rank=     99098
-                  18  pos=     99097,Bit = 0,rank=     43047
-                  19  pos=     56050,Bit = 1,rank=     22314
-                  20  pos=     22313,Bit = 1,rank=     19663
-                  21  pos=     19662,Bit = 1,rank=      6688
-                  22  pos=      6687,Bit = 1,rank=      4835
-                  23  pos=      4834,Bit = 0,rank=       375
-                  24  pos=      4459,Bit = 1,rank=      4154
-                  25  pos=      4153,Bit = 1,rank=      4131
-5.loop i=    909593  step=         6
-                  26  pos=    909593,Bit = 1,rank=    653702
-                  27  pos=    653701,Bit = 0,rank=    385173
-                  28  pos=    268528,Bit = 1,rank=    172757
-                  29  pos=    172756,Bit = 0,rank=    138855
-6.loop i=   2072859  step=         7
-                  30  pos=   2072859,Bit = 1,rank=   1291098
-                  31  pos=   1291097,Bit = 1,rank=    652245
-                  32  pos=    652244,Bit = 0,rank=    370796
-                  33  pos=    281448,Bit = 0,rank=    167505
-7.loop i=   3630868  step=         8
-                  34  pos=   3630868,Bit = 1,rank=   2310194
-                  35  pos=   2310193,Bit = 0,rank=   1298790
-                  36  pos=   1011403,Bit = 0,rank=    544274
-                  37  pos=    467129,Bit = 0,rank=    249280
-8.loop i=   1248174  step=         9
-                  38  pos=   1248174,Bit = 0,rank=    826332
-                  39  pos=    421842,Bit = 1,rank=    253370
-                  40  pos=    253369,Bit = 0,rank=    116879
-                  41  pos=    136490,Bit = 0,rank=     60356
-                  42  pos=     76134,Bit = 0,rank=     64503
-                  43  pos=     11631,Bit = 1,rank=      8094
-                  44  pos=      8093,Bit = 1,rank=      2983
-                  45  pos=      2982,Bit = 1,rank=      1891
-                  46  pos=      1890,Bit = 0,rank=      1313
-9.loop i=    955474  step=        10
-                  47  pos=    955474,Bit = 0,rank=    684193
-                  48  pos=    271281,Bit = 0,rank=    227407
-10.loop i=     74258  step=        11
-                  49  pos=     74258,Bit = 0,rank=     14945
-                  50  pos=     59313,Bit = 1,rank=     28932
-                  51  pos=     28931,Bit = 1,rank=      1164
-                  52  pos=      1163,Bit = 1,rank=       983
-11.loop i=   2914510  step=        12
-                  53  pos=   2914510,Bit = 1,rank=   1866523
-                  54  pos=   1866522,Bit = 1,rank=    998407
-                  55  pos=    998406,Bit = 0,rank=    526807
-                  56  pos=    471599,Bit = 0,rank=    218320
-12.loop i=   3770204  step=        13
-                  57  pos=   3770204,Bit = 0,rank=   2325005
-                  58  pos=   1445199,Bit = 1,rank=    772583
-                  59  pos=    772582,Bit = 0,rank=    399444
-                  60  pos=    373138,Bit = 1,rank=    200373
-13.loop i=   2898404  step=        14
-                  61  pos=   2898404,Bit = 1,rank=   1851018
-                  62  pos=   1851017,Bit = 1,rank=    985335
-                  63  pos=    985334,Bit = 0,rank=    523326
-                  64  pos=    462008,Bit = 1,rank=    209638
-                  65  pos=    209637,Bit = 1,rank=     88848
-                  66  pos=     88847,Bit = 1,rank=     33473
-14.loop i=   3850030  step=        15
-                  67  pos=   3850030,Bit = 0,rank=   2349123
-                  68  pos=   1500907,Bit = 0,rank=    806818
-15.loop i=    724473  step=        16
-                  69  pos=    724473,Bit = 0,rank=    511081
-                  70  pos=    213392,Bit = 1,rank=    183011
-                  71  pos=    183010,Bit = 0,rank=     83918
-                  72  pos=     99092,Bit = 1,rank=     42560
-16.loop i=   2740591  step=        17
-                  73  pos=   2740591,Bit = 1,rank=   1727169
-                  74  pos=   1727168,Bit = 1,rank=    929796
-                  75  pos=    929795,Bit = 1,rank=    478260
-                  76  pos=    478259,Bit = 1,rank=    271691
-17.loop i=   1788957  step=        18
-                  77  pos=   1788957,Bit = 1,rank=   1143412
-                  78  pos=   1143411,Bit = 0,rank=    575133
-                  79  pos=    568278,Bit = 0,rank=    372697
-                  80  pos=    195581,Bit = 1,rank=    164496
-                  81  pos=    164495,Bit = 0,rank=    116427
-                  82  pos=     48068,Bit = 0,rank=     20084
-                  83  pos=     27984,Bit = 1,rank=     13677
-18.loop i=   3910996  step=        19
-                  84  pos=   3910996,Bit = 1,rank=   2372902
-                  85  pos=   2372901,Bit = 1,rank=   1334904
-                  86  pos=   1334903,Bit = 1,rank=    727945
-                  87  pos=    727944,Bit = 1,rank=    379483
-19.loop i=   1896749  step=        20
-                  88  pos=   1896749,Bit = 0,rank=   1225373
-                  89  pos=    671376,Bit = 0,rank=    426877
-20.loop i=    274883  step=        21
-                  90  pos=    274883,Bit = 0,rank=    174853
-                  91  pos=    100030,Bit = 1,rank=     69649
-                  92  pos=     69648,Bit = 0,rank=     23308
-                  93  pos=     46340,Bit = 1,rank=      9077
-21.loop i=   2707108  step=        22
-                  94  pos=   2707108,Bit = 0,rank=   1701616
-                  95  pos=   1005492,Bit = 1,rank=    595722
-                  96  pos=    595721,Bit = 1,rank=    289140
-                  97  pos=    289139,Bit = 1,rank=    106394
-22.loop i=   3019921  step=        23
-                  98  pos=   3019921,Bit = 1,rank=   1914850
-                  99  pos=   1914849,Bit = 1,rank=   1033489
-                 100  pos=   1033488,Bit = 0,rank=    532490
-                 101  pos=    500998,Bit = 1,rank=    223979
-                 102  pos=    223978,Bit = 0,rank=     97888
-23.loop i=   3306585  step=        24
-                 103  pos=   3306585,Bit = 0,rank=   2093389
-                 104  pos=   1213196,Bit = 1,rank=    716867
-                 105  pos=    716866,Bit = 0,rank=    370224
-                 106  pos=    346642,Bit = 0,rank=    183326
-                 107  pos=    163316,Bit = 0,rank=     90194
-                 108  pos=     73122,Bit = 1,rank=     39840
-                 109  pos=     39839,Bit = 0,rank=     19959
-24.loop i=   2505545  step=        25
-                 110  pos=   2505545,Bit = 0,rank=   1590448
-                 111  pos=    915097,Bit = 1,rank=    543257
-                 112  pos=    543256,Bit = 0,rank=    242461
-                 113  pos=    300795,Bit = 0,rank=    168317
-                 114  pos=    132478,Bit = 0,rank=     81229
-                 115  pos=     51249,Bit = 1,rank=     28389
-                 116  pos=     28388,Bit = 1,rank=     10684
-                 117  pos=     10683,Bit = 0,rank=      5391
-                 118  pos=      5292,Bit = 0,rank=      3655
-                 119  pos=      1637,Bit = 1,rank=      1003
-25.loop i=    951168  step=        26
-                 120  pos=   3661124,Bit = 0,rank=   2310986
-                 121  pos=   1350138,Bit = 0,rank=    767499
-26.loop i=    613023  step=         1
-                 122  pos=    613023,Bit = 0,rank=    431980
-                 123  pos=    181043,Bit = 1,rank=    150662
-                 124  pos=    150661,Bit = 1,rank=     68552
-                 125  pos=     68551,Bit = 0,rank=     22280
-                 126  pos=     46271,Bit = 0,rank=     19725
-                 127  pos=     26546,Bit = 1,rank=     26492
-27.loop i=   4015733  step=         2
-                 128  pos=   4015733,Bit = 0,rank=   2414392
-                 129  pos=   1601341,Bit = 1,rank=    845611
-                 130  pos=    845610,Bit = 0,rank=    448769
-                 131  pos=    396841,Bit = 0,rank=    214947
-                 132  pos=    181894,Bit = 0,rank=     97236
-                 133  pos=     84658,Bit = 0,rank=     43308
-28.loop i=   1320391  step=         3
-                 134  pos=   1320391,Bit = 0,rank=    860270
-                 135  pos=    460121,Bit = 0,rank=    261855
-29.loop i=    228650  step=         4
-                 136  pos=    228650,Bit = 1,rank=    139171
-                 137  pos=    139170,Bit = 0,rank=     62208
-                 138  pos=     76962,Bit = 0,rank=     31862
-                 139  pos=     45100,Bit = 1,rank=     44385
-                 140  pos=     44384,Bit = 1,rank=     41386
-                 141  pos=     41385,Bit = 1,rank=     40281
-30.loop i=    839454  step=         5
-                 142  pos=    839454,Bit = 0,rank=    599008
-                 143  pos=    240446,Bit = 1,rank=    209921
-                 144  pos=    209920,Bit = 0,rank=     95593
-                 145  pos=    114327,Bit = 1,rank=     50025
-31.loop i=   2748056  step=         6
-                 146  pos=   2748056,Bit = 1,rank=   1732751
-                 147  pos=   1732750,Bit = 1,rank=    933904
-                 148  pos=    933903,Bit = 1,rank=    482000
-                 149  pos=    481999,Bit = 0,rank=    274154
-                 150  pos=    207845,Bit = 0,rank=    132235
-32.loop i=   2384747  step=         7
-                 151  pos=   2384747,Bit = 1,rank=   1517199
-                 152  pos=   1517198,Bit = 0,rank=    816001
-                 153  pos=    701197,Bit = 1,rank=    442631
-                 154  pos=    442630,Bit = 1,rank=    225063
-                 155  pos=    225062,Bit = 1,rank=     99616
-                 156  pos=     99615,Bit = 0,rank=     44452
-33.loop i=   2678831  step=         8
-                 157  pos=   2678831,Bit = 1,rank=   1687092
-                 158  pos=   1687091,Bit = 0,rank=    899459
-                 159  pos=    787632,Bit = 0,rank=    473126
-                 160  pos=    314506,Bit = 0,rank=    222472
-34.loop i=   1122359  step=         9
-                 161  pos=   1122359,Bit = 0,rank=    764347
-                 162  pos=    358012,Bit = 1,rank=    242824
-                 163  pos=    242823,Bit = 0,rank=    110762
-                 164  pos=    132061,Bit = 0,rank=     59315
-                 165  pos=     72746,Bit = 0,rank=     63287
-                 166  pos=      9459,Bit = 1,rank=      7136
-                 167  pos=      7135,Bit = 1,rank=      2071
-                 168  pos=      2070,Bit = 0,rank=      1150
-                 169  pos=       920,Bit = 0,rank=       580
-                 170  pos=       340,Bit = 0,rank=        69
-35.loop i=   2483548  step=        10
-                 171  pos=   2483548,Bit = 0,rank=   1581291
-                 172  pos=    902257,Bit = 1,rank=    537536
-                 173  pos=    537535,Bit = 0,rank=    237760
-                 174  pos=    299775,Bit = 0,rank=    167400
-                 175  pos=    132375,Bit = 0,rank=     81192
-                 176  pos=     51183,Bit = 1,rank=     28357
-                 177  pos=     28356,Bit = 1,rank=     10681
-                 178  pos=     10680,Bit = 1,rank=      5391
-                 179  pos=      5390,Bit = 1,rank=      3890
-                 180  pos=      3889,Bit = 0,rank=      2444
-36.loop i=    993448  step=        11
-                 181  pos=    993448,Bit = 0,rank=    687778
-                 182  pos=    305670,Bit = 0,rank=    227425
-37.loop i=    108629  step=        12
-                 183  pos=    108629,Bit = 1,rank=     44189
-                 184  pos=     44188,Bit = 0,rank=     24456
-                 185  pos=     19732,Bit = 1,rank=      9904
-                 186  pos=      9903,Bit = 1,rank=      9051
-                 187  pos=      9050,Bit = 0,rank=      2913
-38.loop i=   1379383  step=        13
-                 188  pos=   1379383,Bit = 0,rank=    884797
-                 189  pos=    494586,Bit = 1,rank=    273327
-                 190  pos=    273326,Bit = 0,rank=    124470
-                 191  pos=    148856,Bit = 1,rank=     70304
-39.loop i=   2768335  step=        14
-                 192  pos=   2768335,Bit = 1,rank=   1748139
-                 193  pos=   1748138,Bit = 0,rank=    941000
-                 194  pos=    807138,Bit = 0,rank=    473980
-                 195  pos=    333158,Bit = 0,rank=    227108
-40.loop i=   1136375  step=        15
-                 196  pos=   1136375,Bit = 0,rank=    771574
-                 197  pos=    364801,Bit = 0,rank=    244210
-41.loop i=    150975  step=        16
-                 198  pos=    150975,Bit = 1,rank=     77898
-                 199  pos=     77897,Bit = 0,rank=     40703
-                 200  pos=     37194,Bit = 0,rank=     19582
-                 201  pos=     17612,Bit = 1,rank=     17417
-                 202  pos=     17416,Bit = 1,rank=     14950
-                 203  pos=     14949,Bit = 1,rank=     14042
-42.loop i=    813215  step=        17
-                 204  pos=    813215,Bit = 1,rank=    578506
-                 205  pos=    578505,Bit = 0,rank=    338741
-                 206  pos=    239764,Bit = 1,rank=    148309
-                 207  pos=    148308,Bit = 0,rank=    119938
-43.loop i=   2067328  step=        18
-                 208  pos=   3661125,Bit = 0,rank=   2310986
-                 209  pos=   1350139,Bit = 0,rank=    767499
-44.loop i=    613024  step=         1
-                 210  pos=   3661126,Bit = 0,rank=   2310986
-                 211  pos=   1350140,Bit = 0,rank=    767499
-45.loop i=    613025  step=         1
-                 212  pos=    613025,Bit = 0,rank=    431981
-                 213  pos=    181044,Bit = 1,rank=    150663
-                 214  pos=    150662,Bit = 1,rank=     68553
-                 215  pos=     68552,Bit = 0,rank=     22280
-                 216  pos=     46272,Bit = 1,rank=     19726
-46.loop i=   2526093  step=         2
-                 217  pos=   2526093,Bit = 0,rank=   1594206
-                 218  pos=    931887,Bit = 1,rank=    560047
-                 219  pos=    560046,Bit = 1,rank=    259101
-                 220  pos=    259100,Bit = 0,rank=     87767
-                 221  pos=    171333,Bit = 1,rank=     88810
-47.loop i=   2595177  step=         3
-                 222  pos=   2595177,Bit = 1,rank=   1637403
-                 223  pos=   1637402,Bit = 0,rank=    870738
-                 224  pos=    766664,Bit = 0,rank=    470922
-                 225  pos=    295742,Bit = 0,rank=    221822
-48.loop i=   1104245  step=         4
-                 226  pos=   1104245,Bit = 0,rank=    757571
-                 227  pos=    346674,Bit = 0,rank=    237753
-49.loop i=    139305  step=         5
-                 228  pos=    139305,Bit = 0,rank=     69224
-                 229  pos=     70081,Bit = 1,rank=     39700
-                 230  pos=     39699,Bit = 0,rank=      6534
-                 231  pos=     33165,Bit = 1,rank=      3929
-50.loop i=   2701960  step=         6
-                 232  pos=   2701960,Bit = 1,rank=   1697284
-                 233  pos=   1697283,Bit = 1,rank=    906416
-                 234  pos=    906415,Bit = 1,rank=    455878
-                 235  pos=    455877,Bit = 0,rank=    260740
-                 236  pos=    195137,Bit = 0,rank=    132235
-51.loop i=   2372039  step=         7
-                 237  pos=   2372039,Bit = 0,rank=   1514908
-                 238  pos=    857131,Bit = 0,rank=    519400
-52.loop i=    368115  step=         8
-                 239  pos=    368115,Bit = 1,rank=    245095
-                 240  pos=    245094,Bit = 0,rank=    132058
-                 241  pos=    113036,Bit = 1,rank=     58382
-                 242  pos=     58381,Bit = 1,rank=     48407
-                 243  pos=     48406,Bit = 0,rank=     13828
-53.loop i=   1407824  step=         9
-                 244  pos=   1407824,Bit = 0,rank=    893192
-                 245  pos=    514632,Bit = 1,rank=    293373
-                 246  pos=    293372,Bit = 0,rank=    126905
-                 247  pos=    166467,Bit = 1,rank=     87915
-54.loop i=   2785946  step=        10
-                 248  pos=   2785946,Bit = 1,rank=   1765707
-                 249  pos=   1765706,Bit = 0,rank=    941765
-                 250  pos=    823941,Bit = 0,rank=    473980
-                 251  pos=    349961,Bit = 0,rank=    230650
-55.loop i=   1149636  step=        11
-                 252  pos=   1149636,Bit = 0,rank=    772035
-                 253  pos=    377601,Bit = 0,rank=    244349
-56.loop i=    163636  step=        12
-                 254  pos=    163636,Bit = 1,rank=     89022
-                 255  pos=     89021,Bit = 0,rank=     41944
-                 256  pos=     47077,Bit = 0,rank=     20999
-                 257  pos=     26078,Bit = 1,rank=     25858
-                 258  pos=     25857,Bit = 1,rank=     23321
-                 259  pos=     23320,Bit = 1,rank=     22409
-57.loop i=    821582  step=        13
-                 260  pos=    821582,Bit = 1,rank=    585000
-                 261  pos=    584999,Bit = 0,rank=    342775
-                 262  pos=    242224,Bit = 1,rank=    150444
-                 263  pos=    150443,Bit = 1,rank=    121524
-                 264  pos=    121523,Bit = 1,rank=     29807
-                 265  pos=     29806,Bit = 0,rank=     13969
-58.loop i=   2639505  step=        14
-                 266  pos=   2639505,Bit = 1,rank=   1668856
-                 267  pos=   1668855,Bit = 1,rank=    889071
-                 268  pos=    889070,Bit = 1,rank=    440845
-                 269  pos=    440844,Bit = 1,rank=    253234
-59.loop i=   1770500  step=        15
-                 270  pos=   1770500,Bit = 1,rank=   1126995
-                 271  pos=   1126994,Bit = 0,rank=    570225
-                 272  pos=    556769,Bit = 1,rank=    363544
-                 273  pos=    363543,Bit = 0,rank=    195653
-60.loop i=   2206848  step=        16
-                 274  pos=   3661127,Bit = 0,rank=   2310986
-                 275  pos=   1350141,Bit = 0,rank=    767499
-61.loop i=    613026  step=         1
-                 276  pos=    613026,Bit = 1,rank=    431982
-                 277  pos=    431981,Bit = 0,rank=    255073
-                 278  pos=    176908,Bit = 1,rank=    101789
-                 279  pos=    101788,Bit = 1,rank=     82361
-                 280  pos=     82360,Bit = 0,rank=     20845
-62.loop i=   1434761  step=         2
-                 281  pos=   1434761,Bit = 0,rank=    901141
-                 282  pos=    533620,Bit = 1,rank=    312361
-                 283  pos=    312360,Bit = 0,rank=    129796
-                 284  pos=    182564,Bit = 1,rank=    104012
-63.loop i=   2802043  step=         3
-                 285  pos=   2802043,Bit = 1,rank=   1781753
-                 286  pos=   1781752,Bit = 0,rank=    942512
-                 287  pos=    839240,Bit = 0,rank=    473980
-                 288  pos=    365260,Bit = 0,rank=    233171
-64.loop i=   1162414  step=         4
-                 289  pos=   1162414,Bit = 0,rank=    772814
-                 290  pos=    389600,Bit = 0,rank=    245181
-65.loop i=    174803  step=         5
-                 291  pos=    174803,Bit = 1,rank=     99099
-                 292  pos=     99098,Bit = 0,rank=     43047
-                 293  pos=     56051,Bit = 1,rank=     22315
-                 294  pos=     22314,Bit = 1,rank=     19664
-                 295  pos=     19663,Bit = 0,rank=      6688
-66.loop i=   1386221  step=         6
-                 296  pos=   1386221,Bit = 0,rank=    886982
-                 297  pos=    499239,Bit = 1,rank=    277980
-                 298  pos=    277979,Bit = 1,rank=    124868
-                 299  pos=    124867,Bit = 1,rank=     37660
-67.loop i=   2951187  step=         7
-                 300  pos=   2951187,Bit = 1,rank=   1897551
-                 301  pos=   1897550,Bit = 0,rank=   1024977
-                 302  pos=    872573,Bit = 1,rank=    478054
-                 303  pos=    478053,Bit = 1,rank=    242807
-                 304  pos=    242806,Bit = 0,rank=    111763
-68.loop i=   1504289  step=         8
-                 305  pos=   1504289,Bit = 1,rank=    929138
-                 306  pos=    929137,Bit = 0,rank=    505208
-                 307  pos=    423929,Bit = 1,rank=    249408
-                 308  pos=    249407,Bit = 0,rank=    172029
-69.loop i=   2116336  step=         9
-                 309  pos=   2116336,Bit = 1,rank=   1320409
-                 310  pos=   1320408,Bit = 1,rank=    678381
-                 311  pos=    678380,Bit = 1,rank=    383210
-                 312  pos=    383209,Bit = 0,rank=    225927
-                 313  pos=    157282,Bit = 1,rank=    119678
-70.loop i=   3457527  step=        10
-                 314  pos=   3457527,Bit = 1,rank=   2193838
-                 315  pos=   2193837,Bit = 0,rank=   1221280
-                 316  pos=    972557,Bit = 0,rank=    536682
-                 317  pos=    435875,Bit = 1,rank=    248757
-                 318  pos=    248756,Bit = 1,rank=    132158
-                 319  pos=    132157,Bit = 0,rank=     68389
-                 320  pos=     63768,Bit = 1,rank=     33386
-                 321  pos=     33385,Bit = 1,rank=     16517
-71.loop i=    935126  step=        11
-                 322  pos=    935126,Bit = 0,rank=    672856
-                 323  pos=    262270,Bit = 0,rank=    227364
-72.loop i=     65290  step=        12
-                 324  pos=     65290,Bit = 0,rank=      7682
-                 325  pos=     57608,Bit = 1,rank=     27227
-                 326  pos=     27226,Bit = 0,rank=       291
-                 327  pos=     26935,Bit = 1,rank=       157
-73.loop i=   2698188  step=        13
-                 328  pos=   2698188,Bit = 1,rank=   1693942
-                 329  pos=   1693941,Bit = 1,rank=    903420
-                 330  pos=    903419,Bit = 1,rank=    452957
-                 331  pos=    452956,Bit = 1,rank=    259423
-74.loop i=   1776689  step=        14
-                 332  pos=   1776689,Bit = 1,rank=   1131983
-                 333  pos=   1131982,Bit = 0,rank=    571837
-                 334  pos=    560145,Bit = 0,rank=    366794
-                 335  pos=    193351,Bit = 1,rank=    162266
-                 336  pos=    162265,Bit = 0,rank=    116427
-                 337  pos=     45838,Bit = 0,rank=     20084
-                 338  pos=     25754,Bit = 1,rank=     11495
-75.loop i=   3908814  step=        15
-                 339  pos=   3908814,Bit = 1,rank=   2370816
-                 340  pos=   2370815,Bit = 1,rank=   1333069
-                 341  pos=   1333068,Bit = 1,rank=    726110
-                 342  pos=    726109,Bit = 1,rank=    378077
-76.loop i=   1895343  step=        16
-                 343  pos=   1895343,Bit = 0,rank=   1224989
-                 344  pos=    670354,Bit = 0,rank=    426860
-77.loop i=    273878  step=        17
-                 345  pos=    273878,Bit = 1,rank=    173947
-                 346  pos=    173946,Bit = 0,rank=     87631
-                 347  pos=     86315,Bit = 0,rank=     38446
-                 348  pos=     47869,Bit = 1,rank=     46019
-                 349  pos=     46018,Bit = 1,rank=     42730
-                 350  pos=     42729,Bit = 1,rank=     41176
-78.loop i=    840349  step=        18
-                 351  pos=    840349,Bit = 1,rank=    599683
-                 352  pos=    599682,Bit = 1,rank=    352008
-                 353  pos=    352007,Bit = 1,rank=    206326
-                 354  pos=    206325,Bit = 0,rank=    149232
-                 355  pos=     57093,Bit = 1,rank=     56469
-79.loop i=   3394318  step=        19
-                 356  pos=   3394318,Bit = 1,rank=   2166862
-                 357  pos=   2166861,Bit = 0,rank=   1198333
-                 358  pos=    968528,Bit = 1,rank=    534415
-                 359  pos=    534414,Bit = 1,rank=    278296
-                 360  pos=    278295,Bit = 0,rank=    137658
-80.loop i=   1513883  step=        20
-                 361  pos=   1513883,Bit = 0,rank=    930996
-                 362  pos=    582887,Bit = 1,rank=    345817
-                 363  pos=    345816,Bit = 1,rank=    139468
-                 364  pos=    139467,Bit = 1,rank=     44276
-81.loop i=   2957803  step=        21
-                 365  pos=   2957803,Bit = 1,rank=   1897946
-                 366  pos=   1897945,Bit = 1,rank=   1025205
-                 367  pos=   1025204,Bit = 0,rank=    529781
-                 368  pos=    495423,Bit = 1,rank=    219337
-                 369  pos=    219336,Bit = 0,rank=     97541
-82.loop i=   3302290  step=        22
-                 370  pos=   3302290,Bit = 1,rank=   2089377
-                 371  pos=   2089376,Bit = 1,rank=   1142648
-                 372  pos=   1142647,Bit = 1,rank=    597840
-                 373  pos=    597839,Bit = 1,rank=    330446
-83.loop i=   1847712  step=        23
-                 374  pos=   3661128,Bit = 0,rank=   2310986
-                 375  pos=   1350142,Bit = 0,rank=    767499
-84.loop i=    613027  step=         1
-                 376  pos=    613027,Bit = 1,rank=    431983
-                 377  pos=    431982,Bit = 0,rank=    255073
-                 378  pos=    176909,Bit = 1,rank=    101790
-                 379  pos=    101789,Bit = 0,rank=     82361
-85.loop i=   2058386  step=         2
-                 380  pos=   2058386,Bit = 1,rank=   1279391
-                 381  pos=   1279390,Bit = 1,rank=    643259
-                 382  pos=    643258,Bit = 0,rank=    369891
-                 383  pos=    273367,Bit = 0,rank=    167492
-86.loop i=   3622800  step=         3
-                 384  pos=   3622800,Bit = 1,rank=   2302981
-                 385  pos=   2302980,Bit = 1,rank=   1292449
-                 386  pos=   1292448,Bit = 1,rank=    698524
-                 387  pos=    698523,Bit = 0,rank=    371787
-                 388  pos=    326736,Bit = 0,rank=    167532
-87.loop i=   2468341  step=         4
-                 389  pos=   2468341,Bit = 1,rank=   1571498
-                 390  pos=   1571497,Bit = 0,rank=    836217
-                 391  pos=    735280,Bit = 0,rank=    464453
-                 392  pos=    270827,Bit = 1,rank=    217821
-                 393  pos=    217820,Bit = 0,rank=    117393
-                 394  pos=    100427,Bit = 1,rank=     48167
-88.loop i=   3974934  step=         5
-                 395  pos=   3974934,Bit = 0,rank=   2389833
-                 396  pos=   1585101,Bit = 0,rank=    837503
-89.loop i=    777982  step=         6
-                 397  pos=    777982,Bit = 0,rank=    552748
-                 398  pos=    225234,Bit = 1,rank=    194853
-                 399  pos=    194852,Bit = 0,rank=     89142
-                 400  pos=    105710,Bit = 1,rank=     45398
-90.loop i=   2743429  step=         7
-                 401  pos=   2743429,Bit = 1,rank=   1729514
-                 402  pos=   1729513,Bit = 0,rank=    931594
-                 403  pos=    797919,Bit = 0,rank=    473771
-                 404  pos=    324148,Bit = 0,rank=    224611
-91.loop i=   1129862  step=         8
-                 405  pos=   1129862,Bit = 1,rank=    768406
-                 406  pos=    768405,Bit = 0,rank=    417747
-                 407  pos=    350658,Bit = 0,rank=    207732
-                 408  pos=    142926,Bit = 0,rank=    132353
-92.loop i=   1040898  step=         9
-                 409  pos=   1040898,Bit = 0,rank=    713106
-                 410  pos=    327792,Bit = 1,rank=    228261
-                 411  pos=    228260,Bit = 0,rank=    103390
-                 412  pos=    124870,Bit = 1,rank=     56903
-93.loop i=   2754934  step=        10
-                 413  pos=   2754934,Bit = 1,rank=   1737396
-                 414  pos=   1737395,Bit = 0,rank=    937086
-                 415  pos=    800309,Bit = 0,rank=    473836
-                 416  pos=    326473,Bit = 0,rank=    225027
-94.loop i=   1131771  step=        11
-                 417  pos=   1131771,Bit = 1,rank=    770195
-                 418  pos=    770194,Bit = 0,rank=    418096
-                 419  pos=    352098,Bit = 0,rank=    209016
-                 420  pos=    143082,Bit = 1,rank=    132430
-                 421  pos=    132429,Bit = 0,rank=    113615
-                 422  pos=     18814,Bit = 0,rank=      6810
-                 423  pos=     12004,Bit = 0,rank=       583
-                 424  pos=     11421,Bit = 0,rank=      6864
-                 425  pos=      4557,Bit = 0,rank=       694
-                 426  pos=      3863,Bit = 0,rank=      3179
-                 427  pos=       684,Bit = 1,rank=       194
-95.loop i=    940313  step=        12
-                 428  pos=    940313,Bit = 0,rank=    675140
-                 429  pos=    265173,Bit = 0,rank=    227364
-96.loop i=     68193  step=        13
-                 430  pos=     68193,Bit = 1,rank=     10037
-                 431  pos=     10036,Bit = 1,rank=      2386
-                 432  pos=      2385,Bit = 0,rank=       584
-                 433  pos=      1801,Bit = 1,rank=      1536
-                 434  pos=      1535,Bit = 1,rank=      1403
-                 435  pos=      1402,Bit = 0,rank=         2
-97.loop i=   1914709  step=        14
-                 436  pos=   1914709,Bit = 0,rank=   1235287
-                 437  pos=    679422,Bit = 1,rank=    431014
-                 438  pos=    431013,Bit = 1,rank=    174191
-                 439  pos=    174190,Bit = 1,rank=     47012
-98.loop i=   2960539  step=        15
-                 440  pos=   2960539,Bit = 0,rank=   1898762
-                 441  pos=   1061777,Bit = 0,rank=    635659
-99.loop i=    456502  step=        16
-                 442  pos=    456502,Bit = 1,rank=    312809
-                 443  pos=    312808,Bit = 0,rank=    176555
-                 444  pos=    136253,Bit = 1,rank=     74608
-                 445  pos=     74607,Bit = 1,rank=     60808
-                 446  pos=     60807,Bit = 0,rank=     16398
-100.loop i=   1417655  step=        17
-                 447  pos=   1417655,Bit = 0,rank=    896771
-                 448  pos=    520884,Bit = 1,rank=    299625
-                 449  pos=    299624,Bit = 0,rank=    128122
-                 450  pos=    171502,Bit = 1,rank=     92950
-101.loop i=   2790981  step=        18
-                 451  pos=   2790981,Bit = 1,rank=   1770716
-                 452  pos=   1770715,Bit = 0,rank=    942084
-                 453  pos=    828631,Bit = 0,rank=    473980
-                 454  pos=    354651,Bit = 0,rank=    231641
-102.loop i=   1153335  step=        19
-                 455  pos=   1153335,Bit = 0,rank=    772213
-                 456  pos=    381122,Bit = 1,rank=    244450
-                 457  pos=    244449,Bit = 1,rank=    111528
-                 458  pos=    111527,Bit = 0,rank=     34534
-                 459  pos=     76993,Bit = 1,rank=     33683
-103.loop i=   2540050  step=        20
-                 460  pos=   2540050,Bit = 0,rank=   1601001
-                 461  pos=    939049,Bit = 0,rank=    566180
-104.loop i=    403253  step=        21
-                 462  pos=    403253,Bit = 1,rank=    273479
-                 463  pos=    273478,Bit = 1,rank=    150669
-                 464  pos=    150668,Bit = 1,rank=     89060
-                 465  pos=     89059,Bit = 1,rank=     67829
-105.loop i=   1585095  step=        22
-                 466  pos=   1585095,Bit = 1,rank=    988536
-                 467  pos=    988535,Bit = 0,rank=    517636
-                 468  pos=    470899,Bit = 1,rank=    291646
-                 469  pos=    291645,Bit = 0,rank=    176049
-106.loop i=   2154554  step=        23
-                 470  pos=   2154554,Bit = 1,rank=   1355065
-                 471  pos=   1355064,Bit = 1,rank=    711978
-                 472  pos=    711977,Bit = 0,rank=    383681
-                 473  pos=    328296,Bit = 0,rank=    167532
-107.loop i=   3677689  step=        24
-                 474  pos=   3677689,Bit = 0,rank=   2311005
-                 475  pos=   1366684,Bit = 0,rank=    767501
-108.loop i=    629567  step=        25
-                 476  pos=    629567,Bit = 0,rank=    442670
-                 477  pos=    186897,Bit = 1,rank=    156516
-                 478  pos=    156515,Bit = 0,rank=     71516
-                 479  pos=     84999,Bit = 1,rank=     32576
-109.loop i=   2730607  step=        26
-                 480  pos=   2730607,Bit = 1,rank=   1719302
-                 481  pos=   1719301,Bit = 1,rank=    922964
-                 482  pos=    922963,Bit = 1,rank=    471670
-                 483  pos=    471669,Bit = 1,rank=    269382
-110.loop i=   1786648  step=        27
-                 484  pos=   1786648,Bit = 1,rank=   1141231
-                 485  pos=   1141230,Bit = 0,rank=    574780
-                 486  pos=    566450,Bit = 0,rank=    371464
-                 487  pos=    194986,Bit = 1,rank=    163901
-                 488  pos=    163900,Bit = 0,rank=    116427
-                 489  pos=     47473,Bit = 0,rank=     20084
-                 490  pos=     27389,Bit = 1,rank=     13084
-111.loop i=   3910403  step=        28
-                 491  pos=   3910403,Bit = 1,rank=   2372335
-                 492  pos=   2372334,Bit = 1,rank=   1334354
-                 493  pos=   1334353,Bit = 1,rank=    727395
-                 494  pos=    727394,Bit = 1,rank=    379101
-112.loop i=   1896367  step=        29
-                 495  pos=   1896367,Bit = 0,rank=   1225302
-                 496  pos=    671065,Bit = 0,rank=    426877
-113.loop i=    274572  step=        30
-                 497  pos=    274572,Bit = 1,rank=    174571
-                 498  pos=    174570,Bit = 0,rank=     87714
-                 499  pos=     86856,Bit = 0,rank=     38507
-                 500  pos=     48349,Bit = 1,rank=     46499
-                 501  pos=     46498,Bit = 1,rank=     43200
-                 502  pos=     43199,Bit = 1,rank=     41645
-114.loop i=    840818  step=        31
-                 503  pos=    840818,Bit = 1,rank=    600051
-                 504  pos=    600050,Bit = 1,rank=    352213
-                 505  pos=    352212,Bit = 1,rank=    206465
-                 506  pos=    206464,Bit = 1,rank=    149314
-115.loop i=   1666580  step=        32
-                 507  pos=   1666580,Bit = 0,rank=   1052670
-                 508  pos=    613910,Bit = 1,rank=    375825
-                 509  pos=    375824,Bit = 1,rank=    151492
-                 510  pos=    151491,Bit = 0,rank=     44738
-                 511  pos=    106753,Bit = 0,rank=     50478
-                 512  pos=     56275,Bit = 0,rank=     43267
-116.loop i=   1334937  step=        33
-                 513  pos=   1334937,Bit = 0,rank=    866323
-                 514  pos=    468614,Bit = 1,rank=    263365
-                 515  pos=    263364,Bit = 0,rank=    122093
-                 516  pos=    141271,Bit = 1,rank=     62772
-117.loop i=   2760803  step=        34
-                 517  pos=   2760803,Bit = 1,rank=   1741046
-                 518  pos=   1741045,Bit = 0,rank=    939445
-                 519  pos=    801600,Bit = 0,rank=    473977
-                 520  pos=    327623,Bit = 0,rank=    225116
-118.loop i=   1132832  step=        35
-occs:6
-134323
-662869
-664205
-1051178
-1058732
-3094891
-string search patten bible
-occs:6
-662869
-664205
-892877
-1051178
-1058732
-3094891
+input file path:build takes:   1.28902sec
+build complete;
+             Patten:d appointed the
+             CountP:         5
+             CountB:         5
+Pos=     53670.Pos2=   3199398
+Pos:         4.Wrong Patten:     d appointed the
+             Patten:n thou art athi
+             CountP:         1
+             CountB:         1
+Pos=     42609.Pos2=   1025649
+Pos:         0.Wrong Patten:     n thou art athi
+             Patten:tremble: he sit
+             CountP:         1
+             CountB:         1
+Pos=     58502.Pos2=   2024582
+Pos:         0.Wrong Patten:     tremble: he sit
+             Patten:and all the peo
+             CountP:        68
+             CountB:        68
+             Patten:o forth, shall 
+             CountP:         1
+             CountB:         1
+Pos=     38826.Pos2=   2856874
+Pos:         0.Wrong Patten:     o forth, shall 
+             Patten:er kept all the 
+             CountP:         1
+             CountB:         1
+Pos=     32563.Pos2=   3309363
+Pos:         0.Wrong Patten:     er kept all the
+             Patten: That thou does
+             CountP:         1
+             CountB:         1
+Pos=     23317.Pos2=   3496725
+Pos:         0.Wrong Patten:      That thou does
+             Patten:incipalities sh
+             CountP:         1
+             CountB:         1
+Pos=     46609.Pos2=   2471441
+Pos:         0.Wrong Patten:     incipalities sh
+             Patten:him Abijah, and
+             CountP:         1
+             CountB:         1
+Pos=     42450.Pos2=   1549778
+Pos:         0.Wrong Patten:     him Abijah, and
+             Patten:all be subdued 
+             CountP:         2
+             CountB:         2
+             Patten:ve wherewith he
+             CountP:         2
+             CountB:         2
+             Patten:h, Daniel, and 
+             CountP:         2
+             CountB:         2
+             Patten:t wine for my b
+             CountP:         1
+             CountB:         1
+Pos=     59053.Pos2=   2221741
+Pos:         0.Wrong Patten:     t wine for my b
+             Patten:of Assyria. So 
+             CountP:         1
+             CountB:         1
+Pos=     56199.Pos2=   1629063
+Pos:         0.Wrong Patten:     of Assyria. So 
+             Patten:d eat and drink
+             CountP:        15
+             CountB:        15
+Pos=     24433.Pos2=   1007473
+Pos:        14.Wrong Patten:     d eat and drink
+             Patten: count the year
+             CountP:         1
+             CountB:         1
+Pos=     22076.Pos2=    480828
+Pos:         0.Wrong Patten:      count the year
+             Patten:ught against it
+             CountP:         6
+             CountB:         6
+             Patten:loth their cove
+             CountP:         1
+             CountB:         1
+Pos=     14690.Pos2=   2373986
+Pos:         0.Wrong Patten:     loth their cove
+             Patten:ls, after the s
+             CountP:        18
+             CountB:        18
+             Patten: house of Phara
+             CountP:         3
+             CountB:         3
+Pos=     64018.Pos2=    195090
+Pos:         2.Wrong Patten:      house of Phara
+             Patten: of war shall b
+             CountP:         2
+             CountB:         2
+             Patten:, and carry the
+             CountP:         4
+             CountB:         4
+             Patten:d it not. 
+And 
+             CountP:         2
+             CountB:         2
+             Patten:word of the LOR
+             CountP:       234
+             CountB:       234
+             Patten:is countenance 
+             CountP:         9
+             CountB:         9
+Pos=     63465.Pos2=    980969
+Pos:         8.Wrong Patten:     is countenance 
+             Patten:engthen his for
+             CountP:         1
+             CountB:         1
+Pos=     24994.Pos2=   2974114
+Pos:         0.Wrong Patten:     engthen his for
+             Patten: shall live als
+             CountP:         1
+             CountB:         1
+Pos=     26630.Pos2=   3500038
+Pos:         0.Wrong Patten:      shall live als
+             Patten: a meat offerin
+             CountP:        42
+             CountB:        42
+             Patten:n upon me to sp
+             CountP:         2
+             CountB:         2
+             Patten:ll gain the who
+             CountP:         2
+             CountB:         2
+             Patten:n that company 
+             CountP:         1
+             CountB:         1
+Pos=     33109.Pos2=    622933
+Pos:         0.Wrong Patten:     n that company 
+             Patten: land, and desc
+             CountP:         3
+             CountB:         3
+Pos=     38777.Pos2=    890745
+Pos:         2.Wrong Patten:      land, and desc
+             Patten:LORD left his s
+             CountP:         1
+             CountB:         1
+Pos=     34589.Pos2=    231197
+Pos:         0.Wrong Patten:     LORD left his s
+             Patten:, and kill it, 
+             CountP:         1
+             CountB:         1
+Pos=     20113.Pos2=    282257
+Pos:         0.Wrong Patten:     , and kill it, 
+             Patten:hy life to nigh
+             CountP:         1
+             CountB:         1
+Pos=        23.Pos2=   1114135
+Pos:         0.Wrong Patten:     hy life to nigh
+             Patten: land of hills 
+             CountP:         1
+             CountB:         1
+Pos=      1917.Pos2=    722813
+Pos:         0.Wrong Patten:      land of hills 
+             Patten:nd glorified th
+             CountP:         1
+             CountB:         1
+Pos=     52776.Pos2=   3591720
+Pos:         0.Wrong Patten:     nd glorified th
+             Patten:be of Gad, Geue
+             CountP:         1
+             CountB:         1
+Pos=     39280.Pos2=    563568
+Pos:         0.Wrong Patten:     be of Gad, Geue
+             Patten:ee. 
+And thou s
+             CountP:        11
+             CountB:        11
+Pos=     59890.Pos2=   2746866
+Pos:        10.Wrong Patten:     ee. 
+And thou s
+             Patten:ed the word of 
+             CountP:        15
+             CountB:        15
+Pos=    524288.Pos2=    576974
+Pos:         7.Wrong Patten:     ed the word of 
+Pos=     52786.Pos2=   3591730
+Pos:        14.Wrong Patten:     ed the word of 
+             Patten:imself against 
+             CountP:         9
+             CountB:         9
+             Patten:Therefore was t
+             CountP:         2
+             CountB:         2
+             Patten:nkincense, and 
+             CountP:         3
+             CountB:         3
+Pos=     35098.Pos2=   4032794
+Pos:         2.Wrong Patten:     nkincense, and 
+             Patten:ughters to us f
+             CountP:         1
+             CountB:         1
+Pos=     62394.Pos2=    127930
+Pos:         0.Wrong Patten:     ughters to us f
+             Patten:ut, even from t
+             CountP:         1
+             CountB:         1
+Pos=     59550.Pos2=   1304734
+Pos:         0.Wrong Patten:     ut, even from t
+             Patten:hrough the land
+             CountP:        15
+             CountB:        15
+Pos=     21581.Pos2=   2708557
+Pos:        14.Wrong Patten:     hrough the land
+             Patten:ounsels of old 
+             CountP:         1
+             CountB:         1
+Pos=     62670.Pos2=   2290894
+Pos:         0.Wrong Patten:     ounsels of old 
+             Patten:lies of the nor
+             CountP:         1
+             CountB:         1
+Pos=     23465.Pos2=   2513833
+Pos:         0.Wrong Patten:     lies of the nor
+             Patten:he midst, and l
+             CountP:         1
+             CountB:         1
+             Patten:breadth of the 
+             CountP:        18
+             CountB:        18
+             Patten:tirred him up, 
+             CountP:         1
+             CountB:         1
+Pos=     15986.Pos2=    343666
+Pos:         0.Wrong Patten:     tirred him up, 
+             Patten:there astonishe
+             CountP:         1
+             CountB:         1
+Pos=     49301.Pos2=   2670741
+Pos:         0.Wrong Patten:     there astonishe
+             Patten: things which t
+             CountP:        16
+             CountB:        16
+             Patten:after he knew t
+             CountP:         1
+             CountB:         1
+Pos=     29457.Pos2=   3633937
+Pos:         0.Wrong Patten:     after he knew t
+             Patten: in the city th
+             CountP:         1
+             CountB:         1
+Pos=     14104.Pos2=   1390360
+Pos:         0.Wrong Patten:      in the city th
+             Patten:all be a statut
+             CountP:        13
+             CountB:        13
+Pos=     50441.Pos2=    443657
+Pos:        12.Wrong Patten:     all be a statut
+             Patten:, and I will co
+             CountP:         5
+             CountB:         5
+Pos=     45557.Pos2=   2273781
+Pos:         4.Wrong Patten:     , and I will co
+             Patten:I have not sent
+             CountP:         3
+             CountB:         3
+Pos=     17520.Pos2=   2507888
+Pos:         2.Wrong Patten:     I have not sent
+             Patten:d sheep and dov
+             CountP:         1
+             CountB:         1
+Pos=     29918.Pos2=   3437790
+Pos:         0.Wrong Patten:     d sheep and dov
+             Patten:refore my heart
+             CountP:         3
+             CountB:         3
+Pos=     55714.Pos2=   1890722
+Pos:         2.Wrong Patten:     refore my heart
+             Patten:on of Azaniah, 
+             CountP:         1
+             CountB:         1
+Pos=     26751.Pos2=   1730687
+Pos:         0.Wrong Patten:     on of Azaniah, 
+             Patten: my voice; ye w
+             CountP:         1
+             CountB:         1
+             Patten:he Lord GOD. 
+A
+             CountP:        26
+             CountB:        26
+             Patten: they delight i
+             CountP:         1
+             CountB:         1
+Pos=     61440.Pos2=   1961984
+Pos:         0.Wrong Patten:      they delight i
+             Patten:. 
+I will go in
+             CountP:         2
+             CountB:         2
+             Patten: battle increas
+             CountP:         2
+             CountB:         2
+             Patten:reof, and a cub
+             CountP:         8
+             CountB:         8
+             Patten:h and Zeredatha
+             CountP:         1
+             CountB:         1
+Pos=     14922.Pos2=   1522250
+Pos:         0.Wrong Patten:     h and Zeredatha
+             Patten:at he might fil
+             CountP:         1
+             CountB:         1
+Pos=     16622.Pos2=   3817710
+Pos:         0.Wrong Patten:     at he might fil
+             Patten: Saul returned 
+             CountP:         4
+             CountB:         4
+             Patten:t the Egyptians
+             CountP:         6
+             CountB:         6
+             Patten: that there is 
+             CountP:        34
+             CountB:        34
+             Patten: out the countr
+             CountP:         3
+             CountB:         3
+Pos=     37874.Pos2=    824306
+Pos:         2.Wrong Patten:      out the countr
+             Patten:re: and separat
+             CountP:         1
+             CountB:         1
+Pos=     49903.Pos2=   1688303
+Pos:         0.Wrong Patten:     re: and separat
+             Patten:k with other to
+             CountP:         1
+             CountB:         1
+Pos=     60557.Pos2=   3533965
+Pos:         0.Wrong Patten:     k with other to
+             Patten: be satisfied w
+             CountP:        10
+             CountB:        10
+             Patten:they left no ch
+             CountP:         1
+             CountB:         1
+Pos=     64048.Pos2=   3406384
+Pos:         0.Wrong Patten:     they left no ch
+             Patten: from heaven, t
+             CountP:         2
+             CountB:         2
+             Patten:nd shall do sac
+             CountP:         1
+             CountB:         1
+Pos=     49492.Pos2=   2277716
+Pos:         0.Wrong Patten:     nd shall do sac
+             Patten:imself doeth: a
+             CountP:         1
+             CountB:         1
+Pos=     43287.Pos2=   3451159
+Pos:         0.Wrong Patten:     imself doeth: a
+             Patten:d an ark to the
+             CountP:         1
+             CountB:         1
+Pos=     53311.Pos2=   3919935
+Pos:         0.Wrong Patten:     d an ark to the
+             Patten: sea: his chose
+             CountP:         1
+             CountB:         1
+Pos=     59516.Pos2=    256124
+Pos:         0.Wrong Patten:      sea: his chose
+             Patten:RD, who hath no
+             CountP:         2
+             CountB:         2
+             Patten:we may be deliv
+             CountP:         1
+             CountB:         1
+Pos=     60852.Pos2=   3861940
+Pos:         0.Wrong Patten:     we may be deliv
+             Patten:ood and profita
+             CountP:         1
+             CountB:         1
+Pos=     23537.Pos2=   3890161
+Pos:         0.Wrong Patten:     ood and profita
+             Patten:housand shekels
+             CountP:         2
+             CountB:         2
+             Patten: belong the iss
+             CountP:         1
+             CountB:         1
+Pos=      4670.Pos2=   1970750
+Pos:         0.Wrong Patten:      belong the iss
+             Patten:here Abram call
+             CountP:         1
+             CountB:         1
+             Patten:aid to Paul thr
+             CountP:         1
+             CountB:         1
+Pos=     20469.Pos2=   3624949
+Pos:         0.Wrong Patten:     aid to Paul thr
+             Patten:aasha by Jehu t
+             CountP:         1
+             CountB:         1
+Pos=     50527.Pos2=   1361247
+Pos:         0.Wrong Patten:     aasha by Jehu t
+             Patten: God, that whic
+             CountP:         1
+             CountB:         1
+Pos=      5501.Pos2=   1971581
+Pos:         0.Wrong Patten:      God, that whic
+             Patten:
+And under the 
+             CountP:         4
+             CountB:         4
+             Patten:that goeth fort
+             CountP:         7
+             CountB:         7
+Pos=     42156.Pos2=   3056812
+Pos:         6.Wrong Patten:     that goeth fort
+             Patten:ll upon you: fo
+             CountP:         1
+             CountB:         1
+Pos=      4621.Pos2=   2429453
+Pos:         0.Wrong Patten:     ll upon you: fo
+             Patten:am with her sub
+             CountP:         3
+             CountB:         3
+Pos=     48212.Pos2=   1424468
+Pos:         2.Wrong Patten:     am with her sub
+             Patten:d his anger was
+             CountP:         3
+             CountB:         3
+Pos=     30877.Pos2=    555165
+Pos:         2.Wrong Patten:     d his anger was
+             Patten:ced unto them. 
+             CountP:         1
+             CountB:         1
+Pos=     63339.Pos2=   1636203
+Pos:         0.Wrong Patten:     ced unto them. 
+             Patten: all the Levite
+             CountP:         3
+             CountB:         3
+Pos=     45062.Pos2=   1224710
+Pos:         2.Wrong Patten:      all the Levite
+             Patten:hee, let me com
+             CountP:         1
+             CountB:         1
+Pos=     13263.Pos2=    144335
+Pos:         0.Wrong Patten:     hee, let me com
+             Patten:at Shammai. 
+An
+             CountP:         1
+             CountB:         1
+Pos=     30364.Pos2=   1406620
+Pos:         0.Wrong Patten:     at Shammai. 
+An
+totalchuan:0.00088774sec
+chuan:0.00087607sec
+chuanread :  5.92e-06sec
+totalbing:0.00088774sec
+bing:         0sec
+chuanread :         0sec
+Plaincount=      7800,Gamacount=     38137,Fixcode=      2063

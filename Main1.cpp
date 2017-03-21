@@ -15,20 +15,20 @@ void helpsave();
 void helpcount();
 void helplocate();
 void splitcommand(string command, string result[]);
-void quick_sort(int *s, int l, int r);
+void quick_sort(i64 *s, i64 l, i64 r);
 void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
-void showpos(int *pos, int num);
+void showpos(i64 *pos, i64 num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 int main(int argc, char *argv[])
 {
-    int *pos;
-    int num = 0;
+    i64 *pos;
+    i64 num = 0;
     //	usage();
     string command;
     string result[2];
     string path,path2;
-    string patten = "together of";
+    string patten = "aid to Paul thr";
     cout<<patten<<endl;
     char filename[100] = {'\0'};
     char indexname[100] = {'\0'};
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	delete csa;
     csa = NULL;
     csa = new FM(path.data());
-    
+
     //csa->save(path2.data());
     //csa=new FM();
 	//csa->load(path2.data());
@@ -59,13 +59,17 @@ int main(int argc, char *argv[])
 
 			if (csa != NULL)
 			{
-             //csa->counting(patten.data(),num);
-			 pos = csa->locating(patten.data(), num);
-             showpos(pos,num);
-			//cout << "occs:" << num << endl;
-           // shmctl(pos, IPC_RMID, NULL) ;
-		//	showpos(pos, num);
-			delete[] pos;
+                //csa->counting(patten.data(),num);
+                //pos = csa->locating(patten.data(), num);
+                //cout<<"chuanxing:";
+                //showpos(pos, num);
+                pos = csa->Locating_parrel(patten.data(), num);
+                cout<<"bingxing:";
+                showpos(pos, num);
+                //cout << "occs:" << num << endl;
+                // shmctl(pos, IPC_RMID, NULL) ;
+                //	showpos(pos, num);
+                delete[] pos;
 			}
 			else
 			cout << "build a FM first" << endl;
@@ -111,11 +115,11 @@ int main(int argc, char *argv[])
 		
     }
    showpos(ivector);
-   compare(ivector, pos, num);
-    cout << ">";
-    char c;
-    cin >> c;
-    return 0;
+   //compare(ivector, pos, num);
+   cout << ">";
+   char c;
+   cin >> c;
+   return 0;
 }
 int stupidRank(unsigned char* c,int length,int& ch,int pos)
 {
@@ -126,7 +130,7 @@ int stupidRank(unsigned char* c,int length,int& ch,int pos)
 	}
     return occTimes;
 }
-void showpos(int *pos, int num)
+void showpos(i64 *pos, i64 num)
 {
 	quick_sort(pos,0,num-1);
     cout << "occs:" << num << endl;
@@ -150,31 +154,31 @@ void showpos(int *pos, int num)
 	}
     }
 }
-void compare(vector<int> ivector, int *pos, int num)
-{
-    quick_sort(pos, 0, num - 1);
-    vector<int> mismatchIndex;
-    if (ivector.size() == num)
-    {
-	int index = 0;
-	while (index < num)
-	{
-	    if (ivector[index] != pos[index])
-		mismatchIndex.push_back(ivector[index]);
-	}
-	if (mismatchIndex.size() > 0)
-	{
-	    cout << "the mismatch pos number is:" << ivector.size() << endl
-		 << "the mismatch pos are as follows:" << endl;
-	    for (int i = 0; i < mismatchIndex.size(); i++)
-	    {
-		cout << mismatchIndex[i] << ",";
-		if ((i + 1) % 10 == 0)
-		    cout << endl;
-	    }
-	}
-    }
-}
+///void compare(vector<int> ivector, i64 *pos, i64 num)
+///{
+///    quick_sort(pos, 0, num - 1);
+///    vector<int> mismatchIndex;
+///    if (ivector.size() == num)
+///    {
+///	int index = 0;
+///	while (index < num)
+///	{
+///	    if (ivector[index] != pos[index])
+///		mismatchIndex.push_back(ivector[index]);
+///	}
+///	if (mismatchIndex.size() > 0)
+///	{
+///	    cout << "the mismatch pos number is:" << ivector.size() << endl
+///		 << "the mismatch pos are as follows:" << endl;
+///	    for (int i = 0; i < mismatchIndex.size(); i++)
+///	    {
+///		cout << mismatchIndex[i] << ",";
+///		if ((i + 1) % 10 == 0)
+///		    cout << endl;
+///	    }
+///	}
+///    }
+///}
 void showpos(vector<int> ivector)
 {
     cout << "occs:" << ivector.size() << endl;
@@ -256,7 +260,7 @@ void helpsave()
     cout << "	XX: the FM-index file, the command will save the csa in file XX" << endl;
 }
 //快速排序
-void quick_sort(int *s, int l, int r)
+void quick_sort(i64 *s, i64 l, i64 r)
 {
     if (l < r)
     {

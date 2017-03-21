@@ -125,7 +125,7 @@ int ABS_FM::TreeSizeInByte(BitMap * r)
 	return size;
 }
 int flag3=0;
-void ABS_FM::DrawBackSearch(const char * pattern,int & Left,int &Right)
+void ABS_FM::DrawBackSearch(const char * pattern,i64 & Left,i64 &Right)
 {
 	int len = strlen(pattern);
 	i64 occ_left=0;
@@ -185,10 +185,10 @@ void ABS_FM::DrawBackSearch(const char * pattern,int & Left,int &Right)
 	return;
 }
 
-void ABS_FM::Counting(const char * pattern,int & num)
+void ABS_FM::Counting(const char * pattern,i64 & num)
 {
-	int Left=1;
-	int Right =0;
+	i64 Left=1;
+	i64 Right =0;
 	DrawBackSearch(pattern,Left,Right);//count
 //	cout<<"Counting "<<Left<<" "<<Right<<endl;
 	if(Right < Left)
@@ -198,10 +198,10 @@ void ABS_FM::Counting(const char * pattern,int & num)
 }
 
 
-int * ABS_FM::Locating(const char * pattern,int &num)
+i64 * ABS_FM::Locating(const char * pattern,i64 &num)
 {
-	int Left=1;
-	int Right = 0;
+	i64 Left=1;
+	i64 Right = 0;
 	DrawBackSearch(pattern,Left,Right);
 	if(Right < Left )
 	{
@@ -209,17 +209,17 @@ int * ABS_FM::Locating(const char * pattern,int &num)
 		return NULL;
 	}
 	num = Right - Left + 1;
-	int *pos =new int[num];
+	i64 *pos =new i64[num];
 	for(int i=0;i<num;i++)
 		pos[i]=Lookup(Left + i);
 	return pos;
 }
-int * ABS_FM::Locating_parrel(const char * pattern,int &num)
+i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 {
-	int *shmaddr ;
+	i64 *shmaddr ;
 	pid_t fpid1,fpid2;
-	int Left=1;
-	int Right = 0;
+	i64 Left=1;
+	i64 Right = 0;
 	DrawBackSearch(pattern,Left,Right);
 	if(Right < Left )
 	{
@@ -227,10 +227,10 @@ int * ABS_FM::Locating_parrel(const char * pattern,int &num)
 		return NULL;
 	}
 	num = Right - Left + 1;
-	int *pos =new int[num];
+	i64 *pos =new i64[num];
 	//add parrel
 	int shmid ;
-    shmid = shmget(IPC_PRIVATE, num*sizeof(int), IPC_CREAT|0600 ) ;
+    shmid = shmget(IPC_PRIVATE, num*sizeof(i64), IPC_CREAT|0600 ) ;
 	 if ( shmid < 0 )
       {
         //perror("get shm  ipc_id error") ;
@@ -244,11 +244,12 @@ int * ABS_FM::Locating_parrel(const char * pattern,int &num)
 	  {
 		for(int i=0;i<num/2;i++)
 			{
+
 				pos[i]=Lookup(Left + i);
-			//	cout<<i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
+		//		cout<<Left+i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
 			}
-		shmaddr = (int*)shmat( shmid, NULL, 0 ) ;	
-		memcpy(shmaddr,pos,sizeof(int)*num/2);
+		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;	
+		memcpy(shmaddr,pos,sizeof(i64)*num/2);
 		exit(0);		
 	  }
       fpid2 = fork(); 
@@ -259,24 +260,24 @@ int * ABS_FM::Locating_parrel(const char * pattern,int &num)
 		for(int i=num/2;i<num;i++)
 		{
 			pos[i]=Lookup(Left + i);
-			//cout<<i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
+		//	cout<<i+Left<<setw(4)<<".child2:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
 		}
 			
-		shmaddr = (int*)shmat( shmid, NULL, 0 ) ;	
-		memcpy(shmaddr+num/2,pos+num/2,sizeof(int)*num/2);
+		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;	
+		memcpy(shmaddr+num/2,pos+num/2,sizeof(i64)*(num-num/2));
 		exit(0);		
 	  }
 	  int st1, st2; 
       waitpid( fpid1, &st1, 0); 
       waitpid( fpid2, &st2, 0); 
-	  shmaddr = (int *) shmat(shmid, NULL, 0 );
-	  memcpy(pos,shmaddr,num*sizeof(int));
+	  shmaddr = (i64 *) shmat(shmid, NULL, 0 );
+	  memcpy(pos,shmaddr,num*sizeof(i64));
 	  shmctl(shmid, IPC_RMID, NULL);
 	  //delete[] pos;
 	return pos;
 }
 
-unsigned char* ABS_FM::Extracting(int pos,int len)
+unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 {
 	if(pos + len > n-1 || pos <0)
 	{
@@ -308,7 +309,7 @@ unsigned char* ABS_FM::Extracting(int pos,int len)
 }
 
 int flag=0;
-int ABS_FM::Lookup(int i)
+i64 ABS_FM::Lookup(i64 i)
 {
 	//cout<<"lookup init i="<<i<<endl;
 	int step = 0;
@@ -366,7 +367,7 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 			//if(pos_left>-1 && pos_right >-1)
 			{
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
-				//cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
+			//	cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
 				pos_left = (pos_left+1) - rank_left-1;
 				pos_right= (pos_right+1)- rank_right-1;
 
@@ -378,7 +379,7 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 			else if(pos_right > -1)
 			{
 				pos_right = (pos_right+1)-r->Rank(pos_right)-1;
-		//		cout<<flag2++<<"pos_right="<<setw(10)<<pos_right<<endl;
+				//cout<<flag2++<<"pos_right="<<setw(10)<<pos_right<<endl;
 			}
 			else
 			{
@@ -470,7 +471,7 @@ i64 ABS_FM::Occ(i64 & occ , unsigned char & label,i64 pos)
 	while(r->Left())
 	{
 		rank = r->Rank(pos,bit);
-		//cout<<setw(20)<<flag4++<<"  pos="<<setw(10)<<pos<<",Bit = "<<bit<<",rank="<<setw(10)<<rank<<endl;
+	//	cout<<setw(20)<<flag4++<<"  pos="<<setw(10)<<pos<<",Bit = "<<bit<<",rank="<<setw(10)<<rank<<endl;
 		if(bit==1)
 		{
 			//cout<<"r"<<endl;

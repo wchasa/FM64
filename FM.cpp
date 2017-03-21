@@ -15,7 +15,7 @@ FM::FM(const char *filename,int speedlevel):wt(filename,256,32,1,speedlevel){}
 
 FM::FM():wt(){}
 
-int FM::getN(){
+i64 FM::getN(){
 	return wt.GetN()-1;
 }
 
@@ -23,7 +23,7 @@ int FM::getAlphabetSize(){
 	return wt.GetAlphabetsize();
 }
 
-int FM::sizeInByte()
+i64 FM::sizeInByte()
 {
 	return wt.SizeInByte();
 }
@@ -42,7 +42,7 @@ void FM::Codedistribution(int &Plain,int &Gama,int &Fix)
 	Gama  = BitMap::Gamacount;
 	Fix   = BitMap::Fixcount;
 }
-int FM::sizeInByteForCount()
+i64 FM::sizeInByteForCount()
 {
 	return wt.SizeInByte_count();
 }
@@ -81,17 +81,17 @@ int FM::load(const char * indexfile)
 }
 
 
-void FM::counting(const char * pattern,int &num)
+void FM::counting(const char * pattern,i64 &num)
 {
 	wt.Counting(pattern,num);
 }
 
 
-int * FM::locating(const char * pattern,int & num)
+i64 * FM::locating(const char * pattern,i64 & num)
 {
 	return wt.Locating(pattern,num);
 }
-int * FM::Locating_parrel(const char * pattern,int & num)
+i64 * FM::Locating_parrel(const char * pattern,i64 & num)
 {
 	return wt.Locating_parrel(pattern,num);
 }
