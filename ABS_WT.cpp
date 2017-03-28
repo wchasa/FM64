@@ -7,7 +7,7 @@ This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 or later of the License.
 #
-# Description: 
+# Description:
 =============================================*/
 #include <limits>
 #include"ABS_WT.h"
@@ -20,8 +20,9 @@ the Free Software Foundation; either version 2 or later of the License.
 #include <string.h>
 #include <sys/wait.h>
 
+//#define LOOP 35
 #define SIZE 1024
-//#define READSIZE 1024*1024*50
+#define READSIZE 1024*1024*10000000
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -165,7 +166,7 @@ void ABS_FM::DrawBackSearch(const char * pattern,i64 & Left,i64 &Right)
 			Right = 0;
 			return;
 		}
-	/*	
+	/*
 	    Left = C[coding]+Occ(c,Left-1);
 		Right =C[coding]+Occ(c,Right)-1;
 		i=i-1;
@@ -203,23 +204,32 @@ i64 * ABS_FM::Locating(const char * pattern,i64 &num)
 	i64 Left=1;
 	i64 Right = 0;
 	DrawBackSearch(pattern,Left,Right);
+	
 	if(Right < Left )
 	{
 		num=0;
 		return NULL;
 	}
 	num = Right - Left + 1;
+	
+	
+	//Left =rand()%1000;
+	//num =LOOP;
 	i64 *pos =new i64[num];
 	for(int i=0;i<num;i++)
-		pos[i]=Lookup(Left + i);
+		//pos[i]=Lookup(Left + i);
+		pos[i]=Lookup( 99+ i);
 	return pos;
 }
+/*
 i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 {
 	i64 *shmaddr ;
-	pid_t fpid1,fpid2;
+	pid_t* fpid = new pid_t[10];
+	int numberOfRun = 0;
 	i64 Left=1;
 	i64 Right = 0;
+	int modvalue = 0;
 	DrawBackSearch(pattern,Left,Right);
 	if(Right < Left )
 	{
@@ -227,6 +237,8 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 		return NULL;
 	}
 	num = Right - Left + 1;
+	numberOfRun = blog(num)>10?10:blog(num);
+	modvalue =num % numberOfRun ;
 	i64 *pos =new i64[num];
 	//add parrel
 	int shmid ;
@@ -237,45 +249,165 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
       	perror("Error:");
 		return NULL ;
       }
-	 fpid1  = fork();
-	 if (fpid1 < 0)  
-        printf("error in fork!");  
-      else if(fpid1==0)
+      //cout << "num:" << num << endl;
+      for (int i = 0; i < numberOfRun; i++)
+      {
+	  fpid[i] = fork();
+	  if (fpid[i] < 0)
+	      printf("error in fork!");
+	  else if (fpid[i] == 0)
 	  {
-		for(int i=0;i<num/2;i++)
-			{
-
-				pos[i]=Lookup(Left + i);
-		//		cout<<Left+i<<setw(4)<<".child1:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
-			}
-		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;	
-		memcpy(shmaddr,pos,sizeof(i64)*num/2);
-		exit(0);		
+	      //cout<<"child1 loop from 0 to "<<num/2<<endl;
+	      shmaddr = (i64 *)shmat(shmid, NULL, 0);
+	      //int looptime = ;
+	      // modvalue--;
+	      //cout << "looptime:" << (num / numberOfRun) + (modvalue > i ? 1 : 0) << endl;
+	      for (int k = 0; k < (num / numberOfRun) + (modvalue > i ? 1 : 0); k++) //
+	      {
+		  //cout << "start:" << k + num / numberOfRun * i + (modvalue > i ? i : modvalue) << endl;
+		  shmaddr[k + num / numberOfRun * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfRun * i + (modvalue > i ? i : modvalue));
+		  //cout << "k=" << k << ",Left+i" << Left + i << setw(4) << ".child" << i << ":LookUp=" << setw(10) << shmaddr[k + num / numberOfRun * i] << ",pid" << getpid() << endl;
+	      }
+	      //memcpy(shmaddr,pos,sizeof(i64)*num/2);
+	      exit(0);
 	  }
-      fpid2 = fork(); 
-	  if (fpid2 < 0)  
-      	printf("error in fork!");  
-      else if(fpid2==0)
-	  {
-		for(int i=num/2;i<num;i++)
-		{
-			pos[i]=Lookup(Left + i);
-		//	cout<<i+Left<<setw(4)<<".child2:"<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
 		}
-			
-		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;	
-		memcpy(shmaddr+num/2,pos+num/2,sizeof(i64)*(num-num/2));
-		exit(0);		
+	  int st1, st2;
+	  for(int i = 0;i<numberOfRun;i++)
+	  {
+      	waitpid( fpid[i], &st1, 0);
 	  }
-	  int st1, st2; 
-      waitpid( fpid1, &st1, 0); 
-      waitpid( fpid2, &st2, 0); 
 	  shmaddr = (i64 *) shmat(shmid, NULL, 0 );
 	  memcpy(pos,shmaddr,num*sizeof(i64));
 	  shmctl(shmid, IPC_RMID, NULL);
+	  delete[] fpid;
+	return pos;
+}*/
+
+i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
+{
+	i64 *shmaddr ;
+	pid_t fpid1,fpid2;
+	i64 Left=1;
+	Left =rand()%1000;
+	i64 Right = 0;
+	DrawBackSearch(pattern,Left,Right);
+	if(Right < Left )
+	{
+		num=0;
+		return NULL;
+	}
+	num = Right - Left + 1;
+	i64 *pos =new i64[num];
+	//num = LOOP;
+	//add parrel
+	int shmid ;
+    shmid = shmget(IPC_PRIVATE, num*sizeof(i64), IPC_CREAT|0600 ) ;
+	 if ( shmid < 0 )
+      {
+      	perror("Error:");
+		return NULL ;
+      }
+	 fpid1  = fork();
+	 if (fpid1 < 0)
+        printf("error in fork!");
+      else if(fpid1==0)
+	  {
+		//cout<<"child1 loop from 0 to "<<num/2<<endl;
+		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;
+		for(int i=0;i<num/2;i++)
+			{
+				shmaddr[i]=Lookup(Left + i);
+		//		cout<<"i="<<i << ",Left+i" <<Left+i<<setw(4)<<".child1:"<<"LookUp="<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
+			}
+		//memcpy(shmaddr,pos,sizeof(i64)*num/2);
+		exit(0);
+	  }
+      fpid2 = fork();
+	  if (fpid2 < 0)
+      	printf("error in fork!");
+      else if(fpid2==0)
+	  {
+		//cout<<"child2 loop from "<<num/2<< "to "<<num<<endl;
+		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;
+		for(int i=num/2;i<num;i++)
+		{
+			shmaddr[i]=Lookup(Left + i);
+		//	cout <<"i="<< i << "," << i + Left << setw(4) << ".child2:" << "lookup="<<setw(10) << pos[i] << ",pid" << getpid() << endl;
+		}
+		//memcpy(shmaddr+num/2,pos+num/2,sizeof(i64)*(num-num/2));
+		exit(0);
+	  }
+	  int st1, st2;
+      waitpid( fpid1, &st1, 0);
+      waitpid( fpid2, &st2, 0);
+	  shmaddr = (i64 *) shmat(shmid, NULL, 0 );
+	  memcpy(pos,shmaddr,num*sizeof(i64));
+	  shmctl(shmid, IPC_RMID, NULL);
+	  //cout<<pos[0]<<endl;
 	  //delete[] pos;
 	return pos;
 }
+/*unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
+{
+
+	i64 *shmaddr ;
+	pid_t* fpid = new pid_t[10];
+	int numberOfRun = 0;
+	i64 Left=1;
+	i64 Right = 0;
+	int modvalue = 0;
+	numberOfRun = blog(len)>10?10:blog(len);
+	modvalue =len % numberOfRun ;
+	unsigned char *result =new unsigned char[len];
+	//add parrel
+	int shmid ;
+    shmid = shmget(IPC_PRIVATE, len*sizeof(unsigned char), IPC_CREAT|0600 ) ;
+	 if ( shmid < 0 )
+      {
+        //perror("get shm  ipc_id error") ;
+      	perror("Error:");
+		return NULL ;
+      }
+      //cout << "num:" << num << endl;
+      for (int i = 0; i < numberOfRun; i++)
+      {
+	  fpid[i] = fork();
+	  if (fpid[i] < 0)
+	      printf("error in fork!");
+	  else if (fpid[i] == 0)
+	  {
+		  int lenpart = (len / numberOfRun) + (modvalue > i ? 1 : 0);
+	      //cout<<"child1 loop from 0 to "<<num/2<<endl;
+		  unsigned char* p = new unsigned char[];
+	      shmaddr = (i64 *)shmat(shmid, NULL, 0);
+	      //int looptime = ;
+	      // modvalue--;
+	      //cout << "looptime:" << (num / numberOfRun) + (modvalue > i ? 1 : 0) << endl;
+	      for (int k = 0; k < (len / numberOfRun) + (modvalue > i ? 1 : 0); k++) //
+	      {
+		  //cout << "start:" << k + num / numberOfRun * i + (modvalue > i ? i : modvalue) << endl;
+		  //shmaddr[k + len / numberOfRun * i + (modvalue > i ? i : modvalue)] = Extracting(Left + k + num / numberOfRun * i + (modvalue > i ? i : modvalue));
+		   Extracting(Left + k + len / numberOfRun * i + (modvalue > i ? i : modvalue),(len / numberOfRun) + (modvalue > i ? 1 : 0));
+		  //cout << "k=" << k << ",Left+i" << Left + i << setw(4) << ".child" << i << ":LookUp=" << setw(10) << shmaddr[k + num / numberOfRun * i] << ",pid" << getpid() << endl;
+	      }
+	      //memcpy(shmaddr,pos,sizeof(i64)*num/2);
+	      exit(0);
+	  }
+		}
+	  int st1, st2;
+	  for(int i = 0;i<numberOfRun;i++)
+	  {
+      	waitpid( fpid[i], &st1, 0);
+	  }
+	  shmaddr = (unsigned char*)shmat(shmid, NULL, 0 );
+	  memcpy(pos,shmaddr,len*sizeof(unsigned char *));
+	  shmctl(shmid, IPC_RMID, NULL);
+	  delete[] fpid;
+	return pos;
+}
+*/
+
 
 unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 {
@@ -311,14 +443,12 @@ unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 int flag=0;
 i64 ABS_FM::Lookup(i64 i)
 {
-	//cout<<"lookup init i="<<i<<endl;
 	int step = 0;
 	int D = this->D;
 	while(i%D!=0)
 	{
 		i=LF(i);
 		step =step +1;
-		//cout<<flag++<<".loop i="<<setw(10)<<i<<"  step="<<setw(10)<<step<<endl;	
 	}
 	i=i/D;
 	return (SAL->GetValue(i)+step)%n;
@@ -333,19 +463,19 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 	char code = '0';
 	while(r->Left())
 	{
-		code = codeTable[c][level];		
+		code = codeTable[c][level];
  		if(code == '1')//编码是1,走右分支
 		{
 			//wch
 			if(pos_left>-1 && pos_right >-1&&(pos_left<pos_right)) //left right 都有待查找
 			//if(pos_left>-1 && pos_right >-1) //left right 都有待查找
 			//wch
-			{			
+			{
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
 				//cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
 				pos_left = rank_left -1;
 				pos_right = rank_right -1;
-			
+
 			/*	pos_left = r->Rank(pos_left)-1;
 				pos_right=r->Rank(pos_right)-1;
 			*/
@@ -425,7 +555,7 @@ i64 ABS_FM::LF(i64 i)
 	int coding = code[c];
 	return C[coding]+Occ(c,i)-1;
 */
-	
+
 	i64 occ =0;
 	unsigned char label =0;
 	Occ(occ,label,i);
@@ -440,7 +570,7 @@ unsigned char ABS_FM::L(int i)
 	BitMap * r = root;
 	int bit =0;
 	int rank = 0;
-	
+
 	while(r->Left())
 	{
 	//	bit = r->Rank(i) - r->Rank(i-1);
@@ -502,6 +632,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	}
 	fseeko(fp,0,SEEK_END);
 	n = ftello(fp)+1;
+	n = n>READSIZE?READSIZE:n;
 	unsigned char * T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
@@ -569,8 +700,8 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 
 int ABS_FM::BuildTree(int speedlevel)
 {
-	saidx64_t* SA = new saidx64_t[n];	
-	divsufsort64(T,SA,n);		
+	saidx64_t* SA = new saidx64_t[n];
+	divsufsort64(T,SA,n);
 	//SA和Rank数组的采样
 	int step1 =this->D;
 	int step2 =this->D*16;
@@ -581,7 +712,7 @@ int ABS_FM::BuildTree(int speedlevel)
 	int j=0;
 	for(i=0,j=0;i<n;i=i+step1,j++)
 		SAL->SetValue(j,SA[i]);
-	
+
 	for(i=0;i<n;i++)
 	{
 		if(SA[i]==0)
@@ -615,19 +746,19 @@ int ABS_FM::BuildTree(int speedlevel)
 		case 2:a=10;b=50;break;
 		default:a=4;b=20;break;
 	}
-	
+
 	if(runs<a)
 		block_size=block_size*1;
 	else if(runs<b)
 		block_size=block_size*2;
 	else
 		block_size=block_size*4;
-	
+
 //	cout<<"block_size: "<<block_size<<endl;
 	TreeCode();
 	root=CreateWaveletTree(bwt,n);
 //	cout<<"CreatWaveletTree"<<endl;
-	
+
 	//Test_L();
 	//Test_Occ();
 	//Test_Shape(root);
@@ -654,7 +785,7 @@ void ABS_FM::Test_Shape(BitMap * r)
 		cout<<"one child"<<endl;
 	}
 }
-	
+
 void ABS_FM::Test_Occ()
 {
 	int count[256]={0};
@@ -722,7 +853,7 @@ BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,int len,int level)
 		node->Right(NULL);
 		return node;
 	}
-	
+
 	int u64Len=0;
 	if(len%64==0)
 		u64Len = len/64+1;
@@ -812,7 +943,7 @@ int ABS_FM::blog(int x)
 	return ans;
 }
 
-//init tables 
+//init tables
 void ABS_FM::Inittable()
 {
 	this -> Z = new uchar[1<<8];
@@ -821,10 +952,10 @@ void ABS_FM::Inittable()
 		for(int j=(1<<i);j<(2<<i);j++)
 			Z[j] = tablewidth-1-i;
 	Z[0] = tablewidth;
-	
+
 	u64 tablesize = (1<<16);
 	R  = new uchar[tablesize<<2];
-	
+
 	//查找表的初始化：在16bits的0,1串上模拟gamma解码的过程，得到
 	//这些表
 	u64 B[2]={0xffffffffffffffffull,0xffffffffffffffffull};
@@ -832,7 +963,7 @@ void ABS_FM::Inittable()
 	i64 step=0;//16bits可以完整解码的bits数,该值不会大于16.
 	int rank = 0;//16bits表示的几个完整的runs,假设第一个runs是1-runs,这几个runs的rank值。
 	int runs = 0 ;//runs 个数.
-	
+
 	int x = 0;//工作变量，保存本次的gamma解码值.
 	int prestep = 0;//前一次正确解码的bits数(累加),<=16.
 	for(u64 i=0;i<tablesize;i++)
@@ -900,7 +1031,7 @@ int ABS_FM::LoadWTTree(loadkit &s,uchar **tables)
 {
 	//读取数据，map的int域对应该节点的位置
 	int nodecount = 2*alphabetsize -1;
-   
+
 //	cout<<alphabetsize<<endl;
 //	s.loadi32(nodecount);
 	int * p = new int[nodecount];
@@ -926,14 +1057,14 @@ int ABS_FM::LoadWTTree(loadkit &s,uchar **tables)
 			iter->second->Left(f_iter->second);
 		else
 			iter->second->Left(NULL);
-		
+
 		f_iter = pmap.find(2*iter->first +1);
 		if(f_iter!=pmap.end())
 			iter->second->Right(f_iter->second);
 		else
 			iter->second->Right(NULL);
 	}
-//	cout<<"767"<<endl;	
+//	cout<<"767"<<endl;
 	f_iter = pmap.find(1);
 	if(f_iter !=pmap.end())
 		this->root = f_iter->second;
@@ -992,7 +1123,7 @@ int ABS_FM::Load(loadkit &s)
 			}
 		}
 	}
-	
+
 	//for SAL
 	this->SAL = new InArray();
 	this->SAL->load(s);
@@ -1014,7 +1145,7 @@ int ABS_FM::Save(savekit &s)
 	s.writei64(n);
 	s.writei32(alphabetsize);
 	s.writei32(D);//SA的采样率
-	
+
 	//C表
 	//s.writei32(alphabetsize+1);
 	s.writei64array(C,alphabetsize+1);
@@ -1050,7 +1181,7 @@ int ABS_FM::Save(savekit &s)
 			s.writeu8array(bits,bytes);
 		}
 	}
-	
+
 	//for SAL
 	SAL->write(s);
 	//for RankL

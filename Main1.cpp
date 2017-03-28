@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     string command;
     string result[2];
     string path,path2;
-    string patten = "aid to Paul thr";
+    string patten = "There shall nothin";
     cout<<patten<<endl;
     char filename[100] = {'\0'};
     char indexname[100] = {'\0'};
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     result[0] = "";
     path = "";
     command = "";
-    path = "bible";
+    path = "./bible";
     //path2 ="/home/wch/CMake Practice.pdf";
     if (csa != NULL)
 	delete csa;

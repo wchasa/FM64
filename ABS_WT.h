@@ -45,7 +45,8 @@ class ABS_FM
 		i64 * Locating(const char * pattern,i64 &num);
 		i64 * Locating_parrel(const char * pattern,i64 &num);
 		unsigned char* Extracting(i64 pos,i64 len);
-		int Load(loadkit & s);
+		unsigned char *Extracting_parrel(i64 pos, i64 len);
+		int Load(loadkit &s);
 		int Save(savekit & s);
 		int BuildTree(int speedlevel=1);
 

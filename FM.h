@@ -50,8 +50,9 @@ class FM
 		FM& operator =(const FM&h){wt=h.wt;return *this;};
 		
 		void counting(const char *pattern,i64 &num);
-		i64 * locating(const char *pattern,i64 & num);
+		i64 * Locating(const char *pattern,i64 & num);
 		i64 * Locating_parrel(const char *pattern,i64 & num);
+		
 		unsigned char * extracting(int pos,int len);
 		
 		int load(const char * indexfile);

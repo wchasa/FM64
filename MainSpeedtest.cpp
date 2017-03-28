@@ -8,7 +8,7 @@
 #include<iomanip>
 #include <string>
 using namespace std;
-#define MAX 1000
+#define MAX 100
 void usage();
 void helpbuild();
 void helpload();
@@ -27,9 +27,9 @@ int main(int argc, char *argv[])
 	double stime,etime,stime1,etime1,tcost,tcost2;
     FM *csa = NULL;
     string strpathFM,strpathfile,str;
-	strpathFM ="/home/wch/testfile/proteins.100MB.fm";
-	strpathfile ="/home/wch/testfile/proteins.100MB";
-	//strpathfile ="/home/wch/testfile/einstein.en.txt";
+	strpathFM ="/home/wch/testfile/kernel.fm";
+	//strpathfile ="./bible";
+	strpathfile ="/home/wch/testfile/kernel";
     cout<<"input file path:";
     //getline(cin,strpath);/home/wch/codebase
 	//strpath = "/home/wch/codebase/sources";
@@ -38,94 +38,79 @@ int main(int argc, char *argv[])
 	//FILE * fp = fopen("./bible","r+");
     if(fp==NULL)
 	{
-		
 		cout<<"Be sure the file is available"<<endl;
 		exit(0);
 	}
     fseek(fp,0,SEEK_END);
 	int n = ftell(fp)+1;
-	unsigned char *T = new unsigned char[n];
+	unsigned char *searchT = new unsigned char[1024];
 	fseeko(fp,0,SEEK_SET);
 	int e   = 0;
 	i64 num = 0,num2 = 0;
-	num = fread(T,sizeof(unsigned char),n,fp);
-	T[n-1]=0;
-    string strtxt((char*)T);
+	//num = fread(T,sizeof(unsigned char),n,fp);
+	//T[n-1]=0;
+    //string strtxt((char*)T);
+
 	stime = clock();
 	if (csa != NULL)
 	    delete csa;
+//	csa = new FM(strpathfile.c_str());
 
 	csa = new FM();
+	csa->load(strpathFM.data());
 	etime = clock();
 	tcost = etime-stime;
 	cout<<"build takes:"<<setw(10)<<tcost/CLOCKS_PER_SEC<<"sec"<<endl;
-	cout << "build complete;" << endl;
-	FILE *fh = fopen(strpathFM.c_str(), "r");
-	if (fh == NULL)
-	{
-	    stime = clock();
-	    csa = new FM(strpathfile.c_str());
-	    etime = clock();
-	    csa->save(strpathFM.data());
-	}
-	else
-	{
-	    csa = new FM();
-	    csa->load(strpathFM.data());
-	}
+	cout<<"build complete;"<<endl;
 	//cout<<"Plain:"<<setw(10)<<Plaincount<<"";
 	tcost = 0;
-	stime1 = clock();
+	tcost2 = 0;
+	//stime1 = clock();
+	//engthen his for""
+	
 	for(int i2 =0;i2<MAX;i2++)
-    {
-		//cout<<"**********************************"<<endl;
-		//str = "military age (19)";
-	   	//str = strtxt.substr(rand()%n,20);
-		str = strtxt.substr(i2,20 );
-		//cout<<"Patten:"<<str<<endl;
-		i64 *pos = csa->Locating_parrel(str.data(), num2);
-		//i64 *pos2 = csa->Locating(str.data(), num);
-		//cout << setw(20) << "locating" << num << endl;
-		//showpos(pos,num);
-		int i = strtxt.find(str);
-		int p = 0;
-		if(num<=0)
-		{
-			cout<<"locate havnt find"<<endl;
-			//fprintf(fpw,"%s\r\n",str.c_str());
-			continue;
-		}
-		quick_sort(pos,0,num-1);
-		int stringFind=0;
-        while(i>= 0)
-        {	
-		    stringFind++;
-            if(pos[p++]!=i)
-            {
-				cout<<"-----------------------------------"<<endl;
-				cout<<"i"<<setw(10)<<p-1<<",i2="<<i2<<endl;
-				cout<<setw(10)<<"strFind"<<setw(10)<<i;
-				cout<<setw(10)<<"locate"<<setw(10)<<pos[p-1]<<endl;
-				cout<<"Patten:"<<setw(10)<<str<<"count:"<<num<<endl;
-				//fpw.write((str+"\r\n").c_str);
-				
-				//fprintf(fpw,"%s\r\n",str.c_str());
-				break;
-			}
+	{
+		fseek(fp,rand()%n-100,SEEK_SET);
+	    fread(searchT, sizeof(unsigned char), 20, fp);
+		
+		stime = clock();
+		i64 *pos = csa->Locating_parrel((const char *)searchT, num);
+		etime = clock();
+		tcost += etime-stime;
+		
+		stime = clock();
+		i64 *pos2 = csa->Locating((const char*)searchT, num2);
+		etime = clock();
+		tcost2 += etime-stime;
+	}
+	//etime = clock();
+	//tcost = etime-stime;
+    cout<<"chuan:"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX*1000<<"ms"<<endl;
+    cout<<" bing:"<<setw(10)<<tcost /CLOCKS_PER_SEC/MAX*1000<<"ms"<<endl;
+    tcost = 0;
+//	stime = clock();
+//	for (int i2 = 0; i2 < MAX; i2++)
+//	{
+//	    fseek(fp, rand() % n-100, SEEK_SET);
+//	    fread(searchT, sizeof(unsigned char), 40, fp);
+//	    
+//	    //cout<<setw(20)<<"Count:"<<setw(10)<<num<<endl;
+//	}
+//	etime = clock();
+//	//tcost = etime-stime;
+//   // cout<<"totalbing:"<<setw(10)<<(etime1-stime1)/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+   // cout<<"bing :"<<setw(10)<<tcos<<"sec"<<endl;
+	//cout<<"chuanread :"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
+	int Plaincount,Gamacount,Fixcount;
+	csa->Codedistribution(Plaincount,Gamacount,Fixcount);
+	//cout<<"Plaincount="<<setw(10)<<Plaincount<<",Gamacount="<<setw(10)<<Gamacount<<",Fixcode="<<setw(10)<<Fixcount<<endl;
+   // str ="fell on her face, a";
+    //while(true)
 
-            i = strtxt.find(str,i+1);
-
-        }
-		//cout<<setw(20)<<"stringFind="<<stringFind<<endl;
+			//cout<<setw(20)<<"stringFind="<<stringFind<<endl;
 		//cout<<"---------------------------"<<endl;
 		//;
-		cout<<"right"<<endl;
-	//	delete [] pos2;
-	//	pos2 =NULL;
-		delete [] pos;
-		pos =NULL;
-    }
-	//csa->DestroyWaveletTree();
+    
 	fclose(fp);
 	fclose(fpw);
 }
@@ -366,7 +351,7 @@ void quick_sort(i64 *s, i64 l, i64 r)
     if (l < r)
     {
 	//Swap(s[l], s[(l + r) / 2]); //将中间的这个数和第一个数交换 参见注1
-	i64 i = l, j = r, x = s[l];
+	int i = l, j = r, x = s[l];
 	while (i < j)
 	{
 	    while (i < j && s[j] >= x) // 从右向左找第一个小于x的数

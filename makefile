@@ -1,15 +1,18 @@
 CC=g++ -pg -std=gnu++11
-CFLAGS=  -O0 -g -Wall
+CFLAGS=-O2 -g -Wall
 my_fm:div Main.o fm.a
-	g++ -std=gnu++11 -g -O0 Main.o fm.a   -o my_fm
+	$(CC)  $(CFLAGS) Main.o fm.a   -o my_fm
 
-Mult:div MainMulti.o fm.a
-	g++ -std=gnu++11 -g -o0 MainMulti.o fm.a   -o my_fm
+mult:div MainMulti.o fm.a
+	$(CC)  $(CFLAGS) MainMulti.o fm.a   -o my_fm
 
 my_fm_1:div Main1.o fm.a
-	g++ -std=gnu++11 -g -o0 Main1.o fm.a   -o my_fm
+	$(CC)  $(CFLAGS) Main1.o fm.a   -o my_fm
 correctcheck:div MainCorrectCheck.o fm.a
-	g++ -std=gnu++11 -g -o0 MainCorrectCheck.o fm.a   -o my_fm
+	$(CC)  $(CFLAGS) MainCorrectCheck.o fm.a   -o my_fm
+
+speedtest:div MainSpeedtest.o fm.a
+	$(CC)  $(CFLAGS) MainSpeedtest.o fm.a   -o my_fm
 
 fm.a:ABS_WT.o Balance_WT.o Huffman_WT.o Hutacker_WT.o FM.o BitMap.o UseCount.o WT_Handle.o InArray.o loadkit.o savekit.o divsufsort.o sssort.o trsort.o utils.o
 	ar rc fm.a ABS_WT.o Balance_WT.o Huffman_WT.o Hutacker_WT.o FM.o BitMap.o UseCount.o WT_Handle.o  InArray.o loadkit.o savekit.o divsufsort.o sssort.o trsort.o utils.o
@@ -18,15 +21,19 @@ fm.a:ABS_WT.o Balance_WT.o Huffman_WT.o Hutacker_WT.o FM.o BitMap.o UseCount.o W
 	$(CC) -c  $(CFLAGS) $< -o $@
 
 Main.o:Main.cpp  FM.h
-	g++ -std=gnu++11 -g -O0 -c  Main.cpp
+	$(CC)  $(CFLAGS) -c  Main.cpp
 
 MainCorrectCheck.o:MainCorrectCheck.cpp  FM.h
-	g++ -std=gnu++11 -g -O0 -c  MainCorrectCheck.cpp
+	$(CC)  $(CFLAGS) -c  MainCorrectCheck.cpp
 	
+MainSpeedtest.o:MainSpeedtest.cpp  FM.h
+	$(CC)  $(CFLAGS) -c  MainSpeedtest.cpp
+
 MainMulti.o:MainMulti.cpp  FM.h
-	g++ -std=gnu++11 -g -O0 -c  MainMulti.cpp
+	$(CC)  $(CFLAGS) -c  MainMulti.cpp
+
 Main1.o:Main1.cpp  FM.h
-	g++ -std=gnu++11 -g -O0 -c  Main1.cpp
+	$(CC)  $(CFLAGS) -c  Main1.cpp
 clean:
 	rm *.a  *.o  my_fm ./divsufsort/*.a ./divsufsort/*.o
 

@@ -1,3 +1,377 @@
-"together of"  3793166 3793170
-"toget"        3793038 3793545
-"her of"       2217680 2217873
+This is add Fixcode FM
+FileName:/home/wch/testfile/bible
+/home/wch/testfile/bible.fm Load is ok
+/home/wch/testfile/bible
+build time:6.9531e-316sec
+File Size =   4047392 Byte,TreeSize =   1093159 Byte,CompressRate =    0.27009
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count: 5.943e-05sec
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/english
+/home/wch/testfile/english
+build time:37.9068sec
+File Size = 104857599 Byte,TreeSize =  32359180 Byte,CompressRate =   0.308601
+Plaincount=    301247,Gamacount=   1009965,Fixcode=     24139
+Count:0.000113999sec
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/sources
+/home/wch/testfile/sources
+build time:31.7154sec
+File Size = 104857599 Byte,TreeSize =  24301430 Byte,CompressRate =   0.231756
+Plaincount=    328620,Gamacount=   1704560,Fixcode=     50262
+Count:0.000150127sec
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/para
+/home/wch/testfile/para
+build time:32.4494sec
+File Size = 104857599 Byte,TreeSize =  15030741 Byte,CompressRate =   0.143344
+Plaincount=    328669,Gamacount=   1856559,Fixcode=    298875
+Count:0.000101644sec
+chuanxing loacting:   3.30959sec
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/E.coli
+/home/wch/testfile/E.coli
+build time:1.34911sec
+File Size =   4638690 Byte,TreeSize =   1307106 Byte,CompressRate =   0.281783
+Plaincount=    364162,Gamacount=   1857308,Fixcode=    298875
+Count:2.11535e-05sec
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/dna
+/home/wch/testfile/dna
+build time:39.3009sec
+File Size = 104857599 Byte,TreeSize =  27893224 Byte,CompressRate =   0.266011
+Plaincount=   1035665,Gamacount=   2003747,Fixcode=    299073
+Count:6.0923e-05sec
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/book1
+/home/wch/testfile/book1
+build time:0.23952sec
+File Size =    768771 Byte,TreeSize =    289829 Byte,CompressRate =   0.377003
+Plaincount=   1038630,Gamacount=   2012843,Fixcode=    299257
+Count:4.12824e-05sec
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/world192
+/home/wch/testfile/world192
+build time:0.609351sec
+File Size =   2473400 Byte,TreeSize =    567706 Byte,CompressRate =   0.229525
+Plaincount=   1039179,Gamacount=   2031247,Fixcode=    299904
+Count:5.50461e-05sec
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/world_leaders
+/home/wch/testfile/world_leaders
+build time:8.57264sec
+File Size =  46968181 Byte,TreeSize =   1723388 Byte,CompressRate =  0.0366927
+Plaincount=   1039256,Gamacount=   2055967,Fixcode=    345232
+Count:4.50157e-05sec
+--------------------------------------------------------------------
+
+FileName:/home/wch/testfile/influenza
+/home/wch/testfile/influenza
+build time:29.2495sec
+File Size = 104857599 Byte,TreeSize =   3096726 Byte,CompressRate =  0.0295327
+Plaincount=        24,Gamacount=    141229,Fixcode=     19324
+Count:3.70725e-05sec
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/dblp.xml
+/home/wch/testfile/dblp.xml
+build time:26.8256sec
+File Size = 104857599 Byte,TreeSize =  14209567 Byte,CompressRate =   0.135513
+Plaincount=     41703,Gamacount=    419375,Fixcode=     44505
+Count:7.14875e-05sec
+-----------------------------------------------------------------------------------------------------------------
+patten 20
+-----------------------------------------------------------------------------------------------------------------
+FileName:/home/wch/testfile/book1
+/home/wch/testfile/book1.fm Load is ok
+/home/wch/testfile/book1
+build time:6.08501e-319sec
+File Size =    768771 Byte,TreeSize =    289829 Byte,CompressRate =   0.377003
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:3.5232e-05sec
+chuanxing loacting:    77.696us
+parrel loacting:   830.181us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/world192
+/home/wch/testfile/world192.fm Load is ok
+/home/wch/testfile/world192
+build time:0.000966sec
+File Size =   2473400 Byte,TreeSize =    567706 Byte,CompressRate =   0.229525
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:6.0249e-05sec
+chuanxing loacting:   1172.38us
+parrel loacting:   1426.02us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/influenza
+/home/wch/testfile/influenza.fm Load is ok
+/home/wch/testfile/influenza
+build time:0.001785sec
+File Size = 104857599 Byte,TreeSize =   3096726 Byte,CompressRate =  0.0295327
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:3.3016e-05sec
+chuanxing loacting:   11364.7us
+parrel loacting:   3336.86us
+
+
+/home/wch/testfile/dblp.xml
+build time:0.010087sec
+File Size = 104857599 Byte,TreeSize =  14209567 Byte,CompressRate =   0.135513
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:5.9392e-05sec
+chuanxing loacting:    163829us
+Error:: No space left on device
+Error:: No space left on device
+
+This is add Fixcode FM
+FileName:/home/wch/testfile/bible
+/home/wch/testfile/bible.fm Load is ok
+/home/wch/testfile/bible
+build time:1.40698e-318sec
+File Size =   4047392 Byte,TreeSize =   1093159 Byte,CompressRate =    0.27009
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:8.5299e-05sec
+chuanxing loacting:   202.969us
+parrel loacting:   513.526us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/english
+/home/wch/testfile/english.fm Load is ok
+/home/wch/testfile/english
+build time:0.000839sec
+File Size = 104857599 Byte,TreeSize =  32359180 Byte,CompressRate =   0.308601
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:0.000146271sec
+chuanxing loacting:   4995.74us
+parrel loacting:   860.111us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/sources
+/home/wch/testfile/sources.fm Load is ok
+/home/wch/testfile/sources
+build time:0.000113sec
+File Size = 104857599 Byte,TreeSize =  24301430 Byte,CompressRate =   0.231756
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:0.000193979sec
+chuanxing loacting:    165103us
+parrel loacting:   4820.34us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/E.coli
+/home/wch/testfile/E.coli.fm Load is ok
+/home/wch/testfile/E.coli
+build time:5.23122e-319sec
+File Size =   4638690 Byte,TreeSize =   1307106 Byte,CompressRate =   0.281783
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:3.0543e-05sec
+chuanxing loacting:    42.845us
+parrel loacting:   459.045us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/dna
+/home/wch/testfile/dna.fm Load is ok
+/home/wch/testfile/dna
+build time:0.001641sec
+File Size = 104857599 Byte,TreeSize =  27893224 Byte,CompressRate =   0.266011
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:7.0432e-05sec
+chuanxing loacting:   1683.47us
+parrel loacting:   2027.41us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/english
+/home/wch/testfile/english.fm Load is ok
+/home/wch/testfile/english
+build time:3.00555e-318sec
+File Size = 104857599 Byte,TreeSize =  32359180 Byte,CompressRate =   0.308601
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:0.000133921sec
+chuanxing loacting:   1906.54us
+parrel loacting:   391.058us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/kernel
+/home/wch/testfile/kernel.fm Load is ok
+/home/wch/testfile/kernel
+build time:0.00217sec
+File Size = 104857599 Byte,TreeSize =   7121434 Byte,CompressRate =  0.0679153
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:0.000156788sec
+chuanxing loacting:   53943.9us
+parrel loacting:   2725.05us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/dblp.xml
+/home/wch/testfile/dblp.xml.fm Load is ok
+/home/wch/testfile/dblp.xml
+build time:0.008635sec
+File Size = 104857599 Byte,TreeSize =  14209567 Byte,CompressRate =   0.135513
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:7.5083e-05sec
+chuanxing loacting:    204176us
+parrel loacting:   5202.25us
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+patten 15
+----------------------------------------------------------------------------------------
+FileName:/home/wch/testfile/book1
+chuanxing loacting:     9.654us
+parrel loacting:     6.993us
+
+FileName:/home/wch/testfile/world192
+Count:4.7739e-05sec
+chuanxing loacting:    13.507us
+parrel loacting:    10.849us
+
+FileName:/home/wch/testfile/influenza
+Count:0.000120299sec
+chuanxing loacting:    74.342us
+parrel loacting:    69.282us
+
+ileName:/home/wch/testfile/kernel
+Count:0.000160058sec
+chuanxing loacting:    55.576us
+parrel loacting:    47.265us
+
+FileName:/home/wch/testfile/dblp.xml
+Count:0.000204557sec
+chuanxing loacting:   106.881us
+parrel loacting:     95.71us
+
+FileName:/home/wch/testfile/bible
+/home/wch/testfile/bible.fm Load is ok
+/home/wch/testfile/bible
+build time:4.75837e-318sec
+File Size =   4047392 Byte,TreeSize =   1093159 Byte,CompressRate =    0.27009
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:3.3009e-05sec
+chuanxing loacting:   328.596us
+parrel loacting:   546.108us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/english
+/home/wch/testfile/english.fm Load is ok
+/home/wch/testfile/english
+build time:0.001064sec
+File Size = 104857599 Byte,TreeSize =  32359180 Byte,CompressRate =   0.308601
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:4.6105e-05sec
+chuanxing loacting:    7192.3us
+parrel loacting:   596.266us
+---------------------------------------------------------------------
+FileName:/home/wch/testfile/E.coli
+/home/wch/testfile/E.coli.fm Load is ok
+/home/wch/testfile/E.coli
+build time:3.07195e-319sec
+File Size =   4638690 Byte,TreeSize =   1307106 Byte,CompressRate =   0.281783
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count: 1.489e-05sec
+chuanxing loacting:    32.951us
+parrel loacting:   478.627us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/dna
+/home/wch/testfile/dna.fm Load is ok
+/home/wch/testfile/dna
+build time:0.000728sec
+File Size = 104857599 Byte,TreeSize =  27893224 Byte,CompressRate =   0.266011
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:2.2046e-05sec
+chuanxing loacting:   2327.84us
+parrel loacting:   991.422us
+--------------------------------------------------------------------
+FileName:/home/wch/testfile/dna
+/home/wch/testfile/dna.fm Load is ok
+/home/wch/testfile/dna
+build time:2e-05sec
+File Size = 104857599 Byte,TreeSize =  27893224 Byte,CompressRate =   0.266011
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:2.0992e-05sec
+chuanxing loacting:   4467.05us
+parrel loacting:   1504.19us
+--------------------------------------------------------------------
+This is add Fixcode FM
+FileName:/home/wch/testfile/sources
+/home/wch/testfile/sources.fm Load is ok
+/home/wch/testfile/sources
+build time:3.76278e-318sec
+File Size = 104857599 Byte,TreeSize =  24301430 Byte,CompressRate =   0.231756
+Plaincount=         0,Gamacount=         0,Fixcode=         0
+Count:0.000173276sec
+chuanxing loacting:    232296us
+parrel loacting:   2576.65us
+
+
+
+--------------------------
+sample 64 -00-g 
+pattten 20
+This is add Fixcode FM
+FileName:/home/wch/testfile/english
+/home/wch/testfile/english
+build time:36.9355sec
+File Size = 104857599 Byte,TreeSize =  32359180 Byte,CompressRate =   0.308601
+Plaincount=    301247,Gamacount=   1009965,Fixcode=     24139
+Count:5.2633e-05sec
+chuanxing loacting:   2346.84us
+parrel loacting:   279.967us
+----------------------------------------------
+1000 loops chuanxing loacting:   52890.4us
+           parrel loacting:   1693.44us
+100  loops chuanxing loacting:   4796.38us
+           parrel loacting:   1960.58us
+           chuanxing loacting:   3787.59us
+parrel loacting:   1451.62us
+chuanxing loacting:   3796.58us
+parrel loacting:   1538.38us
+
+200 chuanxing loacting:   12255.9us
+    parrel loacting:   1756.04us
+    chuanxing loacting:   10142.5us
+parrel loacting:   1600.76us
+
+50
+chuanxing loacting:   2952.14us
+parrel loacting:   1840.91us
+
+chuanxing loacting:   2885.32us
+parrel loacting:   1670.24us
+
+chuanxing loacting:   3215.97us
+parrel loacting:   2274.95us
+
+40:
+chuanxing loacting:   2494.24us
+parrel loacting:   1578.51us
+
+chuanxing loacting:   2530.45us
+parrel loacting:   1727.32us
+
+chuanxing loacting:   2835.18us
+parrel loacting:   2054.96us
+
+30
+chuanxing loacting:   2441.75us
+parrel loacting:   1829.13us
+
+chuanxing loacting:   2449.34us
+parrel loacting:   1710.08us
+
+chuanxing loacting:   2735.93us
+parrel loacting:      2123us
+
+20
+chuanxing loacting:   1117.67us
+parrel loacting:    2293.1us
+
+chuanxing loacting:   1201.23us
+parrel loacting:   2074.18us
+
+25
+chuanxing loacting:   1456.09us
+parrel loacting:   1793.76us
+
+chuanxing loacting:   1735.09us
+parrel loacting:   2212.91us
+
+chuanxing loacting:   1354.82us
+parrel loacting:   2328.89us
+
+35
+chuanxing loacting:   1808.44us
+parrel loacting:   1620.45us
+
+chuanxing loacting:   1777.23us
+parrel loacting:   1891.45us
+
+chuanxing loacting:   1746.05us
+parrel loacting:   2779.91us

@@ -14,6 +14,7 @@
 #include<ctime>
 #include<fstream>
 #include<iostream>
+#include<iomanip>
 //#define READSIZE 1024*1024*5
 using namespace std;
 void usage();
@@ -68,7 +69,7 @@ int main(int argc, char* argv[])
 			i64 num=0;
 			if(csa!=NULL)
 			{
-				pos=csa->locating(result[1].data(),num);
+				pos=csa->Locating(result[1].data(),num);
 				showpos(pos,num);
 				delete [] pos;
 			}
@@ -89,7 +90,13 @@ int main(int argc, char* argv[])
 		else if(result[0]=="size")
 		{
 			if(csa!=NULL)
-				cout<<"File Size :"<<csa->getN()<<",TreeSize:"<<csa->sizeInByteForCount()<<",CompressRate"<<csa->compressRatioForCount()<<endl;
+			{
+				cout<<"File Size :"<<csa->getN()<<",TreeSize:"<<csa->sizeInByteForCount()<<",CompressRate:"<<csa->compressRatioForCount()<<endl;
+				int Plaincount, Gamacount, Fixcount;
+				csa->Codedistribution(Plaincount, Gamacount, Fixcount);
+				cout << "Plaincount=" << setw(10) << Plaincount << ",Gamacount=" << setw(10) << Gamacount << ",Fixcode=" << setw(10) << Fixcount << endl;
+				
+			}
 			else
 				cout<<"build a FM first"<<endl;
 		}

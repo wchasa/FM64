@@ -10,7 +10,8 @@
 #include <stdio.h> 
 #include <time.h>
 using namespace std;
-#define MAX 100
+#define MAX 10
+#define PATTENLEN 20
 void usage();
 void helpbuild();
 void helpload();
@@ -26,21 +27,29 @@ int stupidRank(unsigned char* c,int length,int& ch,int pos);
 int main(int argc, char *argv[])
 {
     cout<<"This is add Fixcode FM"<<endl;
+    cout<<"Patten Len:"<<PATTENLEN<<endl;
     double stime,etime,tcost;
     int *pos;
-    int num = 0;
+    i64 num = 0;
     //	usage();
     string command;
     string result[2];
     string path,path2;
     string patten = "ABBA";
-    char filename2[] = "/home/wch/path.txt";
-    FILE *fp;
+    char filename2[] = "/home/wch/path";
+    char filename3[] = "/home/wch/result";
+    FILE *fp,*fp_result;
     FM *csa = NULL;
-    char StrLine[1024]; 
+    char StrLine[1024],StrLineFM[1024]; 
+//    if((fp_result = fopen(filename3,"r")) == NULL)      //判断文件是否存在及可读  
+//    {   
+//        cout<<filename3<<"Open Failed"<<endl;
+//        //printf("Open Falied!");   
+//        return -1;   
+//    }
     if((fp = fopen(filename2,"r")) == NULL)      //判断文件是否存在及可读  
     {   
-        printf("Open Falied!");   
+        cout<<filename2<<"Open Failed"<<endl;
         return -1;   
     }   
     while (!feof(fp))                                   //循环读取每一行，直到文件尾
@@ -50,17 +59,29 @@ int main(int argc, char *argv[])
             continue;
         StrLine[strlen(StrLine)-1]='\0';
         cout<<"FileName:"<<StrLine<<endl;
+        strcpy(StrLineFM,StrLine);
         csa = NULL;
-        stime= clock();
-        csa = new FM(StrLine);
-        etime = clock();       
+        FILE *fh = fopen(strcat(StrLineFM, ".fm"), "r");
+        if (fh == NULL)
+        {
+            stime = clock();
+            csa = new FM(StrLine);
+            etime = clock();
+            csa->save(StrLineFM);
+        }
+        else
+        {
+             csa = new FM();
+            csa->load(StrLineFM);
+        }   
         tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
         cout << StrLine << endl;
-        cout << tcost << "sec" << endl;
-        cout << "File Size =" <<setw(20)<< csa->getN() << "Byte,TreeSize =" <<setw(20)<< csa->sizeInByteForCount() << "Byte,CompressRate = " <<setw(20)<< csa->compressRatioForCount() << endl;
+        cout <<"build time:"<< tcost << "sec" << endl;
+        cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;
         int Plaincount, Gamacount, Fixcount;
         csa->Codedistribution(Plaincount, Gamacount, Fixcount);
         cout << "Plaincount=" << setw(10) << Plaincount << ",Gamacount=" << setw(10) << Gamacount << ",Fixcode=" << setw(10) << Fixcount << endl;
+      //  cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatioForCount() << endl;
         FILE *fp2;
         if ((fp2 = fopen(StrLine, "r")) == NULL) //判断文件是否存在及可读
         {
@@ -72,22 +93,43 @@ int main(int argc, char *argv[])
         unsigned char * searchT = new unsigned char[1024];
         fseeko(fp2, 0, SEEK_SET);
         int e=0;
-        int num = 0;
+        i64 num = 0;
         //num = fread(T,sizeof(unsigned char),n,fp2);
         //T[n - 1] = 0;
        
         //string strtxt((char *)pattenT),str;
-        stime = clock();
+        //stime = clock();
+        tcost=0;
+        for (int i2 = 0; i2 < MAX; i2++)
+        {
+
+            fseek(fp2, rand() % (n-100), SEEK_SET);
+            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+            //((char*)T);
+            //str = searchT;
+            //cout<<setw(30)<<"Patten:"<<searchT<<endl;
+            stime = clock();
+            csa->counting((const char *)searchT, num);
+            //cout<<"Count:"<<setw(10)<<num<<endl;
+            etime = clock();
+            tcost += (double)(etime - stime);
+            //str = strtxt.substr(rand() % (n-100), 10);
+            //cout<<"Patten:"<<str<<endl;
+            //int *pos = csa->locating(str.data(), num);
+            //cout<<"Pid:"<<getpid()<<endl;
+        }
+        cout << "Count:" << setw(10) << tcost / CLOCKS_PER_SEC / MAX << "sec" << endl;
+        tcost=0;
         for (int i2 = 0; i2 < MAX; i2++)
         {
 
             fseek(fp2, rand() % n, SEEK_SET);
-            fread(searchT, sizeof(unsigned char), 15, fp2);
+            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             //((char*)T);
             //str = searchT;
-            cout<<setw(30)<<"Patten:"<<searchT<<endl;
+           // cout<<setw(30)<<"Patten:"<<searchT<<endl;
             stime = clock();
-            int *pos = csa->locating((const char *)searchT, num);
+            i64 *pos = csa->Locating((const char *)searchT, num);
             //cout<<"Count:"<<setw(10)<<num<<endl;
             etime = clock();
             tcost += (double)(etime - stime);
@@ -98,27 +140,28 @@ int main(int argc, char *argv[])
         }
        // etime = clock();
        // tcost = (double)(etime - stime);
-        cout << "chuanxing:" << setw(10) << tcost / CLOCKS_PER_SEC / MAX << "sec" << endl;
+        cout << "chuanxing loacting:" << setw(10) << tcost*1000000/ CLOCKS_PER_SEC / MAX << "us" << endl;
        // stime = clock();
         tcost=0;
         for (int i2 = 0; i2 < MAX; i2++)
         {
             fseek(fp2, rand() % n, SEEK_SET);
-            fread(searchT, sizeof(unsigned char), 15, fp2);
+            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             //((char*)T);
             //str = searchT;
             cout<<setw(30)<<"Patten:"<<searchT<<endl;
             stime = clock();
-            int *pos = csa->Locating_parrel((const char *)searchT, num);
+            i64 *pos = csa->Locating_parrel((const char *)searchT, num);
             //cout<<"Count:"<<setw(10)<<num<<endl;
             etime = clock();
             tcost += (double)(etime - stime);
         }
        // etime = clock();
         //tcost = (double)(etime - stime);
-        cout << "parrel:" << setw(10) << tcost / CLOCKS_PER_SEC / MAX << "sec" << endl;
+        cout << "parrel loacting:" << setw(10) << tcost*1000000 / CLOCKS_PER_SEC / MAX << "us" << endl;
         delete csa;
          fclose(fp2);
+        cout<<"--------------------------------------------------------------------"<<endl;
     }   
     fclose(fp);
     return 0;

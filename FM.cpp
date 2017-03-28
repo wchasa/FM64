@@ -76,7 +76,7 @@ int FM::load(const char * indexfile)
 	}
 	wt.Load(s);
 	s.close();
-	cout<<"Load is ok"<<endl;
+	cout <<indexfile<< " Load is ok" << endl;
 	return 0;
 }
 
@@ -87,7 +87,7 @@ void FM::counting(const char * pattern,i64 &num)
 }
 
 
-i64 * FM::locating(const char * pattern,i64 & num)
+i64 * FM::Locating(const char * pattern,i64 & num)
 {
 	return wt.Locating(pattern,num);
 }
