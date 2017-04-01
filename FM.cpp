@@ -76,7 +76,7 @@ int FM::load(const char * indexfile)
 	}
 	wt.Load(s);
 	s.close();
-	cout <<indexfile<< " Load is ok" << endl;
+	//cout <<indexfile<< " Load is ok" << endl;
 	return 0;
 }
 

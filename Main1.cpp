@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     string command;
     string result[2];
     string path,path2;
-    string patten = "There shall nothin";
+    string patten ="AAATACAAAAAAATTAGCTG";
     cout<<patten<<endl;
     char filename[100] = {'\0'};
     char indexname[100] = {'\0'};
@@ -36,16 +36,16 @@ int main(int argc, char *argv[])
     result[0] = "";
     path = "";
     command = "";
-    path = "./bible";
+    path = "/home/wch/testfile/dna.fm";
     //path2 ="/home/wch/CMake Practice.pdf";
     if (csa != NULL)
 	delete csa;
     csa = NULL;
-    csa = new FM(path.data());
+ //   csa = new FM(path.data());
 
     //csa->save(path2.data());
-    //csa=new FM();
-	//csa->load(path2.data());
+    csa=new FM();
+	csa->load(path.data());
     int bit = 'M';
  //	int rankresult = csa->wt.fm->GetRoot()->Rank(100,bit);
  //   int strankresult = stupidRank(csa->wt.fm->bwt,1024*1024,bit,100);

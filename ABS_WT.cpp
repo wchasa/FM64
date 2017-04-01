@@ -22,7 +22,7 @@ the Free Software Foundation; either version 2 or later of the License.
 
 //#define LOOP 35
 #define SIZE 1024
-#define READSIZE 1024*1024*10000000
+#define READSIZE 1024*1024*100000
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -211,25 +211,19 @@ i64 * ABS_FM::Locating(const char * pattern,i64 &num)
 		return NULL;
 	}
 	num = Right - Left + 1;
-	
-	
-	//Left =rand()%1000;
-	//num =LOOP;
 	i64 *pos =new i64[num];
 	for(int i=0;i<num;i++)
 		//pos[i]=Lookup(Left + i);
-		pos[i]=Lookup( 99+ i);
+		pos[i]=Lookup(Left+ i);
 	return pos;
 }
-/*
+
 i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 {
-	i64 *shmaddr ;
-	pid_t* fpid = new pid_t[10];
+	int modvalue = 0;
 	int numberOfRun = 0;
 	i64 Left=1;
 	i64 Right = 0;
-	int modvalue = 0;
 	DrawBackSearch(pattern,Left,Right);
 	if(Right < Left )
 	{
@@ -237,54 +231,67 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 		return NULL;
 	}
 	num = Right - Left + 1;
-	numberOfRun = blog(num)>10?10:blog(num);
-	modvalue =num % numberOfRun ;
 	i64 *pos =new i64[num];
-	//add parrel
-	int shmid ;
-    shmid = shmget(IPC_PRIVATE, num*sizeof(i64), IPC_CREAT|0600 ) ;
-	 if ( shmid < 0 )
-      {
-        //perror("get shm  ipc_id error") ;
-      	perror("Error:");
+	//numberOfRun = 1;
+	numberOfRun = (num>>6)+1>10?10:((num>>6))+1;
+	if(numberOfRun==1)
+	{
+	    for (int i = 0; i < num; i++)
+			pos[i] = Lookup(Left + i);
+	}
+	else
+	{
+	    i64 *shmaddr;
+	    pid_t *fpid = new pid_t[10];
+	    pid_t mainpid = getpid();
+	    modvalue = num % numberOfRun;
+	    //add parrel
+	    int shmid;
+	    shmid = shmget(IPC_PRIVATE, num * sizeof(i64), IPC_CREAT | 0600);
+	    if (shmid < 0)
+	    {
+		//perror("get shm  ipc_id error") ;
+		perror("Error:");
 		return NULL ;
-      }
-      //cout << "num:" << num << endl;
-      for (int i = 0; i < numberOfRun; i++)
-      {
-	  fpid[i] = fork();
-	  if (fpid[i] < 0)
-	      printf("error in fork!");
-	  else if (fpid[i] == 0)
-	  {
-	      //cout<<"child1 loop from 0 to "<<num/2<<endl;
-	      shmaddr = (i64 *)shmat(shmid, NULL, 0);
-	      //int looptime = ;
-	      // modvalue--;
-	      //cout << "looptime:" << (num / numberOfRun) + (modvalue > i ? 1 : 0) << endl;
-	      for (int k = 0; k < (num / numberOfRun) + (modvalue > i ? 1 : 0); k++) //
-	      {
-		  //cout << "start:" << k + num / numberOfRun * i + (modvalue > i ? i : modvalue) << endl;
-		  shmaddr[k + num / numberOfRun * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfRun * i + (modvalue > i ? i : modvalue));
-		  //cout << "k=" << k << ",Left+i" << Left + i << setw(4) << ".child" << i << ":LookUp=" << setw(10) << shmaddr[k + num / numberOfRun * i] << ",pid" << getpid() << endl;
-	      }
-	      //memcpy(shmaddr,pos,sizeof(i64)*num/2);
-	      exit(0);
-	  }
+	    }
+	    //cout << "num:" << num << endl;
+	    for (int i = 0; i < numberOfRun; i++)
+	    {
+		if(getpid()==mainpid)
+				fpid[i] = fork();
+		if (fpid[i] < 0)
+		    printf("error in fork!");
+		else if (fpid[i] == 0)
+		{
+		    //cout<<"child1 loop from 0 to "<<num/2<<endl;
+		    shmaddr = (i64 *)shmat(shmid, NULL, 0);
+		    //int looptime = ;
+		    // modvalue--;
+		    //cout << "looptime:" << (num / numberOfRun) + (modvalue > i ? 1 : 0) << endl;
+		    for (int k = 0; k < (num / numberOfRun) + (modvalue > i ? 1 : 0); k++) //
+		    {
+			//cout << "start:" << k + num / numberOfRun * i + (modvalue > i ? i : modvalue) << endl;
+			shmaddr[k + num / numberOfRun * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfRun * i + (modvalue > i ? i : modvalue));
+			//cout << "k=" << k << ",Left+i" << Left + i << setw(4) << ".child" << i << ":LookUp=" << setw(10) << shmaddr[k + num / numberOfRun * i] << ",pid" << getpid() << endl;
+		    }
+		    //memcpy(shmaddr,pos,sizeof(i64)*num/2);
+		    exit(0);
 		}
-	  int st1, st2;
-	  for(int i = 0;i<numberOfRun;i++)
-	  {
-      	waitpid( fpid[i], &st1, 0);
-	  }
-	  shmaddr = (i64 *) shmat(shmid, NULL, 0 );
-	  memcpy(pos,shmaddr,num*sizeof(i64));
-	  shmctl(shmid, IPC_RMID, NULL);
-	  delete[] fpid;
+		}
+		int st1, st2;
+		for (int i = 0; i < numberOfRun; i++)
+		{
+		    waitpid(fpid[i], &st1, 0);
+		}
+		shmaddr = (i64 *)shmat(shmid, NULL, 0);
+		memcpy(pos, shmaddr, num * sizeof(i64));
+		shmctl(shmid, IPC_RMID, NULL);
+		delete[] fpid;
+	}
 	return pos;
-}*/
+}
 
-i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
+/*i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 {
 	i64 *shmaddr ;
 	pid_t fpid1,fpid2;
@@ -323,12 +330,8 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 		//memcpy(shmaddr,pos,sizeof(i64)*num/2);
 		exit(0);
 	  }
-      fpid2 = fork();
-	  if (fpid2 < 0)
-      	printf("error in fork!");
-      else if(fpid2==0)
+	  else
 	  {
-		//cout<<"child2 loop from "<<num/2<< "to "<<num<<endl;
 		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;
 		for(int i=num/2;i<num;i++)
 		{
@@ -336,77 +339,52 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 		//	cout <<"i="<< i << "," << i + Left << setw(4) << ".child2:" << "lookup="<<setw(10) << pos[i] << ",pid" << getpid() << endl;
 		}
 		//memcpy(shmaddr+num/2,pos+num/2,sizeof(i64)*(num-num/2));
-		exit(0);
 	  }
+//      fpid2 = fork();
+//	  if (fpid2 < 0)
+//      	printf("error in fork!");
+//      else if(fpid2==0)
+//	  {
+//		//cout<<"child2 loop from "<<num/2<< "to "<<num<<endl;
+//		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;
+//		for(int i=num/2;i<num;i++)
+//		{
+//			shmaddr[i]=Lookup(Left + i);
+//		//	cout <<"i="<< i << "," << i + Left << setw(4) << ".child2:" << "lookup="<<setw(10) << pos[i] << ",pid" << getpid() << endl;
+//		}
+//		//memcpy(shmaddr+num/2,pos+num/2,sizeof(i64)*(num-num/2));
+//		exit(0);
+//	  }
 	  int st1, st2;
       waitpid( fpid1, &st1, 0);
-      waitpid( fpid2, &st2, 0);
+      //waitpid( fpid2, &st2, 0);
 	  shmaddr = (i64 *) shmat(shmid, NULL, 0 );
 	  memcpy(pos,shmaddr,num*sizeof(i64));
 	  shmctl(shmid, IPC_RMID, NULL);
 	  //cout<<pos[0]<<endl;
 	  //delete[] pos;
 	return pos;
-}
+}*/
 /*unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
 {
+	
+	unsigned char* shmaddr;
+	int	shmid = shmget(IPC_PRIVATE, len*sizeof(char), IPC_CREAT|0600 ) ;
+	if (shmid < 0)
+	{
+	    perror("Error:");
+	    return NULL;
+	}
+	pid_t *fpid = new pid_t[10];
+	pid_t mainpid = getpid();
+	 fpid[0]  = fork();
+	 if (fpid[0]< 0)
+        printf("error in fork!");
+     else if(fpid[0]==0)
 
-	i64 *shmaddr ;
-	pid_t* fpid = new pid_t[10];
-	int numberOfRun = 0;
-	i64 Left=1;
-	i64 Right = 0;
-	int modvalue = 0;
-	numberOfRun = blog(len)>10?10:blog(len);
-	modvalue =len % numberOfRun ;
-	unsigned char *result =new unsigned char[len];
-	//add parrel
-	int shmid ;
-    shmid = shmget(IPC_PRIVATE, len*sizeof(unsigned char), IPC_CREAT|0600 ) ;
-	 if ( shmid < 0 )
-      {
-        //perror("get shm  ipc_id error") ;
-      	perror("Error:");
-		return NULL ;
-      }
-      //cout << "num:" << num << endl;
-      for (int i = 0; i < numberOfRun; i++)
-      {
-	  fpid[i] = fork();
-	  if (fpid[i] < 0)
-	      printf("error in fork!");
-	  else if (fpid[i] == 0)
-	  {
-		  int lenpart = (len / numberOfRun) + (modvalue > i ? 1 : 0);
-	      //cout<<"child1 loop from 0 to "<<num/2<<endl;
-		  unsigned char* p = new unsigned char[];
-	      shmaddr = (i64 *)shmat(shmid, NULL, 0);
-	      //int looptime = ;
-	      // modvalue--;
-	      //cout << "looptime:" << (num / numberOfRun) + (modvalue > i ? 1 : 0) << endl;
-	      for (int k = 0; k < (len / numberOfRun) + (modvalue > i ? 1 : 0); k++) //
-	      {
-		  //cout << "start:" << k + num / numberOfRun * i + (modvalue > i ? i : modvalue) << endl;
-		  //shmaddr[k + len / numberOfRun * i + (modvalue > i ? i : modvalue)] = Extracting(Left + k + num / numberOfRun * i + (modvalue > i ? i : modvalue));
-		   Extracting(Left + k + len / numberOfRun * i + (modvalue > i ? i : modvalue),(len / numberOfRun) + (modvalue > i ? 1 : 0));
-		  //cout << "k=" << k << ",Left+i" << Left + i << setw(4) << ".child" << i << ":LookUp=" << setw(10) << shmaddr[k + num / numberOfRun * i] << ",pid" << getpid() << endl;
-	      }
-	      //memcpy(shmaddr,pos,sizeof(i64)*num/2);
-	      exit(0);
-	  }
-		}
-	  int st1, st2;
-	  for(int i = 0;i<numberOfRun;i++)
-	  {
-      	waitpid( fpid[i], &st1, 0);
-	  }
-	  shmaddr = (unsigned char*)shmat(shmid, NULL, 0 );
-	  memcpy(pos,shmaddr,len*sizeof(unsigned char *));
-	  shmctl(shmid, IPC_RMID, NULL);
-	  delete[] fpid;
-	return pos;
-}
-*/
+
+}*/
+
 
 
 unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
