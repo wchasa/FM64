@@ -22,6 +22,7 @@
         "typeinfo": "cpp",
         "iomanip": "cpp",
         "sstream": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "fstream": "cpp"
     }
 }
