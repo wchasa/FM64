@@ -85,20 +85,16 @@ int ABS_FM::SizeInByte()
 {
 	return TreeSizeInByte(root) + SAL->GetMemorySize() + RankL->GetMemorySize();
 }
-void ABS_FM::Codedistribution(int &Plain,int &Gama,int &Fix)
+void ABS_FM::Codedistribution(int &Plain,int &AL0,int &AL1,int &RL0,int &RL1,int &Fix)
 {
-	/*int Gamacount  = 0;
-	int Fixcount   = 0;
-	int Plaincount = 0;
-	while (root !=NULL)
-	{
-		coding_style->GetValue()
-	}
-	*/
 	Plain = BitMap::Plaincount;
-	Gama  = BitMap::Gamacount;
 	Fix   = BitMap::Fixcount;
+	AL0 = BitMap::ALL0;
+	AL1 = BitMap::ALL1;
+	RL0 = BitMap::RL0;
+	RL1 = BitMap::RL1;
 }
+
 BitMap* ABS_FM::GetRoot()
 {
 	return root;
@@ -124,6 +120,23 @@ int ABS_FM::TreeSizeInByte(BitMap * r)
 		size+=TreeSizeInByte(r->Right());
 	size = size + r->SizeInByte();
 	return size;
+}
+int ABS_FM::SizeOfpart(BitMap * r,string str)
+{
+	int size = 0;
+	if(r->Left())
+		size += TreeSizeInByte(r->Left());
+	if(r->Right())
+		size+=TreeSizeInByte(r->Right());
+	//size = size + r->getsize();
+	if(str =="SB")
+		size = size + r->SizeInSuperblock();
+	else if(str =="B")
+		size = size + r->SizeInblock();
+	else if(str =="style")
+		size = size + r->SizeIncodesytle();
+	else if(str =="code")	
+		size = size + r->SizeInMemory();
 }
 int flag3=0;
 void ABS_FM::DrawBackSearch(const char * pattern,i64 & Left,i64 &Right)
@@ -703,7 +716,8 @@ int ABS_FM::BuildTree(int speedlevel)
 
 	bwt = new unsigned char[n];
 	BWT64(T,SA,bwt,n);
-//	divbwt64(T,bwt,SA,n);
+	getbwtRuns(bwt, n);
+	//	divbwt64(T,bwt,SA,n);
 	double runs=0.0;
 	for(int i=0;i<n-1;i++)
 		if(bwt[i]!=bwt[i+1])
@@ -750,7 +764,31 @@ int ABS_FM::BuildTree(int speedlevel)
 
 	return 0;
 }
-
+//test
+void ABS_FM::getbwtRuns(unsigned char* bwt,int len)
+{
+	unsigned char ch =bwt[0];
+	i64 runs = 1;
+	for(int i =1;i<len;i++)
+	{
+		if(bwt[i]==ch)
+		    runs++;
+		else
+		{
+		    map<i64, i64>::iterator it = BWTruns.find(runs);
+		    if (it == BWTruns.end())
+		    {
+				BWTruns.insert(pair<i64, i64>(runs, 1));
+			}
+			else
+			{
+			    BWTruns[runs]++;
+			}
+			ch   = bwt[i];
+			runs = 1;
+		}
+	}
+}
 void ABS_FM::Test_Shape(BitMap * r)
 {
 	if(r->Left() && r->Right())

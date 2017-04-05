@@ -57,8 +57,8 @@ class FM
 		
 		int load(const char * indexfile);
 		int save(const char * indexfile);
-		void Codedistribution(int &Plain, int &Gama, int &Fix);
 		i64 getN();
+		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
 		int getAlphabetSize();
 		i64 sizeInByte();
 		i64 sizeInByteForCount();

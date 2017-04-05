@@ -6,6 +6,9 @@ my_fm:div Main.o fm.a
 mult:div MainMulti.o fm.a
 	$(CC)  $(CFLAGS) MainMulti.o fm.a   -o my_fm
 
+test:div main_propter.o fm.a
+	$(CC)  $(CFLAGS) main_propter.o fm.a   -o my_fm
+
 my_fm_1:div Main1.o fm.a
 	$(CC)  $(CFLAGS) Main1.o fm.a   -o my_fm
 correctcheck:div MainCorrectCheck.o fm.a
@@ -31,6 +34,8 @@ MainSpeedtest.o:MainSpeedtest.cpp  FM.h
 
 MainMulti.o:MainMulti.cpp  FM.h
 	$(CC)  $(CFLAGS) -c  MainMulti.cpp
+main_propter.o:main_propter.cpp  FM.h
+	$(CC)  $(CFLAGS) -c  main_propter.cpp
 
 Main1.o:Main1.cpp  FM.h
 	$(CC)  $(CFLAGS) -c  Main1.cpp

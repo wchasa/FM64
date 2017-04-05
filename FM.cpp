@@ -28,7 +28,7 @@ i64 FM::sizeInByte()
 	return wt.SizeInByte();
 }
 
-void FM::Codedistribution(int &Plain,int &Gama,int &Fix)
+void FM::Codedistribution(int &Plain,int &AL0,int &AL1,int &RL0,int &RL1,int &Fix)
 {
 	/*int Gamacount  = 0;
 	int Fixcount   = 0;
@@ -39,8 +39,11 @@ void FM::Codedistribution(int &Plain,int &Gama,int &Fix)
 	}
 	*/
 	Plain = BitMap::Plaincount;
-	Gama  = BitMap::Gamacount;
 	Fix   = BitMap::Fixcount;
+	AL0 = BitMap::ALL0;
+	AL1 = BitMap::ALL1;
+	RL0 = BitMap::RL0;
+	RL1 = BitMap::RL1;
 }
 i64 FM::sizeInByteForCount()
 {

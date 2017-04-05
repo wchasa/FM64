@@ -18,12 +18,17 @@ the Free Software Foundation; either version 2 or later of the License.
 #include"BaseClass.h"
 #include<math.h>
 #include<iostream>
+#include <map>
 using namespace std;
 
 class BitMap
 {
 	public:
-		static i64 Gamacount ;
+		//static i64 Gamacount ;
+		static i64 ALL0;
+		static i64 ALL1;
+		static i64 RL0 ;
+		static i64 RL1 ;
 		static i64 Fixcount  ;
 		static i64 Plaincount;
 		BitMap(unsigned long long int * bitbuff,i64 bit_len,int level,int block_size=1024,unsigned char label='\0',uchar ** tables=NULL);
@@ -52,12 +57,18 @@ class BitMap
 
 		BitMap * Right(){return right;};
 		//...
-
+//test
+		// map<i64,i64> treesruns;
+		//test
 		unsigned char Label();
 		int Load(loadkit & s);
 		int Save(savekit & S);
 		i64 SizeInByte();
-	private:
+		i64 SizeInSuperblock();
+		i64 SizeIncodesytle();
+		i64 SizeInblock();
+		i64 SizeInMemory();
+	      private:
 		uchar* Z;
 		//uchar* R1;
 		//uchar* R2;

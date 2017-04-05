@@ -92,9 +92,10 @@ int main(int argc, char* argv[])
 			if(csa!=NULL)
 			{
 				cout<<"File Size :"<<csa->getN()<<",TreeSize:"<<csa->sizeInByteForCount()<<",CompressRate:"<<csa->compressRatioForCount()<<endl;
-				int Plaincount, Gamacount, Fixcount;
-				csa->Codedistribution(Plaincount, Gamacount, Fixcount);
-				cout << "Plaincount=" << setw(10) << Plaincount << ",Gamacount=" << setw(10) << Gamacount << ",Fixcode=" << setw(10) << Fixcount << endl;
+				int Plaincount,AL0,AL1,RL0,RL1 , Fixcount;
+				csa->Codedistribution(Plaincount, AL0,AL1,RL0,RL1, Fixcount);
+				cout << "Plaincount=" << setw(10) << Plaincount << ",AAL0count=" << setw(10) <<AL0<<",AAL1count="<<setw(10)<<AL1<<",RL0count="<<setw(10)<<RL0
+				<<",RL1count="<<setw(10)<<RL1  << ",Fixcode=" << setw(10) << Fixcount << endl;
 				
 			}
 			else

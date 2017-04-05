@@ -88,6 +88,36 @@ i64 BitMap::SizeInByte()
 	}
 	return size;
 }
+i64 BitMap::SizeInSuperblock()
+{
+	int size = 0;
+	if(data!=NULL)
+		size+= superblock->GetMemorySize();
+    return size;
+}
+i64 BitMap::SizeInblock()
+{
+	int size = 0;
+	if(data!=NULL)
+		size+= block->GetMemorySize();
+    return size;
+}
+i64 BitMap::SizeIncodesytle()
+{
+	int size = 0;
+	if(data!=NULL)
+		size+= coding_style->GetMemorySize();
+    return size;
+}
+i64 BitMap::SizeInMemory()
+{
+	int size = 0;
+	if(data!=NULL)
+		size+= memorysize;
+    return size;
+}
+
+		//return bitLen/8;
 // void BitMap::Coding()
 // {
 // 	u64 * temp = new u64[256];
@@ -102,8 +132,12 @@ i64 BitMap::SizeInByte()
 
 // }
 i64	BitMap::Fixcount   = 0;
-i64 BitMap::Gamacount  = 0;
+i64 BitMap::ALL0 	   = 0;
+i64 BitMap::ALL1	   = 0;
+i64 BitMap::RL0 	   = 0;
+i64 BitMap::RL1 	   = 0;
 i64 BitMap::Plaincount = 0;
+map<i64,i64> treesruns;
 void BitMap::Coding()
 {
 	int u64Len =0;
@@ -171,6 +205,17 @@ void BitMap::Coding()
 				rank=rank+runs;
 			runs_tmp[k] = runs;
 			k++;
+	//test
+			map<i64, i64>::iterator it = treesruns.find(runs);
+		    if (it == treesruns.end())
+		    {
+				treesruns.insert(pair<i64, i64>(runs, 1));
+			}
+			else
+			{
+			    treesruns[runs]++;
+			}
+	//test
 		}
 		
 		if(bits > block_size)
@@ -204,9 +249,15 @@ void BitMap::Coding()
 		if(k==1)
 		{
 			if(firstbit==0)
-				coding_style->SetValue((index-1)/block_size,3);//ALL0
+				{	
+					ALL0++;
+					coding_style->SetValue((index-1)/block_size,3);//ALL0
+				}
 			else
-				coding_style->SetValue((index-1)/block_size,4);//ALL1
+				{
+					ALL1++;
+					coding_style->SetValue((index-1)/block_size,4);//ALL1
+				}
 			space = space +0;
 		}
 
@@ -234,11 +285,17 @@ void BitMap::Coding()
 		//p (int[256])*runs_tmp
 		else if(maxtotal>=len)//rl_gamma
 		{
-			Gamacount++;
+			//Gamacount++;
 			if(firstbit == 0)
-				coding_style->SetValue((index-1)/block_size,0);//RLG0
+				{
+					RL0++;
+					coding_style->SetValue((index-1)/block_size,0);//RLG0
+				}
 			else
-				coding_style->SetValue((index-1)/block_size,1);//RLG1
+				{
+					coding_style->SetValue((index-1)/block_size,1);//RLG1
+					RL1++;
+				}
 			space =space + rl_g;
 
 			for(int i=0;i<k;i++)

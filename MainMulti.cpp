@@ -92,11 +92,14 @@ int main(int argc, char *argv[])
             csa->load(StrLineFM);
         }
         tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
-        //cout << StrLine << endl;
+        cout << StrLine << endl;
         //cout <<"build time:"<< tcost << "sec" << endl;
         //cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;
-        int Plaincount, Gamacount, Fixcount;
-        csa->Codedistribution(Plaincount, Gamacount, Fixcount);
+        cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatioForCount() << endl;
+        int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
+        csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
+        cout << "Plaincount=" << setw(10) << Plaincount << ",AAL0count=" << setw(10) << AL0 << ",AAL1count=" << setw(10) << AL1 << ",RL0count=" << setw(10) << RL0
+             << ",RL1count=" << setw(10) << RL1 << ",Fixcode=" << setw(10) << Fixcount << endl;
         //cout << "Plaincount=" << setw(10) << Plaincount << ",Gamacount=" << setw(10) << Gamacount << ",Fixcode=" << setw(10) << Fixcount << endl;
         FILE *fp2;
         if ((fp2 = fopen(StrLine, "r")) == NULL) //判断文件是否存在及可读
@@ -125,7 +128,7 @@ int main(int argc, char *argv[])
             fseek(fp2, randarray[i2] % (1024 * 1024 * 100), SEEK_SET);
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             i64 *pos = csa->Locating((const char *)searchT, num);
-            //   cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+            //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
        }
        st1.finish();
        cout << "cx:" << st1.value()/MAX/1000<<"ms"<<endl;
