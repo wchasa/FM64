@@ -6,6 +6,7 @@
 #include <ctime>
 #include <fstream>
 #include <iostream>
+#include<string.h>
 #include <vector>
 #include <stdio.h> 
 #include <time.h>
@@ -67,11 +68,9 @@ int main(int argc, char *argv[])
         //cout<<filename2<<"Open Failed"<<endl;
         return -1;   
     }   
-    while (1)                                   //循环读取每一行，直到文件尾
+    while (!feof(fp))                                   //循环读取每一行，直到文件尾
     {
         fgets(StrLine,1024,fp);
-        if(feof(fp))
-            break;
         if(StrLine[0]=='#')
             continue;
         StrLine[strlen(StrLine)-1]='\0';
