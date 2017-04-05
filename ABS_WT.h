@@ -53,14 +53,20 @@ class ABS_FM
 		int GetAlphabetsize(){return alphabetsize;}
 		int GetN(){return n;}
 		int SizeInByte();
-		int SizeOfpart(BitMap * r,string str);
 		int SizeInByte_count();
 		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
 		BitMap *GetRoot();
 		unsigned char * bwt;
 	//test
+		int SizeOfpart(BitMap * r,string str);
 		 map<i64,i64> BWTruns;
+		 map<i64, i64> MergeBitMapRuns(BitMap *r);
+		 map<i64, i64> getBitMapRuns();
 		 void getbwtRuns(unsigned char *bwt, int len);
+		 int SizeInBytePart_count(string str);
+		 //map<i64, i64> MergeBitMapRuns(BitMap *r);
+
+		 //void ABS_FM::MapMerge(map<i64, i64> &map1, map<i64, i64> map2);
 		 //test
 	protected:
 		BitMap * root;

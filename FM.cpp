@@ -99,6 +99,7 @@ i64 * FM::Locating_parrel(const char * pattern,i64 & num)
 	return wt.Locating_parrel(pattern,num);
 }
 
+
 unsigned char * FM::extracting(int pos,int len)
 {
 	return wt.Extracting(pos,len);

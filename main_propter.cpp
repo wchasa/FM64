@@ -5,7 +5,6 @@
 #include<fstream>
 #include<iostream>
 #include<iomanip>
-
 //#include "statics.h"
 
 using namespace std;
@@ -24,7 +23,7 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 	fprintf(stderr, "read File %s\n", argv[1]);
-	
+	//map<>
 	int speedlevel = atoi(argv[2]);
 	FM* csa = new FM(argv[1], speedlevel);
 	if(csa!=NULL)
@@ -37,10 +36,12 @@ int main(int argc, char* argv[])
 	}
 	else
 	    cout << "build a FM first" << endl;
-		map<int,int>::iterator it;
-
-		for(it = treeruns.begin();it!= treesruns.end();it++)
-  	  		cout<<treesruns->first<<","<<treesruns->second<<endl;
+		
+	//	for(map<i64,i64>::iterator it = csa->wt.fm->BWTruns.begin();it!= csa->wt.fm->BWTruns.end();it++)
+  	//  		cout<<it->first<<","<<it->second<<endl;
+	  map<i64,i64> bitmapruns = csa->wt.fm->getBitMapRuns();
+		for(map<i64,i64>::iterator it = bitmapruns.begin();it!= bitmapruns.end();it++)
+  	  		cout<<it->first<<","<<it->second<<endl;
 						/*
 	for(int i = 0; i < 5; i ++){
 		cout << Statics::coding_styles[i] << " ";
@@ -218,7 +219,7 @@ int chenLongGangMain(){
 			int  num=0;
 			if(csa!=NULL)
 			{
-				csa->counting(result[1].data(),num);
+				//csa->counting(result[1].data(),num);
 				cout<<"occs: "<<num<<endl;
 			}
 			else
@@ -232,7 +233,7 @@ int chenLongGangMain(){
 			int num=0;
 			if(csa!=NULL)
 			{
-				pos=csa->locating(result[1].data(),num);
+			//	pos=csa->Locating(result[1].data(),num);
 				showpos(pos,num);
 				delete [] pos;
 			}

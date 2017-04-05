@@ -57,8 +57,8 @@ class BitMap
 
 		BitMap * Right(){return right;};
 		//...
-//test
-		// map<i64,i64> treesruns;
+		//test
+		 map<i64,i64> mapruns;
 		//test
 		unsigned char Label();
 		int Load(loadkit & s);

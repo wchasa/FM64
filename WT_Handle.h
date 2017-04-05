@@ -19,7 +19,7 @@ the Free Software Foundation; either version 2 or later of the License.
 class WT_Handle
 {
 	private:
-		
+	
 		UseCount u;
 	public:
 	ABS_FM * fm;
@@ -32,6 +32,7 @@ class WT_Handle
 		void Counting(const char * pattern,i64 &num) { fm->Counting(pattern,num); };
 		i64 * Locating(const char * pattern,i64 &num){ return fm->Locating(pattern,num); };
 		i64 * Locating_parrel(const char * pattern,i64 &num){ return fm->Locating_parrel(pattern,num); };
+		//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap){fm->GetMap(bwtmap,runsmap)};
 		unsigned char *Extracting(i64 pos,i64 len){ return fm->Extracting(pos,len);};
 		int Load(loadkit & s) { return fm->Load(s);};
 		int Save(savekit & s){ return fm->Save(s);};

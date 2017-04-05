@@ -103,7 +103,15 @@ int ABS_FM::SizeInByte_count()
 {
 	return TreeSizeInByte(root);
 }
+int ABS_FM::SizeInBytePart_count(string str)
+{
+	return SizeOfpart(root,str);
+}
 
+map<i64, i64> ABS_FM::getBitMapRuns()
+{
+	return MergeBitMapRuns(root);
+}
 int ABS_FM::TreeNodeCount(BitMap * r)
 {
 	if(r==NULL)
@@ -121,13 +129,14 @@ int ABS_FM::TreeSizeInByte(BitMap * r)
 	size = size + r->SizeInByte();
 	return size;
 }
+//test
 int ABS_FM::SizeOfpart(BitMap * r,string str)
 {
 	int size = 0;
 	if(r->Left())
-		size += TreeSizeInByte(r->Left());
+		size += SizeOfpart(r->Left(),str);
 	if(r->Right())
-		size+=TreeSizeInByte(r->Right());
+		size+=SizeOfpart(r->Right(),str);
 	//size = size + r->getsize();
 	if(str =="SB")
 		size = size + r->SizeInSuperblock();
@@ -138,6 +147,33 @@ int ABS_FM::SizeOfpart(BitMap * r,string str)
 	else if(str =="code")	
 		size = size + r->SizeInMemory();
 }
+void MapMerge(map<i64,i64> &map1,map<i64,i64> map2)
+{
+	for(map<i64,i64>::iterator it = map2.begin();it!=map2.end();it++)
+	{
+		if(map1.find(it->first)!=map1.end())
+		{
+			map1[it->first] += it->second;
+		}
+		else
+		{
+			map1.insert(pair<i64,i64>(it->first,it->second));
+		}
+	}
+}
+map<i64,i64> ABS_FM::MergeBitMapRuns(BitMap *r)
+{
+	map<i64,i64> mapresult;
+	if(r->Left())
+		MapMerge(mapresult,MergeBitMapRuns(r->Left()));
+    if(r->Right())
+		MapMerge(mapresult,MergeBitMapRuns(r->Right()));
+    MapMerge(mapresult,r->mapruns);
+	return mapresult;
+		
+}
+
+//test
 int flag3=0;
 void ABS_FM::DrawBackSearch(const char * pattern,i64 & Left,i64 &Right)
 {

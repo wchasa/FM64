@@ -52,7 +52,7 @@ class FM
 		void counting(const char *pattern,i64 &num);
 		i64 * Locating(const char *pattern,i64 & num);
 		i64 * Locating_parrel(const char *pattern,i64 & num);
-		
+		//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap);
 		unsigned char * extracting(int pos,int len);
 		
 		int load(const char * indexfile);

@@ -137,7 +137,6 @@ i64 BitMap::ALL1	   = 0;
 i64 BitMap::RL0 	   = 0;
 i64 BitMap::RL1 	   = 0;
 i64 BitMap::Plaincount = 0;
-map<i64,i64> treesruns;
 void BitMap::Coding()
 {
 	int u64Len =0;
@@ -206,14 +205,14 @@ void BitMap::Coding()
 			runs_tmp[k] = runs;
 			k++;
 	//test
-			map<i64, i64>::iterator it = treesruns.find(runs);
-		    if (it == treesruns.end())
+			map<i64, i64>::iterator it = mapruns.find(runs);
+		    if (it == mapruns.end())
 		    {
-				treesruns.insert(pair<i64, i64>(runs, 1));
+				mapruns.insert(pair<i64, i64>(runs, 1));
 			}
 			else
 			{
-			    treesruns[runs]++;
+			    mapruns[runs]++;
 			}
 	//test
 		}
