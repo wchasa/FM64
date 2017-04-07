@@ -20,6 +20,7 @@ void quick_sort(i64 *s, i64 l, i64 r);
 void compare(vector<i64> ivector, i64 *pos, i64 num);
 void showpos(vector<i64> ivector);
 void showpos(i64 *pos, i64 num);
+int* generateRandom(int count);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 //this main  compare result of locate
 int main(int argc, char *argv[])
@@ -27,8 +28,8 @@ int main(int argc, char *argv[])
 	double stime,etime,stime1,etime1,tcost,tcost2;
     FM *csa = NULL;
     string strpathFM,strpathfile,str;
-	strpathFM ="/home/wch/testfile/proteins.100MB.fm";
-	strpathfile ="/home/wch/testfile/proteins.100MB";
+	strpathFM ="/home/wch/testfile/kernel.fm";
+	strpathfile ="/home/wch/testfile/kernel";
 	//strpathfile ="/home/wch/testfile/einstein.en.txt";
     cout<<"input file path:";
     //getline(cin,strpath);/home/wch/codebase
@@ -75,15 +76,26 @@ int main(int argc, char *argv[])
 	}
 	//cout<<"Plain:"<<setw(10)<<Plaincount<<"";
 	tcost = 0;
+	int* randarray =  generateRandom(MAX);
 	stime1 = clock();
-	for(int i2 =0;i2<MAX;i2++)
+	for(int i1 = 0;i1<MAX;i1++)
+	{
+		const  char* array =(const char*) csa->extracting_parrel(randarray[i1]%10000,50007);
+		string str = strtxt.substr(randarray[i1]%10000,50007);
+		if(0 !=strcmp(str.c_str(),array))
+		{
+			cout<<"extract error"<<endl;
+		}
+	}
+/*	for(int i2 =0;i2<MAX;i2++)
     {
 		//cout<<"**********************************"<<endl;
 		//str = "military age (19)";
 	   	//str = strtxt.substr(rand()%n,20);
-		str = strtxt.substr(i2,20 );
+		str = strtxt.substr(i2,15 );
 		//cout<<"Patten:"<<str<<endl;
-		i64 *pos = csa->Locating_parrel(str.data(), num2);
+		i64 *pos = csa->locating_parrel(str.data(), num);
+		
 		//i64 *pos2 = csa->Locating(str.data(), num);
 		//cout << setw(20) << "locating" << num << endl;
 		//showpos(pos,num);
@@ -124,7 +136,7 @@ int main(int argc, char *argv[])
 	//	pos2 =NULL;
 		delete [] pos;
 		pos =NULL;
-    }
+    }*/
 	//csa->DestroyWaveletTree();
 	fclose(fp);
 	fclose(fpw);
@@ -221,7 +233,17 @@ int main(int argc, char *argv[])
 //    char c;
 //    cin >> c;
 //    return 0;
+int* generateRandom(int count)
+{
+    int* result = new int[count];
+    srand(unsigned(time(NULL)));
 
+    for(int i = 0;i<count;i++)
+    {
+        result[i] = rand();
+    }
+    return result;
+}
 int stupidRank(unsigned char* c,int length,int& ch,int pos)
 {
     int occTimes = 0;

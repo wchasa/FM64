@@ -25,12 +25,7 @@ class BitMap
 {
 	public:
 		//static i64 Gamacount ;
-		static i64 ALL0;
-		static i64 ALL1;
-		static i64 RL0 ;
-		static i64 RL1 ;
-		static i64 Fixcount  ;
-		static i64 Plaincount;
+
 		BitMap(unsigned long long int * bitbuff,i64 bit_len,int level,int block_size=1024,unsigned char label='\0',uchar ** tables=NULL);
 		//bit_len:0,1串的实际长度，单位bit
 		//level:层数
@@ -58,7 +53,19 @@ class BitMap
 		BitMap * Right(){return right;};
 		//...
 		//test
-		 map<i64,i64> mapruns;
+		static map<i64,i64> mapruns;
+		static map<i64,i64> noteruns;
+		static i64 ALL0;
+		static i64 ALL1;
+		static i64 RL0 ;
+		static i64 RL1 ;
+		static i64 Fixcount;
+		static i64 Plaincount;
+		static i64 plainSize;
+		static i64 FixSize;
+		static i64 RLSize;
+		static i32 Block_size;
+		static i32 superblock_size;
 		//test
 		unsigned char Label();
 		int Load(loadkit & s);
@@ -68,7 +75,7 @@ class BitMap
 		i64 SizeIncodesytle();
 		i64 SizeInblock();
 		i64 SizeInMemory();
-	      private:
+private:
 		uchar* Z;
 		//uchar* R1;
 		//uchar* R2;

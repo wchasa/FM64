@@ -137,6 +137,13 @@ i64 BitMap::ALL1	   = 0;
 i64 BitMap::RL0 	   = 0;
 i64 BitMap::RL1 	   = 0;
 i64 BitMap::Plaincount = 0;
+i64 BitMap::plainSize = 0;
+i64 BitMap::FixSize = 0;
+i64 BitMap::RLSize = 0;
+i32 BitMap::Block_size = 0;
+i32 BitMap::superblock_size = 0;
+map<i64,i64> BitMap::mapruns;
+map<i64,i64> BitMap::noteruns;
 void BitMap::Coding()
 {
 	int u64Len =0;
@@ -172,7 +179,7 @@ void BitMap::Coding()
 	int * runs_tmp = new int[block_size];
 	int k=0;
 	i64 index2=0;
-	
+	int cs = 0;
 	int pre_rank=0;
 	int pre_space =0 ;
 	superblock->SetValue(0,0);
@@ -204,17 +211,7 @@ void BitMap::Coding()
 				rank=rank+runs;
 			runs_tmp[k] = runs;
 			k++;
-	//test
-			map<i64, i64>::iterator it = mapruns.find(runs);
-		    if (it == mapruns.end())
-		    {
-				mapruns.insert(pair<i64, i64>(runs, 1));
-			}
-			else
-			{
-			    mapruns[runs]++;
-			}
-	//test
+
 		}
 		
 		if(bits > block_size)
@@ -226,6 +223,7 @@ void BitMap::Coding()
 				rank = rank -runs+step;
 			runs_tmp[k-1] = step;
 		}
+
 		//wch 
 
 		for(int i=0;i<k;i++)
@@ -251,11 +249,13 @@ void BitMap::Coding()
 				{	
 					ALL0++;
 					coding_style->SetValue((index-1)/block_size,3);//ALL0
+					cs = 3;
 				}
 			else
 				{
 					ALL1++;
 					coding_style->SetValue((index-1)/block_size,4);//ALL1
+					cs =4;
 				}
 			space = space +0;
 		}
@@ -264,19 +264,22 @@ void BitMap::Coding()
 		{
 			Plaincount++;
 			coding_style->SetValue((index-1)/block_size,2);
+			cs = 2;
 			int j=0;
 			int num=0;
 			if(index == bitLen)
 			{
-				space = space + bits;
-				j = (index-bits)/64;
-				num = bits%64?bits/64+1:bits/64;
+			    plainSize += bits;
+			    space = space + bits;
+			    j = (index - bits) / 64;
+			    num = bits % 64 ? bits / 64 + 1 : bits / 64;
 			}
 			else
 			{
-				space = space + block_size;
-				j = (index - block_size)/64;
-				num = block_size/64;
+			    plainSize += block_size;
+			    space = space + block_size;
+			    j = (index - block_size) / 64;
+			    num = block_size / 64;
 			}
 			for(int kk=0;kk<num;kk++,j++)
 				BitCopy(temp,index2,data[j]);
@@ -284,19 +287,25 @@ void BitMap::Coding()
 		//p (int[256])*runs_tmp
 		else if(maxtotal>=len)//rl_gamma
 		{
+			RLSize+=rl_g;
 			//Gamacount++;
 			if(firstbit == 0)
 				{
 					RL0++;
 					coding_style->SetValue((index-1)/block_size,0);//RLG0
+					cs = 0;
 				}
 			else
 				{
 					coding_style->SetValue((index-1)/block_size,1);//RLG1
+					cs =1;
 					RL1++;
 				}
 			space =space + rl_g;
-
+			if(rl_g!=len)
+			{
+				cout<<"rl_gama rl_g!=len!";
+			}
 			for(int i=0;i<k;i++)
 			{
 				//cout<<runs_tmp[i]<<endl;
@@ -305,11 +314,18 @@ void BitMap::Coding()
 		}
 		else//fixcoding
 		{
+			FixSize += maxtotal;
 			Fixcount++;
 			if(firstbit == 0)
-				coding_style->SetValue((index-1)/block_size,5);//Fix0
+			{
+					coding_style->SetValue((index-1)/block_size,5);//Fix0
+					cs =5;
+			}
 			else
-				coding_style->SetValue((index-1)/block_size,6);//Fix1
+				{
+					coding_style->SetValue((index-1)/block_size,6);//Fix1
+					cs =6;
+				}
 			space =space + maxtotal;
 			Append_g(temp,index2,maxrl);
 			for(int i=0;i<k;i++)
@@ -332,8 +348,101 @@ void BitMap::Coding()
 			block->SetValue(2*(index/step2),rank - pre_rank);
 			block->SetValue(2*(index/step2)+1,space - pre_space);
 		}
+		//test
+		/*if(cs == 1||cs ==0)
+		{
+			for(int i2=0;i2<k;i2++)
+			{
+				map<i64, i64>::iterator it = mapruns.find(runs_tmp[i2]);
+				if (it == mapruns.end())
+				{
+					mapruns.insert(pair<i64, i64>(runs_tmp[i2], 1));
+				}
+				else
+				{
+					mapruns[runs_tmp[i2]]++;
+				}
+			}
+		}*/
+		
+	//test
 	}
+	//test
+	Block_size = this->block_size;
+	superblock_size=this->super_block_size;
+	int bitVal = 0;
+	int bit_one = 0, bit_zero = 0;
+	for (int32_t i = 0, j = 0; i < bitLen; i++)
+	{
+	    bitVal = GetBit(data, i);
+	    if (bitVal == 1)
+	    {
+		bit_one++;
+		if (bit_zero > 0)
+		{
+		    noteruns[bit_zero]++;
+		    bit_zero = 0;
+		}
+	    }
+	    else
+	    {
+		bit_zero++;
+		if (bit_one > 0)
+		{
+		    noteruns[bit_one]++;
+		    //if(bit_one>10000)
+		    //	cout<<bit_one<<","<<noteruns[bit_one]<<endl;
+		    bit_one = 0;
+		}
+	    }
+	}
+	if(bit_one > 0){
+		noteruns[bit_one]++;
+		bit_one = 0;
+	}
+	if(bit_zero > 0){
+		noteruns[bit_zero]++;
+		bit_zero = 0;
+	}
+	//maprun
+	int32_t coding_len = coding_style->GetNum();
+	for(int32_t i = 0, j; i < coding_len; i++){
+		j = coding_style->GetValue(i);
+		if(j == 0 || j == 1||j==5||j==6)
+		{ //run length 0/1
+			//Static::numOfRlg0_1++;
+			int32_t k = i * block_size;
+			int32_t cnt = 0;
+			bit_zero = 0, bit_one = 0;
+			for(; cnt < block_size && cnt + k < bitLen; cnt++){
+				bitVal = GetBit(data, cnt + k);
 
+				if(bitVal == 1){
+					bit_one++;
+					if(bit_zero > 0){
+						mapruns[bit_zero]++;
+						bit_zero = 0;
+					}
+				} else {
+					bit_zero++;
+					if(bit_one > 0){
+						mapruns[bit_one]++;
+						bit_one = 0;
+					}
+				}
+			}//end-of-for
+			if(bit_one > 0){
+				mapruns[bit_one]++;
+				bit_one = 0;
+			}
+			if(bit_zero > 0){
+				mapruns[bit_zero]++;
+				bit_zero = 0;
+			}
+
+		}//end-of-if
+	}//end-of-for
+	//test
 	//释放runs_tmp
 	delete [] runs_tmp;
 	int u64_len_real = 0;

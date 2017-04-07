@@ -34,6 +34,7 @@ class WT_Handle
 		i64 * Locating_parrel(const char * pattern,i64 &num){ return fm->Locating_parrel(pattern,num); };
 		//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap){fm->GetMap(bwtmap,runsmap)};
 		unsigned char *Extracting(i64 pos,i64 len){ return fm->Extracting(pos,len);};
+		unsigned char *Extracting_parrel(i64 pos,i64 len){ return fm->Extracting_parrel(pos,len);};
 		int Load(loadkit & s) { return fm->Load(s);};
 		int Save(savekit & s){ return fm->Save(s);};
 

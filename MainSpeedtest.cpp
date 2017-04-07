@@ -7,6 +7,7 @@
 #include <vector>
 #include<iomanip>
 #include <string>
+#include<sys/time.h>
 using namespace std;
 #define MAX 100
 void usage();
@@ -22,6 +23,23 @@ void showpos(vector<i64> ivector);
 void showpos(i64 *pos, i64 num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 //this main  compare result of locate
+struct timer{
+    public:
+    struct timeval begin, end;
+    timer(){ gettimeofday(&begin, NULL); }
+    void start(){ gettimeofday(&begin, NULL); }
+    void finish(){ gettimeofday(&end, NULL); }
+    friend inline ostream & operator<<(ostream &os, timer &a){
+        double use = 1000000 * (a.end.tv_sec - a.begin.tv_sec) + a.end.tv_usec - a.begin.tv_usec;
+        use /= 1000000.0;
+        os << use;
+        return os;
+    }
+    double value(){
+        double use = 1000000 * (end.tv_sec - begin.tv_sec) + end.tv_usec - begin.tv_usec;
+        return use;
+    }
+};
 int main(int argc, char *argv[])
 {
 	double stime,etime,stime1,etime1,tcost,tcost2;
@@ -67,26 +85,28 @@ int main(int argc, char *argv[])
 	tcost2 = 0;
 	//stime1 = clock();
 	//engthen his for""
-	
+	timer t1;
+	t1.start();
 	for(int i2 =0;i2<MAX;i2++)
 	{
-		fseek(fp,rand()%n-100,SEEK_SET);
-	    fread(searchT, sizeof(unsigned char), 20, fp);
-		
-		stime = clock();
-		i64 *pos = csa->Locating_parrel((const char *)searchT, num);
-		etime = clock();
-		tcost += etime-stime;
-		
-		stime = clock();
-		i64 *pos2 = csa->Locating((const char*)searchT, num2);
-		etime = clock();
-		tcost2 += etime-stime;
+		int count = 500000;
+//		fseek(fp,rand()%n-100,SEEK_SET);
+//	    fread(searchT, sizeof(unsigned char), 20, fp);
+		const  char* array =(const char*) csa->extracting_parrel(i2,count);
+		//const  char* array =(const char*) csa->extracting(i2,count);
+		delete []array;
+		array = NULL;
+//		stime = clock();
+//		i64 *pos2 = csa->locating((const char*)searchT, num2);
+//		etime = clock();
+//		tcost2 += etime-stime;
 	}
+	t1.finish();
+	 cout << "bx:" << t1.value()/MAX/1000<<"ms"<<endl;
 	//etime = clock();
 	//tcost = etime-stime;
-    cout<<"chuan:"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX*1000<<"ms"<<endl;
-    cout<<" bing:"<<setw(10)<<tcost /CLOCKS_PER_SEC/MAX*1000<<"ms"<<endl;
+   // cout<<"chuan:"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX*1000<<"ms"<<endl;
+   // cout<<" bing:"<<setw(10)<<tcost /CLOCKS_PER_SEC/MAX*1000<<"ms"<<endl;
     tcost = 0;
 //	stime = clock();
 //	for (int i2 = 0; i2 < MAX; i2++)
@@ -102,7 +122,7 @@ int main(int argc, char *argv[])
    // cout<<"bing :"<<setw(10)<<tcos<<"sec"<<endl;
 	//cout<<"chuanread :"<<setw(10)<<tcost2/CLOCKS_PER_SEC/MAX<<"sec"<<endl;
 	int Plaincount,Gamacount,Fixcount;
-	csa->Codedistribution(Plaincount,Gamacount,Fixcount);
+	//csa->Codedistribution(Plaincount,Gamacount,Fixcount);
 	//cout<<"Plaincount="<<setw(10)<<Plaincount<<",Gamacount="<<setw(10)<<Gamacount<<",Fixcode="<<setw(10)<<Fixcount<<endl;
    // str ="fell on her face, a";
     //while(true)

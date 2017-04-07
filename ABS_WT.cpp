@@ -110,7 +110,13 @@ int ABS_FM::SizeInBytePart_count(string str)
 
 map<i64, i64> ABS_FM::getBitMapRuns()
 {
-	return MergeBitMapRuns(root);
+	return BitMap::mapruns;
+	//return MergeBitMapRuns(root);
+}
+map<i64, i64> ABS_FM::getBitnodeRuns()
+{
+	return BitMap::noteruns;
+	//return MergeBitnodeRuns(root);
 }
 int ABS_FM::TreeNodeCount(BitMap * r)
 {
@@ -172,7 +178,17 @@ map<i64,i64> ABS_FM::MergeBitMapRuns(BitMap *r)
 	return mapresult;
 		
 }
-
+map<i64,i64> ABS_FM::MergeBitnodeRuns(BitMap *r)
+{
+	map<i64,i64> mapresult;
+	if(r->Left())
+		MapMerge(mapresult,MergeBitMapRuns(r->Left()));
+    if(r->Right())
+		MapMerge(mapresult,MergeBitMapRuns(r->Right()));
+    MapMerge(mapresult,r->noteruns);
+	return mapresult;
+		
+}
 //test
 int flag3=0;
 void ABS_FM::DrawBackSearch(const char * pattern,i64 & Left,i64 &Right)
@@ -270,7 +286,7 @@ i64 * ABS_FM::Locating(const char * pattern,i64 &num)
 i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 {
 	int modvalue = 0;
-	int numberOfRun = 0;
+	int numberOfthread = 0;
 	i64 Left=1;
 	i64 Right = 0;
 	DrawBackSearch(pattern,Left,Right);
@@ -281,9 +297,10 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	}
 	num = Right - Left + 1;
 	i64 *pos =new i64[num];
-	//numberOfRun = 1;
-	numberOfRun = (num>>6)+1>10?10:((num>>6))+1;
-	if(numberOfRun==1)
+	//numberOfthread = 1;
+	numberOfthread = (num>>6)+1>10?10:((num>>6))+1;
+	//numberOfthread = 5;
+	if(numberOfthread==1)
 	{
 	    for (int i = 0; i < num; i++)
 			pos[i] = Lookup(Left + i);
@@ -293,7 +310,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	    i64 *shmaddr;
 	    pid_t *fpid = new pid_t[10];
 	    pid_t mainpid = getpid();
-	    modvalue = num % numberOfRun;
+	    modvalue = num % numberOfthread;
 	    //add parrel
 	    int shmid;
 	    shmid = shmget(IPC_PRIVATE, num * sizeof(i64), IPC_CREAT | 0600);
@@ -304,7 +321,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 		return NULL ;
 	    }
 	    //cout << "num:" << num << endl;
-	    for (int i = 0; i < numberOfRun; i++)
+	    for (int i = 0; i < numberOfthread; i++)
 	    {
 		if(getpid()==mainpid)
 				fpid[i] = fork();
@@ -316,19 +333,19 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 		    shmaddr = (i64 *)shmat(shmid, NULL, 0);
 		    //int looptime = ;
 		    // modvalue--;
-		    //cout << "looptime:" << (num / numberOfRun) + (modvalue > i ? 1 : 0) << endl;
-		    for (int k = 0; k < (num / numberOfRun) + (modvalue > i ? 1 : 0); k++) //
+		    //cout << "looptime:" << (num / numberOfthread) + (modvalue > i ? 1 : 0) << endl;
+		    for (int k = 0; k < (num / numberOfthread) + (modvalue > i ? 1 : 0); k++) //
 		    {
-			//cout << "start:" << k + num / numberOfRun * i + (modvalue > i ? i : modvalue) << endl;
-			shmaddr[k + num / numberOfRun * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfRun * i + (modvalue > i ? i : modvalue));
-			//cout << "k=" << k << ",Left+i" << Left + i << setw(4) << ".child" << i << ":LookUp=" << setw(10) << shmaddr[k + num / numberOfRun * i] << ",pid" << getpid() << endl;
+			//cout << "start:" << k + num / numberOfthread * i + (modvalue > i ? i : modvalue) << endl;
+				shmaddr[k + num / numberOfthread * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfthread * i + (modvalue > i ? i : modvalue));
+			//cout << "k=" << k << ",Left+i" << Left + i << setw(4) << ".child" << i << ":LookUp=" << setw(10) << shmaddr[k + num / numberOfthread * i] << ",pid" << getpid() << endl;
 		    }
 		    //memcpy(shmaddr,pos,sizeof(i64)*num/2);
 		    exit(0);
 		}
 		}
 		int st1, st2;
-		for (int i = 0; i < numberOfRun; i++)
+		for (int i = 0; i < numberOfthread; i++)
 		{
 		    waitpid(fpid[i], &st1, 0);
 		}
@@ -414,25 +431,71 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	  //delete[] pos;
 	return pos;
 }*/
-/*unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
+unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
 {
-	
-	unsigned char* shmaddr;
-	int	shmid = shmget(IPC_PRIVATE, len*sizeof(char), IPC_CREAT|0600 ) ;
-	if (shmid < 0)
+	if(pos + len > n-1 || pos <0)
 	{
-	    perror("Error:");
-	    return NULL;
+		cout<<pos<<"  "<<len<<endl;
+		cout<<pos+len<<" "<<n-1<<" "<<pos<<endl;
+		cout<<"ABS_FM::Extracting  error parmaters"<<endl;
+		return NULL;
 	}
-	pid_t *fpid = new pid_t[10];
-	pid_t mainpid = getpid();
-	 fpid[0]  = fork();
-	 if (fpid[0]< 0)
-        printf("error in fork!");
-     else if(fpid[0]==0)
-
-
-}*/
+	int modvalue = 0;
+	int numberOfthread = 0;
+	numberOfthread = (len>>12)+1>10?10:((len>>12))+1;
+	//numberOfthread = 7;
+	if(numberOfthread==1)
+	{
+		return	Extracting(pos,len);
+	 //   for (int i = 0; i < num; i++)
+		//	pos[i] = Lookup(Left + i);
+	}
+	else
+	{
+	    unsigned char *sequence = new unsigned char[len + 1];
+	    unsigned char *shmaddr;
+	    pid_t *fpid = new pid_t[10];
+	    pid_t mainpid = getpid();
+	    modvalue = len % numberOfthread;
+	    int shmid;
+	    shmid = shmget(IPC_PRIVATE, len * sizeof(unsigned char), IPC_CREAT | 0600);
+	    if (shmid < 0)
+	    {
+			perror("Error:");
+			return NULL;
+		}
+		for (int i = 0; i < numberOfthread; i++)
+	    {
+			if (getpid() == mainpid)
+			    fpid[i] = fork();
+			if (fpid[i] < 0)
+			    printf("error in fork!");
+			else if(fpid[i]==0)
+			{
+				shmaddr = (unsigned char *)shmat(shmid, NULL, 0);
+				i64 start = pos+len/numberOfthread*i+(modvalue > i ? i : modvalue);
+				i64 leng  = (len / numberOfthread) + (modvalue > i ? 1 : 0);
+				//cout<<"start:"<<start<<".end"<<leng<<endl;
+				unsigned char *temp = Extracting(pos+len/numberOfthread*i+(modvalue > i ? i : modvalue),(len / numberOfthread) + (modvalue > i ? 1 : 0));
+				memcpy(shmaddr+start-pos,temp,leng*sizeof(unsigned char));
+				delete []temp;
+				temp = NULL;
+				exit(0);
+			}
+		
+		}
+		int st1;
+		for (int i = 0; i < numberOfthread; i++)
+		{
+		    waitpid(fpid[i], &st1, 0);
+		}
+		shmaddr = (unsigned char *)shmat(shmid, NULL, 0);
+		memcpy(sequence, shmaddr, len * sizeof(unsigned char));
+		shmctl(shmid, IPC_RMID, NULL);
+		delete[] fpid;
+		return sequence;
+	}
+}
 
 
 

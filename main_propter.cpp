@@ -16,8 +16,11 @@ void helpcount();
 void helplocate();
 void splitcommand(string command,string result[]);
 void showpos( int * pos,int num);
+int32_t floor_log2(uint64_t i){
+		return floor(log(i) / log(2));}
 int main(int argc, char* argv[])
 {
+	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
 		fprintf(stderr, "Usage: ./my_fm <file> <speedlevel>");
 		exit(EXIT_FAILURE);
@@ -39,153 +42,79 @@ int main(int argc, char* argv[])
 		
 	//	for(map<i64,i64>::iterator it = csa->wt.fm->BWTruns.begin();it!= csa->wt.fm->BWTruns.end();it++)
   	//  		cout<<it->first<<","<<it->second<<endl;
-	  map<i64,i64> bitmapruns = csa->wt.fm->getBitMapRuns();
-		for(map<i64,i64>::iterator it = bitmapruns.begin();it!= bitmapruns.end();it++)
-  	  		cout<<it->first<<","<<it->second<<endl;
-						/*
-	for(int i = 0; i < 5; i ++){
-		cout << Statics::coding_styles[i] << " ";
-	}
-	cout << endl;
-
-	// for(int64_t i = 0; i < Statics::N; i++){
-	// 	if(Statics::runs_num[i]){
-	// 		cout << i << " : " << Statics::runs_num[i] << endl;
-	// 	}
-	// }
-
-	//
-	int64_t bitLen = 0;
-	int64_t sumRun = 0;
-	for(int32_t i = 0; i < Statics::N; i++){
-		bitLen += i * Statics::runs_num[i];
-		sumRun += Statics::runs_num[i];
-	}
-	Statics::aveRun = (double)bitLen / sumRun;
-	cout << "AveRun = " << Statics::aveRun << endl;
-
-	bitLen = 0, sumRun = 0;
-	for(int32_t i = 0; i < Statics::M; i++){
-		bitLen += i * Statics::runs_blocks[i];
-		sumRun += Statics::runs_blocks[i];
-	}
-	Statics::aveRunBlock = (double)bitLen / sumRun;
-	cout << "AveRunBlock = " << Statics::aveRunBlock << endl;
-
-
-	//average Delta and Gamma of data
-	int64_t sumGamma = 0;
-	int64_t sumDelta = 0;
-	int64_t logx = 0;
-	int64_t runTmp;
-	sumRun = 0;
-	for(int32_t i = 0; i < Statics::N; i++){
-		runTmp = Statics::runs_num[i];
-		if(runTmp != 0){
-			sumRun += runTmp;
-			logx = Statics::floor_log2(i);
-			sumGamma += (2*logx + 1)*runTmp;
-
-			sumDelta += (logx + 2*Statics::floor_log2(logx + 1) + 1)*runTmp;
+	  map<i64,i64> runblockmap = csa->wt.fm->getBitMapRuns();//averunblock
+	  map<i64,i64> runmap = csa->wt.fm->getBitnodeRuns();//averun
+	  map<i64,i64> BWTruns = csa->wt.fm->BWTruns;
+		for(map<i64,i64>::iterator it = runmap.begin();it!= runmap.end();it++)
+		{
+			bitLen += it->first * it->second;
+			sumRun += it->second;
 		}
-	}
-	Statics::aveGamma = (double)sumGamma / sumRun;
-	Statics::aveDelta = (double)sumDelta / sumRun;
-	cout << "aveDelta = " << Statics::aveDelta << endl;
-	cout << "aveGamma = " << Statics::aveGamma << endl;
-	//average Delta an Gamma in blocks
-	sumGamma=0;
+		cout << "AveRun = " <<  (double)bitLen / sumRun << endl;
+		bitLen = 0, sumRun = 0;
+		for(map<i64,i64>::iterator it = runblockmap.begin();it!= runblockmap.end();it++)
+		{
+			bitLen += it->first * it->second;
+			//cout<<it->first<<","<<it->second<<endl;
+			sumRun += it->second;
+		}
+		cout << "AveRunBlock = " <<  (double)bitLen / sumRun << endl;
+		bitLen = 0, sumRun = 0;
+		for(map<i64,i64>::iterator it = BWTruns.begin();it!= BWTruns.end();it++)
+		{
+			bitLen += it->first * it->second;
+			sumRun += it->second;
+		}
+		cout << "AveBWTRun = " <<  (double)bitLen / sumRun << endl;
+		
+		i64 sumGamma = 0;
+		i64 sumDelta = 0;
+		i64 logx = 0;
+		i64 runTmp;
+		sumRun = 0;
+		for(map<i64,i64>::iterator it = runmap.begin();it!= runmap.end();it++)
+		{
+//			bitLen += it->first * it->second;
+//			sumRun += it->second;
+
+			sumRun += it->second;
+			logx = floor_log2(it->first);
+//			Statics::floor_log2(i);
+			sumGamma += (2*logx + 1)*it->second;
+			sumDelta += (logx + 2*floor_log2(logx + 1) + 1)*it->second;
+		}
+	cout<< "aveDelta = " << (double)sumDelta / sumRun << endl;
+	cout<< "aveGamma = " <<(double)sumGamma / sumRun << endl;
+		sumGamma=0;
 	sumDelta=0;
 	logx=0;
 	sumRun=0;
-	for(int32_t i = 0; i < Statics::M; i++){
-		runTmp = Statics::runs_blocks[i];
-		if(runTmp != 0){
-			sumRun += runTmp;
-			logx = Statics::floor_log2(i);
-			sumGamma += (2*logx + 1)*runTmp;
+		for(map<i64,i64>::iterator it = runblockmap.begin();it!= runblockmap.end();it++)
+		{
+//			bitLen += it->first * it->second;
+//			sumRun += it->second;
 
-			sumDelta += (logx + 2*Statics::floor_log2(logx + 1) + 1)*runTmp;
+			sumRun += it->second;
+			logx = floor_log2(it->first);
+//			Statics::floor_log2(i);
+			sumGamma += (2*logx + 1)*it->second;
+			sumDelta += (logx + 2*floor_log2(logx + 1) + 1)*it->second;
 		}
-	}
-	Statics::aveGammaOfBlock = (double)sumGamma / sumRun;
-	Statics::aveDeltaOfBlock = (double)sumDelta / sumRun;
-	cout << "aveDeltaOfBlock = " << Statics::aveDeltaOfBlock << endl;
-	cout << "aveGammaOfBlock = " << Statics::aveGammaOfBlock << endl;
-	cout<< " 数据分的块大小:"<<Statics::block_size<<"  数据分的超块大小:"<< Statics::superblock_size << endl;
-	cout<< " 压缩后Header数据的大小：" << Statics::headerSize << endl;
-	cout<< " 压缩后超级块（包含rank和偏移量两种信息）的总大小：" << Statics::SBSize << endl;
-	cout<< " 压缩后块（包含块的rank和偏移量两种信息）的总大小： "<< Statics::BSize << endl;
-	cout<< " 压缩后数据Plain编码占有的总大小: "<< Statics::plainSize <<endl;
-	cout<< " 压缩后数据run_length_gama编码占有的总大小： " <<Statics::SSize - Statics::plainSize<<endl;
-	cout<< " 压缩后数据（不包含附加信息）的总大小: " << Statics::SSize<<endl;
+//	Statics::aveGamma = (double)sumGamma / sumRun;
+//	Statics::aveDelta = (double)sumDelta / sumRun;
+	cout<< "aveDeltaOfBlock = " << (double)sumDelta / sumRun << endl;
+	cout<< "aveGammaOfBlock = " <<(double)sumGamma / sumRun << endl;
+	//average Delta an Gamma in blocks
+	cout<< " 数据分的块大小:"<<BitMap::Block_size<<"数据分的超块大小:"<< BitMap::superblock_size << endl;
+	cout<< " 压缩后Header数据的大小：" << csa->wt.fm->SizeInBytePart_count("style") << endl;
+	cout<< " 压缩后超级块（包含rank和偏移量两种信息）的总大小：" << csa->wt.fm->SizeInBytePart_count("SB") << endl;
+	cout<< " 压缩后块（包含块的rank和偏移量两种信息）的总大小： "<< csa->wt.fm->SizeInBytePart_count("B") << endl;
+	cout<< " 压缩后数据Plain编码占有的总大小: "<<BitMap::plainSize <<endl;
+	cout<< " 压缩后数据run_length_gama编码占有的总大小： " <<BitMap::RLSize<<endl;
+	cout<< " 压缩后数据fix编码占有的总大小： " <<BitMap::FixSize<<endl;
 
-
-	//runs in block
-	// for(int32_t i = 0; i < Statics::M; i++){
-	// 	if(Statics::runs_blocks[i]){
-	// 		cout << i << " :(blocks) " << Statics::runs_blocks[i] << endl;
-	// 	}		
-	// }
-
-
-	//write into test/<file>.result
-	char* resFile = new char[1024];
-	strcpy(resFile, "./test/");
-	// cout << Statics::getFile(argv[1]);
-	strcat(resFile, Statics::getFile(argv[1]));
-	strcat(resFile, ".result");
-	FILE* out = fopen(resFile, "w");
-	if(!out){
-		fprintf(stderr, "Open file %s Error!", resFile);
-		exit(EXIT_FAILURE);
-	}
-
-	fprintf(stderr, "Write File %s\n", resFile);
-	fprintf(out, "BWT变换后，得到的L中字符的平均runs： = %f\n", Statics::aveRunsOfL);
-	fprintf(out, "数据未分块前 ，得到的0/1的平均runs = %f\n", Statics::aveRun);	
-	fprintf(out, "数据未分块前 ，Run-length-Gamma编码的平均码长: %f\n", Statics::aveGamma);
-	fprintf(out, "数据未分块前 ，Run-length-Delta编码的平均码长：%f\n\n", Statics::aveDelta);
-	fprintf(out, "数据分块后，得到（所有rlg0和rlg1块）的0/1的平均runs = %f\n", Statics::aveRunBlock);
-	fprintf(out, "数据分块后 ，Run-length-Gamma编码的平均码长: %f\n", Statics::aveGammaOfBlock);
-	fprintf(out, "数据分块后 ，Run-length-Delta编码的平均码长：%f\n\n", Statics::aveDeltaOfBlock);
-	fprintf(out, "\n数据分的块大小:%d  数据分的超块大小%d \n",Statics::block_size,Statics::superblock_size);
-	fprintf(out, "各个编码块所占比例：\n ");
-	fprintf(out, "\t\tRun-length-0 : Run-length-1 : Plain : All-0 : All-1 = %d : %d : %d : %d : %d\n", Statics::coding_styles[0],
-		Statics::coding_styles[1], Statics::coding_styles[2], Statics::coding_styles[3], Statics::coding_styles[4]);
-	fprintf(out, "\n ---------------------------数据压缩后各部分的数据大小情况------------------------------\n" );
-	fprintf(out, "压缩后Header数据的大小：%f MB\n",Statics::headerSize/1024);
-	fprintf(out, "压缩后超级块（包含rank和偏移量两种信息）的总大小：%f MB\n",Statics::SBSize/1024 );
-	fprintf(out, "压缩后块（包含块的rank和偏移量两种信息）的总大小：%f MB\n",Statics::BSize/1024);
-	fprintf(out, "压缩后数据Plain编码占有的总大小：%f MB\n",Statics::plainSize/1024);
-	fprintf(out, "压缩后数据run_length_gama编码占有的总大小：%f MB\n", (Statics::SSize-Statics::plainSize)/1024);
-	fprintf(out, "压缩后数据（不包含附加信息）的总大小：%f MB\n",Statics::SSize/1024);
-	fprintf(out, "附加的表大小为2的16方bit，大小是8MB\n\n");
-
-	//fprintf(out, "BWT变换后，得到的L中字符的平均runs： = %f\n", Statics::aveRunsOfL);
-	
-	fprintf(out, "------------------分块数据的runs的分布计数(run-length-0 + run-length-1)---------------------\n");
-	fprintf(out, "\truns的长度\t\truns的个数\n");
-	for(int32_t i = 0; i < Statics::M; i++){
-		if(Statics::runs_blocks[i]){
-			fprintf(out, "\t%d\t\t\t\t%d\n",i,Statics::runs_blocks[i]);
-		}
-	}
-
-	fprintf(out, "\n-----------------未分块数据的runs的分布计数(run-length-0 + run-length-1)-------------------\n");
-	fprintf(out, "\truns的长度\t\truns的个数\n");
-	for(int32_t i = 0; i < Statics::N; i++){
-		if(Statics::runs_num[i]){
-			fprintf(out, "\t%d\t\t\t\t%d\n", i, Statics::runs_num[i]);
-		}
-	}
-
-	fclose(out);
-	fprintf(stderr, "Write File %s end\n\n", resFile);
-
-	delete fm;
-	*/
-						return 0;
+	cout<< " 压缩后数据（不包含附加信息）的总大小: " <<csa->wt.fm->SizeInBytePart_count("code")<<endl;
+	return 0;
 }
 
 

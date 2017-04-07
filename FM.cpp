@@ -90,11 +90,11 @@ void FM::counting(const char * pattern,i64 &num)
 }
 
 
-i64 * FM::Locating(const char * pattern,i64 & num)
+i64 * FM::locating(const char * pattern,i64 & num)
 {
 	return wt.Locating(pattern,num);
 }
-i64 * FM::Locating_parrel(const char * pattern,i64 & num)
+i64 * FM::locating_parrel(const char * pattern,i64 & num)
 {
 	return wt.Locating_parrel(pattern,num);
 }
@@ -105,3 +105,8 @@ unsigned char * FM::extracting(int pos,int len)
 	return wt.Extracting(pos,len);
 }
 
+
+unsigned char * FM::extracting_parrel(int pos,int len)
+{
+	return wt.Extracting_parrel(pos,len);
+}
