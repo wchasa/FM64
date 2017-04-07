@@ -58,16 +58,17 @@ class ABS_FM
 		BitMap *GetRoot();
 		unsigned char * bwt;
 	//test
-		int SizeOfpart(BitMap * r,string str);
+		 i64 SizeOfpart(BitMap * r,string str);
 		 map<i64,i64> BWTruns;
 		 map<i64, i64> MergeBitMapRuns(BitMap *r);
 		 map<i64, i64> getBitMapRuns();
 		 map<i64, i64> getBitnodeRuns();
 		 void getbwtRuns(unsigned char *bwt, int len);
-		 int SizeInBytePart_count(string str);
+		 i64 SizeInBytePart_count(string str);
 		 map<i64,i64> MergeBitnodeRuns(BitMap *r);
 		 //map<i64, i64> MergeBitMapRuns(BitMap *r);
-
+		 i64 sizeOfSA();
+		 
 		 //void ABS_FM::MapMerge(map<i64, i64> &map1, map<i64, i64> map2);
 		 //test
 	protected:

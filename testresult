@@ -1,0 +1,41 @@
+read File /home/wch/testfile/proteins.100MB
+File Size :104857600,TreeSize:54801838,CompressRate:0.522631
+Plaincount=   1065635,AAL0count=     30720,AAL1count=     44407,RL0count=    266880,RL1count=    321622,Fixcode=       826
+AveRun = 3.3203
+AveRunBlock = 4.04964
+AveBWTRun = 1.69243
+aveDelta = 3.25657
+aveGamma = 2.8715
+aveGolomb = 11
+aveDeltaOfBlock = 3.40926
+aveGammaOfBlock = 3.0438
+aveGolomb = 11
+ 数据分的块大小:256数据分的超块大小:4096
+ 压缩后Header数据的大小：648773
+ 压缩后超级块（包含rank和偏移量两种信息）的总大小：688339
+ 压缩后块（包含块的rank和偏移量两种信息）的总大小： 5190270
+ 压缩后数据Plain编码占有的总大小: 272800039
+ 压缩后数据run_length_gama编码占有的总大小： 113361393
+ 压缩后数据fix编码占有的总大小： 31773
+ 压缩后数据（不包含附加信息）的总大小: 48274456
+ ---------------------------------------
+ read File /home/wch/testfile/kernel
+File Size :257961616,TreeSize:12356070,CompressRate:0.0478989
+Plaincount=       113,AAL0count=    320934,AAL1count=    388131,RL0count=     22415,RL1count=
+AveRun = 293.36
+AveRunBlock = 123.75
+AveBWTRun = 92.4137
+aveDelta = 10.8064
+aveGamma = 11.974
+aveGolomb = 11.0662
+aveDeltaOfBlock = 10.7053
+aveGammaOfBlock = 11.7592
+aveGolomb = 11
+ 数据分的块大小:1024数据分的超块大小:16384
+ 压缩后Header数据的大小：510650
+ 压缩后超级块（包含rank和偏移量两种信息）的总大小：553217
+ 压缩后块（包含块的rank和偏移量两种信息）的总大小： 4766635
+ 压缩后数据Plain编码占有的总大小: 42611
+ 压缩后数据run_length_gama编码占有的总大小： 3295841
+ 压缩后数据fix编码占有的总大小： 48849798
+ 压缩后数据（不包含附加信息）的总大小: 6525568

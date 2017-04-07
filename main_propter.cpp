@@ -69,6 +69,7 @@ int main(int argc, char* argv[])
 		
 		i64 sumGamma = 0;
 		i64 sumDelta = 0;
+		i64 sumGolomb = 0;
 		i64 logx = 0;
 		i64 runTmp;
 		sumRun = 0;
@@ -82,13 +83,17 @@ int main(int argc, char* argv[])
 //			Statics::floor_log2(i);
 			sumGamma += (2*logx + 1)*it->second;
 			sumDelta += (logx + 2*floor_log2(logx + 1) + 1)*it->second;
+			sumGolomb+=	(floor_log2(it->first>>10)*2+1+10)*it->second;
+
 		}
-	cout<< "aveDelta = " << (double)sumDelta / sumRun << endl;
-	cout<< "aveGamma = " <<(double)sumGamma / sumRun << endl;
+		cout << "aveDelta = " << (double)sumDelta / sumRun << endl;
+		cout << "aveGamma = " << (double)sumGamma / sumRun << endl;
+		cout << "aveGolomb = " << (double)sumGolomb / sumRun << endl;
 		sumGamma=0;
-	sumDelta=0;
-	logx=0;
-	sumRun=0;
+		sumDelta = 0;
+		sumGolomb = 0;
+		logx = 0;
+		sumRun = 0;
 		for(map<i64,i64>::iterator it = runblockmap.begin();it!= runblockmap.end();it++)
 		{
 //			bitLen += it->first * it->second;
@@ -99,11 +104,13 @@ int main(int argc, char* argv[])
 //			Statics::floor_log2(i);
 			sumGamma += (2*logx + 1)*it->second;
 			sumDelta += (logx + 2*floor_log2(logx + 1) + 1)*it->second;
+			sumGolomb+=	(floor_log2(it->first>>10)*2+1+10)*it->second;
 		}
 //	Statics::aveGamma = (double)sumGamma / sumRun;
 //	Statics::aveDelta = (double)sumDelta / sumRun;
 	cout<< "aveDeltaOfBlock = " << (double)sumDelta / sumRun << endl;
 	cout<< "aveGammaOfBlock = " <<(double)sumGamma / sumRun << endl;
+	cout << "aveGolombOfBlock = " << (double)sumGolomb / sumRun << endl;
 	//average Delta an Gamma in blocks
 	cout<< " 数据分的块大小:"<<BitMap::Block_size<<"数据分的超块大小:"<< BitMap::superblock_size << endl;
 	cout<< " 压缩后Header数据的大小：" << csa->wt.fm->SizeInBytePart_count("style") << endl;
@@ -112,8 +119,8 @@ int main(int argc, char* argv[])
 	cout<< " 压缩后数据Plain编码占有的总大小: "<<BitMap::plainSize <<endl;
 	cout<< " 压缩后数据run_length_gama编码占有的总大小： " <<BitMap::RLSize<<endl;
 	cout<< " 压缩后数据fix编码占有的总大小： " <<BitMap::FixSize<<endl;
-
 	cout<< " 压缩后数据（不包含附加信息）的总大小: " <<csa->wt.fm->SizeInBytePart_count("code")<<endl;
+	cout<<"--------------------------------------------------------------------------------------"
 	return 0;
 }
 

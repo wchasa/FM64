@@ -635,7 +635,10 @@ i64 ABS_FM::Occ(unsigned char c,i64 pos)
 	}
 	return pos+1;
 }
-
+i64 ABS_FM::sizeOfSA()
+{
+	return SAL.size();
+}
 
 i64 ABS_FM::LF(i64 i)
 {
