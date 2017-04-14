@@ -12,7 +12,7 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 10000
+#define MAX 1000
 #define PATTENLEN 20
 void usage();
 void helpbuild();
@@ -127,27 +127,35 @@ int main(int argc, char *argv[])
             csa->counting((const char *)searchT, num);
         }*/
         int* randarray = generateRandom(MAX);
+        //cout<<argv[2]<<endl;
         //cout<<"start locate"<<endl;
-        st1.start();
-        for (int i2 = 0; i2 < MAX; i2++)
+       if(strcmp(argv[2],"bx")==0)
         {
-            fseek(fp2, randarray[i2] % (n), SEEK_SET);
-            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            i64 *pos = csa->locating_parrel((const char *)searchT, num);
-            //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+             st1.start();
+            for (int i2 = 0; i2 < MAX; i2++)
+            {
+                fseek(fp2, randarray[i2] % (n), SEEK_SET);
+                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+                
+                i64 *pos = csa->locating((const char *)searchT, num);
+                //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+             }
+             st1.finish();
+             cout << "bx:" << st1.value()/MAX/1000<<"ms"<<endl;
+        }
+       if(strcmp(argv[2],"cx")==0)
+       {
+           st1.start();
+           for (int i2 = 0; i2 < MAX; i2++)
+           {
+              fseek(fp2, randarray[i2] % (n), SEEK_SET);
+                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+               i64 *pos = csa->locating_parrel((const char *)searchT, num);
+               //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+           }
+           st1.finish();
+           cout << "cx:" << st1.value() / MAX / 1000 << "ms" << endl;
        }
-       st1.finish();
-       cout << "bx:" << st1.value()/MAX/1000<<"ms"<<endl;
-    //   st1.start();
-    //   for (int i2 = 0; i2 < MAX; i2++)
-    //   {
-    //       fseek(fp2, randarray[i2]% (1024*1024*100), SEEK_SET);
-    //       fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-    //       i64 *pos = csa->Locating_parrel((const char *)searchT, num);
-    //     //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-    //   }
-    //  st1.finish();
-    //  cout<<"bingxing:"<<st1.value()/MAX/1000<<"ms"<<endl;
       //delete csa;
       fclose(fp2);
      //  cout << "--------------------------------------------------------------------" << endl;
