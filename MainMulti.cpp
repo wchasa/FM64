@@ -12,7 +12,7 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 1000
+#define MAX 100
 #define PATTENLEN 20
 void usage();
 void helpbuild();
@@ -26,7 +26,7 @@ void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
-int* generateRandom(int count);
+int* generateRandom(int count,int seed);
 
 struct timer{
     public:
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Usage: ./my_fm <file> <speedlevel>");
 		exit(EXIT_FAILURE);
 	}
-	fprintf(stderr, "read File %s\n", argv[1]);
+	//fprintf(stderr, "read File %s\n", argv[1]);
     timer st1,st2;
     double stime,etime,tcost;
     //cout<<"This is add Fixcode FM"<<endl;
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
         cout << argv[1] << endl;
         //cout <<"build time:"<< tcost << "sec" << endl;
         //cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;
-        cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatioForCount() << endl;
+        cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatioForCount()<<endl ;
         int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
         csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
        // cout << "Plaincount=" << setw(10) << Plaincount << ",AAL0count=" << setw(10) << AL0 << ",AAL1count=" << setw(10) << AL1 << ",RL0count=" << setw(10) << RL0
@@ -126,10 +126,23 @@ int main(int argc, char *argv[])
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             csa->counting((const char *)searchT, num);
         }*/
-        int* randarray = generateRandom(MAX);
+        int* randarray = generateRandom(MAX,atoi(argv[3]));
         //cout<<argv[2]<<endl;
         //cout<<"start locate"<<endl;
        if(strcmp(argv[2],"bx")==0)
+           {
+           st1.start();
+           for (int i2 = 0; i2 < MAX; i2++)
+           {
+              fseek(fp2, randarray[i2] % (n), SEEK_SET);
+                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+               i64 *pos = csa->locating_parrel((const char *)searchT, num);
+               //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+           }
+           st1.finish();
+           cout << "locating_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
+       }
+       if(strcmp(argv[2],"cx")==0)
         {
              st1.start();
             for (int i2 = 0; i2 < MAX; i2++)
@@ -141,21 +154,9 @@ int main(int argc, char *argv[])
                 //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
              }
              st1.finish();
-             cout << "bx:" << st1.value()/MAX/1000<<"ms"<<endl;
+             cout << "locating:" << st1.value()/MAX/1000<<"ms"<<endl;
         }
-       if(strcmp(argv[2],"cx")==0)
-       {
-           st1.start();
-           for (int i2 = 0; i2 < MAX; i2++)
-           {
-              fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               i64 *pos = csa->locating_parrel((const char *)searchT, num);
-               //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-           }
-           st1.finish();
-           cout << "cx:" << st1.value() / MAX / 1000 << "ms" << endl;
-       }
+   
       //delete csa;
       fclose(fp2);
      //  cout << "--------------------------------------------------------------------" << endl;
@@ -163,10 +164,10 @@ int main(int argc, char *argv[])
    // fclose(fp);
     return 0;
 }
-int* generateRandom(int count)
+int* generateRandom(int count,int seed)
 {
     int* result = new int[count];
-    srand(unsigned(time(NULL)));
+    srand(unsigned(seed));
 
     for(int i = 0;i<count;i++)
     {

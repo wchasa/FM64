@@ -1,8 +1,12 @@
  #!/bin/bash
 i=0
-while [ $i -lt 100 ]; do
-    ./my_fm_bx & ./my_fm_cx
+while [ $i -lt 10 ]; do
+    seed=$(date +%s+%N)
+    echo $seed
+    ./my_fm /home/wch/testfile/dna cx $seed
+    ./my_fm /home/wch/testfile/dna bx $seed
+    echo "------------------------"
     let i=i+1
 done
-wait // 等待执行完成 即可
+wait 
 exit 0

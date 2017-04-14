@@ -298,7 +298,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	num = Right - Left + 1;
 	i64 *pos =new i64[num];
 	//numberOfthread = 1;
-	numberOfthread = (num>>9)+1>10?10:((num>>9))+1;
+	numberOfthread = (num>>7)+1>10?10:((num>>7))+1;
 	//numberOfthread = 5;
 	if(numberOfthread==1)
 	{
