@@ -26,7 +26,7 @@ InArray::InArray()
 InArray::InArray(i32 data_num, i32 data_width) 
 {
 	if(data_num<0||data_width<=0)
-		cout<<"InArray¹¹Ôì²ÎÊýÊäÈë´íÎó"<<endl;
+		cout<<"InArrayï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"<<endl;
 	else
 	{
 		this->datanum =data_num;
@@ -42,7 +42,7 @@ InArray::InArray(i32 data_num, i32 data_width)
 	}
 }
 
-//Êý×éÖÐÏÂ±êÎªindexµÄÎ»ÖÃÉèÖÃÖµÎªvalue
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â±ï¿½Îªindexï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÎªvalue
 void InArray::SetValue (i32 index, i32 v)
 {
 
@@ -53,7 +53,8 @@ void InArray::SetValue (i32 index, i32 v)
 	}
 	else if(v>((1<<datawidth)-1))
 	{
-		cerr<<"InArray:value is out of boundary"<<endl;
+		
+		cerr<<"InArray:value:"<<v<<" is out of boundary"<<endl;
 		exit(0) ;
 	}
 	else

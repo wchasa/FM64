@@ -9,7 +9,7 @@
 #include <string>
 #include<sys/time.h>
 using namespace std;
-#define MAX 100
+#define MAX 10000
 void usage();
 void helpbuild();
 void helpload();
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	double stime,etime,stime1,etime1,tcost,tcost2;
     FM *csa = NULL;
     string strpathFM,strpathfile,str;
-	strpathFM ="/home/wch/testfile/kernel.fm";
+	strpathFM ="/home/lab/testfile/kernel.fm";
 	//strpathfile ="./bible";
 	strpathfile ="/home/wch/testfile/kernel";
     cout<<"input file path:";

@@ -103,7 +103,7 @@ int ABS_FM::SizeInByte_count()
 {
 	return TreeSizeInByte(root);
 }
-int ABS_FM::SizeInBytePart_count(string str)
+i64 ABS_FM::SizeInBytePart_count(string str)
 {
 	return SizeOfpart(root,str);
 }
@@ -136,7 +136,7 @@ int ABS_FM::TreeSizeInByte(BitMap * r)
 	return size;
 }
 //test
-int ABS_FM::SizeOfpart(BitMap * r,string str)
+i64 ABS_FM::SizeOfpart(BitMap * r,string str)
 {
 	int size = 0;
 	if(r->Left())
@@ -635,11 +635,15 @@ i64 ABS_FM::Occ(unsigned char c,i64 pos)
 	}
 	return pos+1;
 }
-i64 ABS_FM::sizeOfSA()
+i64 ABS_FM::sizeOfSAL()
 {
-	return SAL.size();
+	return SAL->GetMemorySize();
 }
 
+i64 ABS_FM::sizeOfRankL()
+{
+	return RankL->GetMemorySize();
+}
 i64 ABS_FM::LF(i64 i)
 {
 /*

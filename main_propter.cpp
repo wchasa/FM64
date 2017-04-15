@@ -20,6 +20,7 @@ int32_t floor_log2(uint64_t i){
 		return floor(log(i) / log(2));}
 int main(int argc, char* argv[])
 {
+	i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
 		fprintf(stderr, "Usage: ./my_fm <file> <speedlevel>");
@@ -29,17 +30,6 @@ int main(int argc, char* argv[])
 	//map<>
 	int speedlevel = atoi(argv[2]);
 	FM* csa = new FM(argv[1], speedlevel);
-	if(csa!=NULL)
-	{
-	    cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatioForCount() << endl;
-	    int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
-	    csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
-	    cout << "Plaincount=" << setw(10) << Plaincount << ",AAL0count=" << setw(10) << AL0 << ",AAL1count=" << setw(10) << AL1 << ",RL0count=" << setw(10) << RL0
-		 << ",RL1count=" << setw(10) << RL1 << ",Fixcode=" << setw(10) << Fixcount << endl;
-	}
-	else
-	    cout << "build a FM first" << endl;
-		
 	//	for(map<i64,i64>::iterator it = csa->wt.fm->BWTruns.begin();it!= csa->wt.fm->BWTruns.end();it++)
   	//  		cout<<it->first<<","<<it->second<<endl;
 	  map<i64,i64> runblockmap = csa->wt.fm->getBitMapRuns();//averunblock
@@ -112,15 +102,26 @@ int main(int argc, char* argv[])
 	cout<< "aveGammaOfBlock = " <<(double)sumGamma / sumRun << endl;
 	cout << "aveGolombOfBlock = " << (double)sumGolomb / sumRun << endl;
 	//average Delta an Gamma in blocks
-	cout<< " 数据分的块大小:"<<BitMap::Block_size<<"数据分的超块大小:"<< BitMap::superblock_size << endl;
-	cout<< " 压缩后Header数据的大小：" << csa->wt.fm->SizeInBytePart_count("style") << endl;
-	cout<< " 压缩后超级块（包含rank和偏移量两种信息）的总大小：" << csa->wt.fm->SizeInBytePart_count("SB") << endl;
-	cout<< " 压缩后块（包含块的rank和偏移量两种信息）的总大小： "<< csa->wt.fm->SizeInBytePart_count("B") << endl;
-	cout<< " 压缩后数据Plain编码占有的总大小: "<<BitMap::plainSize <<endl;
-	cout<< " 压缩后数据run_length_gama编码占有的总大小： " <<BitMap::RLSize<<endl;
-	cout<< " 压缩后数据fix编码占有的总大小： " <<BitMap::FixSize<<endl;
-	cout<< " 压缩后数据（不包含附加信息）的总大小: " <<csa->wt.fm->SizeInBytePart_count("code")<<endl;
-	cout<<"--------------------------------------------------------------------------------------"
+	int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
+	csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
+	totalsize =Plaincount+AL0+AL1+RL0+RL1+Fixcount;
+	cout << " Plain编码个数,占比:    :" <<setw(10)<<double(Plaincount)/totalsize<<endl;
+	cout << " RunLength编码个数,占比::" <<setw(10)<<double(RL0+RL1)/totalsize<<endl;
+	cout << " ALL0/1编码个数,占比:   :" <<setw(10)<<double(AL0+AL1)/totalsize<<endl;
+	cout << " Fixcode编码个数,占比:  :" <<setw(10)<<double(Fixcount)/totalsize<<endl;
+	totalsize =  csa->wt.fm->SizeInBytePart_count("style")+csa->wt.fm->SizeInBytePart_count("SB")+csa->wt.fm->SizeInBytePart_count("B")+csa->wt.fm->SizeInBytePart_count("code");
+	cout<< " 数据分的块大小:"<<BitMap::Block_size<<",数据分的超块大小:"<< BitMap::superblock_size << endl;
+	cout<< " 压缩后Header数据的大小：" << csa->wt.fm->SizeInBytePart_count("style") <<",占比:"<<setw(10)<<(double)( csa->wt.fm->SizeInBytePart_count("style"))/totalsize <<endl;
+	cout<< " 压缩后超级块（包含rank和偏移量两种信息）的总大小：" << csa->wt.fm->SizeInBytePart_count("SB") <<",占比:"<<setw(10)<<(double)( csa->wt.fm->SizeInBytePart_count("SB"))/totalsize<< endl;
+	cout<< " 压缩后块（包含块的rank和偏移量两种信息）的总大小： "<< csa->wt.fm->SizeInBytePart_count("B") <<",占比:"<<setw(10)<<(double)( csa->wt.fm->SizeInBytePart_count("B"))/totalsize<< endl;
+	cout<< " 压缩后数据（不包含附加信息）的总大小: " <<csa->wt.fm->SizeInBytePart_count("code")<<",占比:"<<setw(10)<<(double)(csa->wt.fm->SizeInBytePart_count("code"))/totalsize<<endl;
+	totalsize = BitMap::plainSize+BitMap::RLSize+BitMap::FixSize;
+	cout<< " 压缩后数据Plain编码占有的总大小: "<<BitMap::plainSize/8 <<",占比:"<<setw(10)<<(double)(BitMap::plainSize)/totalsize<<endl;
+	cout<< " 压缩后数据run_length_gama编码占有的总大小： " <<BitMap::RLSize/8<<",占比:"<<setw(10)<<(double)(BitMap::RLSize)/totalsize<<endl;
+	cout<< " 压缩后数据fix编码占有的总大小： " <<BitMap::FixSize/8<<",占比:"<<setw(10)<<(double)(BitMap::FixSize)/totalsize<<endl;
+	cout<< " SA采样后大小为："<<csa->wt.fm->sizeOfSAL()<<endl;
+	cout<< " Rank采样后大小为："<<csa->wt.fm->sizeOfSAL()<<endl;
+	cout<<"--------------------------------------------------------------------------------------"<<endl;
 	return 0;
 }
 

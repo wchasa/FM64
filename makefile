@@ -1,5 +1,5 @@
 CC=g++ -pg -std=gnu++11
-CFLAGS=-O0 -g -Wall
+CFLAGS=-O3 -Wall
 my_fm:div Main.o fm.a
 	$(CC)  $(CFLAGS) Main.o fm.a   -o my_fm
 

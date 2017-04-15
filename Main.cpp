@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 			i64 num=0;
 			if(csa!=NULL)
 			{
-				pos=csa->Locating(result[1].data(),num);
+				pos=csa->locating(result[1].data(),num);
 				showpos(pos,num);
 				delete [] pos;
 			}

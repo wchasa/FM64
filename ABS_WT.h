@@ -67,8 +67,8 @@ class ABS_FM
 		 i64 SizeInBytePart_count(string str);
 		 map<i64,i64> MergeBitnodeRuns(BitMap *r);
 		 //map<i64, i64> MergeBitMapRuns(BitMap *r);
-		 i64 sizeOfSA();
-		 
+		 i64 sizeOfSAL();
+		 i64 sizeOfRankL();
 		 //void ABS_FM::MapMerge(map<i64, i64> &map1, map<i64, i64> map2);
 		 //test
 	protected:

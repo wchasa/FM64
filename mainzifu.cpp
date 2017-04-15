@@ -46,11 +46,11 @@ int main(int argc, char *argv[])
         long long int n = ftello(fp1)+1;
         fseeko(fp1,0,SEEK_SET);
         unsigned char *array = new unsigned char[1024];
-        int remain = n;
+        long long int remain = n;
         long long int *codearray = new long long int[256];
         memset(codearray,256,0); 
-        int count =0;
-        int total =0;
+        long long int count =0;
+        long long int total =0;
         while(remain>0)
         {
             int read = remain>1024?1024:remain;

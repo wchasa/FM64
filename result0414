@@ -1,0 +1,51 @@
+read File /home/lab/testfile/book1
+/home/lab/testfile/book1
+File Size :768771,TreeSize:289829,CompressRate:0.377003
+bx:0.138306ms
+read File /home/lab/testfile/bible
+/home/lab/testfile/bible
+File Size :4047392,TreeSize:1093159,CompressRate:0.27009
+bx:0.356914ms
+read File /home/lab/testfile/E.coli
+/home/lab/testfile/E.coli
+File Size :4638690,TreeSize:1307106,CompressRate:0.281783
+bx:0.0600625ms
+read File /home/lab/testfile/world192
+/home/lab/testfile/world192
+File Size :2473400,TreeSize:567706,CompressRate:0.229525
+bx:2.07959ms
+read File /home/lab/testfile/dna
+/home/lab/testfile/dna
+File Size :403927746,TreeSize:105326416,CompressRate:0.260756
+bx:1.85804ms
+read File /home/lab/testfile/sources
+/home/lab/testfile/sources
+File Size :210866607,TreeSize:47232094,CompressRate:0.22399
+bx:44.6452ms
+
+lab@201:/opt/FMIndex/FM_FIX_Wang$ ./test.sh 
+read File /home/lab/testfile/book1
+/home/lab/testfile/book1
+File Size :768771,TreeSize:289829,CompressRate:0.377003
+cx:0.139901ms
+read File /home/lab/testfile/bible
+/home/lab/testfile/bible
+File Size :4047392,TreeSize:1093159,CompressRate:0.27009
+cx:0.245718ms
+read File /home/lab/testfile/E.coli
+/home/lab/testfile/E.coli
+File Size :4638690,TreeSize:1307106,CompressRate:0.281783
+cx:0.0575996ms
+read File /home/lab/testfile/world192
+/home/lab/testfile/world192
+File Size :2473400,TreeSize:567706,CompressRate:0.229525
+cx:2.67271ms
+read File /home/lab/testfile/dna
+/home/lab/testfile/dna
+File Size :403927746,TreeSize:105326416,CompressRate:0.260756
+cx:7.64545ms
+read File /home/lab/testfile/sources
+/home/lab/testfile/sources
+File Size :210866607,TreeSize:47232094,CompressRate:0.22399
+cx:42.1424ms
+

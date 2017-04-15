@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
 	double stime,etime,stime1,etime1,tcost,tcost2;
     FM *csa = NULL;
     string strpathFM,strpathfile,str;
-	strpathFM ="/home/wch/testfile/kernel.fm";
-	strpathfile ="/home/wch/testfile/kernel";
+	strpathFM ="/home/lab/testfile/english.fm";
+	strpathfile ="/home/lab/testfile/english";
 	//strpathfile ="/home/wch/testfile/einstein.en.txt";
     cout<<"input file path:";
     //getline(cin,strpath);/home/wch/codebase
@@ -44,10 +44,10 @@ int main(int argc, char *argv[])
 		exit(0);
 	}
     fseek(fp,0,SEEK_END);
-	int n = ftell(fp)+1;
+	i64 n = ftell(fp)+1;
 	unsigned char *T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
-	int e   = 0;
+	i64 e   = 0;
 	i64 num = 0,num2 = 0;
 	num = fread(T,sizeof(unsigned char),n,fp);
 	T[n-1]=0;
