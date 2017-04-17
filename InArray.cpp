@@ -13,6 +13,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<string.h>
 #include<stdlib.h>
 #include<iostream>
+#include<math.h>
 using namespace std;
 InArray::~InArray(void)
 {
@@ -129,35 +130,32 @@ u64 InArray::GetValue(u64 index)
 		
 		return (temp1>>overloop)&mask;
 	}
-
-
-
 }
-//u32 InArray::write(savekit & s)
-//{
-//	s.writeu32(datanum);
-//	s.writeu64(datawidth);
-//	u64 len=(datanum*datawidth);
-//	if(len%32==0)
-//		len=len/32+1;
-//	else
-//		len=len/32+2;
-//
-//	s.writeu32(len);
-//	s.writeu32array(data,len);
-//	return 1;
-//}
-//u32 InArray::load(loadkit & s)
-//{
-//	s.loadu32(datanum);
-//	s.loadu64(datawidth);
-//	u32 len=0;
-//	s.loadu32(len);
-//	data=new u32[len];
-//	s.loadu32array(data,len);
-//	mask=((1<<datawidth)-1);
-//	return 1;
-//}
+i64 InArray::write(savekit & s)
+{
+	s.writeu64(datanum);
+	s.writeu32(datawidth);
+	u64 len=(datanum*datawidth);
+	if(len%32==0)
+		len=len/32+1;
+	else
+		len=len/32+2;
+
+	s.writeu64(len);
+	s.writeu32array(data,len);
+	return 1;
+}
+i64 InArray::load(loadkit & s)
+{
+	s.loadu64(datanum);
+	s.loadu32(datawidth);
+	u32 len=0;
+	s.loadu32(len);
+	data=new u32[len];
+	s.loadu32array(data,len);
+	mask=((1<<datawidth)-1);
+	return 1;
+}
 
 
 

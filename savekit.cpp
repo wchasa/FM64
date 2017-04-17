@@ -71,38 +71,38 @@ i32 savekit::writeu8(u8 value)
 	fwrite(&value,sizeof(u8),1,w);
 	return 0;
 }
- i32 savekit::writei64array(i64 * value,i32 len)
+ i64 savekit::writei64array(i64 * value,i64 len)
 {
 	fwrite(value,sizeof(i64),len,w);
 	return 0;
 }
- i32 savekit::writeu64array(u64 * value,i32 len)
+ i64 savekit::writeu64array(u64 * value,i64 len)
 {
 	fwrite(value,sizeof(u64),len,w);
 	return 0;
 }
- i32 savekit::writei32array(i32 * value,i32 len)
+ i64 savekit::writei32array(i32 * value,i64 len)
 {
 	fwrite(value,sizeof(i32),len,w);
 	return 0;
 }
- i32 savekit::writeu32array(u32* value,i32 len)
+ i64 savekit::writeu32array(u32* value,i64 len)
 {
 	fwrite(value,sizeof(u32),len,w);
 	return 0;
 }
- i32 savekit::writei16array(i16 * value,i32 len)
+ i64 savekit::writei16array(i16 * value,i64 len)
 {
 	fwrite(value,sizeof(i16),len,w);
 	return 0;
 }
- i32 savekit::writeu16array(u16 * value,i32 len)
+ i64 savekit::writeu16array(u16 * value,i64 len)
 {
 	fwrite(value,sizeof(u16),len,w);
 	return 0;
 }
 
-i32 savekit::writeu8array(u8 * value,i32 len)
+i64 savekit::writeu8array(u8 * value,i64 len)
 {
 	fwrite(value,sizeof(u8),len,w);
 	return 0;

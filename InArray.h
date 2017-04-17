@@ -9,14 +9,18 @@ the Free Software Foundation; either version 2 or later of the License.
 #
 # Description:A simple int-vector,data_width bits each cell
 =============================================*/
-#define _Inarray
+/*#define _Inarray
 #define i64 long long int
 #include<math.h>
 #define i32 int
 #define u32 unsigned int
 #define u64 unsigned long long int
-using namespace std;
-
+using namespace std;*/
+#ifndef _Inarray
+#define _Inarray
+#include"BaseClass.h"
+#include"savekit.h"
+#include"loadkit.h"
 
 class InArray
 {
@@ -30,11 +34,12 @@ public:
 	u32 GetDataWidth();
 	u64 GetMemorySize();
 	u64 GetValue2(u64 index);
-	//i64 write(savekit & s);
-	//i64 load(loadkit & s);
+	i64 write(savekit & s);
+	i64 load(loadkit & s);
 private:
 	u32 * data;
     u64 datanum;
 	u32 datawidth;
 	u64 mask;
 };
+#endif

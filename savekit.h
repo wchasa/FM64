@@ -31,13 +31,13 @@ class savekit
 		i32 writeu16(u16 value);
 		i32 writeu8(u8 value);
 
-		i32 writei64array(i64 * value,i32 len);
-		i32 writeu64array(u64 * value,i32 len);
-		i32 writei32array(i32 * value,i32 len);
-		i32 writeu32array(u32 * value,i32 len);
-		i32 writei16array(i16 * value,i32 len);
-		i32 writeu16array(u16 * value,i32 len);
-		i32 writeu8array(u8 * value,i32 len);
+		i64 writei64array(i64 * value,i64 len);
+		i64 writeu64array(u64 * value,i64 len);
+		i64 writei32array(i32 * value,i64 len);
+		i64 writeu32array(u32 * value,i64 len);
+		i64 writei16array(i16 * value,i64 len);
+		i64 writeu16array(u16 * value,i64 len);
+		i64 writeu8array(u8 * value,i64 len);
 	    void close();
 
 	private:
