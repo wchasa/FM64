@@ -149,8 +149,8 @@ i64 InArray::load(loadkit & s)
 {
 	s.loadu64(datanum);
 	s.loadu32(datawidth);
-	u32 len=0;
-	s.loadu32(len);
+	u64 len=0;
+	s.loadu64(len);
 	data=new u32[len];
 	s.loadu32array(data,len);
 	mask=((1<<datawidth)-1);
