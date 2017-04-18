@@ -19,7 +19,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include <error.h>
 #include <string.h>
 #include <sys/wait.h>
-
+#include<math.h>
 //#define LOOP 35
 #define SIZE 1024
 #define READSIZE 1024*1024*100000
@@ -802,8 +802,9 @@ int ABS_FM::BuildTree(int speedlevel)
 	//SA和Rank数组的采样
 	int step1 =this->D;
 	int step2 =this->D*16;
-	SAL=new InArray(n/step1+1,blog(n));//SA sample
-	RankL=new InArray(n/step2+1,blog(n));//rank sample
+	int datewidth = log2(n)+1;
+	SAL=new InArray(n/step1+1,datewidth);//SA sample
+	RankL=new InArray(n/step2+1,datewidth);//rank sample
 
 	int i=0;
 	int j=0;
