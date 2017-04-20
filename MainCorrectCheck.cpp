@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 	tcost = 0;
 	int* randarray =  generateRandom(MAX);
 	stime1 = clock();
-	for(int i1 = 0;i1<MAX;i1++)
+/*	for(int i1 = 0;i1<MAX;i1++)
 	{
 		const  char* array =(const char*) csa->extracting_parrel(randarray[i1]%10000,50007);
 		string str = strtxt.substr(randarray[i1]%10000,50007);
@@ -87,14 +87,19 @@ int main(int argc, char *argv[])
 			cout<<"extract error"<<endl;
 		}
 	}
-/*	for(int i2 =0;i2<MAX;i2++)
+	*/
+	for(int i2 =0;i2<MAX;i2++)
     {
 		//cout<<"**********************************"<<endl;
 		//str = "military age (19)";
-	   	//str = strtxt.substr(rand()%n,20);
-		str = strtxt.substr(i2,15 );
-		//cout<<"Patten:"<<str<<endl;
-		i64 *pos = csa->locating_parrel(str.data(), num);
+	   	str = strtxt.substr(rand()%100000,20);
+		//str = strtxt.substr(i2,15 );
+		//fseeko(fp,0,SEEK_SET);
+		//num = fread(T,sizeof(unsigned char),20,fp);
+		//T[20-1]=0;
+		//string strtxt((char*)T);
+		cout<<"Patten:"<<str<<endl;
+		i64 *pos = csa->locating(str.c_str(), num);
 		
 		//i64 *pos2 = csa->Locating(str.data(), num);
 		//cout << setw(20) << "locating" << num << endl;
@@ -136,7 +141,7 @@ int main(int argc, char *argv[])
 	//	pos2 =NULL;
 		delete [] pos;
 		pos =NULL;
-    }*/
+    }
 	//csa->DestroyWaveletTree();
 	fclose(fp);
 	fclose(fpw);

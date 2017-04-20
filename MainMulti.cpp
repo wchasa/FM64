@@ -12,7 +12,7 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 100
+#define MAX 10
 #define PATTENLEN 20
 void usage();
 void helpbuild();
@@ -48,7 +48,7 @@ struct timer{
 
 int main(int argc, char *argv[])
 {
-    i64 totalsize = 0;
+    i64 totalsize str= 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
 		fprintf(stderr, "Usage: ./my_fm <file> <speedlevel>");

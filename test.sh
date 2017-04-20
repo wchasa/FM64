@@ -11,6 +11,10 @@ data9=${DATAPATH}"kernel"
 data10=${DATAPATH}"influenza"
 data11=${DATAPATH}"world_leaders"
 
-for data in $data1 $data2 $data3 $data4 $data5 $data6 $data7 $data8 $data9 $data10 $data11;do
-	./my_fm $data 2
+for data in $data6 $data7 $data8 $data9 $data10 $data11;do
+	 seed=$(date +%s+%N)
+    echo $seed
+    ./my_fm $data cx $seed
+    ./my_fm $data bx $seed
+	echo "----------------------------------------------------------------------------------"
 done

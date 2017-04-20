@@ -64,9 +64,9 @@ class FM
 		i64 sizeInByteForCount();
 		double compressRatio();
 		double compressRatioForCount();
-		WT_Handle wt;
-	private:
 		//WT_Handle wt;
+	private:
+		WT_Handle wt;
 };
 #endif
 
