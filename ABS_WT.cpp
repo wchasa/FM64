@@ -22,7 +22,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<math.h>
 //#define LOOP 35
 #define SIZE 1024
-#define READSIZE 1024*1024*100000
+//#define READSIZE 1024*1024*100000
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -729,7 +729,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	}
 	fseeko(fp,0,SEEK_END);
 	n = ftello(fp)+1;
-	n = n>READSIZE?READSIZE:n;
+	//n = n>READSIZE?READSIZE:n;
 	unsigned char * T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
@@ -806,8 +806,8 @@ int ABS_FM::BuildTree(int speedlevel)
 	SAL=new InArray(n/step1+1,datewidth);//SA sample
 	RankL=new InArray(n/step2+1,datewidth);//rank sample
 
-	int i=0;
-	int j=0;
+	i64 i=0;
+	i64 j=0;
 	for(i=0,j=0;i<n;i=i+step1,j++)
 		SAL->SetValue(j,SA[i]);
 
