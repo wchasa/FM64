@@ -24,7 +24,7 @@ InArray::InArray()
 }
 InArray::InArray(u64 data_num, u32 data_width) 
 {
-	if(data_num<0||data_width<=0)
+	if(data_num<=0||data_width<=0)
 		cout<<"InArray����������������"<<endl;
 	else
 	{
@@ -151,9 +151,10 @@ i64 InArray::load(loadkit & s)
 	s.loadu32(datawidth);
 	u64 len=0;
 	s.loadu64(len);
+	//cout<<len<<endl;
 	data=new u32[len];
 	s.loadu32array(data,len);
-	mask=((1<<datawidth)-1);
+	mask=(u64)pow(2,datawidth)-1;
 	return 1;
 }
 

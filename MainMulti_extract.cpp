@@ -12,8 +12,8 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 10000
-#define PATTENLEN 20
+#define MAX 100
+#define PATTENLEN 30000
 void usage();
 void helpbuild();
 void helpload();
@@ -114,10 +114,10 @@ int main(int argc, char *argv[])
             return -1;
         }
         fseek(fp2, 0, SEEK_END);
-        int n = ftell(fp2) + 1;
-        unsigned char * searchT = new unsigned char[1024];
+        i64 n = ftell(fp2) + 1;
+        unsigned char * searchT = new unsigned char[PATTENLEN];
         fseeko(fp2, 0, SEEK_SET);
-        int e=0;
+        i64 e=0;
         i64 num = 0;
  /*       for (int i2 = 0; i2 < MAX; i2++)
         {
@@ -134,27 +134,27 @@ int main(int argc, char *argv[])
            st1.start();
            for (int i2 = 0; i2 < MAX; i2++)
            {
-              fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               i64 *pos = csa->locating_parrel((const char *)searchT, num);
+              //fseek(fp2, randarray[i2] % (n), SEEK_SET);
+               // fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+               unsigned char *p = csa->extracting_parrel(randarray[i2] % (n-PATTENLEN), PATTENLEN);
                //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
            }
            st1.finish();
-           cout << "locating_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
+           cout << "extracting_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
        }
        if(strcmp(argv[2],"cx")==0)
         {
              st1.start();
             for (int i2 = 0; i2 < MAX; i2++)
             {
-                fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+           //     fseek(fp2, randarray[i2] % (n), SEEK_SET);
+            //    fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
                 
-                i64 *pos = csa->locating((const char *)searchT, num);
+                unsigned char *p = csa->extracting(randarray[i2] % (n-PATTENLEN), PATTENLEN);
                 //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
              }
              st1.finish();
-             cout << "locating:" << st1.value()/MAX/1000<<"ms"<<endl;
+             cout << "extracting:" << st1.value()/MAX/1000<<"ms"<<endl;
         }
    
       //delete csa;

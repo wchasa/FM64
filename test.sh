@@ -1,4 +1,4 @@
-DATAPATH=/home/lab/testfile/
+DATAPATH=/home/wch/testfile/
 data1=${DATAPATH}"book1"
 data2=${DATAPATH}"bible"
 data3=${DATAPATH}"E.coli"
@@ -11,7 +11,7 @@ data9=${DATAPATH}"kernel"
 data10=${DATAPATH}"influenza"
 data11=${DATAPATH}"world_leaders"
 
-for data in $data6 $data7 $data8 $data9 $data10 $data11;do
+for data in $data6 ;do
 	 seed=$(date +%s+%N)
     echo $seed
     ./my_fm $data cx $seed

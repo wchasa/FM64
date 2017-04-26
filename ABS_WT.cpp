@@ -22,7 +22,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<math.h>
 //#define LOOP 35
 #define SIZE 1024
-//#define READSIZE 1024*1024*100000
+//#define READSIZE 1024*1024*100
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -435,14 +435,14 @@ unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
 {
 	if(pos + len > n-1 || pos <0)
 	{
-		cout<<pos<<"  "<<len<<endl;
-		cout<<pos+len<<" "<<n-1<<" "<<pos<<endl;
+		cout<<"pos:"<<pos<<"  len:"<<len<<endl;
+		cout<<"pos+len ="<<pos+len<<" n-1:"<<n-1<<" "<<pos<<endl;
 		cout<<"ABS_FM::Extracting  error parmaters"<<endl;
 		return NULL;
 	}
 	int modvalue = 0;
-	int numberOfthread = 0;
-	numberOfthread = (len>>12)+1>10?10:((len>>12))+1;
+	int numberOfthread = 2;
+	//numberOfthread = (len>>8)+1>10?10:((len>>8))+1;
 	//numberOfthread = 7;
 	if(numberOfthread==1)
 	{
@@ -503,23 +503,23 @@ unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 {
 	if(pos + len > n-1 || pos <0)
 	{
-		cout<<pos<<"  "<<len<<endl;
-		cout<<pos+len<<" "<<n-1<<" "<<pos<<endl;
+		cout<<"pos:"<<pos<<"  len:"<<len<<endl;
+		cout<<"pos+len ="<<pos+len<<" n-1:"<<n-1<<" "<<pos<<endl;
 		cout<<"ABS_FM::Extracting  error parmaters"<<endl;
 		return NULL;
 	}
 
 	unsigned char * sequence=new unsigned char[len+1];
 	sequence[len]='\0';
-	int end = pos + len -1;
-	int anchor = 0;
-	int overloop = 0;
+	i64 end = pos + len -1;
+	i64 anchor = 0;
+	i64 overloop = 0;
 	int step = this->D*16;
 	overloop = (n-2-end)%step;
 	anchor = (n-2-end)/step;
 
-	int i= RankL->GetValue(anchor);
-	for(int j=0;j<overloop;j++)
+	i64 i= RankL->GetValue(anchor);
+	for(i64 j=0;j<overloop;j++)
 		i = LF(i);
 
 	for(int j=0;j<len;j++)
@@ -662,11 +662,11 @@ i64 ABS_FM::LF(i64 i)
 }
 
 
-unsigned char ABS_FM::L(int i)
+unsigned char ABS_FM::L(i64 i)
 {
 	BitMap * r = root;
 	int bit =0;
-	int rank = 0;
+	i64 rank = 0;
 
 	while(r->Left())
 	{
@@ -697,6 +697,7 @@ i64 ABS_FM::Occ(i64 & occ , unsigned char & label,i64 pos)
 	i64 rank =0;
 	while(r->Left())
 	{
+		flag4++;
 		rank = r->Rank(pos,bit);
 	//	cout<<setw(20)<<flag4++<<"  pos="<<setw(10)<<pos<<",Bit = "<<bit<<",rank="<<setw(10)<<rank<<endl;
 		if(bit==1)
@@ -754,7 +755,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	this->C[alphabetsize] = n;
 	this->C[0] = 0;
 	int k=1;
-	i32 pre =0;
+	i64 pre =0;
 	for(int i=0;i<256;i++)
 	{
 		if(charFreq[i]!=0)
@@ -798,10 +799,12 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 int ABS_FM::BuildTree(int speedlevel)
 {
 	saidx64_t* SA = new saidx64_t[n];
+	//for(i64 i = 0;i<n;i++)
+	//	SA[i] = n-i;
 	divsufsort64(T,SA,n);
 	//SA和Rank数组的采样
-	int step1 =this->D;
-	int step2 =this->D*16;
+	int step1 =this->D;	
+		int step2 =this->D*16;
 	int datewidth = log2(n)+1;
 	SAL=new InArray(n/step1+1,datewidth);//SA sample
 	RankL=new InArray(n/step2+1,datewidth);//rank sample
@@ -826,7 +829,7 @@ int ABS_FM::BuildTree(int speedlevel)
 	getbwtRuns(bwt, n);
 	//	divbwt64(T,bwt,SA,n);
 	double runs=0.0;
-	for(int i=0;i<n-1;i++)
+	for(i64 i=0;i<n-1;i++)
 		if(bwt[i]!=bwt[i+1])
 			runs++;
 	runs=n/runs;
@@ -944,7 +947,7 @@ void ABS_FM::Test_L()
 }
 
 
-BitMap * ABS_FM::CreateWaveletTree(unsigned char * bwt,int n)
+BitMap * ABS_FM::CreateWaveletTree(unsigned char * bwt,i64 n)
 {
 	BitMap * root = NULL;
 
@@ -958,11 +961,11 @@ BitMap * ABS_FM::CreateWaveletTree(unsigned char * bwt,int n)
 }
 
 
-BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,int len,int level)
+BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,i64 len,int level)
 {
 //	cout<<level<<endl;
 	int CurrentLevel = level;
-	unsigned int CurrentBitLen = len;
+	i64 CurrentBitLen = len;
 	unsigned char CurrentLabel = '\0';
 	unsigned long long int *CurrentBitBuff = NULL;
 	if ((int)strlen((const char*)codeTable[buff[0]])==level)
@@ -977,7 +980,7 @@ BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,int len,int level)
 		return node;
 	}
 
-	int u64Len=0;
+	i64 u64Len=0;
 	if(len%64==0)
 		u64Len = len/64+1;
 	else
@@ -986,8 +989,8 @@ BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,int len,int level)
 	memset(CurrentBitBuff,0,u64Len*8);
 	unsigned char * lptr=NULL;
 	unsigned char * rptr=NULL;
-	int leftLen=0;
-	int rightLen=0;
+	i64 leftLen=0;
+	i64 rightLen=0;
 
 	lptr = new unsigned char[len];
 	rptr = new unsigned char[len];
@@ -996,7 +999,7 @@ BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,int len,int level)
 
 	//computer bitvect;
 
-	int i=0;
+	i64 i=0;
 	int bytePos=0;
 	int bitOffset=0;
 	u64 last = 0;
@@ -1059,7 +1062,7 @@ int ABS_FM::blog(int x)
 {
 	int ans=0;
 	while(x>0)
-	{
+	{	
 		ans++;
 		x=(x>>1);
 	}
@@ -1204,6 +1207,7 @@ int ABS_FM::LoadWTTree(loadkit &s,uchar **tables)
 int ABS_FM::Load(loadkit &s)
 {
 	//s.loadi32(this->n);
+	
 	s.loadi64(this->n);
 	s.loadi32(this->alphabetsize);
 	s.loadi32(this->D);
@@ -1249,8 +1253,10 @@ int ABS_FM::Load(loadkit &s)
 
 	//for SAL
 	this->SAL = new InArray();
+	//cout<<"load sal:";
 	this->SAL->load(s);
 	//for Rankl
+	//cout<<"load rankl:";
 	this->RankL = new InArray();
 	this->RankL->load(s);
 
@@ -1266,6 +1272,7 @@ int ABS_FM::Load(loadkit &s)
 int ABS_FM::Save(savekit &s)
 {
 	s.writei64(n);
+	//cout<<"save n:"<<n;
 	s.writei32(alphabetsize);
 	s.writei32(D);//SA的采样率
 

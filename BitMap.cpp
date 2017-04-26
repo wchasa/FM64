@@ -158,7 +158,7 @@ void BitMap::Coding()
 	i64 step1 = block_size*16;//supersize
 	i64 step2 = block_size;//bsize
 	//int block_width = blog(block_size);
-	superblock = new InArray(2*(bitLen/step1)+2,blog(bitLen));
+	superblock = new InArray(2*(bitLen/step1)+2,log2(bitLen)+1);
 //
 	block      = new InArray(2*(bitLen/step2)+2,blog(step1-step2));
 	coding_style      = new InArray(bitLen/step2+1,3);
@@ -177,11 +177,11 @@ void BitMap::Coding()
 	int runs = 0;
 	int bit=0;
 	int * runs_tmp = new int[block_size];
-	int k=0;
+	i64 k=0;
 	i64 index2=0;
 	int cs = 0;
-	int pre_rank=0;
-	int pre_space =0 ;
+	i64 pre_rank=0;
+	i64 pre_space =0 ;
 	superblock->SetValue(0,0);
 	superblock->SetValue(1,0);
 	block->SetValue(0,0);
@@ -372,7 +372,7 @@ void BitMap::Coding()
 	superblock_size=this->super_block_size;
 	int bitVal = 0;
 	int bit_one = 0, bit_zero = 0;
-	for (int32_t i = 0, j = 0; i < bitLen; i++)
+	for (i64 i = 0, j = 0; i < bitLen; i++)
 	{
 	    bitVal = GetBit(data, i);
 	    if (bitVal == 1)
@@ -478,21 +478,22 @@ i64 BitMap::Rank(i64 pos,int & bit)
 {
 	if(pos < 0 || pos > bitLen)
 	{
-		cerr<<"BitMap::Rank(int, int&) error parmater"<<endl;
+		cerr<<"BitMap::Rank(i64, int&) error parmater"<<endl;
+		cout<<"Pos = "<<pos<<",BitLen = "<<bitLen<<endl;
 		exit(0);
 	}
 
 	if((pos+1)%block_size!=0)//
 	{
-		int block_anchor      = (pos+1)/block_size;
-		int superblock_anchor = (pos+1)/super_block_size;
-		int type              = coding_style->GetValue(pos/block_size);
-		int rank1             = superblock->GetValue(superblock_anchor*2);
-		int offset1           = superblock->GetValue(superblock_anchor*2+1);
-		int rank_base         = rank1+block->GetValue(block_anchor*2);
-		int offset            = offset1 + block->GetValue(block_anchor*2+1);
+		i64 block_anchor      = (pos+1)/block_size;
+		i64 superblock_anchor = (pos+1)/super_block_size;
+		i64 type              = coding_style->GetValue(pos/block_size);
+		i64 rank1             = superblock->GetValue(superblock_anchor*2);
+		i64 offset1           = superblock->GetValue(superblock_anchor*2+1);
+		i64 rank_base         = rank1+block->GetValue(block_anchor*2);
+		i64 offset            = offset1 + block->GetValue(block_anchor*2+1);
 		buff                  = data +(offset>>6);
-		int overloop          = (pos+1)%block_size ;
+		i64 overloop          = (pos+1)%block_size ;
 		i64 index             = (offset &0x3f);
 		i64 rank              = 0;
 		switch(type)
@@ -510,15 +511,15 @@ i64 BitMap::Rank(i64 pos,int & bit)
 	}
 	else//
 	{
-		int rank1   = superblock->GetValue(((pos+1)/super_block_size)*2);
-		int offset1 = superblock->GetValue((pos/super_block_size)*2+1);
-		int rank = rank1 + block->GetValue(((pos+1)/block_size)*2);
-		int offset = offset1 + block->GetValue((pos/block_size)*2+1);
+		i64 rank1   = superblock->GetValue(((pos+1)/super_block_size)*2);
+		i64 offset1 = superblock->GetValue((pos/super_block_size)*2+1);
+		i64 rank = rank1 + block->GetValue(((pos+1)/block_size)*2);
+		i64 offset = offset1 + block->GetValue((pos/block_size)*2+1);
 
 		i64 index = (offset&0x3f);
 		buff = data+(offset>>6);
-		int type = coding_style->GetValue(pos/block_size);
-		int overloop = block_size;
+		i64 type = coding_style->GetValue(pos/block_size);
+		i64 overloop = block_size;
 		switch(type)
 		{
 			case 0:bit=RL0_Bit(buff,index,overloop);break;
@@ -989,7 +990,7 @@ int BitMap::Load(loadkit & s)
 {
 	s.loadi32(level);
 	s.loadu8(label);
-	s.loadi32(bitLen);
+	s.loadi64(bitLen);
 	s.loadi32(block_size);
 	block_width = blog(block_size);
 	s.loadi32(super_block_size);
@@ -1004,12 +1005,15 @@ int BitMap::Load(loadkit & s)
 		s.loadu64array(data,memorysize/8);
 	
 		superblock = new InArray();
+		//cout<<"load sb:";
 		superblock->load(s);
 		
 		block = new InArray();
+		//cout<<"load b:";
 		block->load(s);
 		
 		coding_style = new InArray();
+		//cout<<"load cs:";
 		coding_style->load(s);
 	}
     return 0;
@@ -1020,7 +1024,7 @@ int BitMap::Save(savekit & s)
 {
 	s.writei32(level);
 	s.writeu8(label);
-	s.writei32(bitLen);
+	s.writei64(bitLen);
 	s.writei32(block_size);
 	s.writei32(super_block_size);
 	s.writei32(memorysize);

@@ -1,10 +1,14 @@
 CC=g++ -pg -std=gnu++11
-CFLAGS=-O0 -g -Wall
+#CFLAGS=-O0 -g -Wall
+CFLAGS=-O3 -Wall
 my_fm:div Main.o fm.a
 	$(CC)  $(CFLAGS) Main.o fm.a   -o my_fm
 
 mult:div MainMulti.o fm.a
 	$(CC)  $(CFLAGS) MainMulti.o fm.a   -o my_fm
+
+extract:div MainMulti_extract.o fm.a
+	$(CC)  $(CFLAGS) MainMulti_extract.o fm.a   -o my_fm
 
 test:div main_propter.o fm.a
 	$(CC)  $(CFLAGS) main_propter.o fm.a   -o my_fm
@@ -28,10 +32,13 @@ Main.o:Main.cpp  FM.h
 
 MainCorrectCheck.o:MainCorrectCheck.cpp  FM.h
 	$(CC)  $(CFLAGS) -c  MainCorrectCheck.cpp
-	
+
+MainMulti_extract.o:MainMulti_extract.cpp  FM.h
+	$(CC)  $(CFLAGS) -c  MainMulti_extract.cpp
+
 MainSpeedtest.o:MainSpeedtest.cpp  FM.h
 	$(CC)  $(CFLAGS) -c  MainSpeedtest.cpp
-
+ 
 MainMulti.o:MainMulti.cpp  FM.h
 	$(CC)  $(CFLAGS) -c  MainMulti.cpp
 main_propter.o:main_propter.cpp  FM.h

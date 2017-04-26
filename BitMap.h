@@ -147,7 +147,7 @@ private:
 		unsigned long long int * data;
 		//0,1串的压缩存储体.
 
-		int bitLen;
+		i64 bitLen;
 		//0,1串的长度，单位bit。
 
 		int memorysize;

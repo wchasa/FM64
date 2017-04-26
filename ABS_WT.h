@@ -51,7 +51,7 @@ class ABS_FM
 		int BuildTree(int speedlevel=1);
 
 		int GetAlphabetsize(){return alphabetsize;}
-		int GetN(){return n;}
+		i64 GetN(){return n;}
 		int SizeInByte();
 		int SizeInByte_count();
 		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
@@ -103,7 +103,7 @@ class ABS_FM
 		 i64 Occ(unsigned char c, i64 pos);
 		 void Occ(unsigned char c, i64 pos_left, i64 pos_right, i64 &rank_left, i64 &rank_right);
 		 i64 LF(i64 i);
-		 unsigned char L(int i);
+		 unsigned char L(i64 i);
 		 void DrawBackSearch(const char *pattern, i64 &Left, i64 &Right);
 		 i64 Lookup(i64 i);
 
@@ -111,8 +111,8 @@ class ABS_FM
 
 		 int BWT(unsigned char *T, int *SA, unsigned char *bwt, int n);
 		 int BWT64(unsigned char *T, saidx64_t *SA, unsigned char *bwt, saidx64_t len);
-		 BitMap *CreateWaveletTree(unsigned char *bwt, int n);
-		 BitMap *FullFillWTNode(unsigned char *bwt, int len, int level);
+		 BitMap *CreateWaveletTree(unsigned char *bwt, i64 n);
+		 BitMap *FullFillWTNode(unsigned char *bwt, i64 len, int level);
 		 int DestroyWaveletTree();
 		 int blog(int);
 		 unsigned char *Getfile(const char *filename);

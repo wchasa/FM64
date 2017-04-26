@@ -53,8 +53,8 @@ class FM
 		i64 * locating(const char *pattern,i64 & num);
 		i64 * locating_parrel(const char *pattern,i64 & num);
 		//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap);
-		unsigned char * extracting(int pos,int len);
-		unsigned char * extracting_parrel(int pos,int len);
+		unsigned char * extracting(i64 pos,i64 len);
+		unsigned char * extracting_parrel(i64 pos,i64 len);
 		int load(const char * indexfile);
 		int save(const char * indexfile);
 		i64 getN();
@@ -64,9 +64,9 @@ class FM
 		i64 sizeInByteForCount();
 		double compressRatio();
 		double compressRatioForCount();
-		//WT_Handle wt;
-	private:
 		WT_Handle wt;
+	private:
+		//WT_Handle wt;
 };
 #endif
 

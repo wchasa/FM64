@@ -100,13 +100,13 @@ i64 * FM::locating_parrel(const char * pattern,i64 & num)
 }
 
 
-unsigned char * FM::extracting(int pos,int len)
+unsigned char * FM::extracting(i64 pos,i64 len)
 {
 	return wt.Extracting(pos,len);
 }
 
 
-unsigned char * FM::extracting_parrel(int pos,int len)
+unsigned char * FM::extracting_parrel(i64 pos,i64 len)
 {
 	return wt.Extracting_parrel(pos,len);
 }
