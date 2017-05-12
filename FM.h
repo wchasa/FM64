@@ -62,8 +62,12 @@ class FM
 		int getAlphabetSize();
 		i64 sizeInByte();
 		i64 sizeInByteForCount();
+		i64 sizeInByteForExtract();
+		i64 sizeInByteForLocate();
 		double compressRatio();
 		double compressRatioForCount();
+		double compressRatioForExtract();
+		double compressRatioForLocate();
 		WT_Handle wt;
 	private:
 		//WT_Handle wt;

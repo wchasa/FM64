@@ -12,9 +12,8 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 1000
+#define MAX 10000
 #define PATTENLEN 20
-#define PATTENLEN2 20
 void usage();
 void helpbuild();
 void helpload();
@@ -28,6 +27,7 @@ void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 int* generateRandom(int count,int seed);
+int* generateRandom(int count,const char* filename);
 
 struct timer{
     public:
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
      //   if(StrLine[0]=='#')
      //       continue;
      //   StrLine[strlen(StrLine)-1]='\0';
-        //cout<<"FileName:"<<StrLine<<"      ";
+        cout<<"FileName:"<<argv[1]<<"      "<<endl;
         strcpy(StrLineFM,argv[1]);
         csa = NULL;
         FILE *fh = fopen(strcat(StrLineFM, ".fm"), "r");
@@ -98,7 +98,6 @@ int main(int argc, char *argv[])
         {
             csa = new FM();
             csa->load(StrLineFM);
-            
         }
         tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
         cout << argv[1] << endl;
@@ -124,16 +123,28 @@ int main(int argc, char *argv[])
         i64 num = 0;
  /*       for (int i2 = 0; i2 < MAX; i2++)
         {
-
+// if((fp = fopen(filename2,"r")) == NULL)      //判断文件是否存在及可读  
+   // {   
+        //cout<<filename2<<"Open Failed"<<endl;
+   //     return -1;   
+   // }   
+   // while (!feof(fp))                                   //循环读取每一行，直到文件尾
+    {
+    //    fgets(StrLine,1024,fp);
+     //   if(StrLine[0]=='#')
+     //       continue;
+     //   StrLine[strlen(StrLine)-1]='\0';
+        //cout<<"FileName:"<<StrLine<<"      ";
             fseek(fp2, rand() % (1024*1024*100-100), SEEK_SET);
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             csa->counting((const char *)searchT, num);
         }*/
+        //int* randarray = generateRandom(MAX,atoi(argv[3]));
         int* randarray = generateRandom(MAX,atoi(argv[3]));
         //cout<<argv[2]<<endl;
         //cout<<"start locate"<<endl;
        if(strcmp(argv[2],"bx")==0)
-       {
+           {
            st1.start();
            for (int i2 = 0; i2 < MAX; i2++)
            {
@@ -144,32 +155,9 @@ int main(int argc, char *argv[])
            }
            st1.finish();
            cout << "locating_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
-           st1.start();
-           for (int i2 = 0; i2 < MAX; i2++)
-           {
-              fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               unsigned char *p = csa->extracting_parrel(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
-               //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-           }
-           st1.finish();
-           cout << "extracting_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
        }
        if(strcmp(argv[2],"cx")==0)
         {
-              st1.start();
-            for (int i2 = 0; i2 < MAX; i2++)
-            {
-                fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               // i64 num;
-               i64 i ;
-                csa->counting((const char *)searchT,num);
-              //  i64 *pos = csa->counting((const char *)searchT,&num);
-                //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-             }
-             st1.finish();
-             cout << "counting:" << st1.value()/MAX/1000<<"ms"<<endl;
              st1.start();
             for (int i2 = 0; i2 < MAX; i2++)
             {
@@ -177,24 +165,10 @@ int main(int argc, char *argv[])
                 fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
                 
                 i64 *pos = csa->locating((const char *)searchT, num);
-                delete []pos;
-                pos = NULL;
                 //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
              }
              st1.finish();
              cout << "locating:" << st1.value()/MAX/1000<<"ms"<<endl;
-             st1.start();
-             for (int i2 = 0; i2 < MAX; i2++)
-             {
-             // fseek(fp2, randarray[i2] % (n), SEEK_SET);
-              //  fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               unsigned char *p = csa->extracting(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
-               delete []p;
-               p = NULL;
-               //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-             }
-             st1.finish();
-             cout << "extracting:" << st1.value() / MAX / 1000 << "ms" << endl;
         }
    
       //delete csa;
@@ -203,6 +177,31 @@ int main(int argc, char *argv[])
     }   
    // fclose(fp);
     return 0;
+}
+int* generateRandom(int count,const char* filename)
+{
+    int* result = new int[count];
+    char StrLine[1024]; 
+    int flag=0;
+    FILE* fp;
+    if((fp = fopen(filename,"r")) == NULL)      //判断文件是否存在及可读  
+    {   
+        //cout<<filename2<<"Open Failed"<<endl;
+        return NULL;   
+    }   
+    while (!feof(fp))                                   //循环读取每一行，直到文件尾
+    {
+       fgets(StrLine,1024,fp);
+       
+       // if(StrLine[0]=='#')
+            continue;
+        StrLine[strlen(StrLine)-1]='\0';
+        result[flag] = atoi(StrLine);
+        flag++;
+        if(flag>=count)
+            break;
+    }
+         return result;
 }
 int* generateRandom(int count,int seed)
 {

@@ -22,7 +22,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<math.h>
 //#define LOOP 35
 #define SIZE 1024
-//#define READSIZE 1024*1024*100
+#define READSIZE 1024*1024*200
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -80,11 +80,20 @@ ABS_FM::~ABS_FM()
 	if(R)
 		delete [] R;
 }
-
-int ABS_FM::SizeInByte()
+i64 ABS_FM::SizeInByte_locate()
+{
+	return TreeSizeInByte(root) + SAL->GetMemorySize();
+}
+i64 ABS_FM::SizeInByte()
 {
 	return TreeSizeInByte(root) + SAL->GetMemorySize() + RankL->GetMemorySize();
 }
+
+i64 ABS_FM::SizeInByte_extract()
+{
+	return TreeSizeInByte(root) + RankL->GetMemorySize();
+}
+
 void ABS_FM::Codedistribution(int &Plain,int &AL0,int &AL1,int &RL0,int &RL1,int &Fix)
 {
 	Plain = BitMap::Plaincount;
@@ -99,7 +108,7 @@ BitMap* ABS_FM::GetRoot()
 {
 	return root;
 }
-int ABS_FM::SizeInByte_count()
+i64 ABS_FM::SizeInByte_count()
 {
 	return TreeSizeInByte(root);
 }
@@ -441,8 +450,9 @@ unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
 		return NULL;
 	}
 	int modvalue = 0;
-	int numberOfthread = 2;
-	//numberOfthread = (len>>8)+1>10?10:((len>>8))+1;
+	int numberOfthread = 0;
+	numberOfthread = (len>>11)+1>10?10:((len>>11))+1;
+//	cout<<"numberOfthread:"<<numberOfthread<<endl;
 	//numberOfthread = 7;
 	if(numberOfthread==1)
 	{
@@ -730,7 +740,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	}
 	fseeko(fp,0,SEEK_END);
 	n = ftello(fp)+1;
-	//n = n>READSIZE?READSIZE:n;
+	n = n>READSIZE?READSIZE:n;
 	unsigned char * T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
@@ -799,6 +809,7 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 int ABS_FM::BuildTree(int speedlevel)
 {
 	saidx64_t* SA = new saidx64_t[n];
+	//int *SA = new int[n];
 	//for(i64 i = 0;i<n;i++)
 	//	SA[i] = n-i;
 	divsufsort64(T,SA,n);
@@ -826,6 +837,7 @@ int ABS_FM::BuildTree(int speedlevel)
 
 	bwt = new unsigned char[n];
 	BWT64(T,SA,bwt,n);
+	//BWT(T,SA,bwt,n);
 	getbwtRuns(bwt, n);
 	//	divbwt64(T,bwt,SA,n);
 	double runs=0.0;

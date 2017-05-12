@@ -7,7 +7,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/my_fm",
-            "args": ["./bible","cx","123"],
+            "args": ["/home/lab/testfile/dblp.xml","cx","/home/lab/lab/WZ/lxy/positiondblp.xml"],
           //  "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
           //  "environment": [],

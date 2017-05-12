@@ -49,7 +49,20 @@ i64 FM::sizeInByteForCount()
 {
 	return wt.SizeInByte_count();
 }
-
+i64 FM::sizeInByteForExtract()
+{
+	return wt.SizeInByte_extract();
+}
+i64 FM::sizeInByteForLocate()
+{
+	return wt.SizeInByte_locate();
+}
+double FM::compressRatioForLocate(){
+	return sizeInByteForLocate()/(getN()*1.0);
+}
+double FM::compressRatioForExtract(){
+	return sizeInByteForExtract()/(getN()*1.0);
+}
 double FM::compressRatioForCount(){
 	return sizeInByteForCount()/(getN()*1.0);
 }

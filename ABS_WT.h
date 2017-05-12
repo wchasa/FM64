@@ -52,8 +52,10 @@ class ABS_FM
 
 		int GetAlphabetsize(){return alphabetsize;}
 		i64 GetN(){return n;}
-		int SizeInByte();
-		int SizeInByte_count();
+		i64 SizeInByte();
+		i64 SizeInByte_count();
+		i64 SizeInByte_extract();
+		i64 SizeInByte_locate();
 		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
 		BitMap *GetRoot();
 		unsigned char * bwt;

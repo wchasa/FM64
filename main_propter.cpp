@@ -5,6 +5,17 @@
 #include<fstream>
 #include<iostream>
 #include<iomanip>
+#include <time.h>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <dirent.h>
+#include <time.h>
+#include <sys/types.h>
+//#include "FM.h"
 //#include "statics.h"
 
 using namespace std;
@@ -20,16 +31,24 @@ int32_t floor_log2(uint64_t i){
 		return floor(log(i) / log(2));}
 int main(int argc, char* argv[])
 {
+	//FM *csa = NULL;
+	struct timespec stime, etime;
 	i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
 		fprintf(stderr, "Usage: ./my_fm <file> <speedlevel>");
 		exit(EXIT_FAILURE);
 	}
-	fprintf(stderr, "read File %s\n", argv[1]);
+	//fprintf(stderr, "read File %s\n", argv[1]);
+	cout<<"filename:"<<argv[1]<<endl;
 	//map<>
-	int speedlevel = atoi(argv[2]);
-	FM* csa = new FM(argv[1], speedlevel);
+	//int speedlevel = atoi(argv[2]);
+	clock_gettime(CLOCK_REALTIME, &stime);
+	int speedlevel=atoi(argv[2]);
+	cout<<"speedlevel:"<<speedlevel<<endl;
+	FM* csa = new FM(argv[1],speedlevel);
+	clock_gettime(CLOCK_REALTIME, &etime);
+	cout<<"Build time is "<<((double)((etime.tv_sec*1000000000.0 + etime.tv_nsec) - (stime.tv_sec*1000000000.0 + stime.tv_nsec)))/1000000000.0<<" s"<<endl;
 	//	for(map<i64,i64>::iterator it = csa->wt.fm->BWTruns.begin();it!= csa->wt.fm->BWTruns.end();it++)
   	//  		cout<<it->first<<","<<it->second<<endl;
 	  map<i64,i64> runblockmap = csa->wt.fm->getBitMapRuns();//averunblock
@@ -111,16 +130,20 @@ int main(int argc, char* argv[])
 	cout << " Fixcode编码个数,占比:  :" <<setw(10)<<double(Fixcount)/totalsize<<endl;
 	totalsize =  csa->wt.fm->SizeInBytePart_count("style")+csa->wt.fm->SizeInBytePart_count("SB")+csa->wt.fm->SizeInBytePart_count("B")+csa->wt.fm->SizeInBytePart_count("code");
 	cout<< " 数据分的块大小:"<<BitMap::Block_size<<",数据分的超块大小:"<< BitMap::superblock_size << endl;
-	cout<< " 压缩后Header数据的大小：" << csa->wt.fm->SizeInBytePart_count("style") <<",占比:"<<setw(10)<<(double)( csa->wt.fm->SizeInBytePart_count("style"))/totalsize <<endl;
-	cout<< " 压缩后超级块（包含rank和偏移量两种信息）的总大小：" << csa->wt.fm->SizeInBytePart_count("SB") <<",占比:"<<setw(10)<<(double)( csa->wt.fm->SizeInBytePart_count("SB"))/totalsize<< endl;
-	cout<< " 压缩后块（包含块的rank和偏移量两种信息）的总大小： "<< csa->wt.fm->SizeInBytePart_count("B") <<",占比:"<<setw(10)<<(double)( csa->wt.fm->SizeInBytePart_count("B"))/totalsize<< endl;
+	cout<< " 压缩后Header数据的大小fm->" << csa->wt.fm->SizeInBytePart_count("style") <<",占比:"<<setw(10)<<(double)( csa->wt.fm->SizeInBytePart_count("style"))/totalsize <<endl;
+	cout<< " 压缩后超级块（包含rank和偏移量两种信息）的总大小fm->" << csa->wt.fm->SizeInBytePart_count("SB") <<",占比:"<<setw(10)<<(double)( csa->wt.fm->SizeInBytePart_count("SB"))/totalsize<< endl;
+	cout<< " 压缩后块（包含块的rank和偏移量两种信息）的总大小fm-> "<< csa->wt.fm->SizeInBytePart_count("B") <<",占比:"<<setw(10)<<(double)( csa->wt.fm->SizeInBytePart_count("B"))/totalsize<< endl;
 	cout<< " 压缩后数据（不包含附加信息）的总大小: " <<csa->wt.fm->SizeInBytePart_count("code")<<",占比:"<<setw(10)<<(double)(csa->wt.fm->SizeInBytePart_count("code"))/totalsize<<endl;
 	totalsize = BitMap::plainSize+BitMap::RLSize+BitMap::FixSize;
 	cout<< " 压缩后数据Plain编码占有的总大小: "<<BitMap::plainSize/8 <<",占比:"<<setw(10)<<(double)(BitMap::plainSize)/totalsize<<endl;
-	cout<< " 压缩后数据run_length_gama编码占有的总大小： " <<BitMap::RLSize/8<<",占比:"<<setw(10)<<(double)(BitMap::RLSize)/totalsize<<endl;
-	cout<< " 压缩后数据fix编码占有的总大小： " <<BitMap::FixSize/8<<",占比:"<<setw(10)<<(double)(BitMap::FixSize)/totalsize<<endl;
-	cout<< " SA采样后大小为："<<csa->wt.fm->sizeOfSAL()<<endl;
-	cout<< " Rank采样后大小为："<<csa->wt.fm->sizeOfSAL()<<endl;
+	cout<< " 压缩后数据run_length_gama编码占有的总大小fm-> " <<BitMap::RLSize/8<<",占比:"<<setw(10)<<(double)(BitMap::RLSize)/totalsize<<endl;
+	cout<< " 压缩后数据fix编码占有的总大小fm-> " <<BitMap::FixSize/8<<",占比:"<<setw(10)<<(double)(BitMap::FixSize)/totalsize<<endl;
+	cout<< " SA采样后大小为fm->"<<csa->wt.fm->sizeOfSAL()<<endl;
+	cout<< " Rank采样后大小为fm->"<<csa->wt.fm->sizeOfSAL()<<endl;
+	cout<<"rationForAll     : "<<csa->compressRatio()<<endl;
+	cout<<"rationForCount   : "<<csa->compressRatioForCount()<<endl;
+	cout<<"rationForLocate  : "<<csa->compressRatioForLocate()<<endl;
+	cout<<"rationForExtract : "<<csa->compressRatioForExtract()<<endl;
 	cout<<"--------------------------------------------------------------------------------------"<<endl;
 	return 0;
 }

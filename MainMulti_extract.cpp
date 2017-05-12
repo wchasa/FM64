@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
         cout << argv[1] << endl;
         //cout <<"build time:"<< tcost << "sec" << endl;
         //cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;
-        cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatioForCount()<<endl ;
+        cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatio()<<endl ;
         int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
         csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
        // cout << "Plaincount=" << setw(10) << Plaincount << ",AAL0count=" << setw(10) << AL0 << ",AAL1count=" << setw(10) << AL1 << ",RL0count=" << setw(10) << RL0

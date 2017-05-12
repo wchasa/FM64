@@ -12,9 +12,8 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 1000
-#define PATTENLEN 20
-#define PATTENLEN2 20
+#define MAX 100
+#define PATTENLEN 30000
 void usage();
 void helpbuild();
 void helpload();
@@ -49,7 +48,6 @@ struct timer{
 
 int main(int argc, char *argv[])
 {
-    
   //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
@@ -98,7 +96,6 @@ int main(int argc, char *argv[])
         {
             csa = new FM();
             csa->load(StrLineFM);
-            
         }
         tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
         cout << argv[1] << endl;
@@ -117,10 +114,10 @@ int main(int argc, char *argv[])
             return -1;
         }
         fseek(fp2, 0, SEEK_END);
-        int n = ftell(fp2) + 1;
-        unsigned char * searchT = new unsigned char[1024];
+        i64 n = ftell(fp2) + 1;
+        unsigned char * searchT = new unsigned char[PATTENLEN];
         fseeko(fp2, 0, SEEK_SET);
-        int e=0;
+        i64 e=0;
         i64 num = 0;
  /*       for (int i2 = 0; i2 < MAX; i2++)
         {
@@ -132,70 +129,34 @@ int main(int argc, char *argv[])
         int* randarray = generateRandom(MAX,atoi(argv[3]));
         //cout<<argv[2]<<endl;
         //cout<<"start locate"<<endl;
-       if(strcmp(argv[2],"bx")==0)
-       {
+       //if(strcmp(argv[2],"bx")==0)
+           {
            st1.start();
            for (int i2 = 0; i2 < MAX; i2++)
            {
               fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               i64 *pos = csa->locating_parrel((const char *)searchT, num);
+              fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+              i64 i ;
+              csa->counting((const char *)searchT,i);
                //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
            }
            st1.finish();
-           cout << "locating_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
-           st1.start();
-           for (int i2 = 0; i2 < MAX; i2++)
-           {
-              fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               unsigned char *p = csa->extracting_parrel(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
-               //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-           }
-           st1.finish();
-           cout << "extracting_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
+           cout << "count:" << st1.value() / MAX / 1000 << "ms" << endl;
        }
-       if(strcmp(argv[2],"cx")==0)
+      /* if(strcmp(argv[2],"cx")==0)
         {
-              st1.start();
-            for (int i2 = 0; i2 < MAX; i2++)
-            {
-                fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               // i64 num;
-               i64 i ;
-                csa->counting((const char *)searchT,num);
-              //  i64 *pos = csa->counting((const char *)searchT,&num);
-                //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-             }
-             st1.finish();
-             cout << "counting:" << st1.value()/MAX/1000<<"ms"<<endl;
              st1.start();
             for (int i2 = 0; i2 < MAX; i2++)
             {
-                fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+           //     fseek(fp2, randarray[i2] % (n), SEEK_SET);
+            //    fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
                 
-                i64 *pos = csa->locating((const char *)searchT, num);
-                delete []pos;
-                pos = NULL;
+                unsigned char *p = csa->extracting(randarray[i2] % (n-PATTENLEN), PATTENLEN);
                 //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
              }
              st1.finish();
-             cout << "locating:" << st1.value()/MAX/1000<<"ms"<<endl;
-             st1.start();
-             for (int i2 = 0; i2 < MAX; i2++)
-             {
-             // fseek(fp2, randarray[i2] % (n), SEEK_SET);
-              //  fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               unsigned char *p = csa->extracting(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
-               delete []p;
-               p = NULL;
-               //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-             }
-             st1.finish();
-             cout << "extracting:" << st1.value() / MAX / 1000 << "ms" << endl;
-        }
+             cout << "extracting:" << st1.value()/MAX/1000<<"ms"<<endl;
+        }*/
    
       //delete csa;
       fclose(fp2);

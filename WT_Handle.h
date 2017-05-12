@@ -40,7 +40,9 @@ class WT_Handle
 
 		i64 GetN(){ return fm->GetN();}
 		int GetAlphabetsize(){return fm->GetAlphabetsize();}
-		int SizeInByte(){ return fm->SizeInByte();};
-		int SizeInByte_count() { return fm->SizeInByte_count();};
+		i64 SizeInByte(){ return fm->SizeInByte();};
+		i64 SizeInByte_count() { return fm->SizeInByte_count();};
+		i64 SizeInByte_extract() { return fm->SizeInByte_extract();};
+		i64 SizeInByte_locate() { return fm->SizeInByte_locate();};
 };
 #endif
