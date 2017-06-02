@@ -22,7 +22,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<math.h>
 //#define LOOP 35
 #define SIZE 1024
-#define READSIZE 1024*1024*200
+//#define READSIZE 1024*1024*200
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -740,7 +740,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	}
 	fseeko(fp,0,SEEK_END);
 	n = ftello(fp)+1;
-	n = n>READSIZE?READSIZE:n;
+//	n = n>READSIZE?READSIZE:n;
 	unsigned char * T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
