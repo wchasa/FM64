@@ -28,7 +28,7 @@ void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 int* generateRandom(int count,int seed);
-
+int length = 0;
 struct timer{
     public:
     struct timeval begin, end;
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         //cout<<"FileName:"<<StrLine<<"      ";
         strcpy(StrLineFM,argv[1]);
         csa = NULL;
-        FILE *fh = fopen(strcat(StrLineFM, ".fm"), "r");
+        FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
         if (fh == NULL)
         {
             stime = clock();
@@ -158,9 +158,10 @@ int main(int argc, char *argv[])
        if(strcmp(argv[2],"cx")==0)
         {
               st1.start();
+              cout<<length<<endl;
             for (int i2 = 0; i2 < MAX; i2++)
             {
-                fseek(fp2, randarray[i2] % (n), SEEK_SET);
+                fseek(fp2, randarray[i2] % (length), SEEK_SET);
                 fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
                // i64 num;
                i64 i ;
@@ -173,7 +174,7 @@ int main(int argc, char *argv[])
              st1.start();
             for (int i2 = 0; i2 < MAX; i2++)
             {
-                fseek(fp2, randarray[i2] % (n), SEEK_SET);
+                fseek(fp2, randarray[i2] % (length), SEEK_SET);
                 fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
                 
                 i64 *pos = csa->locating((const char *)searchT, num);
@@ -188,7 +189,7 @@ int main(int argc, char *argv[])
              {
              // fseek(fp2, randarray[i2] % (n), SEEK_SET);
               //  fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               unsigned char *p = csa->extracting(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
+               unsigned char *p = csa->extracting(randarray[i2] % ((length-PATTENLEN2)), PATTENLEN2);
                delete []p;
                p = NULL;
                //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;

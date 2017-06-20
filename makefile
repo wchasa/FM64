@@ -5,7 +5,7 @@ my_fm:div Main.o fm.a
 	$(CC)  $(CFLAGS) Main.o fm.a   -o my_fm_origin
 
 mult:div MainMulti.o fm.a
-	$(CC)  $(CFLAGS) MainMulti.o fm.a   -o my_fm
+	$(CC)  $(CFLAGS) MainMulti.o fm.a   -o my_fm_half
 
 adaptive: div fm.a test.o
 	g++ test.o fm.a $(CFLAGS) -o my_fm -lrt

@@ -22,7 +22,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<math.h>
 //#define LOOP 35
 #define SIZE 1024
-//#define READSIZE 1024*1024*200
+#define READSIZE 1024*1024*200
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -54,7 +54,8 @@ i64 GammaDecode(u64 * buff,i64 & index,ABS_FM * t)
 ABS_FM::ABS_FM(const char * filename,int block_size,int D)
 {
 	this->block_size = block_size;
-	this->D =D;
+	this->D =D*2;
+	cout<<"samplerate:"<<this->D<<endl;
 	this->T=NULL;
 	T = Getfile(filename);
 	Inittable();
@@ -727,7 +728,7 @@ i64 ABS_FM::Occ(i64 & occ , unsigned char & label,i64 pos)
 	label = r->Label();
 	return 0;
 }
-
+extern int length;
 //read filedate into T and cal Cumulative Frequency sum(C)
 unsigned char * ABS_FM::Getfile(const char *filename)
 {
@@ -740,7 +741,9 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	}
 	fseeko(fp,0,SEEK_END);
 	n = ftello(fp)+1;
-//	n = n>READSIZE?READSIZE:n;
+	n = n>READSIZE?READSIZE:n;
+	n=n/2;
+	length = n;
 	unsigned char * T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
@@ -815,7 +818,7 @@ int ABS_FM::BuildTree(int speedlevel)
 	divsufsort64(T,SA,n);
 	//SA和Rank数组的采样
 	int step1 =this->D;	
-		int step2 =this->D*16;
+	int step2 =this->D*16;
 	int datewidth = log2(n)+1;
 	SAL=new InArray(n/step1+1,datewidth);//SA sample
 	RankL=new InArray(n/step2+1,datewidth);//rank sample
