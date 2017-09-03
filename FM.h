@@ -40,10 +40,12 @@ the Free Software Foundation; either version 2 or later of the License.
 #include"Balance_WT.h"
 #include"Hutacker_WT.h"
 #include"WT_Handle.h"
+#include "ThreadPool.h"   // std::thread
 class FM
 {
 	public:
-		FM(const char * filename,int speedlevel=1);
+	//	FM(const char * filename,int speedlevel=1);
+		FM(const char * filename,int speedlevel=1,int part=1,int pos=0);
 		FM();
 		~FM(){};
 		FM(const FM & h):wt(h.wt){}
@@ -72,5 +74,59 @@ class FM
 	private:
 		//WT_Handle wt;
 };
+class FM_M
+{
+public:
+    FM_M(){};
+   // FM();
+    FM_M(const char * filename,int speedlevel=1);
+    FM* fm[3] ;
+//    FM* fm1;
+//	FM* fm2;
+	ThreadPool* pool;
+	//
+	void counting(const char *pattern,i64 &num)
+	{	
+		i64 i1;
+		std::vector< std::future<i64>> results;
+		for(int i = 0; i < 3; ++i) {
+			results.emplace_back(
+				pool->enqueue([&,i1,i] {
+					//std::cout << "hello " << i << std::endl;
+					//std::this_thread::sleep_for(std::chrono::seconds(1));
+					//std::cout << "world " << i << std::endl;
+					fm[i]->counting(pattern,i1)
+					return i1;
+				})
+			);
+		}
+	
+	/*	fm[0]->counting(pattern,i1);
+		fm[1]->counting(pattern,i2);
+		fm[2]->counting(pattern,i3);*/
+		//num = i1[0]+i1[1]+i1[2];
+		for(auto && result: results)
+			num += result.get();
+	};
+	i64 * locating(const char *pattern,i64 & num){return 0;};
+	i64 * locating_parrel(const char *pattern,i64 & num){return 0;};
+	//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap);
+	unsigned char * extracting(i64 pos,i64 len){return 0;};
+	unsigned char * extracting_parrel(i64 pos,i64 len){return 0;};
+	int load(const char * indexfile){return 0;};
+	int save(const char * indexfile){return 0;};
+	i64 getN(){return 0;};
+	void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix){};
+	int getAlphabetSize(){return 0;};
+	i64 sizeInByte(){return 0;};
+	i64 sizeInByteForCount(){return 0;};
+	i64 sizeInByteForExtract(){return 0;};
+	i64 sizeInByteForLocate(){return 0;};
+	double compressRatio(){return 0;};
+	double compressRatioForCount(){return 0;};
+	double compressRatioForExtract(){return 0;};
+	double compressRatioForLocate(){return 0;};
+};
+
 #endif
 

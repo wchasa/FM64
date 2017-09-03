@@ -11,8 +11,8 @@ the Free Software Foundation; either version 2 or later of the License.
 =============================================*/
 #include"FM.h"
 
-FM::FM(const char *filename,int speedlevel):wt(filename,256,32,1,speedlevel){}
-
+//FM::FM(const char *filename,int speedlevel):wt(filename,256,32,1,speedlevel){}
+FM::FM(const char *filename,int speedlevel,int part,int pos):wt(filename,part ,pos,256,32,1,speedlevel){}
 FM::FM():wt(){}
 
 i64 FM::getN(){
@@ -122,4 +122,12 @@ unsigned char * FM::extracting(i64 pos,i64 len)
 unsigned char * FM::extracting_parrel(i64 pos,i64 len)
 {
 	return wt.Extracting_parrel(pos,len);
+}
+
+FM_M::FM_M(const char * filename,int speedlevel)
+{
+    fm[0] = new FM(filename,speedlevel,3,0);
+    fm[1] = new FM(filename,speedlevel,3,1);
+	fm[2] = new FM(filename,speedlevel,3,2);
+	pool = new ThreadPool(3);
 }

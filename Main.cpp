@@ -27,12 +27,13 @@ void splitcommand(string command,string result[]);
 void showpos(i64 * pos,i64 num);
 int main(int argc, char* argv[])
 {
+	using FM_A = FM_M;
 	usage();
 	string command;
 	string  result[2];
 	char filename[100]={'\0'};
 	char indexname[100]={'\0'};
-	FM *csa=NULL;
+	FM_A *csa=NULL;
 	while(1)
 	{
 		result[0]="";
@@ -48,7 +49,7 @@ int main(int argc, char* argv[])
 			if(csa!=NULL)
 				delete csa;
 			csa=NULL;
-			csa=new FM(result[1].data());
+			csa=new FM_A(result[1].data());
 		}
 		else if(result[0]=="count")
 		{
@@ -80,7 +81,7 @@ int main(int argc, char* argv[])
 		{
 			if(csa!=NULL)
 				delete csa;
-			csa=new FM();
+			csa=new FM_A();
 			csa->load(result[1].data());
 		}
 		else if(result[0]=="save")

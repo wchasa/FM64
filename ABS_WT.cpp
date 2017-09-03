@@ -51,13 +51,13 @@ i64 GammaDecode(u64 * buff,i64 & index,ABS_FM * t)
 }
 
 
-ABS_FM::ABS_FM(const char * filename,int block_size,int D)
+ABS_FM::ABS_FM(const char * filename,int block_size,int D,int part,int pos)
 {
 	this->block_size = block_size;
 	this->D =D*2;
 	cout<<"samplerate:"<<this->D<<endl;
 	this->T=NULL;
-	T = Getfile(filename);
+	T = Getfile(filename,part,pos);
 	Inittable();
 }
 
@@ -741,9 +741,9 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	}
 	fseeko(fp,0,SEEK_END);
 	n = ftello(fp)+1;
-	n = n>READSIZE?READSIZE:n;
-	n=n/2;
-	length = n;
+	//n = n>READSIZE?READSIZE:n;
+	//n=n/2;
+//	length = n;
 	unsigned char * T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
@@ -783,7 +783,62 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	}
 	return T;
 }
-
+unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
+{
+	FILE * fp = fopen(filename,"r+");
+	//int fd = open(filename, O_LARGEFILE | O_RDWR | O_CREAT);
+	if(fp==NULL)
+	{
+		cout<<"Be sure the file is available"<<endl;
+		exit(0);
+	}
+	fseeko(fp,0,SEEK_END);
+	n = ftello(fp)+1;
+	//n = n>READSIZE?READSIZE:n;
+	//n=n/2;
+	//length = n;
+	unsigned char * T = new unsigned char[n];
+	fseeko(fp,n/part*pos,SEEK_SET);
+	int e=0;
+	int num=0;
+	if(pos+1!=part)
+		num = fread(T,sizeof(uchar),n/part,fp);
+	else
+		num = fread(T,sizeof(uchar),n-pos*n/part,fp);
+	T[n-1]=0;
+	fclose(fp);
+	memset(charFreq,0,256*sizeof(i64));
+	memset(charMap,0,256*sizeof(bool));
+	for(saidx64_t i=0;i<n;i++)
+		charFreq[T[i]]++;
+	this->alphabetsize = 0;
+	for(i32 i=0;i<256;i++)
+		if(charFreq[i])
+		{
+			this->alphabetsize++;
+			this->charMap[i]=true;
+		}
+	this->code = new short[256];
+	this->C = new i64[alphabetsize+1];
+	memset(C,0,(alphabetsize+1)*4);
+	this->C[alphabetsize] = n;
+	this->C[0] = 0;
+	int k=1;
+	i64 pre =0;
+	for(int i=0;i<256;i++)
+	{
+		if(charFreq[i]!=0)
+		{
+			code[i]=k-1;
+			C[k]=pre + charFreq[i];
+			pre = C[k];
+			k++;
+		}
+		else
+			code[i]=-1;
+	}
+	return T;
+}
 
 int ABS_FM::BWT(unsigned char *T,int * SA,unsigned char * bwt,int len)
 {

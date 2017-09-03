@@ -38,7 +38,7 @@ class ABS_FM
 {
 	public:
 		//D:SA数组采样步长,Rank采样步长D*16
-		ABS_FM(const char * filename,int block_size=256,int D=32);
+		ABS_FM(const char * filename,int block_size=256,int D=32,int part=1,int pos=0);
 		ABS_FM(){};
 		virtual ~ABS_FM();
 		void Counting(const char * partten,i64 &num);
@@ -118,7 +118,7 @@ class ABS_FM
 		 int DestroyWaveletTree();
 		 int blog(int);
 		 unsigned char *Getfile(const char *filename);
-
+		 unsigned char *Getfile(const char *filenam,int part,int pos);
 		 int SaveNodePosition(BitMap *, u32, savekit &);
 		 int SaveNodeData(BitMap *, savekit &s);
 		 int SaveWTTree(savekit &s);
