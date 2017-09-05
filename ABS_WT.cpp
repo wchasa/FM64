@@ -15,6 +15,8 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<string.h>
 #include<map>
 #include <iomanip>
+#include<vector>
+#include <thread>
 #include <sys/shm.h>
 #include <error.h>
 #include <string.h>
@@ -292,7 +294,45 @@ i64 * ABS_FM::Locating(const char * pattern,i64 &num)
 		pos[i]=Lookup(Left+ i);
 	return pos;
 }
-
+/*
+i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
+{
+	int modvalue = 0;
+	int numberOfthread = 0;
+	i64 Left=1;
+	i64 Right = 0;
+	DrawBackSearch(pattern,Left,Right);
+	if(Right < Left )
+	{
+		num=0;
+		return NULL;
+	}
+	num = Right - Left + 1;
+	i64 *pos =new i64[num];
+	//numberOfthread = 1;
+	numberOfthread = (num>>7)+1>10?10:((num>>7))+1;
+	//numberOfthread = 5;
+	if(numberOfthread==1)
+	{
+	    for (int i = 0; i < num; i++)
+			pos[i] = Lookup(Left + i);
+	}
+	else
+	{
+		//i64 *shmaddr;
+		vector<std::thread> threads;
+	    modvalue = num % numberOfthread;
+		for(int i = 0;i<numberOfthread;i++)
+		{
+			threads.emplace(std::thread(([this,i,&pos]){
+			for(int k = 0 ;k < (num / numberOfthread) + (modvalue > i ? 1 : 0); k++) 
+				pos[k + num / numberOfthread * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfthread * i + (modvalue > i ? i : modvalue));
+			}));
+		}
+	}
+	return pos;
+}*/
+/*创建了新的进程，开销较大*/
 i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 {
 	int modvalue = 0;
@@ -367,80 +407,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	return pos;
 }
 
-/*i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
-{
-	i64 *shmaddr ;
-	pid_t fpid1,fpid2;
-	i64 Left=1;
-	Left =rand()%1000;
-	i64 Right = 0;
-	DrawBackSearch(pattern,Left,Right);
-	if(Right < Left )
-	{
-		num=0;
-		return NULL;
-	}
-	num = Right - Left + 1;
-	i64 *pos =new i64[num];
-	//num = LOOP;
-	//add parrel
-	int shmid ;
-    shmid = shmget(IPC_PRIVATE, num*sizeof(i64), IPC_CREAT|0600 ) ;
-	 if ( shmid < 0 )
-      {
-      	perror("Error:");
-		return NULL ;
-      }
-	 fpid1  = fork();
-	 if (fpid1 < 0)
-        printf("error in fork!");
-      else if(fpid1==0)
-	  {
-		//cout<<"child1 loop from 0 to "<<num/2<<endl;
-		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;
-		for(int i=0;i<num/2;i++)
-			{
-				shmaddr[i]=Lookup(Left + i);
-		//		cout<<"i="<<i << ",Left+i" <<Left+i<<setw(4)<<".child1:"<<"LookUp="<<setw(10)<<pos[i]<<",pid"<<getpid()<<endl;
-			}
-		//memcpy(shmaddr,pos,sizeof(i64)*num/2);
-		exit(0);
-	  }
-	  else
-	  {
-		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;
-		for(int i=num/2;i<num;i++)
-		{
-			shmaddr[i]=Lookup(Left + i);
-		//	cout <<"i="<< i << "," << i + Left << setw(4) << ".child2:" << "lookup="<<setw(10) << pos[i] << ",pid" << getpid() << endl;
-		}
-		//memcpy(shmaddr+num/2,pos+num/2,sizeof(i64)*(num-num/2));
-	  }
-//      fpid2 = fork();
-//	  if (fpid2 < 0)
-//      	printf("error in fork!");
-//      else if(fpid2==0)
-//	  {
-//		//cout<<"child2 loop from "<<num/2<< "to "<<num<<endl;
-//		shmaddr = (i64*)shmat( shmid, NULL, 0 ) ;
-//		for(int i=num/2;i<num;i++)
-//		{
-//			shmaddr[i]=Lookup(Left + i);
-//		//	cout <<"i="<< i << "," << i + Left << setw(4) << ".child2:" << "lookup="<<setw(10) << pos[i] << ",pid" << getpid() << endl;
-//		}
-//		//memcpy(shmaddr+num/2,pos+num/2,sizeof(i64)*(num-num/2));
-//		exit(0);
-//	  }
-	  int st1, st2;
-      waitpid( fpid1, &st1, 0);
-      //waitpid( fpid2, &st2, 0);
-	  shmaddr = (i64 *) shmat(shmid, NULL, 0 );
-	  memcpy(pos,shmaddr,num*sizeof(i64));
-	  shmctl(shmid, IPC_RMID, NULL);
-	  //cout<<pos[0]<<endl;
-	  //delete[] pos;
-	return pos;
-}*/
+
 unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
 {
 	if(pos + len > n-1 || pos <0)

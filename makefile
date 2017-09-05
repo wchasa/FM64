@@ -1,11 +1,11 @@
 CC=g++ -pg -std=gnu++11
-CFLAGS=-O0 -g -Wall
-#CFLAGS=-O3 -Wall
+#CFLAGS=-O0 -g -Wall
+CFLAGS=-O3 -Wall
 my_fm:div Main.o fm.a
 	$(CC)  $(CFLAGS) Main.o fm.a   -o my_fm_origin -lpthread
 
 mult:div MainMulti.o fm.a
-	$(CC)  $(CFLAGS) MainMulti.o fm.a   -o my_fm_half
+	$(CC)  $(CFLAGS) MainMulti.o fm.a   -o my_fm_pool -lpthread
 
 adaptive: div fm.a test.o
 	g++ test.o fm.a $(CFLAGS) -o my_fm -lrt
@@ -30,9 +30,11 @@ speedtest:div MainSpeedtest.o fm.a
 speed:div MainSpeed.o fm.a
 	$(CC)  $(CFLAGS) MainSpeed.o fm.a   -o my_fm
 
-fm.a:ABS_WT.o Balance_WT.o Huffman_WT.o Hutacker_WT.o FM.o BitMap.o UseCount.o WT_Handle.o InArray.o loadkit.o savekit.o divsufsort.o sssort.o trsort.o utils.o 
-	ar rc fm.a ABS_WT.o Balance_WT.o Huffman_WT.o Hutacker_WT.o FM.o BitMap.o UseCount.o WT_Handle.o  InArray.o loadkit.o savekit.o divsufsort.o sssort.o trsort.o utils.o
+fm.a:ABS_WT.o Balance_WT.o Huffman_WT.o Hutacker_WT.o FM.o BitMap.o UseCount.o WT_Handle.o InArray.o loadkit.o savekit.o divsufsort.o sssort.o trsort.o utils.o ThreadPool.o
+	ar rc fm.a ABS_WT.o Balance_WT.o Huffman_WT.o Hutacker_WT.o FM.o BitMap.o UseCount.o WT_Handle.o  InArray.o loadkit.o savekit.o divsufsort.o sssort.o trsort.o utils.o ThreadPool.o
 
+ThreadPool.o :ThreadPool.h
+	$(CC) -c  $(CFLAGS) ThreadPool.h -o ThreadPool.o
 %.o:%.cpp *.h
 	$(CC) -c  $(CFLAGS) $< -o $@
 

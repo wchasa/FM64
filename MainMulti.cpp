@@ -28,7 +28,7 @@ void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 int* generateRandom(int count,int seed);
-int length = 0;
+int length = 100;
 struct timer{
     public:
     struct timeval begin, end;
@@ -49,54 +49,37 @@ struct timer{
 
 int main(int argc, char *argv[])
 {
-    
+    using FM_NAME = FM_M;
   //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
 		fprintf(stderr, "Usage: ./my_fm <file> <speedlevel>");
 		exit(EXIT_FAILURE);
 	}
-	//fprintf(stderr, "read File %s\n", argv[1]);
     timer st1,st2;
     double stime,etime,tcost;
-    //cout<<"This is add Fixcode FM"<<endl;
-    //cout<<"Patten Len:"<<PATTENLEN<<endl;
     int *pos;
     i64 num = 0;
     string command;
     string result[2];
     string path,path2;
     string patten = "ABBA";
-  //  char filename2[] = "/home/lab/path";
-  //  char filename3[] = "/home/wch/result";
     FILE *fp,*fp_result;
-    FM *csa = NULL;
+    FM_NAME *csa = NULL;
     char StrLineFM[1024]; 
-   // if((fp = fopen(filename2,"r")) == NULL)      //判断文件是否存在及可读  
-   // {   
-        //cout<<filename2<<"Open Failed"<<endl;
-   //     return -1;   
-   // }   
-   // while (!feof(fp))                                   //循环读取每一行，直到文件尾
-    {
-    //    fgets(StrLine,1024,fp);
-     //   if(StrLine[0]=='#')
-     //       continue;
-     //   StrLine[strlen(StrLine)-1]='\0';
-        //cout<<"FileName:"<<StrLine<<"      ";
-        strcpy(StrLineFM,argv[1]);
-        csa = NULL;
-        FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
-        if (fh == NULL)
+    strcpy(StrLineFM,argv[1]);
+    csa = NULL;
+    FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
+        if (1)
         {
             stime = clock();
-            csa = new FM(argv[1]);
+            csa = new FM_NAME(argv[1]);
             etime = clock();
             csa->save(StrLineFM);
         }
         else
         {
-            csa = new FM();
+            csa = new FM_NAME();
             csa->load(StrLineFM);
             
         }
@@ -107,9 +90,6 @@ int main(int argc, char *argv[])
         cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatio()<<endl ;
         int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
         csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
-       // cout << "Plaincount=" << setw(10) << Plaincount << ",AAL0count=" << setw(10) << AL0 << ",AAL1count=" << setw(10) << AL1 << ",RL0count=" << setw(10) << RL0
-        //     << ",RL1count=" << setw(10) << RL1 << ",Fixcode=" << setw(10) << Fixcount << endl;
-        //cout << "Plaincount=" << setw(10) << Plaincount << ",Gamacount=" << setw(10) << Gamacount << ",Fixcode=" << setw(10) << Fixcount << endl;
         FILE *fp2;
         if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
         {
@@ -121,7 +101,7 @@ int main(int argc, char *argv[])
         unsigned char * searchT = new unsigned char[1024];
         fseeko(fp2, 0, SEEK_SET);
         int e=0;
-        i64 num = 0;
+        //i64 num = 0;
  /*       for (int i2 = 0; i2 < MAX; i2++)
         {
 
@@ -134,6 +114,20 @@ int main(int argc, char *argv[])
         //cout<<"start locate"<<endl;
        if(strcmp(argv[2],"bx")==0)
        {
+        st1.start();
+        cout<<length<<endl;
+      for (int i2 = 0; i2 < MAX; i2++)
+      {
+          fseek(fp2, randarray[i2] % (length), SEEK_SET);
+          fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+         // i64 num;
+         i64 i ;
+          csa->counting((const char *)searchT,num);
+        //  i64 *pos = csa->counting((const char *)searchT,&num);
+          //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+       }
+       st1.finish();
+       cout << "count:" << st1.value() / MAX / 1000 << "ms" << endl;
            st1.start();
            for (int i2 = 0; i2 < MAX; i2++)
            {
@@ -161,16 +155,16 @@ int main(int argc, char *argv[])
               cout<<length<<endl;
             for (int i2 = 0; i2 < MAX; i2++)
             {
-                fseek(fp2, randarray[i2] % (length), SEEK_SET);
+                fseek(fp2, randarray[i2] % (length/3), SEEK_SET);
                 fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
                // i64 num;
                i64 i ;
-                csa->counting((const char *)searchT,num);
+                csa->counting_parrel((const char *)searchT,num);
               //  i64 *pos = csa->counting((const char *)searchT,&num);
                 //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
              }
              st1.finish();
-             cout << "counting:" << st1.value()/MAX/1000<<"ms"<<endl;
+             cout << "poolcounting:" << st1.value()/MAX/1000<<"ms"<<endl;
              st1.start();
             for (int i2 = 0; i2 < MAX; i2++)
             {
@@ -180,7 +174,6 @@ int main(int argc, char *argv[])
                 i64 *pos = csa->locating((const char *)searchT, num);
                 delete []pos;
                 pos = NULL;
-                //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
              }
              st1.finish();
              cout << "locating:" << st1.value()/MAX/1000<<"ms"<<endl;
@@ -201,7 +194,7 @@ int main(int argc, char *argv[])
       //delete csa;
       fclose(fp2);
      //  cout << "--------------------------------------------------------------------" << endl;
-    }   
+   
    // fclose(fp);
     return 0;
 }

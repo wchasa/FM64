@@ -126,8 +126,54 @@ unsigned char * FM::extracting_parrel(i64 pos,i64 len)
 
 FM_M::FM_M(const char * filename,int speedlevel)
 {
-    fm[0] = new FM(filename,speedlevel,3,0);
-    fm[1] = new FM(filename,speedlevel,3,1);
-	fm[2] = new FM(filename,speedlevel,3,2);
-	pool = new ThreadPool(3);
+	int part = 3;
+	for(int i = 0 ;i<part;i++)
+	fm.emplace_back(new FM(filename,speedlevel,part,i))
+}
+
+void FM_M::counting_parrel(const char *pattern,i64 &num)
+{	
+	int i1 = 0;
+	i64 num0 = 0,num1=0,num2 = 0;
+	std::thread t1([this,pattern,&num0]{this->fm[0]->counting(pattern,num0);});	
+	std::thread t2([this,pattern,&num1]{this->fm[1]->counting(pattern,num1);});	
+	std::thread t3([this,pattern,&num2]{this->fm[2]->counting(pattern,num2);});	
+	t1.join();
+	t2.join();
+	t3.join();
+	num = num0+num1 + num2;
+	//std::cout<<"Main Thread"<<std::endl;
+	return;
+}
+
+void counting(const char *pattern,i64 &num)
+{	
+	i64 i1;		
+	//fm[0]->counting(pattern,i1);
+	//fm[1]->counting(pattern,i2);
+	//fm[2]->counting(pattern,i3);
+	for(auto f : fm)
+	{
+		f.counting(pattern,i1);
+		num += i1;
+	}
+	//for(auto && result: results)
+	//	num += result.get();
+}
+
+void counting_pool(const char *pattern,i64 &num)
+{	
+	int i1 = 0;
+	i64 num1[3]={0,0,0};
+	std::vector< std::future<void> > results;
+	for(int i = 0; i < 3; ++i) {
+		results.emplace_back(
+			pool.enqueue([&,i,pattern,&num1] {
+				this->fm[i]->counting(pattern,num1[i]);
+				return ;
+			}      ) );
+	}
+	num = num1[0]+num1[1]+num1[2];
+	//std::cout<<"Main Thread"<<std::endl;
+	return;
 }
