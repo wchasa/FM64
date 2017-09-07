@@ -10,7 +10,8 @@ the Free Software Foundation; either version 2 or later of the License.
 # Description: 
 =============================================*/
 #include"FM.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 //FM::FM(const char *filename,int speedlevel):wt(filename,256,32,1,speedlevel){}
 FM::FM(const char *filename,int speedlevel,int part,int pos):wt(filename,part ,pos,256,32,1,speedlevel){}
 FM::FM():wt(){}
@@ -126,27 +127,36 @@ unsigned char * FM::extracting_parrel(i64 pos,i64 len)
 
 FM_M::FM_M(const char * filename,int speedlevel)
 {
-	int part = 3;
+	part = 3;
 	for(int i = 0 ;i<part;i++)
-	fm.emplace_back(new FM(filename,speedlevel,part,i))
+	fm.emplace_back(filename,speedlevel,part,i);
 }
 
 void FM_M::counting_parrel(const char *pattern,i64 &num)
 {	
-	int i1 = 0;
+	vector<std::thread> v_Thread;
+	i64 i22 = 0;
+	vector<int> v_num[fm.size()];
+	for(int i = 0 ;i<fm.size();i++)
+	{
+		v_Thread.emplace_back([this,pattern,&i22,&num,i]{this->fm[i].counting(pattern,i22);num +=i22;});
+	}
+	for(int i = 0 ;i<fm.size();i++)
+		v_Thread[i].join();
+/*	int i1 = 0;
 	i64 num0 = 0,num1=0,num2 = 0;
-	std::thread t1([this,pattern,&num0]{this->fm[0]->counting(pattern,num0);});	
-	std::thread t2([this,pattern,&num1]{this->fm[1]->counting(pattern,num1);});	
-	std::thread t3([this,pattern,&num2]{this->fm[2]->counting(pattern,num2);});	
+	std::thread t1([this,pattern,&num0]{this->fm[0].counting(pattern,num0);});	
+	std::thread t2([this,pattern,&num1]{this->fm[1].counting(pattern,num1);});	
+	std::thread t3([this,pattern,&num2]{this->fm[2].counting(pattern,num2);});	
 	t1.join();
 	t2.join();
 	t3.join();
 	num = num0+num1 + num2;
 	//std::cout<<"Main Thread"<<std::endl;
-	return;
+	return;*/
 }
 
-void counting(const char *pattern,i64 &num)
+void FM_M::counting(const char *pattern,i64 &num)
 {	
 	i64 i1;		
 	//fm[0]->counting(pattern,i1);
@@ -161,7 +171,7 @@ void counting(const char *pattern,i64 &num)
 	//	num += result.get();
 }
 
-void counting_pool(const char *pattern,i64 &num)
+void FM_M::counting_pool(const char *pattern,i64 &num)
 {	
 	int i1 = 0;
 	i64 num1[3]={0,0,0};
@@ -169,7 +179,7 @@ void counting_pool(const char *pattern,i64 &num)
 	for(int i = 0; i < 3; ++i) {
 		results.emplace_back(
 			pool.enqueue([&,i,pattern,&num1] {
-				this->fm[i]->counting(pattern,num1[i]);
+				this->fm[i].counting(pattern,num1[i]);
 				return ;
 			}      ) );
 	}
@@ -177,3 +187,31 @@ void counting_pool(const char *pattern,i64 &num)
 	//std::cout<<"Main Thread"<<std::endl;
 	return;
 }
+	int FM_M::load(const char * indexfile,int part)
+	{
+		string str = indexfile;	
+		this->part = part;
+		for(int i = 0;i<part;i++)
+		{
+			char buffer[5];
+			string strtemp = str;
+			sprintf(buffer,"_%d_%d",part,i);
+			strtemp+=buffer;
+			fm[i].load(strtemp.c_str());
+		}
+		return 0;
+	};
+	int FM_M::save(const char * indexfile)
+	{
+		string str = indexfile;	
+			
+		for(int i = 0;i<part;i++)
+		{
+			char buffer[5];
+			string strtemp = str;
+			sprintf(buffer,"_%d_%d",part,i);
+			strtemp+=buffer;
+			fm[i].save(strtemp.c_str());
+		}
+		return 0;
+	};

@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 	using FM_A = FM_M;
 	usage();
 	string command;
-	string  result[2];
+	string  result[3];
 	char filename[100]={'\0'};
 	char indexname[100]={'\0'};
 	FM_A *csa=NULL;
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 			i64  num=0;
 			if(csa!=NULL)
 			{
-				csa->counting(result[1].data(),num);
+				csa->counting_parrel(result[1].data(),num);
 				cout<<"occs: "<<num<<endl;
 			}
 			else
@@ -82,7 +82,8 @@ int main(int argc, char* argv[])
 			if(csa!=NULL)
 				delete csa;
 			csa=new FM_A();
-			csa->load(result[1].data());
+			int part = atoi(result[2].data());
+			csa->load(result[1].data(),part);
 		}
 		else if(result[0]=="save")
 		{
@@ -228,15 +229,18 @@ void splitcommand(string command,string result[])
 	int start=0;
 	int len=command.length();
 	result[0]=command;
+	int pos = 0;
+//	int end = 0;
 	for(i=0;i<len;i++)
 	{
 		if(command.at(i)!=' ')
 			continue;
-		result[0]=command.substr(0,i);
+		result[pos++]=command.substr(start,i-start);
 		start=i+1;
-		break;
+		//break;
 	}
-	result[1]=command.substr(start,len);
+	result[pos]=command.substr(start,len-start);
+	//result[2]=command.substr(start,len);
 }
 
 void usage()
@@ -270,8 +274,8 @@ void helplocate()
 }
 void helpload()
 {
-	cout<<"load XX"<<endl;
-	cout<<"	XX: the FM-index file, the command will read the index file and build a csa secretly"<<endl;
+	cout<<"load XX number"<<endl;
+	cout<<"	XX: the FM-index file, the command will read the index file and build a csa secretly,number is part"<<endl;
 }
 void helpsave()
 {

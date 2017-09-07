@@ -6,7 +6,7 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/my_fm_pool",
+            "program": "${workspaceRoot}/my_fm_origin",
             "args": ["/home/wch/testfile/bible","cx","/home/lab/lab/WZ/lxy/positiondblp.xml"],
           //  "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

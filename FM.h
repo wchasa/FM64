@@ -81,6 +81,7 @@ public:
     FM_M(){};
    // FM();
     FM_M(const char * filename,int speedlevel=1);
+	int part;
     vector<FM> fm;
 	ThreadPool pool;	
 	void counting(const char *pattern,i64 &num);
@@ -91,8 +92,8 @@ public:
 	//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap);
 	unsigned char * extracting(i64 pos,i64 len){return 0;};
 	unsigned char * extracting_parrel(i64 pos,i64 len){return 0;};
-	int load(const char * indexfile){return 0;};
-	int save(const char * indexfile){return 0;};
+	int load(const char * indexfile,int part);
+	int save(const char * indexfile);
 	i64 getN(){return 0;};
 	void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix){};
 	int getAlphabetSize(){return 0;};
