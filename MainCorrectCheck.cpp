@@ -9,6 +9,7 @@
 #include <string>
 using namespace std;
 #define MAX 1000
+#define PATTENLEN 20
 void usage();
 void helpbuild();
 void helpload();
@@ -25,59 +26,50 @@ int stupidRank(unsigned char* c,int length,int& ch,int pos);
 //this main  compare result of locate
 int main(int argc, char *argv[])
 {
-	double stime,etime,stime1,etime1,tcost,tcost2;
-    FM *csa = NULL;
-    string strpathFM,strpathfile,str;
-	strpathFM ="/home/lab/testfile/english.fm";
-	strpathfile ="/home/lab/testfile/english";
-	//strpathfile ="/home/wch/testfile/einstein.en.txt";
-    cout<<"input file path:";
-    //getline(cin,strpath);/home/wch/codebase
-	//strpath = "/home/wch/codebase/sources";
-    FILE * fp = fopen(strpathfile.c_str(),"r+");
-	FILE * fpw = fopen("result.txt","w+");
-	//FILE * fp = fopen("./bible","r+");
-    if(fp==NULL)
-	{
-		
-		cout<<"Be sure the file is available"<<endl;
-		exit(0);
-	}
-    fseek(fp,0,SEEK_END);
-	i64 n = ftell(fp)+1;
-	unsigned char *T = new unsigned char[n];
-	fseeko(fp,0,SEEK_SET);
-	i64 e   = 0;
-	i64 num = 0,num2 = 0;
-	num = fread(T,sizeof(unsigned char),n,fp);
-	T[n-1]=0;
-    string strtxt((char*)T);
-	stime = clock();
-	if (csa != NULL)
-	    delete csa;
 
-	csa = new FM();
-	etime = clock();
-	tcost = etime-stime;
-	cout<<"build takes:"<<setw(10)<<tcost/CLOCKS_PER_SEC<<"sec"<<endl;
-	cout << "build complete;" << endl;
-	FILE *fh = fopen(strpathFM.c_str(), "r");
-	if (fh == NULL)
-	{
-	    stime = clock();
-	    csa = new FM(strpathfile.c_str());
-	    etime = clock();
-	    csa->save(strpathFM.data());
-	}
-	else
-	{
-	    csa = new FM();
-	    csa->load(strpathFM.data());
-	}
+	using FM_NAME = FM_M;
+	//  i64 totalsize = 0;
+	  i64 sumRun = 0,bitLen =0;
+	  if(argc < 3){
+		  fprintf(stderr, "Usage: ./my_fm <file> <speedlevel>");
+		  exit(EXIT_FAILURE);
+	  }
+	  //timer st1,st2;
+	  double stime,etime,tcost;
+	  int *pos;
+	  i64 num = 0;
+	  string command;
+	  string result[2];
+	  string path,path2;
+	  string patten = "ABBA";
+	  FILE *fp,*fp_result,*fp2;
+	  FM_NAME *csa = NULL;
+	  char StrLineFM[1024]; 
+	  strcpy(StrLineFM,argv[1]);
+	  csa = NULL;
+	  FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
+	  csa = new FM_NAME();
+	  if(csa->load(StrLineFM,3)==0)
+	   {
+		  stime = clock();
+		  csa = new FM_NAME(argv[1]);
+		  etime = clock();
+		  csa->save(StrLineFM);
+	  }
+	  fp = fopen(argv[1],"r+");
+	  fseek(fp,0,SEEK_END);
+	  i64 n = ftell(fp)+1;
+	  unsigned char *T = new unsigned char[n];
+	  fseeko(fp,0,SEEK_SET);
+	  i64 e   = 0;
+	  i64 num2 = 0;
+	  num = fread(T,sizeof(unsigned char),n,fp);
+	  T[n-1]=0;
+		string strtxt((char*)T);
 	//cout<<"Plain:"<<setw(10)<<Plaincount<<"";
 	tcost = 0;
 	int* randarray =  generateRandom(MAX);
-	stime1 = clock();
+	//stime1 = clock();
 /*	for(int i1 = 0;i1<MAX;i1++)
 	{
 		const  char* array =(const char*) csa->extracting_parrel(randarray[i1]%10000,50007);
@@ -87,29 +79,40 @@ int main(int argc, char *argv[])
 			cout<<"extract error"<<endl;
 		}
 	}
-	*/
+	*/if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
+	{
+		printf("Open Falied!");
+		return -1;
+	}
+	fseek(fp2, 0, SEEK_END);
+	n = ftell(fp2) + 1;
+	unsigned char * searchT = new unsigned char[1024];
+	fseeko(fp2, 0, SEEK_SET);
+	//int e=0;
+	//i64 num = 0;
+/*       for (int i2 = 0; i2 < MAX; i2++)
+	{
+
+		fseek(fp2, rand() % (1024*1024*100-100), SEEK_SET);
+		fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+		csa->counting((const char *)searchT, num);
+	}*/
+	//int* randarray = generateRandom(MAX,atoi(argv[3]));
+	string str;
 	for(int i2 =0;i2<MAX;i2++)
     {
-		//cout<<"**********************************"<<endl;
-		//str = "military age (19)";
-	   	str = strtxt.substr(rand()%100000,20);
-		//str = strtxt.substr(i2,15 );
-		//fseeko(fp,0,SEEK_SET);
-		//num = fread(T,sizeof(unsigned char),20,fp);
-		//T[20-1]=0;
-		//string strtxt((char*)T);
-		cout<<"Patten:"<<str<<endl;
-		i64 *pos = csa->locating(str.c_str(), num);
+		fseek(fp2, randarray[i2] % (n/3), SEEK_SET);
+		fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
 		
-		//i64 *pos2 = csa->Locating(str.data(), num);
-		//cout << setw(20) << "locating" << num << endl;
-		//showpos(pos,num);
+		string str((char*)searchT);
+		cout<<"Patten:"<<str<<endl;
+		num = 0;
+		i64 *pos = csa->locating(str.c_str(), num);
 		int i = strtxt.find(str);
 		int p = 0;
 		if(num<=0)
 		{
 			cout<<"locate havnt find"<<endl;
-			//fprintf(fpw,"%s\r\n",str.c_str());
 			continue;
 		}
 		quick_sort(pos,0,num-1);
@@ -119,14 +122,12 @@ int main(int argc, char *argv[])
 		    stringFind++;
             if(pos[p++]!=i)
             {
-				cout<<"-----------------------------------"<<endl;
+				cout<<"------------------wrong-----------------"<<endl;
 				cout<<"i"<<setw(10)<<p-1<<",i2="<<i2<<endl;
 				cout<<setw(10)<<"strFind"<<setw(10)<<i;
 				cout<<setw(10)<<"locate"<<setw(10)<<pos[p-1]<<endl;
 				cout<<"Patten:"<<setw(10)<<str<<"count:"<<num<<endl;
-				//fpw.write((str+"\r\n").c_str);
-				
-				//fprintf(fpw,"%s\r\n",str.c_str());
+				cout<<"------------------wrong-----------------"<<endl;
 				break;
 			}
 
@@ -144,100 +145,11 @@ int main(int argc, char *argv[])
     }
 	//csa->DestroyWaveletTree();
 	fclose(fp);
-	fclose(fpw);
+	fclose(fp2);
+	//fclose(fpw);
 }
 
-//    int *pos;
-//    int num = 0;
-//    //	usage();
-//    string command;
-//    string result[2];
-//    string path,path2;
-//    string patten = "ABBA";
-//    char filename[100] = {'\0'};
-//    char indexname[100] = {'\0'};
-//    FM *csa = NULL;
-//    result[0] = "";
-//    path = "";
-//    command = "";
-//    path = "/home/wch/CMake Practice.pdf";
-//    //path2 ="/home/wch/CMake Practice.pdf";
-//    if (csa != NULL)
-//	delete csa;
-//    csa = NULL;
-//    csa = new FM(path.data());
-//    //csa->save(path2.data());
-//    //csa=new FM();
-//	//csa->load(path2.data());
-//    int bit = 'M';
-// //	int rankresult = csa->wt.fm->GetRoot()->Rank(100,bit);
-// //   int strankresult = stupidRank(csa->wt.fm->bwt,1024*1024,bit,100);
-// //  csa->wt.fm->bwt[2];
-// // bwt
-// // cout << "Rank(100,bit) =  " << rankresult << endl;
-// // cout << "stupidRank(100,bit) =  " << strankresult << endl;
-//    if (csa != NULL)
-//    {
-//		{
-//
-//			if (csa != NULL)
-//			{
-//            //  csa->counting(patten.data(),num);
-//			 pos = csa->locating(patten.data(), num);
-//             showpos(pos,num);
-//			cout << "occs:" << num << endl;
-//
-//		//	showpos(pos, num);
-//			delete[] pos;
-//			}
-//			else
-//			cout << "build a FM first" << endl;
-//		}
-//    }
-//    cout << "string search patten " << path << endl;
-//    vector<int> ivector;
-//    FILE *fp = fopen(path.data(), "r+");
-//    if (fp == NULL)
-//    {
-//		cout << "Be sure the file is available" << endl;
-//		exit(0);
-//    }
-//    fseek(fp, 0, SEEK_END);
-//    long count = ftell(fp) + 1;
-//    unsigned char *T = new unsigned char[count];
-//    fseek(fp, 0, SEEK_SET);
-//    
-//    int e = 0;
-//    int num2 = 0;
-//    while ((e = fread(T + num2, sizeof(uchar), count - 1 - num2, fp)) != 0)
-//	num2 = num2 + e;
-//    if (num2 != count - 1)
-//    {
-//		cout << "Read source file failed" << endl;
-//		exit(0);
-//    }
-//    T[count - 1] = 0;
-//    string str((char *)T);
-//    int ipos = str.find(patten);
-//    //pos = csa->locating(patten.data(), num);
-//    // for(int i =0;i<num;i++)
-//    // {
-//    //     string strtemp = str.substr(pos[i],4);
-//    //     cout << strtemp<<endl;
-//    // }
-//   
-//    while (ipos != -1)
-//    {
-//		ivector.push_back(ipos);
-//		ipos = str.find(patten, ipos + 1);
-//		
-//    }
-//   showpos(ivector);
-//   compare(ivector, pos, num);
-//    cout << ">";
-//    char c;
-//    cin >> c;
-//    return 0;
+
 int* generateRandom(int count)
 {
     int* result = new int[count];

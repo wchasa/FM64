@@ -60,6 +60,7 @@ class FM
 		unsigned char * extracting_parrel(i64 pos,i64 len);
 		int load(const char * indexfile);
 		int save(const char * indexfile);
+		bool loadfileExist(const char * indexfile);
 		i64 getN();
 		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
 		int getAlphabetSize();
@@ -87,7 +88,7 @@ public:
 	void counting(const char *pattern,i64 &num);
 	void counting_parrel(const char *pattern,i64 &num);
 	void counting_pool(const char *pattern,i64 &num);//
-	i64 * locating(const char *pattern,i64 & num){return 0;};
+	i64 * locating(const char *pattern,i64 & num);
 	i64 * locating_parrel(const char *pattern,i64 & num){return 0;};
 	//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap);
 	unsigned char * extracting(i64 pos,i64 len){return 0;};

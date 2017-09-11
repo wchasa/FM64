@@ -16,13 +16,13 @@ count:div MainMulti_count.o fm.a
 extract:div MainMulti_extract.o fm.a
 	$(CC)  $(CFLAGS) MainMulti_extract.o fm.a   -o my_fm
 
-test:div main_propter.o fm.a
+test:div main_propter.o fm.a 
 	$(CC)  $(CFLAGS) main_propter.o fm.a   -o my_fm_test
 
 my_fm_1:div Main1.o fm.a
 	$(CC)  $(CFLAGS) Main1.o fm.a   -o my_fm
 correctcheck:div MainCorrectCheck.o fm.a
-	$(CC)  $(CFLAGS) MainCorrectCheck.o fm.a   -o my_fm
+	$(CC)  $(CFLAGS) MainCorrectCheck.o fm.a   -o my_fm -lpthread
 
 speedtest:div MainSpeedtest.o fm.a
 	$(CC)  $(CFLAGS) MainSpeedtest.o fm.a   -o my_fm

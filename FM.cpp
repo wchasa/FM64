@@ -80,7 +80,16 @@ int FM::save(const char * indexfile)
 	return 0;
 }
 
-
+bool FM::loadfileExist(const char * indexfile)
+{
+	FILE* r=fopen(indexfile,"rb");
+	if(r==NULL)
+	{
+		cout<<"Fopen error"<<endl;
+		return false;
+	}
+	return true;
+}
 int FM::load(const char * indexfile)
 {
 	loadkit s(indexfile);
@@ -89,12 +98,13 @@ int FM::load(const char * indexfile)
 	if(magicnum!=198809102510)
 	{
 		cerr<<"Not a FM_Index file"<<endl;
-		exit(0);
+		return 0;
+		//exit(0);
 	}
 	wt.Load(s);
 	s.close();
 	//cout <<indexfile<< " Load is ok" << endl;
-	return 0;
+	return 1;
 }
 
 
@@ -130,6 +140,7 @@ FM_M::FM_M(const char * filename,int speedlevel)
 	part = 3;
 	for(int i = 0 ;i<part;i++)
 	fm.emplace_back(filename,speedlevel,part,i);
+//	ThreadPool pool;
 }
 
 void FM_M::counting_parrel(const char *pattern,i64 &num)
@@ -174,44 +185,92 @@ void FM_M::counting(const char *pattern,i64 &num)
 void FM_M::counting_pool(const char *pattern,i64 &num)
 {	
 	int i1 = 0;
-	i64 num1[3]={0,0,0};
-	std::vector< std::future<void> > results;
+	// vector<i64> v_i64;
+	std::vector< std::future<i64> > results;
 	for(int i = 0; i < 3; ++i) {
 		results.emplace_back(
-			pool.enqueue([&,i,pattern,&num1] {
-				this->fm[i].counting(pattern,num1[i]);
-				return ;
-			}      ) );
+			pool.enqueue([&,i,pattern] {
+				i64 temp = 0;
+				this->fm[i].counting(pattern,temp);
+				//std::cout<<temp<<std::endl;
+				//v_i64.emplace_back(temp);
+				return temp;
+			}));
 	}
-	num = num1[0]+num1[1]+num1[2];
+	//pool.Pooljoin();
+	for(auto && result:results)
+		num += result.get();
 	//std::cout<<"Main Thread"<<std::endl;
 	return;
 }
-	int FM_M::load(const char * indexfile,int part)
-	{
-		string str = indexfile;	
-		this->part = part;
+int FM_M::load(const char * indexfile,int part)
+{
+	string str = indexfile;	
+	this->part = part;
+		for(int i = 0;i<part;i++)
+		{
+			FM* fmtemp = new FM();
+			fm.emplace_back(*fmtemp);
+
+		}
 		for(int i = 0;i<part;i++)
 		{
 			char buffer[5];
 			string strtemp = str;
 			sprintf(buffer,"_%d_%d",part,i);
 			strtemp+=buffer;
-			fm[i].load(strtemp.c_str());
+			if(fm[i].loadfileExist(strtemp.c_str()))
+				fm[i].load(strtemp.c_str());
+			else 
+				return false;
 		}
-		return 0;
-	};
-	int FM_M::save(const char * indexfile)
+	return 1;
+};
+int FM_M::save(const char * indexfile)
+{
+	string str = indexfile;	
+		
+	for(int i = 0;i<part;i++)
 	{
-		string str = indexfile;	
-			
-		for(int i = 0;i<part;i++)
+		char buffer[5];
+		string strtemp = str;
+		sprintf(buffer,"_%d_%d",part,i);
+		strtemp+=buffer;
+		fm[i].save(strtemp.c_str());
+	}
+	return 0;
+};
+
+
+i64 * FM_M::locating(const char * pattern,i64 & num)
+{
+	vector<i64> v_num(3,0);
+	//i64 totalnum;
+	//i64 ** posarray = new (i64 *)[part];
+	vector<i64 *> v_pos; 
+	i64 offset = 0;
+	int i = 0;
+	for(i = 0;i<part;i++)
+	{
+		i64* temppos;
+		//i64 tempnum  = 0;
+		temppos = fm[i].locating(pattern,v_num[i]);
+		v_pos.emplace_back(temppos);
+
+		num +=v_num[i];
+	}
+	i64 * pos = new i64[num];
+	memcpy(pos,(i64*)v_pos[0],v_num[0]*sizeof(i64));
+	i = 0;
+	for(int j = 1; j<part;j++)
+	{
+		//if(j>0)
+		offset += v_num[i-1];
+		for(int k=0;k<v_num[j];k++)
 		{
-			char buffer[5];
-			string strtemp = str;
-			sprintf(buffer,"_%d_%d",part,i);
-			strtemp+=buffer;
-			fm[i].save(strtemp.c_str());
+			i++;
+			pos[i] = v_pos[j][k]+offset;
 		}
-		return 0;
-	};
+	}
+	return pos;
+}

@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 			i64  num=0;
 			if(csa!=NULL)
 			{
-				csa->counting_parrel(result[1].data(),num);
+				csa->counting_pool(result[1].data(),num);
 				cout<<"occs: "<<num<<endl;
 			}
 			else

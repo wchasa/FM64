@@ -7,7 +7,7 @@
 >>>>>>> drawbacksearch
 *.txt
 *.pdf
-*.fm
+*.fm*
 bible
 core
 *.out

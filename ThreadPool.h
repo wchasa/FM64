@@ -17,6 +17,7 @@ public:
     template<class F, class... Args>
     auto enqueue(F&& f, Args&&... args) 
         -> std::future<typename std::result_of<F(Args...)>::type>;
+    void Pooljoin();
     ~ThreadPool();
 private:
     // need to keep track of threads so we can join them
@@ -94,5 +95,9 @@ inline ThreadPool::~ThreadPool()
     for(std::thread &worker: workers)
         worker.join();
 }
-
+inline void ThreadPool::Pooljoin()
+{
+    for(std::thread &worker: workers)
+    worker.join();
+}
 #endif

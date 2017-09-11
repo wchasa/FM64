@@ -70,19 +70,15 @@ int main(int argc, char *argv[])
     strcpy(StrLineFM,argv[1]);
     csa = NULL;
     FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
-        if (1)
-        {
-            stime = clock();
-            csa = new FM_NAME(argv[1]);
-            etime = clock();
-            csa->save(StrLineFM);
-        }
-        else
-        {
-            csa = new FM_NAME();
-            csa->load(StrLineFM);
-            
-        }
+    csa = new FM_NAME();
+    if(csa->load(StrLineFM,3)==0)
+     {
+        stime = clock();
+        csa = new FM_NAME(argv[1]);
+        etime = clock();
+        csa->save(StrLineFM);
+    }           
+     
         tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
         cout << argv[1] << endl;
         //cout <<"build time:"<< tcost << "sec" << endl;
@@ -123,8 +119,9 @@ int main(int argc, char *argv[])
          // i64 num;
          i64 i ;
           csa->counting((const char *)searchT,num);
-        //  i64 *pos = csa->counting((const char *)searchT,&num);
-          //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+
+         // i64 *pos = csa->counting((const char *)searchT,&num);
+        //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
        }
        st1.finish();
        cout << "count:" << st1.value() / MAX / 1000 << "ms" << endl;
@@ -133,8 +130,8 @@ int main(int argc, char *argv[])
            {
               fseek(fp2, randarray[i2] % (n), SEEK_SET);
                 fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               i64 *pos = csa->locating_parrel((const char *)searchT, num);
-               //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+              i64 *pos = csa->locating_parrel((const char *)searchT, num);
+              cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
            }
            st1.finish();
            cout << "locating_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
@@ -159,9 +156,10 @@ int main(int argc, char *argv[])
                 fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
                // i64 num;
                i64 i ;
-                csa->counting_parrel((const char *)searchT,num);
+               num = 0;
+                csa->counting_pool((const char *)searchT,num);
               //  i64 *pos = csa->counting((const char *)searchT,&num);
-                //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+              //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
              }
              st1.finish();
              cout << "poolcounting:" << st1.value()/MAX/1000<<"ms"<<endl;
@@ -170,7 +168,7 @@ int main(int argc, char *argv[])
             {
                 fseek(fp2, randarray[i2] % (length), SEEK_SET);
                 fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-                
+                num = 0;
                 i64 *pos = csa->locating((const char *)searchT, num);
                 delete []pos;
                 pos = NULL;
