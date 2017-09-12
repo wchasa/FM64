@@ -241,7 +241,7 @@ int FM_M::save(const char * indexfile)
 	return 0;
 };
 
-
+extern void quick_sort(i64 *s, i64 l, i64 r);
 i64 * FM_M::locating(const char * pattern,i64 & num)
 {
 	vector<i64> v_num(3,0);
@@ -255,22 +255,54 @@ i64 * FM_M::locating(const char * pattern,i64 & num)
 		i64* temppos;
 		//i64 tempnum  = 0;
 		temppos = fm[i].locating(pattern,v_num[i]);
+		
 		v_pos.emplace_back(temppos);
-
+		quick_sort(temppos,0,v_num[i]-1);
 		num +=v_num[i];
 	}
 	i64 * pos = new i64[num];
 	memcpy(pos,(i64*)v_pos[0],v_num[0]*sizeof(i64));
-	i = 0;
+	i = v_num[0];
 	for(int j = 1; j<part;j++)
 	{
 		//if(j>0)
-		offset += v_num[i-1];
+		offset += fm[j-1].wt.GetN();
+		int startpos = i-1;
 		for(int k=0;k<v_num[j];k++)
 		{
-			i++;
-			pos[i] = v_pos[j][k]+offset;
+			//i++;
+
+			pos[i++] = v_pos[j][k]+offset;
+			/*if(i>0&&pos[startpos]==pos[i-1])
+			{
+				i--;
+				num--;
+			}*/
 		}
 	}
 	return pos;
+}
+
+void quick_sort(i64 *s, i64 l, i64 r)
+{
+    if (l < r)
+    {
+	//Swap(s[l], s[(l + r) / 2]); //将中间的这个数和第一个数交换 参见注1
+	i64 i = l, j = r, x = s[l];
+	while (i < j)
+	{
+	    while (i < j && s[j] >= x) // 从右向左找第一个小于x的数
+		j--;
+	    if (i < j)
+		s[i++] = s[j];
+
+	    while (i < j && s[i] < x) // 从左向右找第一个大于等于x的数
+		i++;
+	    if (i < j)
+		s[j--] = s[i];
+	}
+	s[i] = x;
+	quick_sort(s, l, i - 1); // 递归调用
+	quick_sort(s, i + 1, r);
+    }
 }

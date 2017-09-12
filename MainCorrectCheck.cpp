@@ -17,7 +17,7 @@ void helpsave();
 void helpcount();
 void helplocate();
 void splitcommand(string command, string result[]);
-void quick_sort(i64 *s, i64 l, i64 r);
+extern void quick_sort(i64 *s, i64 l, i64 r);
 void compare(vector<i64> ivector, i64 *pos, i64 num);
 void showpos(vector<i64> ivector);
 void showpos(i64 *pos, i64 num);
@@ -50,12 +50,14 @@ int main(int argc, char *argv[])
 	  FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
 	  csa = new FM_NAME();
 	  if(csa->load(StrLineFM,3)==0)
+	 //if(1)
 	   {
 		  stime = clock();
 		  csa = new FM_NAME(argv[1]);
 		  etime = clock();
 		  csa->save(StrLineFM);
 	  }
+	  
 	  fp = fopen(argv[1],"r+");
 	  fseek(fp,0,SEEK_END);
 	  i64 n = ftell(fp)+1;
@@ -101,12 +103,14 @@ int main(int argc, char *argv[])
 	string str;
 	for(int i2 =0;i2<MAX;i2++)
     {
-		fseek(fp2, randarray[i2] % (n/3), SEEK_SET);
+		//fseek(fp2, randarray[i2] % (n/3), SEEK_SET);
+		fseek(fp2, n/3-10, SEEK_SET);
 		fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
 		
 		string str((char*)searchT);
 		cout<<"Patten:"<<str<<endl;
 		num = 0;
+		//str = "AAGAGAGGAAGAAATGCTTA";
 		i64 *pos = csa->locating(str.c_str(), num);
 		int i = strtxt.find(str);
 		int p = 0;
@@ -124,11 +128,11 @@ int main(int argc, char *argv[])
             {
 				cout<<"------------------wrong-----------------"<<endl;
 				cout<<"i"<<setw(10)<<p-1<<",i2="<<i2<<endl;
-				cout<<setw(10)<<"strFind"<<setw(10)<<i;
+				cout<<setw(10)<<"strFind"<<setw(10)<<i<<endl;
 				cout<<setw(10)<<"locate"<<setw(10)<<pos[p-1]<<endl;
-				cout<<"Patten:"<<setw(10)<<str<<"count:"<<num<<endl;
+				cout<<"Patten:"<<setw(10)<<str<<endl<<"count:"<<num<<endl;
 				cout<<"------------------wrong-----------------"<<endl;
-				break;
+				//break;
 			}
 
             i = strtxt.find(str,i+1);
@@ -137,7 +141,7 @@ int main(int argc, char *argv[])
 		//cout<<setw(20)<<"stringFind="<<stringFind<<endl;
 		//cout<<"---------------------------"<<endl;
 		//;
-		cout<<"right"<<endl;
+		cout<<"right,count:"<<stringFind<<endl;
 	//	delete [] pos2;
 	//	pos2 =NULL;
 		delete [] pos;
@@ -300,6 +304,7 @@ void helpsave()
     cout << "	XX: the FM-index file, the command will save the csa in file XX" << endl;
 }
 //快速排序
+/*
 void quick_sort(i64 *s, i64 l, i64 r)
 {
     if (l < r)
@@ -323,3 +328,4 @@ void quick_sort(i64 *s, i64 l, i64 r)
 	quick_sort(s, i + 1, r);
     }
 }
+*/

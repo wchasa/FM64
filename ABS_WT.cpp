@@ -25,6 +25,7 @@ the Free Software Foundation; either version 2 or later of the License.
 //#define LOOP 35
 #define SIZE 1024
 #define READSIZE 1024*1024*200
+#define PATTENLEN 20
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -753,7 +754,6 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
 {
 	FILE * fp = fopen(filename,"r+");
-	//int fd = open(filename, O_LARGEFILE | O_RDWR | O_CREAT);
 	if(fp==NULL)
 	{
 		cout<<"Be sure the file is available"<<endl;
@@ -764,14 +764,19 @@ unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
 	//n = n>READSIZE?READSIZE:n;
 	//n=n/2;
 	//length = n;
-	unsigned char * T = new unsigned char[n];
 	fseeko(fp,n/part*pos,SEEK_SET);
 	int e=0;
 	int num=0;
 	if(pos+1!=part)
-		num = fread(T,sizeof(uchar),n/part,fp);
+	{
+		n = n/part+2*PATTENLEN;
+	}
 	else
-		num = fread(T,sizeof(uchar),n-pos*n/part,fp);
+	{
+		n = n-pos*n/part;
+	}
+	unsigned char * T = new unsigned char[n];
+	num = fread(T,sizeof(uchar),n,fp);
 	T[n-1]=0;
 	fclose(fp);
 	memset(charFreq,0,256*sizeof(i64));
@@ -803,6 +808,10 @@ unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
 		}
 		else
 			code[i]=-1;
+	}
+	if(pos+1!=part)
+	{
+		n = n/part-2*PATTENLEN;
 	}
 	return T;
 }

@@ -13,7 +13,7 @@
 #include<sys/time.h>
 using namespace std;
 #define MAX 100
-#define PATTENLEN 30000
+
 void usage();
 void helpbuild();
 void helpload();
