@@ -266,18 +266,69 @@ i64 * FM_M::locating(const char * pattern,i64 & num)
 	for(int j = 1; j<part;j++)
 	{
 		//if(j>0)
-		offset += fm[j-1].wt.GetN();
+		offset += fm[j-1].wt.GetN()-2*PATTENLEN;//previous piece of fm read 2 patternlen more txt,so next piece need to minus it
 		int startpos = i-1;
 		for(int k=0;k<v_num[j];k++)
 		{
 			//i++;
 
 			pos[i++] = v_pos[j][k]+offset;
-			/*if(i>0&&pos[startpos]==pos[i-1])
+			if(i>0&&pos[startpos]==pos[i-1])
 			{
 				i--;
 				num--;
-			}*/
+			}
+		}
+	}
+	return pos;
+}
+i64* FM_M::locating_parrel(const char * pattern,i64 & num)
+{
+	int i1 = 0;
+	i64 i = 0;
+	vector<i64> v_num;
+	i64 offset = 0;
+	i64 tempnum =0;
+	std::vector< std::future<tuple<i64,i64* >> > results;
+	for(int i = 0; i < part; i++) {
+		results.emplace_back(
+			pool.enqueue([&,i,pattern,&tempnum] {
+				i64* temp = 0;
+				temp = this->fm[i].locating(pattern,tempnum);
+				
+				quick_sort(temp,0,tempnum-1);
+				//std::cout<<tempnum<<std::endl;
+				//v_i64.emplace_back(temp);
+				return make_tuple(tempnum,temp);
+			}));
+	}
+	vector<tuple<i64,i64*>> v_tuple;
+	for(auto  && result : results)
+	{
+		auto t = result.get();
+		v_tuple.emplace_back(t) ;
+		num += get<0>(t);
+	}
+	i64 * pos = new i64[num];
+	//auto tup0 = results[0].get();
+	//cout<<num<<std::endl;
+	memcpy(pos,get<1>(v_tuple[0]),get<0>(v_tuple[0])*sizeof(i64));
+	i = get<0>(v_tuple[0]);
+	for(int j = 1; j<part;j++)
+	{
+		//if(j>0)
+		offset += fm[j-1].wt.GetN()-2*PATTENLEN;//previous piece of fm read 2 patternlen more txt,so next piece need to minus it
+		int startpos = i-1;
+		for(int k=0;k<get<0>(v_tuple[j]);k++)
+		{
+			//i++;
+
+			pos[i++] = get<1>(v_tuple[j])[k]+offset;
+			if(i>0&&pos[startpos]==pos[i-1])
+			{
+				i--;
+				num--;
+			}
 		}
 	}
 	return pos;

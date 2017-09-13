@@ -21,6 +21,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #define ABS_FM_H
 #define CHAR_SET_SIZE 256
 #define CODE_MAX_LEN 256
+#define PATTENLEN 20
 #define _LARGEFILE64_SOURCE     /* See feature_test_macros(7) */
 #include <sys/types.h>
 #include <stdio.h>

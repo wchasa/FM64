@@ -8,7 +8,7 @@
 #include<iomanip>
 #include <string>
 using namespace std;
-#define MAX 1000
+#define MAX 200
 #define PATTENLEN 20
 void usage();
 void helpbuild();
@@ -101,17 +101,17 @@ int main(int argc, char *argv[])
 	}*/
 	//int* randarray = generateRandom(MAX,atoi(argv[3]));
 	string str;
-	for(int i2 =0;i2<MAX;i2++)
+	for(int i2 =-100;i2<MAX;i2++)
     {
 		//fseek(fp2, randarray[i2] % (n/3), SEEK_SET);
-		fseek(fp2, n/3-10, SEEK_SET);
+		fseek(fp2, n/3-i2, SEEK_SET);
 		fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
 		
 		string str((char*)searchT);
 		cout<<"Patten:"<<str<<endl;
 		num = 0;
-		//str = "AAGAGAGGAAGAAATGCTTA";
-		i64 *pos = csa->locating(str.c_str(), num);
+		str = "n unto the house of";
+		i64 *pos = csa->locating_parrel(str.c_str(), num);
 		int i = strtxt.find(str);
 		int p = 0;
 		if(num<=0)
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 			cout<<"locate havnt find"<<endl;
 			continue;
 		}
-		quick_sort(pos,0,num-1);
+		//quick_sort(pos,0,num-1);
 		int stringFind=0;
         while(i>= 0)
         {	

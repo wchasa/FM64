@@ -25,7 +25,6 @@ the Free Software Foundation; either version 2 or later of the License.
 //#define LOOP 35
 #define SIZE 1024
 #define READSIZE 1024*1024*200
-#define PATTENLEN 20
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -770,6 +769,7 @@ unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
 	if(pos+1!=part)
 	{
 		n = n/part+2*PATTENLEN;
+		//n = n/part;
 	}
 	else
 	{
@@ -809,10 +809,10 @@ unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
 		else
 			code[i]=-1;
 	}
-	if(pos+1!=part)
+	/*if(pos+1!=part)
 	{
 		n = n/part-2*PATTENLEN;
-	}
+	}*/
 	return T;
 }
 
