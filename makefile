@@ -1,11 +1,11 @@
 CC=g++ -pg -std=gnu++11
-CFLAGS=-O0 -g -Wall
-#CFLAGS=-O3 -Wall
+#CFLAGS=-O0 -g -Wall
+CFLAGS=-O3 -Wall
 my_fm:div Main.o fm.a
 	$(CC)  $(CFLAGS) Main.o fm.a   -o my_fm_origin -lpthread
 
 mult:div MainMulti.o fm.a
-	$(CC)  $(CFLAGS) MainMulti.o fm.a   -o my_fm_pool -lpthread
+	$(CC)  $(CFLAGS) MainMulti.o fm.a   -o my_fm -lpthread
 
 adaptive: div fm.a test.o
 	g++ test.o fm.a $(CFLAGS) -o my_fm -lrt

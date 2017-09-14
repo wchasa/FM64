@@ -418,7 +418,7 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 			i64 tempnum = 0;
 			temp = this->fm[i].locating(pattern,tempnum);
 			quick_sort(temp,0,tempnum-1);
-			cout<< tempnum<<endl;
+			//cout<< tempnum<<endl;
 			return make_tuple(tempnum,temp);}));	
 	}
 	vector<tuple<i64,i64*>> v_tuple;
