@@ -71,17 +71,7 @@ int main(int argc, char *argv[])
 	//cout<<"Plain:"<<setw(10)<<Plaincount<<"";
 	tcost = 0;
 	int* randarray =  generateRandom(MAX);
-	//stime1 = clock();
-/*	for(int i1 = 0;i1<MAX;i1++)
-	{
-		const  char* array =(const char*) csa->extracting_parrel(randarray[i1]%10000,50007);
-		string str = strtxt.substr(randarray[i1]%10000,50007);
-		if(0 !=strcmp(str.c_str(),array))
-		{
-			cout<<"extract error"<<endl;
-		}
-	}
-	*/if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
+	if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
 	{
 		printf("Open Falied!");
 		return -1;
@@ -90,16 +80,6 @@ int main(int argc, char *argv[])
 	n = ftell(fp2) + 1;
 	unsigned char * searchT = new unsigned char[1024];
 	fseeko(fp2, 0, SEEK_SET);
-	//int e=0;
-	//i64 num = 0;
-/*       for (int i2 = 0; i2 < MAX; i2++)
-	{
-
-		fseek(fp2, rand() % (1024*1024*100-100), SEEK_SET);
-		fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-		csa->counting((const char *)searchT, num);
-	}*/
-	//int* randarray = generateRandom(MAX,atoi(argv[3]));
 	string str;
 	for(int i2 =-100;i2<MAX;i2++)
     {
@@ -108,10 +88,11 @@ int main(int argc, char *argv[])
 		fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
 		
 		string str((char*)searchT);
+//		str = "n unto the house of";
 		cout<<"Patten:"<<str<<endl;
 		num = 0;
-		str = "n unto the house of";
 		i64 *pos = csa->locating_parrel(str.c_str(), num);
+		//i64 *pos = csa->locating(str.c_str(), num);
 		int i = strtxt.find(str);
 		int p = 0;
 		if(num<=0)

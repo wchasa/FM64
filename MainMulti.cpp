@@ -71,108 +71,89 @@ int main(int argc, char *argv[])
     csa = NULL;
     FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
     csa = new FM_NAME();
-    if(csa->load(StrLineFM,3)==0)
-     {
+    if(csa->load(StrLineFM,3)==0){
         stime = clock();
         csa = new FM_NAME(argv[1]);
         etime = clock();
-        csa->save(StrLineFM);
-    }           
-     
-        tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
-        cout << argv[1] << endl;
-        //cout <<"build time:"<< tcost << "sec" << endl;
-        //cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;
-        cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatio()<<endl ;
-        int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
-        csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
-        FILE *fp2;
-        if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
-        {
-            printf("Open Falied!");
-            return -1;
-        }
-        fseek(fp2, 0, SEEK_END);
-        int n = ftell(fp2) + 1;
-        unsigned char * searchT = new unsigned char[1024];
-        fseeko(fp2, 0, SEEK_SET);
-        int e=0;
-        //i64 num = 0;
- /*       for (int i2 = 0; i2 < MAX; i2++)
-        {
-
-            fseek(fp2, rand() % (1024*1024*100-100), SEEK_SET);
-            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            csa->counting((const char *)searchT, num);
-        }*/
-        int* randarray = generateRandom(MAX,atoi(argv[3]));
-        //cout<<argv[2]<<endl;
-        //cout<<"start locate"<<endl;
-       if(strcmp(argv[2],"bx")==0)
-       {
+        csa->save(StrLineFM);}           
+    tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
+    cout << argv[1] << endl;
+    //cout <<"build time:"<< tcost << "sec" << endl;
+    //cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;
+    cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatio()<<endl ;
+    int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
+    csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
+    FILE *fp2;
+    if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
+    {
+        printf("Open Falied!");
+        return -1;
+    }
+    fseek(fp2, 0, SEEK_END);
+    int n = ftell(fp2) + 1;
+    unsigned char * searchT = new unsigned char[1024];
+    fseeko(fp2, 0, SEEK_SET);
+    int e=0;
+    if(strcmp(argv[2],"bx")==0){
         st1.start();
         cout<<length<<endl;
-      for (int i2 = 0; i2 < MAX; i2++)
-      {
-          fseek(fp2, randarray[i2] % (length), SEEK_SET);
-          fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-         // i64 num;
-         i64 i ;
-          csa->counting((const char *)searchT,num);
-
-         // i64 *pos = csa->counting((const char *)searchT,&num);
-        //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-       }
-       st1.finish();
-       cout << "count:" << st1.value() / MAX / 1000 << "ms" << endl;
-           st1.start();
-           for (int i2 = 0; i2 < MAX; i2++)
-           {
-              fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-              i64 *pos = csa->locating_parrel((const char *)searchT, num);
-              cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-           }
-           st1.finish();
-           cout << "locating_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
-           st1.start();
-           for (int i2 = 0; i2 < MAX; i2++)
-           {
-              fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               unsigned char *p = csa->extracting_parrel(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
-               //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-           }
-           st1.finish();
-           cout << "extracting_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
-       }
-       if(strcmp(argv[2],"cx")==0)
+        for (int i2 = 0; i2 < MAX; i2++)
         {
-              st1.start();
-              cout<<length<<endl;
-            for (int i2 = 0; i2 < MAX; i2++)
-            {
-                fseek(fp2, randarray[i2] % (length/3), SEEK_SET);
+            fseek(fp2, randarray[i2] % (length), SEEK_SET);
+            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+            // i64 num;
+            i64 i ;
+            csa->counting_parrel((const char *)searchT,num);
+
+        // i64 *pos = csa->counting((const char *)searchT,&num);
+        //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+            }
+        st1.finish();
+        cout << "count:" << st1.value() / MAX / 1000 << "ms" << endl;
+        st1.start();
+        for (int i2 = 0; i2 < MAX; i2++)
+        {
+            fseek(fp2, randarray[i2] % (n), SEEK_SET);
                 fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               // i64 num;
-               i64 i ;
-               num = 0;
-                csa->counting_pool((const char *)searchT,num);
-              //  i64 *pos = csa->counting((const char *)searchT,&num);
-              //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-             }
-             st1.finish();
-             cout << "poolcounting:" << st1.value()/MAX/1000<<"ms"<<endl;
-             st1.start();
-            for (int i2 = 0; i2 < MAX; i2++)
-            {
-                fseek(fp2, randarray[i2] % (length), SEEK_SET);
+            i64 *pos = csa->locating_parrel((const char *)searchT, num);
+            cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+        }
+        st1.finish();
+        cout << "locating_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
+        st1.start();
+        for (int i2 = 0; i2 < MAX; i2++)
+        {
+            fseek(fp2, randarray[i2] % (n), SEEK_SET);
                 fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-                num = 0;
-                i64 *pos = csa->locating((const char *)searchT, num);
-                delete []pos;
-                pos = NULL;
-             }
+            unsigned char *p = csa->extracting_parrel(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
+            //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+        }
+        st1.finish();
+        cout << "extracting_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
+    }
+    if(strcmp(argv[2],"cx")==0){
+        st1.start();
+        cout<<length<<endl;
+        for (int i2 = 0; i2 < MAX; i2++)
+        {
+            fseek(fp2, randarray[i2] % (length/3), SEEK_SET);
+            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+            i64 i ;
+            num = 0;
+            csa->counting((const char *)searchT,num);
+        }
+        st1.finish();
+        cout << "poolcount:" << st1.value()/MAX/1000<<"ms"<<endl;
+        st1.start();
+        for (int i2 = 0; i2 < MAX; i2++)
+        {
+            fseek(fp2, randarray[i2] % (length), SEEK_SET);
+            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+            num = 0;
+            i64 *pos = csa->locating((const char *)searchT, num);
+            delete []pos;
+            pos = NULL;
+        }
              st1.finish();
              cout << "locating:" << st1.value()/MAX/1000<<"ms"<<endl;
              st1.start();
