@@ -81,7 +81,7 @@ class FM_M
 public:
     FM_M(){};
    // FM();
-    FM_M(const char * filename,int speedlevel=1);
+    FM_M(const char * filename,int frag = 3 ,int speedlevel=1);
 	int part;
     vector<FM> fm;
 	ThreadPool pool;	

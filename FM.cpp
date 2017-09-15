@@ -135,9 +135,9 @@ unsigned char * FM::extracting_parrel(i64 pos,i64 len)
 	return wt.Extracting_parrel(pos,len);
 }
 
-FM_M::FM_M(const char * filename,int speedlevel)
+FM_M::FM_M(const char * filename,int frag,int speedlevel)
 {
-	part = 3;
+	part = frag;
 	for(int i = 0 ;i<part;i++)
 	fm.emplace_back(filename,speedlevel,part,i);
 //	ThreadPool pool;
@@ -187,7 +187,7 @@ void FM_M::counting_pool(const char *pattern,i64 &num)
 	int i1 = 0;
 	// vector<i64> v_i64;
 	std::vector< std::future<i64> > results;
-	for(int i = 0; i < 3; ++i) {
+	for(int i = 0; i < part; ++i) {
 		results.emplace_back(
 			pool.enqueue([&,i,pattern] {
 				i64 temp = 0;
@@ -249,7 +249,7 @@ extern void quick_sort(i64 *s, i64 l, i64 r);
 //}
 i64 * FM_M::locating(const char * pattern,i64 & num)
 {
-	vector<i64> v_num(3,0);
+	vector<i64> v_num(part,0);
 	//i64 totalnum;
 	//i64 ** posarray = new (i64 *)[part];
 	vector<i64 *> v_pos; 
@@ -411,7 +411,7 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	//vector<thread> v_thread;
 	vector<i64*> v_i64ptr;
 	std::vector< std::future<tuple<i64,i64* >> > v_future;
-	for(int i;i<part;i++)
+	for(int i = 0;i<part;i++)
 	{
 		v_future.emplace_back(std::async([&,i,pattern]{
 			i64* temp = 0;

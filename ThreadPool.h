@@ -32,7 +32,7 @@ private:
 };
  
 // the constructor just launches some amount of workers
-inline ThreadPool::ThreadPool(size_t threads =3)
+inline ThreadPool::ThreadPool(size_t threads =8)
     :   stop(false)
 {
     for(size_t i = 0;i<threads;++i)

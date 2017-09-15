@@ -49,14 +49,18 @@ int main(int argc, char *argv[])
 	  csa = NULL;
 	  FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
 	  csa = new FM_NAME();
-	  if(csa->load(StrLineFM,3)==0)
-	 //if(1)
-	   {
+	  if(argc == 5)
+	  if(csa->load(StrLineFM,atoi(argv[4]))==0){
+		  stime = clock();
+		  csa = new FM_NAME(argv[1],atoi(argv[4]));
+		  etime = clock();
+		  csa->save(StrLineFM);}    
+  	  if(argc == 4)
+	  if(csa->load(StrLineFM,3)==0){
 		  stime = clock();
 		  csa = new FM_NAME(argv[1]);
 		  etime = clock();
-		  csa->save(StrLineFM);
-	  }
+		  csa->save(StrLineFM);}  
 	  
 	  fp = fopen(argv[1],"r+");
 	  fseek(fp,0,SEEK_END);
@@ -89,9 +93,11 @@ int main(int argc, char *argv[])
 		
 		string str((char*)searchT);
 //		str = "n unto the house of";
+        str = "TGATGATGGATTGGATAACC";
 		cout<<"Patten:"<<str<<endl;
 		num = 0;
-		i64 *pos = csa->locating_parrel(str.c_str(), num);
+		i64 *pos = csa->locating_pool(str.c_str(), num);
+
 		//i64 *pos = csa->locating(str.c_str(), num);
 		int i = strtxt.find(str);
 		int p = 0;
