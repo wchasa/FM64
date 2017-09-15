@@ -87,13 +87,13 @@ int main(int argc, char *argv[])
 	string str;
 	for(int i2 =-100;i2<MAX;i2++)
     {
-		//fseek(fp2, randarray[i2] % (n/3), SEEK_SET);
-		fseek(fp2, n/3-i2, SEEK_SET);
+		fseek(fp2, randarray[i2] % (n/3), SEEK_SET);
+		//fseek(fp2, n/3-i2, SEEK_SET);
 		fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
 		
 		string str((char*)searchT);
 //		str = "n unto the house of";
-        str = "TGATGATGGATTGGATAACC";
+        //str = "TGATGATGGATTGGATAACC";
 		cout<<"Patten:"<<str<<endl;
 		num = 0;
 		i64 *pos = csa->locating_pool(str.c_str(), num);
