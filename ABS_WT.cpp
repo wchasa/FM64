@@ -22,6 +22,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include <string.h>
 #include <sys/wait.h>
 #include<math.h>
+#include <thread>
 //#define LOOP 35
 #define SIZE 1024
 #define READSIZE 1024*1024*200
@@ -294,6 +295,7 @@ i64 * ABS_FM::Locating(const char * pattern,i64 &num)
 		pos[i]=Lookup(Left+ i);
 	return pos;
 }
+//mutex g_pages_mutex;
 /*
 i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 {
@@ -309,9 +311,10 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	}
 	num = Right - Left + 1;
 	i64 *pos =new i64[num];
+	i64 posindex = 0;
 	//numberOfthread = 1;
 	numberOfthread = (num>>7)+1>10?10:((num>>7))+1;
-	//numberOfthread = 5;
+	numberOfthread = 2;
 	if(numberOfthread==1)
 	{
 	    for (int i = 0; i < num; i++)
@@ -319,19 +322,149 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	}
 	else
 	{
-		//i64 *shmaddr;
-		vector<std::thread> threads;
-	    modvalue = num % numberOfthread;
+		//future<vector<i64>> results;
+		vector<thread> v_threads;
+		//vector<vector<i64>> v_i64;
+		vector<i64> v_i64_1,v_i64_2;
+		numberOfthread =1000;
+		modvalue = num % numberOfthread;
 		for(int i = 0;i<numberOfthread;i++)
+		v_threads.emplace_back([&]
 		{
-			threads.emplace(std::thread(([this,i,&pos]){
-			for(int k = 0 ;k < (num / numberOfthread) + (modvalue > i ? 1 : 0); k++) 
-				pos[k + num / numberOfthread * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfthread * i + (modvalue > i ? i : modvalue));
+			LookupALL(num/numberOfthread);
+		});
+		for (auto& th : v_threads) th.join();
+		/*for(int i = 0;i<numberOfthread;i++)
+		{
+			 v_threads.emplace_back([=,&v_i64,&posindex]
+				{
+				
+				vector<i64> v_i64temp;
+				//cout<<"start:"<<Left+num / numberOfthread * i + (modvalue > i ? i : modvalue)<<",end"<<Left+num / numberOfthread * i + (modvalue > i ? i : modvalue)+(num / numberOfthread) + (modvalue > i ? 1 : 0);
+				Lookup(Left+num / numberOfthread * i + (modvalue > i ? i : modvalue),Left+num / numberOfthread * i + (modvalue > i ? i : modvalue)+(num / numberOfthread) + (modvalue > i ? 1 : 0),v_i64temp);
+				unique_lock<mutex> guard(g_pages_mutex);
+				v_i64.emplace_back(v_i64temp);
+				//return v_i64temp;
+				//std::lock_guard<std::mutex> guard(g_pages_mutex);
+				//memcpy(pos+posindex,(i64*)&v_i64temp[0],v_i64temp.size()*sizeof(i64));
+				//std::lock_guard<std::mutex> guard2(g_pages_mutex2);
+				//posindex += v_i64temp.size();
+				//}
+			});
+		}
+		i64 pos123 =0 ;
+		for(auto &&t : v_threads)
+		{
+			t.join();
+		}
+		int pospos = 0;
+		for(int i = 0 ;i < v_i64.size();i++)
+			for(int j = 0 ;j < v_i64[i].size();j++)
+				pos[pospos++] = v_i64[i][j];
+	}
+	
+
+	return pos;
+}
+}*/
+
+/*
+i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
+{
+	int modvalue = 0;
+	int numberOfthread = 0;
+	i64 Left=1;
+	i64 Right = 0;
+	DrawBackSearch(pattern,Left,Right);
+	if(Right < Left )
+	{
+		num=0;
+		return NULL;
+	}
+	num = Right - Left + 1;
+	i64 *pos =new i64[num];
+	i64 posindex = 0;
+	//numberOfthread = 1;
+	numberOfthread = (num>>7)+1>10?10:((num>>7))+1;
+	numberOfthread = num/10>50?50:num/10;
+	numberOfthread = 2;
+	if(numberOfthread==1)
+	{
+	    for (int i = 0; i < num; i++)
+			pos[i] = Lookup(Left + i);
+	}
+	else
+	{
+		//vector< future<vector<i64>> > results;
+		//future<vector<i64>> results;
+		vector<thread> v_threads;
+		vector<i64> v_i64;
+		modvalue = num % numberOfthread;
+        ThreadPool pool(4);
+		cout<<"---------------------";    
+		std::vector< std::future<i64> > results;
+		for(int i = 0 ;i<num;i++)
+		{
+			//auto ans = result.add()
+			results.emplace_back(pool.enqueue([=]{
+				cout<<"start cal:"<<i+Left<<endl;
+				return Lookup(i+Left);
 			}));
 		}
+		i64 pos123 = 0 ;
+		for(auto && r : results)
+		{
+			pos[pos123++] = r.get();
+		}
+		/*for(int i = 0;i<numberOfthread;i++)
+		{
+			results.emplace_back(std::async([=,&v_i64,&posindex]{
+				vector<i64> v_i64temp;
+				//cout<<"start:"<<Left+num / numberOfthread * i + (modvalue > i ? i : modvalue)<<",end"<<Left+num / numberOfthread * i + (modvalue > i ? i : modvalue)+(num / numberOfthread) + (modvalue > i ? 1 : 0);
+				Lookup(Left+num / numberOfthread * i + (modvalue > i ? i : modvalue),Left+num / numberOfthread * i + (modvalue > i ? i : modvalue)+(num / numberOfthread) + (modvalue > i ? 1 : 0),v_i64temp);
+				return v_i64temp;
+				//std::lock_guard<std::mutex> guard(g_pages_mutex);
+				//memcpy(pos+posindex,(i64*)&v_i64temp[0],v_i64temp.size()*sizeof(i64));
+				//std::lock_guard<std::mutex> guard2(g_pages_mutex2);
+				//posindex += v_i64temp.size();
+			}));
+		}
+		i64 pos123 =0 ;
+
+		cout<<"---------------------";
+		for(auto &t : results)
+		{
+			//pos[pos123] = t.get().size();
+			auto v_i64 = t.get();
+			for(int i = 0 ; i< v_i64.size();i++)
+			{
+				pos[pos123++] = v_i64[i];
+			}
+		}
+		
 	}
+	
 	return pos;
 }*/
+i64 ABS_FM::LookupALL(i64 startpos)
+{
+	vector<i64> v_i64;
+	v_i64.reserve( startpos+1); 
+	for(i64 i = 0;i<startpos;i++){
+		v_i64.emplace_back(Lookup(i));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		cout<<i<<"++"<<Lookup(i)<<endl;
+		}
+		return 0;
+}
+void ABS_FM::Lookup(i64 startpos,i64 endpos,vector<i64>& v_i64)
+{
+	v_i64.reserve(endpos - startpos+1); 
+	for(i64 i = startpos;i<endpos;i++){
+		v_i64.emplace_back(Lookup(i));
+		cout<<i<<"++"<<Lookup(i)<<endl;
+		}
+}
 /*创建了新的进程，开销较大*/
 i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 {
@@ -349,7 +482,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	i64 *pos =new i64[num];
 	//numberOfthread = 1;
 	numberOfthread = (num>>7)+1>10?10:((num>>7))+1;
-	//numberOfthread = 5;
+	numberOfthread = 4;
 	if(numberOfthread==1)
 	{
 	    for (int i = 0; i < num; i++)
@@ -386,6 +519,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 		    //cout << "looptime:" << (num / numberOfthread) + (modvalue > i ? 1 : 0) << endl;
 		    for (int k = 0; k < (num / numberOfthread) + (modvalue > i ? 1 : 0); k++) //
 		    {
+			//	cout<<Left + k + num / numberOfthread * i + (modvalue > i ? i : modvalue)<<endl;
 			//cout << "start:" << k + num / numberOfthread * i + (modvalue > i ? i : modvalue) << endl;
 				shmaddr[k + num / numberOfthread * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfthread * i + (modvalue > i ? i : modvalue));
 			//cout << "k=" << k << ",Left+i" << Left + i << setw(4) << ".child" << i << ":LookUp=" << setw(10) << shmaddr[k + num / numberOfthread * i] << ",pid" << getpid() << endl;
@@ -406,7 +540,6 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	}
 	return pos;
 }
-
 
 unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
 {
@@ -511,6 +644,8 @@ unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 int flag=0;
 i64 ABS_FM::Lookup(i64 i)
 {
+
+	//cout<<i<<"++"<<endl;
 	int step = 0;
 	int D = this->D;
 	while(i%D!=0)
@@ -519,6 +654,7 @@ i64 ABS_FM::Lookup(i64 i)
 		step =step +1;
 	}
 	i=i/D;
+	//std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	return (SAL->GetValue(i)+step)%n;
 }
 

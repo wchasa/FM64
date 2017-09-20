@@ -21,13 +21,13 @@ extern void quick_sort(i64 *s, i64 l, i64 r);
 void compare(vector<i64> ivector, i64 *pos, i64 num);
 void showpos(vector<i64> ivector);
 void showpos(i64 *pos, i64 num);
-int* generateRandom(int count);
+int* generateRandom(int count,int seed);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 //this main  compare result of locate
 int main(int argc, char *argv[])
 {
 
-	using FM_NAME = FM_M;
+	using FM_NAME = FM;
 	//  i64 totalsize = 0;
 	  i64 sumRun = 0,bitLen =0;
 	  if(argc < 3){
@@ -74,7 +74,8 @@ int main(int argc, char *argv[])
 		string strtxt((char*)T);
 	//cout<<"Plain:"<<setw(10)<<Plaincount<<"";
 	tcost = 0;
-	int* randarray =  generateRandom(MAX);
+	int seed = atoi(argv[3]);
+	int* randarray =  generateRandom(MAX,seed);
 	if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
 	{
 		printf("Open Falied!");
@@ -85,33 +86,61 @@ int main(int argc, char *argv[])
 	unsigned char * searchT = new unsigned char[1024];
 	fseeko(fp2, 0, SEEK_SET);
 	string str;
-	for(int i2 =-100;i2<MAX;i2++)
+	for(int i2 =0;i2<MAX;i2++)
     {
-		fseek(fp2, randarray[i2] % (n/3), SEEK_SET);
+		fseek(fp2, randarray[i2] % (n), SEEK_SET);
 		//fseek(fp2, n/3-i2, SEEK_SET);
 		fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
 		
 		string str((char*)searchT);
 //		str = "n unto the house of";
-        //str = "TGATGATGGATTGGATAACC";
+//        str = "GAGGAGCTAAGAGAGCATTT";
 		cout<<"Patten:"<<str<<endl;
 		num = 0;
-		i64 *pos = csa->locating_pool(str.c_str(), num);
+		i64 *pos = csa->locating_parrel(str.c_str(), num);
 
-		//i64 *pos = csa->locating(str.c_str(), num);
-		int i = strtxt.find(str);
+		//i64 *pos = csa->locating(str.c_str(), num);		int i = strtxt.find(str);
 		int p = 0;
 		if(num<=0)
 		{
 			cout<<"locate havnt find"<<endl;
 			continue;
 		}
-		//quick_sort(pos,0,num-1);
+		for(int i = 0;i<num;)
+		{
+			cout<<i<<"."<<pos[i++];
+			//if(i%10==0)
+			cout<<endl;
+			//else
+			//cout<<";";
+		}
+		cout<<endl;
+		cout<<"-----------------------"<<endl;
+		quick_sort(pos,0,num-1);
+		for(int i = 0;i<num;)
+		{
+			cout<<pos[i++];
+			//if(i%10==0)
+			cout<<endl;
+			//else
+			//cout<<";";
+		}
+		
+		cout<<endl;
+		cout<<"-----------------------"<<endl;
 		int stringFind=0;
+		int i = strtxt.find(str);
         while(i>= 0)
         {	
-		    stringFind++;
-            if(pos[p++]!=i)
+			stringFind++;
+			cout<<i;
+		//	p++;
+			//if(p%10==0)
+			cout<<endl;
+			//else
+			//cout<<";";
+			
+			if(pos[p++]!= i)
             {
 				cout<<"------------------wrong-----------------"<<endl;
 				cout<<"i"<<setw(10)<<p-1<<",i2="<<i2<<endl;
@@ -121,7 +150,7 @@ int main(int argc, char *argv[])
 				cout<<"------------------wrong-----------------"<<endl;
 				//break;
 			}
-
+			
             i = strtxt.find(str,i+1);
 
         }
@@ -140,11 +169,10 @@ int main(int argc, char *argv[])
 	//fclose(fpw);
 }
 
-
-int* generateRandom(int count)
+int* generateRandom(int count,int seed)
 {
     int* result = new int[count];
-    srand(unsigned(time(NULL)));
+    srand(unsigned(seed));
 
     for(int i = 0;i<count;i++)
     {
@@ -152,6 +180,7 @@ int* generateRandom(int count)
     }
     return result;
 }
+
 int stupidRank(unsigned char* c,int length,int& ch,int pos)
 {
     int occTimes = 0;

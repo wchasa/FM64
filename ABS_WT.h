@@ -33,7 +33,12 @@ the Free Software Foundation; either version 2 or later of the License.
 #include"savekit.h"
 #include"divsufsort64.h"
 #include <map>
-
+#include<vector>
+#include <future>
+#include <mutex>
+#include <pthread.h>
+#include "ThreadPool.h"
+using namespace std;
 //#include"divsufsort_private.h"
 class ABS_FM
 {
@@ -108,8 +113,10 @@ class ABS_FM
 		 i64 LF(i64 i);
 		 unsigned char L(i64 i);
 		 void DrawBackSearch(const char *pattern, i64 &Left, i64 &Right);
+		 i64 LookupALL(i64 startpos);
 		 i64 Lookup(i64 i);
-
+		 void Lookup(i64 startpos,i64 endpos,vector<i64>& v_i64);
+		 //void Lookup(i64 startpos,vector<i64>& v_i64);
 		 virtual int TreeCode() { return -1; };
 
 		 int BWT(unsigned char *T, int *SA, unsigned char *bwt, int n);

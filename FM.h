@@ -34,14 +34,19 @@ the Free Software Foundation; either version 2 or later of the License.
 #ifndef FM_H
 #define FM_H
 #include"loadkit.h"
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/shm.h>
 #include"savekit.h"
 #include"ABS_WT.h"
+#include <stdlib.h>
 #include"Huffman_WT.h"
 #include"Balance_WT.h"
 #include"Hutacker_WT.h"
 #include"WT_Handle.h"
 #include "ThreadPool.h"   // std::threadmak
 #include <thread>
+#include <unistd.h>
 class FM
 {
 	public:
@@ -53,13 +58,18 @@ class FM
 		FM& operator =(const FM&h){wt=h.wt;return *this;};
 		
 		void counting(const char *pattern,i64 &num);
+		void counting_parrel(const char *pattern,i64 &num){};
+		void counting_pool(const char *pattern,i64 &num){};
 		i64 * locating(const char *pattern,i64 & num);
 		i64 * locating_parrel(const char *pattern,i64 & num);
+		i64 * locating_pool(const char *pattern,i64 & num){return NULL;};
 		//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap);
 		unsigned char * extracting(i64 pos,i64 len);
 		unsigned char * extracting_parrel(i64 pos,i64 len);
 		int load(const char * indexfile);
 		int save(const char * indexfile);
+		int load(const char * indexfile,int part){this->load(indexfile);};
+		int save(const char * indexfile,int part){this->save(indexfile);};
 		bool loadfileExist(const char * indexfile);
 		i64 getN();
 		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
@@ -85,7 +95,7 @@ public:
 	int part;
     vector<FM> fm;
 	ThreadPool pool;	
-	void counting(const char *pattern,i64 &num);
+	vector<i64> counting(const char *pattern,i64 &num);
 	void counting_parrel(const char *pattern,i64 &num);
 	void counting_pool(const char *pattern,i64 &num);//
 	i64 * locating(const char *pattern,i64 & num);
@@ -94,7 +104,7 @@ public:
 	//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap);
 	unsigned char * extracting(i64 pos,i64 len){return 0;};
 	unsigned char * extracting_parrel(i64 pos,i64 len){return 0;};
-	int load(const char * indexfile,int part);
+	int load(const char * indexfile,int part=3);
 	int save(const char * indexfile);
 	i64 getN(){return 0;};
 	void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix){};

@@ -12,7 +12,7 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 1000
+#define MAX 300
 #define PATTENLEN 20
 #define PATTENLEN2 2
 void usage();
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
             etime = clock();
             csa->save(StrLineFM);}    
     if(argc == 4)
-        if(csa->load(StrLineFM,3)==0){
+        if(csa->load(StrLineFM)==0){
             stime = clock();
             csa = new FM_NAME(argv[1]);
             etime = clock();
@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
         st1.start();
         for (int i2 = 0; i2 < MAX; i2++)
         {
-            fseek(fp2, randarray[i2] % (length), SEEK_SET);
+            fseek(fp2, randarray[i2] % (n), SEEK_SET);
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             num = 0;
             i64 *pos = csa->locating((const char *)searchT, num);

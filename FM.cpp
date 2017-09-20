@@ -92,6 +92,8 @@ bool FM::loadfileExist(const char * indexfile)
 }
 int FM::load(const char * indexfile)
 {
+	if(!this->loadfileExist(indexfile))
+		return 0;
 	loadkit s(indexfile);
 	unsigned long long int magicnum=0;
 	s.loadu64(magicnum);
@@ -167,9 +169,10 @@ void FM_M::counting_parrel(const char *pattern,i64 &num)
 	return;*/
 }
 
-void FM_M::counting(const char *pattern,i64 &num)
+vector<i64> FM_M::counting(const char *pattern,i64 &num)
 {	
-	i64 i1;		
+	i64 i1;
+	vector<i64> v_i64;
 	//fm[0]->counting(pattern,i1);
 	//fm[1]->counting(pattern,i2);
 	//fm[2]->counting(pattern,i3);
@@ -177,9 +180,11 @@ void FM_M::counting(const char *pattern,i64 &num)
 	{
 		f.counting(pattern,i1);
 		num += i1;
+		v_i64.emplace_back(i1);
 	}
 	//for(auto && result: results)
 	//	num += result.get();
+	return v_i64;
 }
 
 void FM_M::counting_pool(const char *pattern,i64 &num)
@@ -207,12 +212,11 @@ int FM_M::load(const char * indexfile,int part)
 {
 	string str = indexfile;	
 	this->part = part;
-		for(int i = 0;i<part;i++)
-		{
-			FM* fmtemp = new FM();
-			fm.emplace_back(*fmtemp);
-
-		}
+	for(int i = 0;i<part;i++)
+	{
+		FM* fmtemp = new FM();
+		fm.emplace_back(*fmtemp);
+	}
 		for(int i = 0;i<part;i++)
 		{
 			char buffer[5];
@@ -250,17 +254,13 @@ extern void quick_sort(i64 *s, i64 l, i64 r);
 i64 * FM_M::locating(const char * pattern,i64 & num)
 {
 	vector<i64> v_num(part,0);
-	//i64 totalnum;
-	//i64 ** posarray = new (i64 *)[part];
 	vector<i64 *> v_pos; 
 	i64 offset = 0;
 	int i = 0;
 	for(i = 0;i<part;i++)
 	{
 		i64* temppos;
-		//i64 tempnum  = 0;
-		temppos = fm[i].locating(pattern,v_num[i]);
-		
+		temppos = fm[i].locating_parrel(pattern,v_num[i]);
 		v_pos.emplace_back(temppos);
 		quick_sort(temppos,0,v_num[i]-1);
 		num +=v_num[i];
@@ -275,8 +275,6 @@ i64 * FM_M::locating(const char * pattern,i64 & num)
 		int startpos = i-1;
 		for(int k=0;k<v_num[j];k++)
 		{
-			//i++;
-
 			pos[i++] = v_pos[j][k]+offset;
 			if(i>0&&pos[startpos]==pos[i-1])
 			{
@@ -447,3 +445,52 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	}
 	return pos;
 }
+
+/*
+i64* FM_M::locating_parrel(const char *pattern,i64 &num)
+{
+	//vector<i64> v_i64;
+	i64 *shmaddr;
+	//i64 shmnum;
+	pid_t *fpid = new pid_t[10];
+	pid_t mainpid = getpid();
+	auto v_i64 = counting(pattern,num);
+	i64 *pos =new i64[num];
+	int shmid;
+	shmid = shmget(IPC_PRIVATE, num * sizeof(i64), IPC_CREAT | 0600);
+	if (shmid < 0)
+	{
+	perror("Error:");
+	return NULL ;
+	}
+	for (int i = 0; i < part; i++)
+	{
+		if(getpid()==mainpid)
+				fpid[i] = fork();
+		if (fpid[i] < 0)
+			printf("error in fork!");
+		else if (fpid[i] == 0)
+		{
+			i64 offset = 0 ;
+			for(int j = 0 ;j<i;i++)
+				offset = v_i64[j];
+			shmaddr = (i64 *)shmat(shmid, NULL, 0);
+			i64 temp;
+			i64* postemp = fm[i].locating(pattern,temp);
+			//memcpy(shmaddr+offset,postemp,temp);
+			//shmaddr[k + num / numberOfthread * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfthread * i + (modvalue > i ? i : modvalue));
+			exit(0);
+		}
+	}
+	int st1, st2;
+	for (int i = 0; i < part; i++)
+	{
+		waitpid(fpid[i], &st1, 0);
+	}
+	shmaddr = (i64 *)shmat(shmid, NULL, 0);
+	memcpy(pos, shmaddr, num * sizeof(i64));
+	shmctl(shmid, IPC_RMID, NULL);
+	delete[] fpid;
+	return NULL;
+}
+*/

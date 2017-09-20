@@ -17,8 +17,8 @@ public:
     template<class F, class... Args>
     auto enqueue(F&& f, Args&&... args) 
         -> std::future<typename std::result_of<F(Args...)>::type>;
-    void Pooljoin();
     ~ThreadPool();
+    void Pooljion();
 private:
     // need to keep track of threads so we can join them
     std::vector< std::thread > workers;
@@ -32,7 +32,7 @@ private:
 };
  
 // the constructor just launches some amount of workers
-inline ThreadPool::ThreadPool(size_t threads =8)
+inline ThreadPool::ThreadPool(size_t threads = 4)
     :   stop(false)
 {
     for(size_t i = 0;i<threads;++i)
@@ -95,9 +95,9 @@ inline ThreadPool::~ThreadPool()
     for(std::thread &worker: workers)
         worker.join();
 }
-inline void ThreadPool::Pooljoin()
+inline void ThreadPool::Pooljion()
 {
     for(std::thread &worker: workers)
-    worker.join();
+        worker.join();
 }
 #endif
