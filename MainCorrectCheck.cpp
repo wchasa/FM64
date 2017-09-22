@@ -27,7 +27,7 @@ int stupidRank(unsigned char* c,int length,int& ch,int pos);
 int main(int argc, char *argv[])
 {
 
-	using FM_NAME = FM;
+	using FM_NAME = FM_M;
 	//  i64 totalsize = 0;
 	  i64 sumRun = 0,bitLen =0;
 	  if(argc < 3){

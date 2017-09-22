@@ -282,7 +282,7 @@ i64 * ABS_FM::Locating(const char * pattern,i64 &num)
 	i64 Left=1;
 	i64 Right = 0;
 	DrawBackSearch(pattern,Left,Right);
-	
+	//cout<<"Left:"<<Left<<endl<<"Right:"<<Right<<endl;
 	if(Right < Left )
 	{
 		num=0;

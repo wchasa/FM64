@@ -94,7 +94,7 @@ public:
     FM_M(const char * filename,int frag = 3 ,int speedlevel=1);
 	int part;
     vector<FM> fm;
-	ThreadPool pool;	
+	//ThreadPool pool;	
 	vector<i64> counting(const char *pattern,i64 &num);
 	void counting_parrel(const char *pattern,i64 &num);
 	void counting_pool(const char *pattern,i64 &num);//
