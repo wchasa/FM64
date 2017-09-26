@@ -147,7 +147,15 @@ FM_M::FM_M(const char * filename,int frag,int speedlevel)
 
 void FM_M::counting_parrel(const char *pattern,i64 &num)
 {	
-	vector<std::thread> v_Thread;
+	//i64* a_v64 = new i64[part];
+	#pragma omp parallel for
+	for(int i = 0 ; i < part ; i ++){
+		i64 temp = 0; 
+		fm[i].counting(pattern,temp);
+		num += temp ; 
+	}
+	
+	/*vector<std::thread> v_Thread;
 	i64 i22 = 0;
 	vector<int> v_num[fm.size()];
 	for(int i = 0 ;i<fm.size();i++)
@@ -155,18 +163,9 @@ void FM_M::counting_parrel(const char *pattern,i64 &num)
 		v_Thread.emplace_back([this,pattern,&i22,&num,i]{this->fm[i].counting(pattern,i22);num +=i22;});
 	}
 	for(int i = 0 ;i<fm.size();i++)
-		v_Thread[i].join();
-/*	int i1 = 0;
-	i64 num0 = 0,num1=0,num2 = 0;
-	std::thread t1([this,pattern,&num0]{this->fm[0].counting(pattern,num0);});	
-	std::thread t2([this,pattern,&num1]{this->fm[1].counting(pattern,num1);});	
-	std::thread t3([this,pattern,&num2]{this->fm[2].counting(pattern,num2);});	
-	t1.join();
-	t2.join();
-	t3.join();
-	num = num0+num1 + num2;
-	//std::cout<<"Main Thread"<<std::endl;
-	return;*/
+		v_Thread[i].join();*/
+
+
 }
 
 vector<i64> FM_M::counting(const char *pattern,i64 &num)
@@ -454,6 +453,7 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	return pos;
 }
 */
+/*
 i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 {
 	int st1, st2;
@@ -526,8 +526,20 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	delete[] fpid;
 	fpid = NULL;
 	return pos;
-}
+}*/
 /*
+i64* FM_M::locating_parrel(const char *pattern,i64 &num)
+{
+	i64* pos = new i64[10];
+	//#pragma omp parallel for
+	for(int i = 0 ;i<part;i++)
+		{
+			i64 temp = 0;
+			auto postemp = fm[i].locating_parrel(pattern,temp);
+		}
+	return pos;
+}*/
+
 i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 {
 	//vector<i64> v_i64;
@@ -574,4 +586,3 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	delete[] fpid;
 	return NULL;
 }
-*/

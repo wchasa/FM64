@@ -27,7 +27,7 @@ void splitcommand(string command,string result[]);
 void showpos(i64 * pos,i64 num);
 int main(int argc, char* argv[])
 {
-	using FM_A = FM_M;
+	using FM_A = FM;
 	usage();
 	string command;
 	string  result[3];
@@ -99,6 +99,26 @@ int main(int argc, char* argv[])
 				cout << "Plaincount=" << setw(10) << Plaincount << ",AAL0count=" << setw(10) <<AL0<<",AAL1count="<<setw(10)<<AL1<<",RL0count="<<setw(10)<<RL0
 				<<",RL1count="<<setw(10)<<RL1  << ",Fixcode=" << setw(10) << Fixcount << endl;
 				
+			}
+			else
+				cout<<"build a FM first"<<endl;
+		}
+
+		else if(result[0]=="extract")
+		{
+			i64 * pos;
+			i64 num=0;
+			if(csa!=NULL)
+			{
+				int  i1= atoi(result[1].data());
+				int  i2= atoi(result[2].data());
+				for(int i = 0;i<23;i++)
+				{
+				auto pos=csa->extracting(i,1);
+				cout<<pos<<endl;
+				}
+				//showpos(pos,num);
+				delete [] pos;
 			}
 			else
 				cout<<"build a FM first"<<endl;

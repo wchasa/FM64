@@ -14,6 +14,7 @@ the Free Software Foundation; either version 2 or later of the License.
 // #ifndef _GNU_SOURCE
 // #define _GNU_SOURCE /* for O_DIRECT */
 // #endif
+#include <cilk/cilk.h>
 #define __USE_FILE_OFFSET64
 #define __USE_LARGEFILE64
 #define _LARGEFILE64_SOURCE

@@ -47,6 +47,8 @@ the Free Software Foundation; either version 2 or later of the License.
 #include "ThreadPool.h"   // std::threadmak
 #include <thread>
 #include <unistd.h>
+#include <cilk/cilk.h>
+
 class FM
 {
 	public:
@@ -91,7 +93,7 @@ class FM_M
 public:
     FM_M(){};
    // FM();
-    FM_M(const char * filename,int frag = 3 ,int speedlevel=1);
+    FM_M(const char * filename,int frag = 4 ,int speedlevel=1);
 	int part;
     vector<FM> fm;
 	//ThreadPool pool;	

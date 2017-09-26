@@ -465,6 +465,39 @@ void ABS_FM::Lookup(i64 startpos,i64 endpos,vector<i64>& v_i64)
 		cout<<i<<"++"<<Lookup(i)<<endl;
 		}
 }
+/*
+i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
+{
+	int modvalue = 0;
+	int numberOfthread = 0;
+	i64 Left=1;
+	i64 Right = 0;
+	DrawBackSearch(pattern,Left,Right);
+	if(Right < Left )
+	{
+		num=0;
+		return NULL;
+	}
+	num = Right - Left + 1;
+	i64 *pos = new i64[num];
+	//cout<<num<<endl;
+	//numberOfthread = num/1024;
+	numberOfthread = 4;
+//	int i = 0;
+//	#pragma omp parallel for
+	cilk_for(int i = 0;i<numberOfthread;i++)
+	{
+		i64 numtemp = 0 ;
+		cilk_for(int j = 0 ;j<num/numberOfthread;j++)
+		{
+			auto temp = Lookup(Left+j+num/numberOfthread*i);
+		//	pos[j+num/numberOfthread*i] = temp;
+
+		}
+	}
+//	i64* pos = new i64[10];
+	return pos ; 
+}*/
 /*创建了新的进程，开销较大*/
 i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 {
@@ -482,7 +515,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	i64 *pos =new i64[num];
 	//numberOfthread = 1;
 	numberOfthread = (num>>7)+1>10?10:((num>>7))+1;
-	numberOfthread = 4;
+	//numberOfthread = 4;
 	if(numberOfthread==1)
 	{
 	    for (int i = 0; i < num; i++)
@@ -540,7 +573,6 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	}
 	return pos;
 }
-
 unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
 {
 	if(pos + len > n-1 || pos <0)

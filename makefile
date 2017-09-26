@@ -1,6 +1,6 @@
 CC=g++ -pg -std=gnu++11
-#CFLAGS=-O0 -g -Wall
-CFLAGS=-O3 -Wall 
+#CFLAGS=-O0 -g -Wall -fcilkplus
+CFLAGS=-O3 -Wall -fcilkplus -fopenmp
 my_fm:div Main.o fm.a
 	$(CC)  $(CFLAGS) Main.o fm.a   -o my_fm -lpthread
 

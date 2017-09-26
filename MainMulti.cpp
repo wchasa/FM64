@@ -49,7 +49,7 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
-    using FM_NAME = FM_M;
+    using FM_NAME = FM;
   //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
         {
             fseek(fp2, randarray[i2] % (n), SEEK_SET);
                 fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            unsigned char *p = csa->extracting_parrel(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
+         //   unsigned char *p = csa->extracting_parrel(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
            //   cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
         }
         st1.finish();
