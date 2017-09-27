@@ -39,6 +39,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include <mutex>
 #include <pthread.h>
 #include "ThreadPool.h"
+#include <omp.h>
 using namespace std;
 //#include"divsufsort_private.h"
 class ABS_FM

@@ -85,6 +85,7 @@ class FM
 		double compressRatioForExtract();
 		double compressRatioForLocate();
 		WT_Handle wt;
+		int part;
 	private:
 		//WT_Handle wt;
 };

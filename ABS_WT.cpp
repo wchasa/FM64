@@ -484,18 +484,9 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	//numberOfthread = num/1024;
 	numberOfthread = 4;
 //	int i = 0;
-//	#pragma omp parallel for
-	cilk_for(int i = 0;i<numberOfthread;i++)
-	{
-		i64 numtemp = 0 ;
-		cilk_for(int j = 0 ;j<num/numberOfthread;j++)
-		{
-			auto temp = Lookup(Left+j+num/numberOfthread*i);
-		//	pos[j+num/numberOfthread*i] = temp;
-
-		}
-	}
-//	i64* pos = new i64[10];
+	#pragma omp parallel for schedule (dynamic)
+	for (int i = 0; i < num; i++)
+		pos[i] = Lookup(Left + i);
 	return pos ; 
 }*/
 /*创建了新的进程，开销较大*/

@@ -548,6 +548,7 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	pid_t *fpid = new pid_t[10];
 	pid_t mainpid = getpid();
 	auto v_i64 = counting(pattern,num);
+	
 	i64 *pos =new i64[num];
 	int shmid;
 	shmid = shmget(IPC_PRIVATE, num * sizeof(i64), IPC_CREAT | 0600);
@@ -556,10 +557,15 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	perror("Error:");
 	return NULL ;
 	}
-	for (int i = 0; i < part; i++)
+	cout<<"Part:"<<part;
+	const i64 temp1  =part ;
+	for (int i = 0; i < temp1; i++)
 	{
 		if(getpid()==mainpid)
+		{
+				cout<<i<<","<<part<<endl;
 				fpid[i] = fork();
+		}
 		if (fpid[i] < 0)
 			printf("error in fork!");
 		else if (fpid[i] == 0)
@@ -575,14 +581,15 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 			exit(0);
 		}
 	}
-	int st1, st2;
+	int* st1 = new int[part];
 	for (int i = 0; i < part; i++)
-	{
-		waitpid(fpid[i], &st1, 0);
+	{git
+		waitpid(fpid[i], &st1[i], 0);
 	}
 	shmaddr = (i64 *)shmat(shmid, NULL, 0);
 	memcpy(pos, shmaddr, num * sizeof(i64));
 	shmctl(shmid, IPC_RMID, NULL);
 	delete[] fpid;
+	
 	return NULL;
 }

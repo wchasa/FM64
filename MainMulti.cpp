@@ -49,7 +49,7 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
-    using FM_NAME = FM;
+    using FM_NAME = FM_M;
   //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
@@ -121,12 +121,21 @@ int main(int argc, char *argv[])
         st1.finish();
         cout << "count_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
         st1.start();
+        //#pragma omp parallel for num_threads(2) shared(randarray,fp2,csa)
         for (int i2 = 0; i2 < MAX; i2++)
         {
+       //     cout<<omp_get_thread_num()<<endl;
             fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             num = 0;
             i64 *pos = csa->locating_parrel((const char *)searchT, num);
+//            #pragma omp parallel for
+//           for(int j = 0 ;j<csa->part;j++)
+//                {
+//                    i64 *pos = csa->fm[j].locating((const char *)searchT, num);
+//                    //delete [] pos;
+//                    //pos = NULL;
+//                }
            // cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
         }
         st1.finish();
