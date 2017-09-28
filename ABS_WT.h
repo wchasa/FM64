@@ -57,6 +57,7 @@ class ABS_FM
 		int Load(loadkit &s);
 		int Save(savekit & s);
 		int BuildTree(int speedlevel=1);
+		void DrawBackSearch(const char *pattern, i64 &Left, i64 &Right);
 
 		int GetAlphabetsize(){return alphabetsize;}
 		i64 GetN(){return n;}
@@ -79,6 +80,7 @@ class ABS_FM
 		 //map<i64, i64> MergeBitMapRuns(BitMap *r);
 		 i64 sizeOfSAL();
 		 i64 sizeOfRankL();
+		 i64 Lookup(i64 i);
 		 //void ABS_FM::MapMerge(map<i64, i64> &map1, map<i64, i64> map2);
 		 //test
 	protected:
@@ -114,9 +116,7 @@ class ABS_FM
 		 void Occ(unsigned char c, i64 pos_left, i64 pos_right, i64 &rank_left, i64 &rank_right);
 		 i64 LF(i64 i);
 		 unsigned char L(i64 i);
-		 void DrawBackSearch(const char *pattern, i64 &Left, i64 &Right);
 		 i64 LookupALL(i64 startpos);
-		 i64 Lookup(i64 i);
 		 void Lookup(i64 startpos,i64 endpos,vector<i64>& v_i64);
 		 //void Lookup(i64 startpos,vector<i64>& v_i64);
 		 virtual int TreeCode() { return -1; };

@@ -94,11 +94,11 @@ int main(int argc, char *argv[])
 		
 		string str((char*)searchT);
 //		str = "n unto the house of";
-//        str = "GAGGAGCTAAGAGAGCATTT";
+        //str = "GAGGAGCTAAGAGAGCATTT";
 		cout<<"Patten:"<<str<<endl;
 		num = 0;
 		i64 *pos = csa->locating_parrel(str.c_str(), num);
-
+	//	quick_sort(pos,0,num-1);
 		//i64 *pos = csa->locating(str.c_str(), num);		int i = strtxt.find(str);
 		int p = 0;
 		if(num<=0)
@@ -133,13 +133,12 @@ int main(int argc, char *argv[])
         while(i>= 0)
         {	
 			stringFind++;
-			cout<<i;
-		//	p++;
+			//cout<<i;
+			//p++;
 			//if(p%10==0)
-			cout<<endl;
+			//cout<<endl;
 			//else
 			//cout<<";";
-			
 			if(pos[p++]!= i)
             {
 				cout<<"------------------wrong-----------------"<<endl;
@@ -150,7 +149,6 @@ int main(int argc, char *argv[])
 				cout<<"------------------wrong-----------------"<<endl;
 				//break;
 			}
-			
             i = strtxt.find(str,i+1);
 
         }

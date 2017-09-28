@@ -58,7 +58,9 @@ class FM
 		~FM(){};
 		FM(const FM & h):wt(h.wt){}
 		FM& operator =(const FM&h){wt=h.wt;return *this;};
-		
+		void DrawBackSearch(const char * pattern,i64 & Left,i64 &Right){wt.DrawBackSearch(pattern,Left,Right);}
+		i64 Lookup(i64 startpos){return wt.Lookup(startpos);};
+		//void ABS_FM::Counting(const char * pattern,i64 & num){};
 		void counting(const char *pattern,i64 &num);
 		void counting_parrel(const char *pattern,i64 &num){};
 		void counting_pool(const char *pattern,i64 &num){};
@@ -98,7 +100,8 @@ public:
 	int part;
     vector<FM> fm;
 	//ThreadPool pool;	
-	vector<i64> counting(const char *pattern,i64 &num);
+	//vector<i64> counting(const char *pattern,i64 &num);
+	vector<tuple<i64,i64>> counting(const char *pattern,i64 &num);
 	void counting_parrel(const char *pattern,i64 &num);
 	void counting_pool(const char *pattern,i64 &num);//
 	i64 * locating(const char *pattern,i64 & num);
@@ -111,7 +114,7 @@ public:
 	int save(const char * indexfile);
 	i64 getN(){return 0;};
 	void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix){};
-	int getAlphabetSize(){return 0;};
+	int getAlphabetSize(){return 0;};//
 	i64 sizeInByte(){return 0;};
 	i64 sizeInByteForCount(){return 0;};
 	i64 sizeInByteForExtract(){return 0;};
@@ -120,6 +123,7 @@ public:
 	double compressRatioForCount(){return 0;};
 	double compressRatioForExtract(){return 0;};
 	double compressRatioForLocate(){return 0;};
+	i64 Lookup(i64 startpos,vector<tuple<i64,i64>> v_i64,i64& piece);//startpos is the kth postion
 };
 
 #endif

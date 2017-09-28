@@ -168,18 +168,26 @@ void FM_M::counting_parrel(const char *pattern,i64 &num)
 
 }
 
-vector<i64> FM_M::counting(const char *pattern,i64 &num)
+vector<tuple<i64,i64>> FM_M::counting(const char *pattern,i64 &num)
 {	
 	i64 i1;
-	vector<i64> v_i64;
+	vector<tuple<i64,i64>> v_i64;
+	i64 Left = 0,Right = 0;
+
 	//fm[0]->counting(pattern,i1);
 	//fm[1]->counting(pattern,i2);
 	//fm[2]->counting(pattern,i3);
-	for(auto f : fm)
+	for(i64 i =0 ; i<part;i++)
 	{
-		f.counting(pattern,i1);
-		num += i1;
-		v_i64.emplace_back(i1);
+		fm[i].DrawBackSearch(pattern,Left,Right);
+		int numtemp = 0;
+		if(Right < Left)
+			numtemp = 0;
+		else
+			numtemp = Right -Left +1;
+		v_i64.emplace_back(make_tuple(num,Left));
+		num += numtemp;
+	//	cout<<"num:"<<num<<"Left:"<<Left<<"Right:"<<Right<<endl;
 	}
 	//for(auto && result: results)
 	//	num += result.get();
@@ -355,200 +363,25 @@ void quick_sort(i64 *s, i64 l, i64 r)
 	quick_sort(s, i + 1, r);
     }
 }
-/*i64* FM_M::locating_parrel(const char *pattern,i64 &num)
-{	
-	int i1 = 0;
-	i64 i = 0;
-	i64 offset = 0;
-	vector<std::thread> v_Thread;
-	std::vector< std::future<tuple<i64,i64* >> > results;
-	i64 i22 = 0;
-	for(int i = 0; i < part; i++) {
-		results.emplace_back(
-			v_Thread.emplace_back([&,i,pattern] {
-				i64* temp = 0;
-				i64* tempnum = 0;
-				temp = this->fm[i].locating(pattern,*tempnum);
-				quick_sort(temp,0,*tempnum-1);
-				//std::cout<<tempnum<<std::endl;
-				//v_i64.emplace_back(temp);
-				return make_tuple(*tempnum,temp);
-			}));
-	}
-	vector<tuple<i64,i64*>> v_tuple;
-	for(auto  && result : results)
-	{
-		auto t = result.get();
-		v_tuple.emplace_back(t) ;
-		num += get<0>(t);
-	}
-	i64 * pos = new i64[num];
-	memcpy(pos,get<1>(v_tuple[0]),get<0>(v_tuple[0])*sizeof(i64));
-	i = get<0>(v_tuple[0]);
-	for(int j = 1; j<part;j++)
-	{
-		offset += fm[j-1].wt.GetN()-2*PATTENLEN;//previous piece of fm read 2 patternlen more txt,so next piece need to minus it
-		int startpos = i-1;
-		for(int k=0;k<get<0>(v_tuple[j]);k++)
-		{
-			pos[i++] = get<1>(v_tuple[j])[k]+offset;
-			if(i>0&&pos[startpos]==pos[i-1])
-			{
-				i--;
-				num--;
-			}
-		}
-	}
-	return pos;
-}
-*/
-
-	/*
-i64* FM_M::locating_parrel(const char *pattern,i64 &num)
-{
-	int offset = 0;
-	int i = 0;
-	vector<thread> v_threads;
-	vector<i64*> v_i64ptr;
-	//std::vector< std::future<tuple<i64,i64* >> > v_future;
-	for(int i = 0;i<part;i++)
-	{
-		v_threads.emplace_back([pattern]() {
-			i64* temp = 0;
-			i64 tempnum = 0;
-			temp = fm[i].locating_parrel(pattern,tempnum);
-			quick_sort(temp,0,tempnum-1);
-		//	cout<<tempnum<<endl;
-		});
-	}
-	for(auto & v :v_threads)
-	{
-		v.join();
-	}
-	i64* pos = new i64[10];
-	vector<tuple<i64,i64*>> v_tuple;
-	for(auto  && result : v_future)
-	{
-		auto t = result.get();
-		v_tuple.emplace_back(t) ;
-		num += get<0>(t);
-	}
-	i64 * pos = new i64[num];
-	memcpy(pos,get<1>(v_tuple[0]),get<0>(v_tuple[0])*sizeof(i64));
-	i = get<0>(v_tuple[0]);
-	for(int j = 1; j<part;j++)
-	{
-		offset += fm[j-1].wt.GetN()-2*PATTENLEN;//previous piece of fm read 2 patternlen more txt,so next piece need to minus it
-		int startpos = i-1;
-		for(int k=0;k<get<0>(v_tuple[j]);k++)
-		{
-			pos[i++] = get<1>(v_tuple[j])[k]+offset;
-			if(i>0&&pos[startpos]==pos[i-1])
-			{
-				i--;
-				num--;
-			}
-		}
-	}
-	return pos;
-}
-*/
-/*
-i64* FM_M::locating_parrel(const char *pattern,i64 &num)
-{
-	int st1, st2;
-	i64 offset = 0;
-	i64 *shmaddr =NULL;
-	pid_t *fpid = new pid_t[10];
-	pid_t mainpid = getpid();
-	int shmid;
-	auto v_i64 = counting(pattern,num);
-	vector<i64> v_i64_cum(1,0);
-	i64* pos = new i64[num];
-	for(int i = 1 ;i<= v_i64.size();i++)
-	{
-		v_i64_cum.emplace_back(v_i64_cum[i-1]+v_i64[i-1]);
-		//v_i64[i] += v_i64[i-1];
-	}
-	shmid = shmget(IPC_PRIVATE, num * sizeof(i64), IPC_CREAT | 0600);
-	if (shmid < 0)
-	{
-	//perror("get shm  ipc_id error") ;
-	perror("Error:");
-	return NULL ;
-	}
-	//cout << "num:" << num << endl;
-	for (int i = 0; i < part; i++)
-	{
-		if(getpid()==mainpid)
-		fpid[i] = fork();
-		if (fpid[i] < 0)
-			printf("error in fork!");
-		else if (fpid[i] == 0)
-		{
-			//cout<<"child1 loop from 0 to "<<num/2<<endl;
-			shmaddr = (i64 *)shmat(shmid, NULL, 0);
-			//int looptime = ;
-			// modvalue--;
-			//cout << "looptime:" << (num / numberOfthread) + (modvalue > i ? 1 : 0) << endl;
-			i64 numtemp = 0;
-			auto postmep = fm[i].locating(pattern,numtemp);
-			quick_sort(postmep,0,numtemp-1);
-			//cout<<numtemp<<";"<<endl;		
-			//cout<<postmep[0]<<" "<<postmep[1]<<endl;
-			memcpy(shmaddr+v_i64_cum[i],postmep,sizeof(i64)*numtemp);
-			exit(0);
-		}
-	}
-	for (int i = 0; i < part; i++)
-	{
-		waitpid(fpid[i], &st1, 0);
-	}
-	shmaddr = (i64 *)shmat(shmid, NULL, 0);
-	memcpy(pos, shmaddr, num * sizeof(i64));
-	i64 startpos = v_i64_cum[1]-1;
-	i64 z = v_i64_cum[1];
-	for(int j = 1; j<part;j++)
-	{
-		offset += fm[j-1].wt.GetN()-2*PATTENLEN;//previous piece of fm read 2 patternlen more txt,so next piece need to minus it
-		//int startpos = v_i64_cum[j];
-		for(int k=v_i64_cum[j];k<v_i64_cum[j+1];k++)
-		{
-			pos[z++] = pos[k]+offset;
-			if(z>0&&pos[startpos]==pos[z-1])
-			{
-				z--;
-				num--;
-			}
-		}
-	}
-	shmctl(shmid, IPC_RMID, NULL);
-	delete[] fpid;
-	fpid = NULL;
-	return pos;
-}*/
-/*
-i64* FM_M::locating_parrel(const char *pattern,i64 &num)
-{
-	i64* pos = new i64[10];
-	#pragma omp parallel for 
-	for(int i = 0 ;i<part;i++)
-		{
-			i64 temp = 0;
-			auto postemp = fm.locating_parrel(pattern,temp);
-		}
-	return pos;
-}*/
 
 i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 {
 	//vector<i64> v_i64;
+	int modvalue = 0;
+	//int numberOfthread = 0;
 	i64 *shmaddr;
+	i64 piece = 0;
 	//i64 shmnum;
 	pid_t *fpid = new pid_t[10];
 	pid_t mainpid = getpid();
 	auto v_i64 = counting(pattern,num);
-	
+	i64 offset = 0;
+	vector<i64> v_offset;
+	for(int j = 1;j<=part;j++)
+	{
+		v_offset.emplace_back(offset);
+		offset +=  fm[j-1].wt.GetN()-2*PATTENLEN;
+	}
 	i64 *pos =new i64[num];
 	int shmid;
 	shmid = shmget(IPC_PRIVATE, num * sizeof(i64), IPC_CREAT | 0600);
@@ -558,28 +391,33 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	return NULL ;
 	}
 	//cout<<"Part:"<<part<<endl;
+	//i64 piece = 0,offset = 0;;
+	//i64 dividemount = num/part ;
+	modvalue = num % part;
+	//modvalue = num % numberOfthread;
+	/*for(int i=0;i<num;i++)
+	{
+
+		pos[i] = Lookup(i,v_i64,piece);
+		pos[i] +=v_offset[piece];
+	}*/
 	for (int i = 0; i < part; i++)
 	{
 		if(getpid()==mainpid)
 		{
-		//S		cout<<i<<","<<part<<endl;
 				fpid[i] = fork();
-		//		cout<<"FPID:"<<fpid[i];
 		}
 		if (fpid[i] < 0)
 			printf("error in fork!");
 		else if (fpid[i] == 0)
 		{
-			i64 offset = 0 ;
-			//cout<<"574"<<i<<endl;
-			for(int j = 0 ;j<i;j++)
-				offset = v_i64[j];
 			shmaddr = (i64 *)shmat(shmid, NULL, 0);
-			i64 temp;
-			i64* postemp = fm[i].locating(pattern,temp);
-			//cout<<i<<",temp="<<temp<<endl;
-			//memcpy(shmaddr+offset,postemp,temp);
-			//shmaddr[k + num / numberOfthread * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfthread * i + (modvalue > i ? i : modvalue));
+			for (int k = 0; k < (num / part) + (modvalue > i ? 1 : 0); k++)
+			{
+				i64  p = 0;
+				auto val=  Lookup(k + num / part * i + (modvalue > i ? i : modvalue),v_i64,p);
+				shmaddr[k + num / part * i + (modvalue > i ? i : modvalue)] = val+ v_offset[p];
+			}
 			exit(0);
 		}
 	}
@@ -593,6 +431,36 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	memcpy(pos, shmaddr, num * sizeof(i64));
 	shmctl(shmid, IPC_RMID, NULL);
 	delete[] fpid;
-	
-	return NULL;
+	return pos;
+}
+i64 FM_M::Lookup(i64 startpos,vector<tuple<i64,i64>> v_i64,i64& piece)
+{
+//	int piece =0;
+	int offset = 0 ;
+	int lo = 0;
+	int hi = v_i64.size()-1;
+	int mid = (lo+hi)/2;
+	while(lo <= hi){
+		if(startpos > get<0>(v_i64[mid])){
+			lo = mid+1;
+		}
+		else if (startpos < get<0>(v_i64[mid])){
+			hi = mid-1;
+		}
+		else{
+			piece = mid;
+			break;
+		}
+		mid = (lo+hi)/2;
+	}
+	if(get<0>(v_i64[mid+1])==get<0>(v_i64[mid]))
+	mid ++;
+	if(mid == v_i64.size())
+		mid--;
+	int Left = get<1>(v_i64[mid]);
+	//cout<<"LOOKUP:"<<startpos<<";"<<mid<<endl;
+	//cout<<"Lookup("<<Left+startpos- get<0>(v_i64[mid])<<")"<<endl;
+	piece = mid;
+	return fm[mid].Lookup(Left+startpos- get<0>(v_i64[mid]));
+
 }
