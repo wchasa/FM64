@@ -531,11 +531,11 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 {
 	i64* pos = new i64[10];
-	//#pragma omp parallel for
+	#pragma omp parallel for 
 	for(int i = 0 ;i<part;i++)
 		{
 			i64 temp = 0;
-			auto postemp = fm[i].locating_parrel(pattern,temp);
+			auto postemp = fm.locating_parrel(pattern,temp);
 		}
 	return pos;
 }*/
@@ -557,25 +557,27 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	perror("Error:");
 	return NULL ;
 	}
-	cout<<"Part:"<<part;
-	const i64 temp1  =part ;
-	for (int i = 0; i < temp1; i++)
+	//cout<<"Part:"<<part<<endl;
+	for (int i = 0; i < part; i++)
 	{
 		if(getpid()==mainpid)
 		{
-				cout<<i<<","<<part<<endl;
+		//S		cout<<i<<","<<part<<endl;
 				fpid[i] = fork();
+		//		cout<<"FPID:"<<fpid[i];
 		}
 		if (fpid[i] < 0)
 			printf("error in fork!");
 		else if (fpid[i] == 0)
 		{
 			i64 offset = 0 ;
-			for(int j = 0 ;j<i;i++)
+			//cout<<"574"<<i<<endl;
+			for(int j = 0 ;j<i;j++)
 				offset = v_i64[j];
 			shmaddr = (i64 *)shmat(shmid, NULL, 0);
 			i64 temp;
 			i64* postemp = fm[i].locating(pattern,temp);
+			//cout<<i<<",temp="<<temp<<endl;
 			//memcpy(shmaddr+offset,postemp,temp);
 			//shmaddr[k + num / numberOfthread * i + (modvalue > i ? i : modvalue)] = Lookup(Left + k + num / numberOfthread * i + (modvalue > i ? i : modvalue));
 			exit(0);
@@ -583,7 +585,8 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	}
 	int* st1 = new int[part];
 	for (int i = 0; i < part; i++)
-	{git
+	{
+		//cout<<i<<endl;
 		waitpid(fpid[i], &st1[i], 0);
 	}
 	shmaddr = (i64 *)shmat(shmid, NULL, 0);
