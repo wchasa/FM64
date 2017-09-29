@@ -86,6 +86,8 @@ class FM
 		double compressRatioForCount();
 		double compressRatioForExtract();
 		double compressRatioForLocate();
+		vector<i64> GetHittimes(){return wt.GetHittimes();};
+		void Lookupall();
 		WT_Handle wt;
 		int part;
 	private:
@@ -124,6 +126,7 @@ public:
 	double compressRatioForExtract(){return 0;};
 	double compressRatioForLocate(){return 0;};
 	i64 Lookup(i64 startpos,vector<tuple<i64,i64>> v_i64,i64& piece);//startpos is the kth postion
+	vector<i64> GetHittimes(){vector<i64> v;return v;};
 };
 
 #endif

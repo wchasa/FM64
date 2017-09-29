@@ -7,7 +7,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/my_fm",
-            "args": ["/home/wch/testfile/influenza","bx","123","4"],
+            "args": ["/home/wch/testfile/influenza","test","123","4"],
           //  "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
           //  "environment": [],

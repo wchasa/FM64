@@ -79,7 +79,13 @@ int FM::save(const char * indexfile)
 	s.close();
 	return 0;
 }
-
+void FM::Lookupall()
+{
+	for(int i =0;i<getN();i++)
+	{
+		auto itemp = Lookup(i);
+	}
+}
 bool FM::loadfileExist(const char * indexfile)
 {
 	FILE* r=fopen(indexfile,"rb");

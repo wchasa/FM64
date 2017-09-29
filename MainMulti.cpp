@@ -23,6 +23,7 @@ void helpcount();
 void helplocate();
 void splitcommand(string command, string result[]);
 void quick_sort(int *s, int l, int r);
+void quicksort_v(vector<tuple<i64,i64>> v,i64 l,i64 r);//sort depend on tuple<0>
 void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
@@ -49,7 +50,7 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
-    using FM_NAME = FM_M;
+    using FM_NAME = FM;
   //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
@@ -103,6 +104,22 @@ int main(int argc, char *argv[])
     unsigned char * searchT = new unsigned char[1024];
     fseeko(fp2, 0, SEEK_SET);
     int e=0;
+    if(strcmp(argv[2],"test")==0)
+    {
+        csa->Lookupall();
+        auto v = csa->GetHittimes();
+        vector<i64> v_max100;
+        vector<tuple<i64,i64>> v_tuple;
+        for(int i = 0 ; i <v_max100.size();i++)
+        {
+            v_tuple.emplace_back(make_tuple(i,v_max100[i]));
+        }
+        quicksort_v(v_tuple,0,v_tuple.size()-1);
+        for(int i = 0 ;i < v_tuple.size();i++)
+        {
+            cout<<i<<"."<<get<0>(v_tuple[i])<<setw(10)<<get<1>(v_tuple[i])<<endl;
+        }
+    }
     if(strcmp(argv[2],"bx")==0){
         st1.start();
         //cout<<length<<endl;
@@ -400,5 +417,29 @@ void quick_sort(int *s, int l, int r)
 	s[i] = x;
 	quick_sort(s, l, i - 1); // 递归调用
 	quick_sort(s, i + 1, r);
+    }
+}
+
+void quicksort_v(vector<tuple<i64,i64>> v,i64 l,i64 r)//sort depend on tuple<0>
+{
+    if (l < r)
+    {
+	//Swap(s[l], s[(l + r) / 2]); //将中间的这个数和第一个数交换 参见注1
+	int i = l, j = r, x = get<0>(v[l]);
+	while (i < j)
+	{
+	    while (i < j && get<0>(v[j]) >= x) // 从右向左找第一个小于x的数
+		j--;
+	    if (i < j)
+		get<0>(v[i++]) = get<0>(v[j]);
+
+	    while (i < j && get<0>(v[i]) < x) // 从左向右找第一个大于等于x的数
+		i++;
+	    if (i < j)
+		get<0>(v[j--]) = get<0>(v[i]);
+	}
+	get<0>(v[i]) = x;
+	quicksort_v(v, l, i - 1); // 递归调用
+	quicksort_v(v, i + 1, r);
     }
 }

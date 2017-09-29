@@ -81,6 +81,7 @@ class ABS_FM
 		 i64 sizeOfSAL();
 		 i64 sizeOfRankL();
 		 i64 Lookup(i64 i);
+		 vector<i64> GetHittimes(){return v_hittimes;};
 		 //void ABS_FM::MapMerge(map<i64, i64> &map1, map<i64, i64> map2);
 		 //test
 	protected:
@@ -89,7 +90,7 @@ class ABS_FM
 	 	uchar * R;
 		 void Inittable();
 		 //int BuildTree();
-
+		vector<i64> v_hittimes;
 		 unsigned char *T;
 
 		 unsigned char *filename;

@@ -31,6 +31,7 @@ class WT_Handle
 		void DrawBackSearch(const char * pattern,i64 & Left,i64 &Right){fm->DrawBackSearch(pattern,Left,Right);}
 		void Counting(const char * pattern,i64 &num) { fm->Counting(pattern,num); };
 		i64 Lookup(i64 startpos){return fm->Lookup(startpos);};
+		vector<i64> GetHittimes(){return fm->GetHittimes();};
 		i64 * Locating(const char * pattern,i64 &num){ return fm->Locating(pattern,num); };
 		i64 * Locating_parrel(const char * pattern,i64 &num){ return fm->Locating_parrel(pattern,num); };
 		//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap){fm->GetMap(bwtmap,runsmap)};

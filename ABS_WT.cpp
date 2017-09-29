@@ -62,6 +62,7 @@ ABS_FM::ABS_FM(const char * filename,int block_size,int D,int part,int pos)
 	this->T=NULL;
 	T = Getfile(filename,part,pos);
 	Inittable();
+	v_hittimes.insert(v_hittimes.begin(),n,0);
 }
 
 ABS_FM::~ABS_FM()
@@ -506,7 +507,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	i64 *pos =new i64[num];
 	//numberOfthread = 1;
 	numberOfthread = (num>>7)+1>10?10:((num>>7))+1;
-	//numberOfthread = 4;
+	numberOfthread = 4;
 	if(numberOfthread==1)
 	{
 	    for (int i = 0; i < num; i++)
@@ -667,12 +668,16 @@ unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 int flag=0;
 i64 ABS_FM::Lookup(i64 i)
 {
-
 	//cout<<i<<"++"<<endl;
+	if(v_hittimes.size()==0){
+		v_hittimes.insert(v_hittimes.begin(),n,0);
+	}
+	
 	int step = 0;
 	int D = this->D;
 	while(i%D!=0)
 	{
+		v_hittimes[i]++;
 		i=LF(i);
 		step =step +1;
 	}
