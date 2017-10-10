@@ -120,9 +120,9 @@ i64 * FM::locating(const char * pattern,i64 & num)
 {
 	return wt.Locating(pattern,num);
 }
-i64 * FM::locating_parrel(const char * pattern,i64 & num)
+i64 * FM::locating_parrel(const char * pattern,i64 & num,i64 tnum)
 {
-	return wt.Locating_parrel(pattern,num);
+	return wt.Locating_parrel(pattern,num,tnum);
 }
 
 
@@ -136,7 +136,7 @@ unsigned char * FM::extracting_parrel(i64 pos,i64 len)
 {
 	return wt.Extracting_parrel(pos,len);
 }
-
+/*
 FM_M::FM_M(const char * filename,int frag,int speedlevel)
 {
 	part = frag;
@@ -155,7 +155,7 @@ void FM_M::counting_parrel(const char *pattern,i64 &num)
 		num += temp ; 
 	}
 	
-	/*vector<std::thread> v_Thread;
+	vector<std::thread> v_Thread;
 	i64 i22 = 0;
 	vector<int> v_num[fm.size()];
 	for(int i = 0 ;i<fm.size();i++)
@@ -163,7 +163,7 @@ void FM_M::counting_parrel(const char *pattern,i64 &num)
 		v_Thread.emplace_back([this,pattern,&i22,&num,i]{this->fm[i].counting(pattern,i22);num +=i22;});
 	}
 	for(int i = 0 ;i<fm.size();i++)
-		v_Thread[i].join();*/
+		v_Thread[i].join();
 
 
 }
@@ -395,12 +395,12 @@ i64* FM_M::locating_parrel(const char *pattern,i64 &num)
 	//i64 dividemount = num/part ;
 	modvalue = num % part;
 	//modvalue = num % numberOfthread;
-	/*for(int i=0;i<num;i++)
+	for(int i=0;i<num;i++)
 	{
 
 		pos[i] = Lookup(i,v_i64,piece);
 		pos[i] +=v_offset[piece];
-	}*/
+	}
 	for (int i = 0; i < part; i++)
 	{
 		if(getpid()==mainpid)
@@ -463,4 +463,4 @@ i64 FM_M::Lookup(i64 startpos,vector<tuple<i64,i64>> v_i64,i64& piece)
 	piece = mid;
 	return fm[mid].Lookup(Left+startpos- get<0>(v_i64[mid]));
 
-}
+}*/

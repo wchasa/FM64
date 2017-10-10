@@ -51,7 +51,7 @@ class ABS_FM
 		virtual ~ABS_FM();
 		void Counting(const char * partten,i64 &num);
 		i64 * Locating(const char * pattern,i64 &num);
-		i64 * Locating_parrel(const char * pattern,i64 &num);
+		i64 * Locating_parrel(const char * pattern,i64 &num,i64 threadnum);
 		unsigned char* Extracting(i64 pos,i64 len);
 		unsigned char *Extracting_parrel(i64 pos, i64 len);
 		int Load(loadkit &s);

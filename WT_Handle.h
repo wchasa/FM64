@@ -32,7 +32,7 @@ class WT_Handle
 		void Counting(const char * pattern,i64 &num) { fm->Counting(pattern,num); };
 		i64 Lookup(i64 startpos){return fm->Lookup(startpos);};
 		i64 * Locating(const char * pattern,i64 &num){ return fm->Locating(pattern,num); };
-		i64 * Locating_parrel(const char * pattern,i64 &num){ return fm->Locating_parrel(pattern,num); };
+		i64 * Locating_parrel(const char * pattern,i64 &num,i64 threadnum){ return fm->Locating_parrel(pattern,num,threadnum); };
 		//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap){fm->GetMap(bwtmap,runsmap)};
 		unsigned char *Extracting(i64 pos,i64 len){ return fm->Extracting(pos,len);};
 		unsigned char *Extracting_parrel(i64 pos,i64 len){ return fm->Extracting_parrel(pos,len);};

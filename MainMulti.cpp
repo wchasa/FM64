@@ -49,7 +49,7 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
-    using FM_NAME = FM_M;
+    using FM_NAME = FM;
   //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
@@ -71,13 +71,14 @@ int main(int argc, char *argv[])
     csa = NULL;
     FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
     csa = new FM_NAME();
-    if(argc == 5)
+   /* if(argc == 5)
         if(csa->load(StrLineFM,atoi(argv[4]))==0){
             stime = clock();
             csa = new FM_NAME(argv[1],atoi(argv[4]));
             etime = clock();
-            csa->save(StrLineFM);}    
-    if(argc == 4)
+            csa->save(StrLineFM);}  
+            */  
+    //if(argc == 4)
         if(csa->load(StrLineFM)==0){
             stime = clock();
             csa = new FM_NAME(argv[1]);
@@ -127,8 +128,14 @@ int main(int argc, char *argv[])
        //     cout<<omp_get_thread_num()<<endl;
             fseek(fp2, randarray[i2] % (n), SEEK_SET);
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            num = 0;
-            i64 *pos = csa->locating_parrel((const char *)searchT, num);
+            int tnum = 4;
+            if(argc == 6){
+                num = atoi(argv[4]);
+                tnum = atoi(argv[5]);
+               } 
+            else 
+                num = 100;
+            i64 *pos = csa->locating_parrel((const char *)searchT, num,tnum);
 //            #pragma omp parallel for
 //           for(int j = 0 ;j<csa->part;j++)
 //                {
@@ -202,7 +209,10 @@ int main(int argc, char *argv[])
         {
             fseek(fp2, randarray[i2] % (n), SEEK_SET);
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            num = 0;
+            if(argc == 5)
+                num = atoi(argv[4]);
+            else 
+                num = 100;
             i64 *pos = csa->locating((const char *)searchT, num);
             delete []pos;
             pos = NULL;
