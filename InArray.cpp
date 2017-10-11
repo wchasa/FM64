@@ -35,7 +35,7 @@ InArray::InArray(u64 data_num, u32 data_width)
 			totlesize=totlesize/32+1;
 		else
 			totlesize=(totlesize/32)+2;
-		this->data =new u32[totlesize];
+		this->data =new u32[totlesize+1];//valgrand warns
 		memset(data,0,4*totlesize);
 		//mask=((1<<datawidth)-1);
 		mask = (u64)pow(2,datawidth)-1;
@@ -151,8 +151,9 @@ i64 InArray::load(loadkit & s)
 	s.loadu32(datawidth);
 	u64 len=0;
 	s.loadu64(len);
+	//len++;//valgrind warns 
 	//cout<<len<<endl;
-	data=new u32[len];
+	data=new u32[len+1];
 	s.loadu32array(data,len);
 	mask=(u64)pow(2,datawidth)-1;
 	return 1;

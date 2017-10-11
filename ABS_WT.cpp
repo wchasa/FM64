@@ -207,7 +207,9 @@ map<i64,i64> ABS_FM::MergeBitnodeRuns(BitMap *r)
 int flag3=0;
 void ABS_FM::DrawBackSearch(const char * pattern,i64 & Left,i64 &Right)
 {
-	int len = strlen(pattern);
+	//if
+	int len = 0;
+	len = strlen(pattern);
 	i64 occ_left=0;
 	i64 occ_right=0;
 	if(len <=0)

@@ -12,7 +12,7 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 300
+#define MAX 1
 #define PATTENLEN 20
 #define PATTENLEN2 2
 void usage();
@@ -103,6 +103,7 @@ int main(int argc, char *argv[])
     fseek(fp2, 0, SEEK_END);
     int n = ftell(fp2) + 1;
     unsigned char * searchT = new unsigned char[1024];
+    memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
     int e=0;
     if(strcmp(argv[2],"test")==0)
