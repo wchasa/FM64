@@ -519,7 +519,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num,i64 threadnum)
 	else
 	{
 	    i64 *shmaddr;
-	    pid_t *fpid = new pid_t[10];
+	    pid_t *fpid = new pid_t[threadnum];
 	    pid_t mainpid = getpid();
 	    modvalue = num % numberOfthread;
 	    //add parrel

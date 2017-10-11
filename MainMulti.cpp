@@ -132,10 +132,10 @@ int main(int argc, char *argv[])
             // i64 num;
             i64 i ;
             num = 0;
-            csa->counting_parrel((const char *)searchT,num);
+            csa->counting_parrel((const char *)searchT, num);
 
-         //i64 *pos = csa->counting((const char *)searchT,&num);
-          //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
+            //i64 *pos = csa->counting((const char *)searchT,&num);
+            //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
             }
         st1.finish();
         cout << "count_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
