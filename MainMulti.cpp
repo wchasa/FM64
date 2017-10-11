@@ -154,6 +154,7 @@ int main(int argc, char *argv[])
             else 
                 num = 100;
             i64 *pos = csa->locating_parrel((const char *)searchT, num,tnum);
+
 //            #pragma omp parallel for
 //           for(int j = 0 ;j<csa->part;j++)
 //                {
@@ -161,20 +162,23 @@ int main(int argc, char *argv[])
 //                    //delete [] pos;
 //                    //pos = NULL;
 //                }
+        delete [] pos;
+        pos = NULL;
            // cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
         }
         st1.finish();
         cout << "locating_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
         st1.start();
-        for (int i2 = 0; i2 < MAX; i2++)
+       /* for (int i2 = 0; i2 < MAX; i2++)
         {
             fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
          //   unsigned char *p = csa->extracting_parrel(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
            //   cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
         }
         st1.finish();
         cout << "extracting_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
+        */
     }
      if(strcmp(argv[2],"px")==0){
         st1.start();
@@ -251,8 +255,13 @@ int main(int argc, char *argv[])
             // cout << "extracting:" << st1.value() / MAX / 1000 << "ms" << endl;
         }
    
-      //delete csa;
+      delete csa;
+      csa = NULL;
       fclose(fp2);
+      delete [] randarray;
+      delete [] searchT;
+      searchT = NULL;
+      randarray = NULL;
      //  cout << "--------------------------------------------------------------------" << endl;
    
    // fclose(fp);

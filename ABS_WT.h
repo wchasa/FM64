@@ -68,6 +68,7 @@ class ABS_FM
 		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
 		BitMap *GetRoot();
 		unsigned char * bwt;
+
 	//test
 		 i64 SizeOfpart(BitMap * r,string str);
 		 map<i64,i64> BWTruns;

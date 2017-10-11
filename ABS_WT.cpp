@@ -1413,6 +1413,8 @@ int ABS_FM::LoadWTTree(loadkit &s,uchar **tables)
 		this->root = NULL;
 		exit(0);
 	}
+	delete [] p;
+	p = NULL;
 //	cout<<"778"<<endl;
 	return 0;
 }
@@ -1461,6 +1463,8 @@ int ABS_FM::Load(loadkit &s)
 					off_index ++;
 				}
 			}
+			delete []bits;
+			bits = NULL;
 		}
 	}
 
