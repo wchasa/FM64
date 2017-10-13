@@ -146,14 +146,7 @@ int main(int argc, char *argv[])
        //     cout<<omp_get_thread_num()<<endl;
             fseek(fp2, randarray[i2] % (n), SEEK_SET);
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            int tnum = 4;
-            if(argc == 6){
-                num = atoi(argv[4]);
-                tnum = atoi(argv[5]);
-               } 
-            else 
-                num = 100;
-            i64 *pos = csa->locating_parrel((const char *)searchT, num,tnum);
+            i64 *pos = csa->locating_parrel((const char *)searchT, num);
 
 //            #pragma omp parallel for
 //           for(int j = 0 ;j<csa->part;j++)

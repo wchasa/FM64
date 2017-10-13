@@ -65,7 +65,7 @@ class FM
 		void counting_parrel(const char *pattern,i64 &num){};
 		void counting_pool(const char *pattern,i64 &num){};
 		i64 * locating(const char *pattern,i64 & num);
-		i64 * locating_parrel(const char *pattern,i64 & num,i64 threadnum);
+		i64 * locating_parrel(const char *pattern,i64 & num);
 		i64 * locating_pool(const char *pattern,i64 & num){return NULL;};
 		//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap);
 		unsigned char * extracting(i64 pos,i64 len);

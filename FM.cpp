@@ -126,9 +126,9 @@ i64 * FM::locating(const char * pattern,i64 & num)
 {
 	return wt.Locating(pattern,num);
 }
-i64 * FM::locating_parrel(const char * pattern,i64 & num,i64 tnum)
+i64 * FM::locating_parrel(const char * pattern,i64 & num)
 {
-	return wt.Locating_parrel(pattern,num,tnum);
+	return wt.Locating_parrel(pattern,num);
 }
 
 

@@ -493,7 +493,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	return pos ; 
 }*/
 /*创建了新的进程，开销较大*/
-i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num,i64 threadnum)
+i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 {
 	int modvalue = 0;
 	int numberOfthread = 0;
@@ -505,12 +505,12 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num,i64 threadnum)
 		num=0;
 		return NULL;
 	}
-	//num = Right - Left + 1;
+	num = Right - Left + 1;
 	
 	i64 *pos =new i64[num];
 	//numberOfthread = 1;
-	//numberOfthread = (num>>8)+1>10?10:((num>>8))+1;
-	numberOfthread = threadnum;
+	numberOfthread = (num>>7)+1>10?10:((num>>7))+1;
+	//numberOfthread = threadnum;
 	if(numberOfthread==1)
 	{
 	    for (int i = 0; i < num; i++)
@@ -519,7 +519,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num,i64 threadnum)
 	else
 	{
 	    i64 *shmaddr;
-	    pid_t *fpid = new pid_t[threadnum];
+	    pid_t *fpid = new pid_t[numberOfthread];
 	    pid_t mainpid = getpid();
 	    modvalue = num % numberOfthread;
 	    //add parrel
