@@ -54,13 +54,13 @@ i64 GammaDecode(u64 * buff,i64 & index,ABS_FM * t)
 }
 
 
-ABS_FM::ABS_FM(const char * filename,int block_size,int D,int part,int pos)
+ABS_FM::ABS_FM(const char * filename,int block_size,int D)
 {
 	this->block_size = block_size;
 	this->D =D*2;
 	cout<<"samplerate:"<<this->D<<endl;
 	this->T=NULL;
-	T = Getfile(filename,part,pos);
+	T = Getfile(filename);
 	Inittable();
 	v_hittimes.insert(v_hittimes.begin(),n,0);
 }
@@ -675,7 +675,8 @@ i64 ABS_FM::Lookup(i64 i)
 	//if(v_hittimes.size()==0){
 	//	v_hittimes.insert(v_hittimes.begin(),n,0);
 //	}
-	
+	int ori_i = i;
+	//cout<<"i:"<<i;
 	int step = 0;
 	int D = this->D;
 	while(i%D!=0)
@@ -683,9 +684,14 @@ i64 ABS_FM::Lookup(i64 i)
 	//	v_hittimes[i]++;
 		i=LF(i);
 		step =step +1;
+	//	cout<<",i:"<<i<<endl;
 	}
+	//cout<<",step:"<<step<<endl;
 	i=i/D;
 	//std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	//if(i*D==418880)
+	//cout<<ori_i<<",step:"<<step<<",SAL Pos："<<i*D<<","<<(SAL->GetValue(i)+step)%n<<endl;
+	//cout<<(SAL->GetValue(i)+step)%n<<endl;
 	return (SAL->GetValue(i)+step)%n;
 }
 
@@ -915,9 +921,13 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 		else
 			code[i]=-1;
 	}
+	for(int i = 0 ; i< 256;i++)
+	{
+		cout<<i<<".{"<<(char)i<<"}"<<charFreq[i]<<endl;
+	}
 	return T;
 }
-unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
+/*unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
 {
 	FILE * fp = fopen(filename,"r+");
 	if(fp==NULL)
@@ -976,12 +986,9 @@ unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
 		else
 			code[i]=-1;
 	}
-	/*if(pos+1!=part)
-	{
-		n = n/part-2*PATTENLEN;
-	}*/
+	
 	return T;
-}
+}*/
 
 int ABS_FM::BWT(unsigned char *T,int * SA,unsigned char * bwt,int len)
 {
@@ -1006,7 +1013,17 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 	}
 	return 0;
 }
-
+void ABS_FM::SASample(InArray* SAL,InArray* SALPos)
+{
+//	SAL=new InArray(n/step1+1,datewidth);//SA sample
+//	SALPos = new InArray(n/step1+1,1);
+	//for(i=0,j=0;i<n;i=i+step1,j++)
+	//	SAL->SetValue(j,SA[i]);
+	//for(int i = 0 ;i<n;i++)
+	{
+		
+	}
+}
 int ABS_FM::BuildTree(int speedlevel)
 {
 	saidx64_t* SA = new saidx64_t[n];
@@ -1019,12 +1036,17 @@ int ABS_FM::BuildTree(int speedlevel)
 	int step2 =this->D*16;
 	int datewidth = log2(n)+1;
 	SAL=new InArray(n/step1+1,datewidth);//SA sample
+	
 	RankL=new InArray(n/step2+1,datewidth);//rank sample
 
 	i64 i=0;
 	i64 j=0;
 	for(i=0,j=0;i<n;i=i+step1,j++)
-		SAL->SetValue(j,SA[i]);
+		{
+			SAL->SetValue(j,SA[i]);
+			cout<<SA[i]<<endl;
+		}
+
 
 	for(i=0;i<n;i++)
 	{

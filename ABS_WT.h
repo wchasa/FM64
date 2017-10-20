@@ -46,7 +46,7 @@ class ABS_FM
 {
 	public:
 		//D:SA数组采样步长,Rank采样步长D*16
-		ABS_FM(const char * filename,int block_size=256,int D=32,int part=1,int pos=0);
+		ABS_FM(const char * filename,int block_size=256,int D=16);
 		ABS_FM(){};
 		virtual ~ABS_FM();
 		void Counting(const char * partten,i64 &num);
@@ -68,7 +68,7 @@ class ABS_FM
 		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
 		BitMap *GetRoot();
 		unsigned char * bwt;
-
+		void SASample(InArray* SAL,InArray* SALPos);
 	//test
 		 i64 SizeOfpart(BitMap * r,string str);
 		 map<i64,i64> BWTruns;
@@ -100,7 +100,7 @@ class ABS_FM
 		 int D;		 //step of SAL
 		 InArray *SAL;   //the sampling of SA array
 		 InArray *RankL; // The sampling of the Rank Array
-
+		 InArray *SALPos;//Sample booleam;
 		 bool charMap[256];
 		 // if charMap[i] is true,char[i] is a member of alphabet
 
@@ -130,7 +130,7 @@ class ABS_FM
 		 int DestroyWaveletTree();
 		 int blog(int);
 		 unsigned char *Getfile(const char *filename);
-		 unsigned char *Getfile(const char *filenam,int part,int pos);
+		 //unsigned char *Getfile(const char *filenam,int part,int pos);
 		 int SaveNodePosition(BitMap *, u32, savekit &);
 		 int SaveNodeData(BitMap *, savekit &s);
 		 int SaveWTTree(savekit &s);

@@ -27,7 +27,7 @@ int stupidRank(unsigned char* c,int length,int& ch,int pos);
 int main(int argc, char *argv[])
 {
 
-	using FM_NAME = FM_M;
+	using FM_NAME = FM;
 	//  i64 totalsize = 0;
 	  i64 sumRun = 0,bitLen =0;
 	  if(argc < 3){
@@ -95,10 +95,10 @@ int main(int argc, char *argv[])
 		string str((char*)searchT);
 //		str = "n unto the house of";
         //str = "GAGGAGCTAAGAGAGCATTT";
-		cout<<"Patten:"<<str<<endl;
+		//cout<<"Patten:"<<str;
 		num = 0;
 		i64 *pos = csa->locating_parrel(str.c_str(), num);
-	//	quick_sort(pos,0,num-1);
+		quick_sort(pos,0,num-1);
 		//i64 *pos = csa->locating(str.c_str(), num);		int i = strtxt.find(str);
 		int p = 0;
 		if(num<=0)
@@ -106,7 +106,8 @@ int main(int argc, char *argv[])
 			cout<<"locate havnt find"<<endl;
 			continue;
 		}
-		for(int i = 0;i<num;)
+		csa->Lookup(346);
+	/*	for(int i = 0;i<num;)
 		{
 			cout<<i<<"."<<pos[i++];
 			//if(i%10==0)
@@ -114,7 +115,8 @@ int main(int argc, char *argv[])
 			//else
 			//cout<<";";
 		}
-		cout<<endl;
+		*/
+	/*	cout<<endl;
 		cout<<"-----------------------"<<endl;
 		quick_sort(pos,0,num-1);
 		for(int i = 0;i<num;)
@@ -127,7 +129,7 @@ int main(int argc, char *argv[])
 		}
 		
 		cout<<endl;
-		cout<<"-----------------------"<<endl;
+		cout<<"-----------------------"<<endl;*/
 		int stringFind=0;
 		int i = strtxt.find(str);
         while(i>= 0)
@@ -155,7 +157,7 @@ int main(int argc, char *argv[])
 		//cout<<setw(20)<<"stringFind="<<stringFind<<endl;
 		//cout<<"---------------------------"<<endl;
 		//;
-		cout<<"right,count:"<<stringFind<<endl;
+		cout<<"right,count:"<<stringFind<<setw(20)<<",Pattern:"<<str<<endl;
 	//	delete [] pos2;
 	//	pos2 =NULL;
 		delete [] pos;
@@ -318,7 +320,7 @@ void helpsave()
     cout << "	XX: the FM-index file, the command will save the csa in file XX" << endl;
 }
 //快速排序
-/*
+
 void quick_sort(i64 *s, i64 l, i64 r)
 {
     if (l < r)
@@ -342,4 +344,3 @@ void quick_sort(i64 *s, i64 l, i64 r)
 	quick_sort(s, i + 1, r);
     }
 }
-*/

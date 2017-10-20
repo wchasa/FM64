@@ -108,19 +108,9 @@ int main(int argc, char *argv[])
     int e=0;
     if(strcmp(argv[2],"test")==0)
     {
+       // csa->Lookup(344860);
         csa->Lookupall();
-        auto v = csa->GetHittimes();
-        vector<i64> v_max100;
-        vector<tuple<i64,i64>> v_tuple;
-        for(int i = 0 ; i <v_max100.size();i++)
-        {
-            v_tuple.emplace_back(make_tuple(i,v_max100[i]));
-        }
-        quicksort_v(v_tuple,0,v_tuple.size()-1);
-        for(int i = 0 ;i < v_tuple.size();i++)
-        {
-            cout<<i<<"."<<get<0>(v_tuple[i])<<setw(10)<<get<1>(v_tuple[i])<<endl;
-        }
+
     }
     if(strcmp(argv[2],"bx")==0){
         st1.start();

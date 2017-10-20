@@ -27,7 +27,7 @@ WT_Handle::WT_Handle(const char * filename,int part ,int pos,int block_size,int 
 	switch(shape)
 	{
 		case 0: fm =new Hutacker_FM(filename,block_size,D);break;
-		case 1: fm =new Huffman_FM(filename,block_size,D,part,pos);break;
+		case 1: fm =new Huffman_FM(filename,block_size,D);break;
 		case 2: fm =new Balance_FM(filename,block_size,D);break;
 		default: fm=new Hutacker_FM(filename,block_size,D);break;
 	}

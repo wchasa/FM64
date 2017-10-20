@@ -25,7 +25,7 @@ typedef huffNode_t * huffmanTree;
 class Huffman_FM : public ABS_FM
 {
 	public:
-		Huffman_FM(const char * filename,int block_size =1024,int D=32,int part=1,int pos=0):ABS_FM(filename,block_size,D,part,pos){}
+		Huffman_FM(const char * filename,int block_size =1024,int D=16):ABS_FM(filename,block_size,D){}
 		Huffman_FM():ABS_FM(){}
 		~Huffman_FM(){}
 	protected:
