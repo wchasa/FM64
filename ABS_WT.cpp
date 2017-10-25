@@ -1063,7 +1063,7 @@ void ABS_FM::SASample(saidx64_t* SA)
 	//ct['1'][1] = '1';
 	posroot = CreateWaveletTree(pos,n,ct);
 	int tpos ;
-	cout<<"SA[1520]:"<<SA[1520]<<endl;
+	//cout<<"SA[1520]:"<<SA[1520]<<endl;
 	delete [] pos;
 	/*cout<<"posroot->Rank(58,tpos),"<<posroot->Rank(58,tpos)<<","<<endl<<tpos<<endl;
 	cout<<"posroot->Rank(60,tpos),"<<posroot->Rank(60,tpos)<<","<<tpos<<endl;
