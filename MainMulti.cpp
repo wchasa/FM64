@@ -84,7 +84,8 @@ int main(int argc, char *argv[])
             stime = clock();
             csa = new FM_NAME(argv[1]);
             etime = clock();
-            csa->save(StrLineFM);}    
+            csa->save(StrLineFM);
+        }    
     tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
     cout << argv[1] << endl;
     //cout <<"build time:"<< tcost << "sec" << endl;

@@ -669,6 +669,7 @@ unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 }
 
 int flag=0;
+/*
 i64 ABS_FM::Lookup(i64 i)
 {
 	//cout<<i<<"++"<<endl;
@@ -693,8 +694,29 @@ i64 ABS_FM::Lookup(i64 i)
 	//cout<<ori_i<<",step:"<<step<<",SAL Pos："<<i*D<<","<<(SAL->GetValue(i)+step)%n<<endl;
 	//cout<<(SAL->GetValue(i)+step)%n<<endl;
 	return (SAL->GetValue(i)+step)%n;
+}*/
+i64 ABS_FM::Lookup(i64 i)
+{
+	int step = 0;
+	//int D = this->D*16;
+	int flag = 0;
+	int rank = posroot->Rank(i,flag);
+	while(flag==0)
+	{
+		//v_hittimes[i]++;
+		i=LF(i);
+		step =step +1;
+		rank = posroot->Rank(i,flag);
+	//	cout<<",i:"<<i<<endl;
+	}
+	//cout<<",step:"<<step<<endl;
+	//i=i/D;
+	//std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	//if(i*D==418880)
+	//cout<<ori_i<<",step:"<<step<<",SAL Pos："<<i*D<<","<<(SAL->GetValue(i)+step)%n<<endl;
+	//cout<<(SAL->GetValue(i)+step)%n<<endl;
+	return (SAL->GetValue(rank-1)*(this->D)+step)%n;
 }
-
 int flag2 =0;
 //返回L串中c字符在位置pos_left 和pos_right之前出现的次数，结果由rank_left 和rank_right带回.
 void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
@@ -921,10 +943,6 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 		else
 			code[i]=-1;
 	}
-	for(int i = 0 ; i< 256;i++)
-	{
-		cout<<i<<".{"<<(char)i<<"}"<<charFreq[i]<<endl;
-	}
 	return T;
 }
 /*unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
@@ -1013,16 +1031,48 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 	}
 	return 0;
 }
-void ABS_FM::SASample(InArray* SAL,InArray* SALPos)
+void ABS_FM::SASample(saidx64_t* SA)
 {
-//	SAL=new InArray(n/step1+1,datewidth);//SA sample
-//	SALPos = new InArray(n/step1+1,1);
+	int step1 =this->D;	
+	//int step2 =this->D*16;
+	int datewidth = log2(n/step1)+1;
+	SAL=new InArray(n/step1+1,datewidth);//SA sample
+	SALPos = new InArray(n/step1+1,1);
+	unsigned char *pos = new unsigned char[n];
 	//for(i=0,j=0;i<n;i=i+step1,j++)
 	//	SAL->SetValue(j,SA[i]);
-	//for(int i = 0 ;i<n;i++)
+	int j = 0 ;
+	//cout<<"SASample start"<<endl;
+	for(int i = 0 ;i<n;i++)
 	{
-		
+		if(SA[i]%step1 == 0){
+			SAL->SetValue(j++,SA[i]/step1);
+			pos[i] = '1';
+			//cout<<i<<endl;
+		}
+		else 
+			pos[i] = '0'; 
 	}
+	//cout<<"SASample end"<<endl;
+	char ct[CHAR_SET_SIZE][CHAR_SET_SIZE];
+	memset(ct,0,sizeof(ct));
+	ct['1'][0] = '1';
+	ct['0'][0] = '0';
+	//ct['0'][0] = '1';
+	//ct['0'][1] = '0';
+	//ct['1'][1] = '1';
+	posroot = CreateWaveletTree(pos,n,ct);
+	int tpos ;
+	cout<<"SA[1520]:"<<SA[1520]<<endl;
+	delete [] pos;
+	/*cout<<"posroot->Rank(58,tpos),"<<posroot->Rank(58,tpos)<<","<<endl<<tpos<<endl;
+	cout<<"posroot->Rank(60,tpos),"<<posroot->Rank(60,tpos)<<","<<tpos<<endl;
+	cout<<"posroot->Rank(93,tpos),"<<posroot->Rank(93,tpos)<<","<<tpos<<endl;
+	cout<<"posroot->Rank(70,tpos),"<<posroot->Rank(70,tpos)<<","<<tpos<<endl;
+	cout<<"posroot->Rank(80,tpos),"<<posroot->Rank(80,tpos)<<","<<tpos<<endl;
+	cout<<"posroot->Rank(90,tpos),"<<posroot->Rank(90,tpos)<<","<<tpos<<endl;
+	cout<<"posroot->Rank(100,tpos),"<<posroot->Rank(100,tpos)<<","<<tpos<<endl;
+*/
 }
 int ABS_FM::BuildTree(int speedlevel)
 {
@@ -1035,17 +1085,17 @@ int ABS_FM::BuildTree(int speedlevel)
 	int step1 =this->D;	
 	int step2 =this->D*16;
 	int datewidth = log2(n)+1;
-	SAL=new InArray(n/step1+1,datewidth);//SA sample
 	
 	RankL=new InArray(n/step2+1,datewidth);//rank sample
-
+	SASample(SA);
 	i64 i=0;
 	i64 j=0;
+	/*SAL=new InArray(n/step1+1,datewidth);//SA sample
 	for(i=0,j=0;i<n;i=i+step1,j++)
 		{
 			SAL->SetValue(j,SA[i]);
 			cout<<SA[i]<<endl;
-		}
+		}*/
 
 
 	for(i=0;i<n;i++)
@@ -1093,7 +1143,7 @@ int ABS_FM::BuildTree(int speedlevel)
 
 //	cout<<"block_size: "<<block_size<<endl;
 	TreeCode();
-	root=CreateWaveletTree(bwt,n);
+	root=CreateWaveletTree(bwt,n,codeTable);
 //	cout<<"CreatWaveletTree"<<endl;
 
 	//Test_L();
@@ -1182,11 +1232,11 @@ void ABS_FM::Test_L()
 }
 
 
-BitMap * ABS_FM::CreateWaveletTree(unsigned char * bwt,i64 n)
+BitMap * ABS_FM::CreateWaveletTree(unsigned char * bwt,i64 n,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE])
 {
 	BitMap * root = NULL;
 
-	root = FullFillWTNode(bwt,n,0);
+	root = FullFillWTNode(bwt,n,0,ctable);
 	if(!root)
 	{
 		cout<<"FullfillWTNode failed"<<endl;
@@ -1196,14 +1246,14 @@ BitMap * ABS_FM::CreateWaveletTree(unsigned char * bwt,i64 n)
 }
 
 
-BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,i64 len,int level)
+BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,i64 len,int level,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE])
 {
 //	cout<<level<<endl;
 	int CurrentLevel = level;
 	i64 CurrentBitLen = len;
 	unsigned char CurrentLabel = '\0';
 	unsigned long long int *CurrentBitBuff = NULL;
-	if ((int)strlen((const char*)codeTable[buff[0]])==level)
+	if ((int)strlen((const char*)ctable[buff[0]])==level)
 	{
 		CurrentLabel = buff[0];
 		CurrentBitBuff = NULL;
@@ -1240,7 +1290,7 @@ BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,i64 len,int level)
 	u64 last = 0;
 	for(i=0;i<len;i++)
 	{
-		if(codeTable[buff[i]][level]=='1')//judge go left or right
+		if(ctable[buff[i]][level]=='1')//judge go left or right
 		{
 			//CurrentBitBuff[bytePos] |= (0x01<<(7-bitOffset));
 			CurrentBitBuff[bytePos] |= (0x01ull<<(63-bitOffset));
@@ -1269,14 +1319,14 @@ BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,i64 len,int level)
 
 	if(leftLen !=0)
 	{
-		BitMap * left =FullFillWTNode(lptr,leftLen,level+1);
+		BitMap * left =FullFillWTNode(lptr,leftLen,level+1,ctable);
 		node->Left(left);
 		delete [] lptr;
 		lptr=NULL;
 	}
 	if(rightLen!=0)
 	{
-		BitMap * right = FullFillWTNode(rptr,rightLen,level+1);
+		BitMap * right = FullFillWTNode(rptr,rightLen,level+1,ctable);
 		node->Right(right);
 		delete [] rptr;
 		rptr=NULL;
@@ -1376,19 +1426,18 @@ int ABS_FM::SaveNodeData(BitMap *r,savekit &s)
 	return 0;
 }
 
-int ABS_FM::SaveWTTree(savekit &s)
+int ABS_FM::SaveWTTree(savekit &s,BitMap *r)
 {
 	//保存编号信息
 	//int nodecount = 2*alphabetsize -1;
 	//s.writei32(nodecount);
-	SaveNodePosition(root,1,s);
-
+	SaveNodePosition(r,1,s);
 	//保存节点数据信息
-	SaveNodeData(root,s);
+	SaveNodeData(r,s);
 	return 0;
 }
 
-int ABS_FM::LoadWTTree(loadkit &s,uchar **tables)
+BitMap* ABS_FM::LoadWTTree(loadkit &s,int alphabetsize,uchar **tables)
 {
 	//读取数据，map的int域对应该节点的位置
 	int nodecount = 2*alphabetsize -1;
@@ -1428,17 +1477,17 @@ int ABS_FM::LoadWTTree(loadkit &s,uchar **tables)
 //	cout<<"767"<<endl;
 	f_iter = pmap.find(1);
 	if(f_iter !=pmap.end())
-		this->root = f_iter->second;
+		root = f_iter->second;
 	else
 	{
 		cerr<<"Load WTTree error"<<endl;
-		this->root = NULL;
+		root = NULL;
 		exit(0);
 	}
 	delete [] p;
 	p = NULL;
 //	cout<<"778"<<endl;
-	return 0;
+	return root;
 }
 
 int ABS_FM::Load(loadkit &s)
@@ -1502,7 +1551,8 @@ int ABS_FM::Load(loadkit &s)
 	Inittable();
 	uchar * par[2]={Z,R};
 	//cout<<"cs"<<endl;
-	LoadWTTree(s,par);
+	this->posroot=LoadWTTree(s,2,par);
+	this->root = LoadWTTree(s,alphabetsize,par);
 //	cout<<"835"<<endl;
 	T=NULL;
 	bwt=NULL;
@@ -1557,6 +1607,7 @@ int ABS_FM::Save(savekit &s)
 	RankL->write(s);
 	//for WT tree
 //	cout<<"SaveWTTree"<<endl;
-	SaveWTTree(s);
+	SaveWTTree(s,posroot);
+	SaveWTTree(s,this->root);
 	return 0;
 }

@@ -68,7 +68,7 @@ class ABS_FM
 		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
 		BitMap *GetRoot();
 		unsigned char * bwt;
-		void SASample(InArray* SAL,InArray* SALPos);
+		void SASample(saidx64_t* SA);
 	//test
 		 i64 SizeOfpart(BitMap * r,string str);
 		 map<i64,i64> BWTruns;
@@ -87,6 +87,7 @@ class ABS_FM
 		 //test
 	protected:
 		BitMap * root;
+		BitMap * posroot;
 		uchar * Z;
 	 	uchar * R;
 		 void Inittable();
@@ -125,16 +126,18 @@ class ABS_FM
 
 		 int BWT(unsigned char *T, int *SA, unsigned char *bwt, int n);
 		 int BWT64(unsigned char *T, saidx64_t *SA, unsigned char *bwt, saidx64_t len);
-		 BitMap *CreateWaveletTree(unsigned char *bwt, i64 n);
-		 BitMap *FullFillWTNode(unsigned char *bwt, i64 len, int level);
+	//	 BitMap *CreateWaveletTree(unsigned char *bwt, i64 n,);
+		 BitMap *CreateWaveletTree(unsigned char *bwt, i64 n,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE]);
+		// BitMap *FullFillWTNode(unsigned char *bwt, i64 len, int level);
+		 BitMap * FullFillWTNode(unsigned char * buff,i64 len,int level,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE]);//ct = codetable
 		 int DestroyWaveletTree();
 		 int blog(int);
 		 unsigned char *Getfile(const char *filename);
 		 //unsigned char *Getfile(const char *filenam,int part,int pos);
 		 int SaveNodePosition(BitMap *, u32, savekit &);
 		 int SaveNodeData(BitMap *, savekit &s);
-		 int SaveWTTree(savekit &s);
-		 int LoadWTTree(loadkit &s, uchar **tables = NULL);
+		 int SaveWTTree(savekit &s,BitMap* r);
+		 BitMap* LoadWTTree(loadkit &s,int alphabetsize,uchar **tables = NULL);
 
 		 int TreeNodeCount(BitMap *root);
 

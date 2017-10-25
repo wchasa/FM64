@@ -60,7 +60,8 @@ int main(int argc, char *argv[])
 		  stime = clock();
 		  csa = new FM_NAME(argv[1]);
 		  etime = clock();
-		  csa->save(StrLineFM);}  
+		  csa->save(StrLineFM);
+		}  
 	  
 	  fp = fopen(argv[1],"r+");
 	  fseek(fp,0,SEEK_END);
@@ -97,7 +98,7 @@ int main(int argc, char *argv[])
         //str = "GAGGAGCTAAGAGAGCATTT";
 		//cout<<"Patten:"<<str;
 		num = 0;
-		i64 *pos = csa->locating_parrel(str.c_str(), num);
+		i64 *pos = csa->locating(str.c_str(), num);
 		quick_sort(pos,0,num-1);
 		//i64 *pos = csa->locating(str.c_str(), num);		int i = strtxt.find(str);
 		int p = 0;

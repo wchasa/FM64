@@ -12,7 +12,7 @@ echo "本次运行时间： "$((end_seconds-start_seconds))"s"
 echo "----------------------------"
 starttime=`date +'%Y-%m-%d %H:%M:%S'`
 #执行程序\
-./my_fm /home/wch/testfile/world193 test 1123 
+./my_fm /home/wch/testfile/bible cx 11223 
 endtime=`date +'%Y-%m-%d %H:%M:%S'`
 start_seconds=$(date --date="$starttime" +%s);
 end_seconds=$(date --date="$endtime" +%s)
