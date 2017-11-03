@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 	  char StrLineFM[1024]; 
 	  strcpy(StrLineFM,argv[1]);
 	  csa = NULL;
-	  FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
+	  FILE *fh = fopen(strcat(StrLineFM, ".fmnsp"), "r");
 	  csa = new FM_NAME();
 	  if(argc == 5)
 	  if(csa->load(StrLineFM,atoi(argv[4]))==0){
