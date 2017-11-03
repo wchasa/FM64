@@ -52,8 +52,7 @@ the Free Software Foundation; either version 2 or later of the License.
 class FM
 {
 	public:
-	//	FM(const char * filename,int speedlevel=1);
-		FM(const char * filename,int speedlevel=1,int part=1,int pos=0);
+		FM(const char * filename,int speedlevel=1);
 		FM();
 		~FM(){};
 		FM(const FM & h):wt(h.wt){}
@@ -67,7 +66,6 @@ class FM
 		i64 * locating(const char *pattern,i64 & num);
 		i64 * locating_parrel(const char *pattern,i64 & num);
 		i64 * locating_pool(const char *pattern,i64 & num){return NULL;};
-		//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap);
 		unsigned char * extracting(i64 pos,i64 len);
 		unsigned char * extracting_parrel(i64 pos,i64 len);
 		int load(const char * indexfile);
@@ -88,47 +86,9 @@ class FM
 		double compressRatioForLocate();
 		vector<i64> GetHittimes(){return wt.GetHittimes();};
 		void Lookupall();
-		WT_Handle wt;
+		//WT_Handle wt;
 		int part;
 	private:
-		//WT_Handle wt;
+		WT_Handle wt;
 };
-/*
-class FM_M
-{
-public:
-    FM_M(){};
-   // FM();
-    FM_M(const char * filename,int frag = 4 ,int speedlevel=1);
-	int part;
-    vector<FM> fm;
-	//ThreadPool pool;	
-	//vector<i64> counting(const char *pattern,i64 &num);
-	vector<tuple<i64,i64>> counting(const char *pattern,i64 &num);
-	void counting_parrel(const char *pattern,i64 &num);
-	void counting_pool(const char *pattern,i64 &num);//
-	i64 * locating(const char *pattern,i64 & num);
-	i64 * locating_parrel(const char *pattern,i64 & num);
-	i64* locating_pool(const char * pattern,i64 & num);
-	//void  GetMaps(Map<i64,i64> &bwtmap,Map<i64,i64> &runsmap);
-	unsigned char * extracting(i64 pos,i64 len){return 0;};
-	unsigned char * extracting_parrel(i64 pos,i64 len){return 0;};
-	int load(const char * indexfile,int part=3);
-	int save(const char * indexfile);
-	i64 getN(){return 0;};
-	void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix){};
-	int getAlphabetSize(){return 0;};//
-	i64 sizeInByte(){return 0;};
-	i64 sizeInByteForCount(){return 0;};
-	i64 sizeInByteForExtract(){return 0;};
-	i64 sizeInByteForLocate(){return 0;};
-	double compressRatio(){return 0;};
-	double compressRatioForCount(){return 0;};
-	double compressRatioForExtract(){return 0;};
-	double compressRatioForLocate(){return 0;};
-	i64 Lookup(i64 startpos,vector<tuple<i64,i64>> v_i64,i64& piece);//startpos is the kth postion
-	vector<i64> GetHittimes(){vector<i64> v;return v;};
-};
-
-*/
 #endif

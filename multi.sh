@@ -3,7 +3,7 @@ i=0
 while [ $i -lt 1 ]; do
     seed=$(date +%s+%N)
     starttime=`date +'%Y-%m-%d %H:%M:%S'`
-   # ./my_fm_m /home/wch/testfile/influenza bx 123 4
+./my_fm /home/wch/testfile/sources cx 11223 
 #timer./my_fm /home/wch/testfile/influenza cx 123 8
 endtime=`date +'%Y-%m-%d %H:%M:%S'`
 start_seconds=$(date --date="$starttime" +%s);
