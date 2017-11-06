@@ -669,7 +669,7 @@ unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 }
 
 int flag=0;
-/*
+
 i64 ABS_FM::Lookup(i64 i)
 {
 	//cout<<i<<"++"<<endl;
@@ -694,7 +694,8 @@ i64 ABS_FM::Lookup(i64 i)
 	//cout<<ori_i<<",step:"<<step<<",SAL Pos："<<i*D<<","<<(SAL->GetValue(i)+step)%n<<endl;
 	//cout<<(SAL->GetValue(i)+step)%n<<endl;
 	return (SAL->GetValue(i)+step)%n;
-}*/
+}
+ /*
 i64 ABS_FM::Lookup(i64 i)
 {
 	int step = 0;
@@ -717,6 +718,7 @@ i64 ABS_FM::Lookup(i64 i)
 	//cout<<(SAL->GetValue(i)+step)%n<<endl;
 	return (SAL->GetValue(rank-1)*(this->D)+step)%n;
 }
+*/
 int flag2 =0;
 //返回L串中c字符在位置pos_left 和pos_right之前出现的次数，结果由rank_left 和rank_right带回.
 void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
@@ -1074,6 +1076,29 @@ void ABS_FM::SASample(saidx64_t* SA)
 	cout<<"posroot->Rank(100,tpos),"<<posroot->Rank(100,tpos)<<","<<tpos<<endl;
 */
 }
+void quick_sort(saidx64_t *s, i64 l, i64 r)
+{
+    if (l < r)
+    {
+	//Swap(s[l], s[(l + r) / 2]); //将中间的这个数和第一个数交换 参见注1
+	i64 i = l, j = r, x = s[l];
+	while (i < j)
+	{
+	    while (i < j && s[j] >= x) // 从右向左找第一个小于x的数
+		j--;
+	    if (i < j)
+		s[i++] = s[j];
+
+	    while (i < j && s[i] < x) // 从左向右找第一个大于等于x的数
+		i++;
+	    if (i < j)
+		s[j--] = s[i];
+	}
+	s[i] = x;
+	quick_sort(s, l, i - 1); // 递归调用
+	quick_sort(s, i + 1, r);
+    }
+}
 int ABS_FM::BuildTree(int speedlevel)
 {
 	saidx64_t* SA = new saidx64_t[n];
@@ -1081,22 +1106,48 @@ int ABS_FM::BuildTree(int speedlevel)
 	//for(i64 i = 0;i<n;i++)
 	//	SA[i] = n-i;
 	divsufsort64(T,SA,n);
+	
+
 	//SA和Rank数组的采样
 	int step1 =this->D;	
 	int step2 =this->D*16;
 	int datewidth = log2(n)+1;
 	
 	RankL=new InArray(n/step2+1,datewidth);//rank sample
-	SASample(SA);
+	//SASample(SA);
 	i64 i=0;
 	i64 j=0;
 	/*SAL=new InArray(n/step1+1,datewidth);//SA sample
+	
 	for(i=0,j=0;i<n;i=i+step1,j++)
 		{
 			SAL->SetValue(j,SA[i]);
 			cout<<SA[i]<<endl;
 		}*/
+//--------------------------------------------
 
+	saidx64_t* SAL = new saidx64_t[n/step1+1];
+	for(i=0,j=0;i<n;i=i+step1,j++)
+	{
+		SAL[j]=SA[i];
+	//	cout<<SA[i]<<endl;
+	}
+	quick_sort(SAL,0,n/step1+1);
+	i64 cc[1024];
+	memset(cc,0,1024*sizeof(i64));
+	//cout<<SAL[0]<<endl;
+	for(int i = 1;i<n/step1+1;i++)
+	{
+		//cout<<SAL[i]<<endl;
+		cc[SAL[i]-SAL[i-1]]++;
+	}
+	for(int i=0;i<1024;i++)
+	{
+		if(cc[i]!=0)
+		cout<<i<<"."<<cc[i]<<endl;
+	}
+	
+	//--------------------------------------------
 
 	for(i=0;i<n;i++)
 	{

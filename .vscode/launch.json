@@ -7,7 +7,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/my_fm",
-            "args": ["/home/wch/testfile/book2","cx","123"],
+            "args": ["/home/wch/testfile/book1","cx","123","64"],
           //  "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
           //  "environment": [],

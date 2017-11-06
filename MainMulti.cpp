@@ -78,11 +78,12 @@ int main(int argc, char *argv[])
             csa->save(StrLineFM);}  
             */  
     //if(argc == 4)
-        if(csa->load(StrLineFM)==0){
+        //if(csa->load(StrLineFM)==0)
+        {
             stime = clock();
             csa = new FM(argv[1]);
             etime = clock();
-            csa->save(StrLineFM);
+          //  csa->save(StrLineFM);
         }    
     tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
     cout << argv[1] << endl;
