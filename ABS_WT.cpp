@@ -669,7 +669,7 @@ unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 }
 
 int flag=0;
-/*
+
 i64 ABS_FM::Lookup(i64 i)
 {
 	//cout<<i<<"++"<<endl;
@@ -694,7 +694,8 @@ i64 ABS_FM::Lookup(i64 i)
 	//cout<<ori_i<<",step:"<<step<<",SAL Pos："<<i*D<<","<<(SAL->GetValue(i)+step)%n<<endl;
 	//cout<<(SAL->GetValue(i)+step)%n<<endl;
 	return (SAL->GetValue(i)+step)%n;
-}*/
+}
+/*
 i64 ABS_FM::Lookup(i64 i)
 {
 	int step = 0;
@@ -716,7 +717,7 @@ i64 ABS_FM::Lookup(i64 i)
 	//cout<<ori_i<<",step:"<<step<<",SAL Pos："<<i*D<<","<<(SAL->GetValue(i)+step)%n<<endl;
 	//cout<<(SAL->GetValue(i)+step)%n<<endl;
 	return (SAL->GetValue(rank-1)*(this->D)+step)%n;
-}
+}*/
 int flag2 =0;
 //返回L串中c字符在位置pos_left 和pos_right之前出现的次数，结果由rank_left 和rank_right带回.
 void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
@@ -1087,15 +1088,15 @@ int ABS_FM::BuildTree(int speedlevel)
 	int datewidth = log2(n)+1;
 	
 	RankL=new InArray(n/step2+1,datewidth);//rank sample
-	SASample(SA);
+	//SASample(SA);
 	i64 i=0;
 	i64 j=0;
-	/*SAL=new InArray(n/step1+1,datewidth);//SA sample
+	SAL=new InArray(n/step1+1,datewidth);//SA sample
 	for(i=0,j=0;i<n;i=i+step1,j++)
 		{
 			SAL->SetValue(j,SA[i]);
 			cout<<SA[i]<<endl;
-		}*/
+		}
 
 
 	for(i=0;i<n;i++)
