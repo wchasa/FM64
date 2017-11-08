@@ -8,7 +8,7 @@
 #include<iomanip>
 #include <string>
 using namespace std;
-#define MAX 200
+#define MAX 1000
 #define PATTENLEN 20
 void usage();
 void helpbuild();
@@ -44,24 +44,18 @@ int main(int argc, char *argv[])
 	  string patten = "ABBA";
 	  FILE *fp,*fp_result,*fp2;
 	  FM_NAME *csa = NULL;
-	  char StrLineFM[1024]; 
+	  char StrLineFM[1024];
 	  strcpy(StrLineFM,argv[1]);
 	  csa = NULL;
-	  FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
+	  FILE *fh = fopen(strcat(StrLineFM, ".fmnsp"), "r");
 	  csa = new FM_NAME();
-	  if(argc == 5)
-	  if(csa->load(StrLineFM,atoi(argv[4]))==0){
-		  stime = clock();
-		  csa = new FM_NAME(argv[1],atoi(argv[4]));
-		  etime = clock();
-		  csa->save(StrLineFM);}    
-  	  if(argc == 4)
-	  if(csa->load(StrLineFM,3)==0){
+	  if(csa->load(StrLineFM)==0){
 		  stime = clock();
 		  csa = new FM_NAME(argv[1]);
 		  etime = clock();
-		  csa->save(StrLineFM);}  
-	  
+		  csa->save(StrLineFM);
+		}
+
 	  fp = fopen(argv[1],"r+");
 	  fseek(fp,0,SEEK_END);
 	  i64 n = ftell(fp)+1;
@@ -91,13 +85,13 @@ int main(int argc, char *argv[])
 		fseek(fp2, randarray[i2] % (n), SEEK_SET);
 		//fseek(fp2, n/3-i2, SEEK_SET);
 		fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-		
+
 		string str((char*)searchT);
 //		str = "n unto the house of";
         //str = "GAGGAGCTAAGAGAGCATTT";
 		//cout<<"Patten:"<<str;
 		num = 0;
-		i64 *pos = csa->locating_parrel(str.c_str(), num);
+		i64 *pos = csa->locating(str.c_str(), num);
 		quick_sort(pos,0,num-1);
 		//i64 *pos = csa->locating(str.c_str(), num);		int i = strtxt.find(str);
 		int p = 0;
@@ -127,13 +121,13 @@ int main(int argc, char *argv[])
 			//else
 			//cout<<";";
 		}
-		
+
 		cout<<endl;
 		cout<<"-----------------------"<<endl;*/
 		int stringFind=0;
 		int i = strtxt.find(str);
         while(i>= 0)
-        {	
+        {
 			stringFind++;
 			//cout<<i;
 			//p++;

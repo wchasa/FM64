@@ -8,11 +8,11 @@
 #include <iostream>
 #include <string.h>
 #include <vector>
-#include <stdio.h> 
+#include <stdio.h>
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 1
+#define MAX 1000
 #define PATTENLEN 20
 #define PATTENLEN2 2
 void usage();
@@ -50,8 +50,6 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
-    using FM_NAME = FM;
-  //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
 		fprintf(stderr, "Usage: ./my_fm <file> <speedlevel>");
@@ -66,25 +64,26 @@ int main(int argc, char *argv[])
     string path,path2;
     string patten = "ABBA";
     FILE *fp,*fp_result;
-    FM_NAME *csa = NULL;
-    char StrLineFM[1024]; 
+    FM *csa = NULL;
+    char StrLineFM[1024];
     strcpy(StrLineFM,argv[1]);
     csa = NULL;
-    FILE *fh = fopen(strcat(StrLineFM, ".fmfull"), "r");
-    csa = new FM_NAME();
+    FILE *fh = fopen(strcat(StrLineFM, ".fmnsp"), "r");
+    csa = new FM();
    /* if(argc == 5)
         if(csa->load(StrLineFM,atoi(argv[4]))==0){
             stime = clock();
-            csa = new FM_NAME(argv[1],atoi(argv[4]));
+            csa = new FM(argv[1],atoi(argv[4]));
             etime = clock();
-            csa->save(StrLineFM);}  
-            */  
+            csa->save(StrLineFM);}
+            */
     //if(argc == 4)
         if(csa->load(StrLineFM)==0){
             stime = clock();
-            csa = new FM_NAME(argv[1]);
+            csa = new FM(argv[1]);
             etime = clock();
-            csa->save(StrLineFM);}    
+            csa->save(StrLineFM);
+        }
     tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
     cout << argv[1] << endl;
     //cout <<"build time:"<< tcost << "sec" << endl;
@@ -216,7 +215,7 @@ int main(int argc, char *argv[])
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             if(argc == 5)
                 num = atoi(argv[4]);
-            else 
+            else
                 num = 100;
             i64 *pos = csa->locating((const char *)searchT, num);
             delete []pos;
@@ -237,7 +236,7 @@ int main(int argc, char *argv[])
              st1.finish();
             // cout << "extracting:" << st1.value() / MAX / 1000 << "ms" << endl;
         }
-   
+
       delete csa;
       csa = NULL;
       fclose(fp2);
@@ -246,7 +245,7 @@ int main(int argc, char *argv[])
       searchT = NULL;
       randarray = NULL;
      //  cout << "--------------------------------------------------------------------" << endl;
-   
+
    // fclose(fp);
     return 0;
 }
