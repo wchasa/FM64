@@ -164,7 +164,7 @@ i64 ABS_FM::SizeOfpart(BitMap * r,string str)
 		size = size + r->SizeInblock();
 	else if(str =="style")
 		size = size + r->SizeIncodesytle();
-	else if(str =="code")	
+	else if(str =="code")
 		size = size + r->SizeInMemory();
 }
 void MapMerge(map<i64,i64> &map1,map<i64,i64> map2)
@@ -190,7 +190,7 @@ map<i64,i64> ABS_FM::MergeBitMapRuns(BitMap *r)
 		MapMerge(mapresult,MergeBitMapRuns(r->Right()));
     MapMerge(mapresult,r->mapruns);
 	return mapresult;
-		
+
 }
 map<i64,i64> ABS_FM::MergeBitnodeRuns(BitMap *r)
 {
@@ -201,7 +201,7 @@ map<i64,i64> ABS_FM::MergeBitnodeRuns(BitMap *r)
 		MapMerge(mapresult,MergeBitMapRuns(r->Right()));
     MapMerge(mapresult,r->noteruns);
 	return mapresult;
-		
+
 }
 //test
 int flag3=0;
@@ -341,7 +341,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 		{
 			 v_threads.emplace_back([=,&v_i64,&posindex]
 				{
-				
+
 				vector<i64> v_i64temp;
 				//cout<<"start:"<<Left+num / numberOfthread * i + (modvalue > i ? i : modvalue)<<",end"<<Left+num / numberOfthread * i + (modvalue > i ? i : modvalue)+(num / numberOfthread) + (modvalue > i ? 1 : 0);
 				Lookup(Left+num / numberOfthread * i + (modvalue > i ? i : modvalue),Left+num / numberOfthread * i + (modvalue > i ? i : modvalue)+(num / numberOfthread) + (modvalue > i ? 1 : 0),v_i64temp);
@@ -365,7 +365,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 			for(int j = 0 ;j < v_i64[i].size();j++)
 				pos[pospos++] = v_i64[i][j];
 	}
-	
+
 
 	return pos;
 }
@@ -404,7 +404,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 		vector<i64> v_i64;
 		modvalue = num % numberOfthread;
         ThreadPool pool(4);
-		cout<<"---------------------";    
+		cout<<"---------------------";
 		std::vector< std::future<i64> > results;
 		for(int i = 0 ;i<num;i++)
 		{
@@ -444,15 +444,15 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 				pos[pos123++] = v_i64[i];
 			}
 		}
-		
+
 	}
-	
+
 	return pos;
 }*/
 i64 ABS_FM::LookupALL(i64 startpos)
 {
 	vector<i64> v_i64;
-	v_i64.reserve( startpos+1); 
+	v_i64.reserve( startpos+1);
 	for(i64 i = 0;i<startpos;i++){
 		v_i64.emplace_back(Lookup(i));
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -462,7 +462,7 @@ i64 ABS_FM::LookupALL(i64 startpos)
 }
 void ABS_FM::Lookup(i64 startpos,i64 endpos,vector<i64>& v_i64)
 {
-	v_i64.reserve(endpos - startpos+1); 
+	v_i64.reserve(endpos - startpos+1);
 	for(i64 i = startpos;i<endpos;i++){
 		v_i64.emplace_back(Lookup(i));
 		cout<<i<<"++"<<Lookup(i)<<endl;
@@ -490,7 +490,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 	#pragma omp parallel for schedule (dynamic)
 	for (int i = 0; i < num; i++)
 		pos[i] = Lookup(Left + i);
-	return pos ; 
+	return pos ;
 }*/
 /*创建了新的进程，开销较大*/
 i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
@@ -506,7 +506,7 @@ i64 * ABS_FM::Locating_parrel(const char * pattern,i64 &num)
 		return NULL;
 	}
 	num = Right - Left + 1;
-	
+
 	i64 *pos =new i64[num];
 	//numberOfthread = 1;
 	numberOfthread = (num>>7)+1>10?10:((num>>7))+1;
@@ -620,7 +620,7 @@ unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
 				temp = NULL;
 				exit(0);
 			}
-		
+
 		}
 		int st1;
 		for (int i = 0; i < numberOfthread; i++)
@@ -1005,7 +1005,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 		else
 			code[i]=-1;
 	}
-	
+
 	return T;
 }*/
 
@@ -1034,7 +1034,7 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 }
 void ABS_FM::SASample(saidx64_t* SA)
 {
-	int step1 =this->D;	
+	int step1 =this->D;
 	//int step2 =this->D*16;
 	int datewidth = log2(n/step1)+1;
 	SAL=new InArray(n/step1+1,datewidth);//SA sample
@@ -1051,8 +1051,8 @@ void ABS_FM::SASample(saidx64_t* SA)
 			pos[i] = '1';
 			//cout<<i<<endl;
 		}
-		else 
-			pos[i] = '0'; 
+		else
+			pos[i] = '0';
 	}
 	//cout<<"SASample end"<<endl;
 	char ct[CHAR_SET_SIZE][CHAR_SET_SIZE];
@@ -1083,10 +1083,10 @@ int ABS_FM::BuildTree(int speedlevel)
 	//	SA[i] = n-i;
 	divsufsort64(T,SA,n);
 	//SA和Rank数组的采样
-	int step1 =this->D;	
+	int step1 =this->D;
 	int step2 =this->D*16;
 	int datewidth = log2(n)+1;
-	
+
 	RankL=new InArray(n/step2+1,datewidth);//rank sample
 	//SASample(SA);
 	i64 i=0;
@@ -1095,7 +1095,6 @@ int ABS_FM::BuildTree(int speedlevel)
 	for(i=0,j=0;i<n;i=i+step1,j++)
 		{
 			SAL->SetValue(j,SA[i]);
-			cout<<SA[i]<<endl;
 		}
 
 
@@ -1348,7 +1347,7 @@ int ABS_FM::blog(int x)
 {
 	int ans=0;
 	while(x>0)
-	{	
+	{
 		ans++;
 		x=(x>>1);
 	}
@@ -1494,7 +1493,7 @@ BitMap* ABS_FM::LoadWTTree(loadkit &s,int alphabetsize,uchar **tables)
 int ABS_FM::Load(loadkit &s)
 {
 	//s.loadi32(this->n);
-	
+
 	s.loadi64(this->n);
 	s.loadi32(this->alphabetsize);
 	s.loadi32(this->D);
@@ -1552,7 +1551,7 @@ int ABS_FM::Load(loadkit &s)
 	Inittable();
 	uchar * par[2]={Z,R};
 	//cout<<"cs"<<endl;
-	this->posroot=LoadWTTree(s,2,par);
+//	this->posroot=LoadWTTree(s,2,par);
 	this->root = LoadWTTree(s,alphabetsize,par);
 //	cout<<"835"<<endl;
 	T=NULL;
@@ -1608,7 +1607,7 @@ int ABS_FM::Save(savekit &s)
 	RankL->write(s);
 	//for WT tree
 //	cout<<"SaveWTTree"<<endl;
-	SaveWTTree(s,posroot);
+//	SaveWTTree(s,posroot);
 	SaveWTTree(s,this->root);
 	return 0;
 }

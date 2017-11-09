@@ -12,7 +12,7 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 1
+#define MAX 1000
 #define PATTENLEN 20
 #define PATTENLEN2 2
 void usage();
