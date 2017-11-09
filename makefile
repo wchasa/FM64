@@ -1,8 +1,11 @@
 CC=g++ -pg -std=gnu++11
-#CFLAGS=-O0 -g -Wall -fcilkplus -fopenmp
-CFLAGS=-O3 -Wall -fcilkplus -fopenmp
+CFLAGS=-O0 -g -Wall -fcilkplus -fopenmp
+#CFLAGS=-O3 -Wall -fcilkplus -fopenmp
 my_fm:div Main.o fm.a
 	$(CC)  $(CFLAGS) Main.o fm.a   -o my_fm -lpthread
+
+fenbu:div Mainfenbu.o fm.a
+	$(CC)  $(CFLAGS) Mainfenbu.o fm.a   -o my_fm -lpthread
 
 mult:div MainMulti.o fm.a
 	$(CC)  $(CFLAGS) MainMulti.o fm.a   -o my_fm -lpthread 
@@ -53,8 +56,11 @@ MainMulti_count.o:MainMulti_count.cpp  FM.h
 MainSpeedtest.o:MainSpeedtest.cpp  FM.h
 	$(CC)  $(CFLAGS) -c  MainSpeedtest.cpp
 
- MainSpeed.o:MainSpeed.cpp  FM.h
+MainSpeed.o:MainSpeed.cpp  FM.h
 	$(CC)  $(CFLAGS) -c  MainSpeed.cpp
+
+Mainfenbu.o:Mainfenbu.cpp  FM.h
+	$(CC)  $(CFLAGS) -c  Mainfenbu.cpp
 
 MainMulti.o:MainMulti.cpp  FM.h
 	$(CC)  $(CFLAGS) -c  MainMulti.cpp
