@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string.h>
 #include <vector>
-#include <stdio.h> 
+#include <stdio.h>
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
@@ -67,16 +67,16 @@ int main(int argc, char *argv[])
     string patten = "ABBA";
     FILE *fp,*fp_result;
     FM *csa = NULL;
-    char StrLineFM[1024]; 
+    char StrLineFM[1024];
     strcpy(StrLineFM,argv[1]);
     csa = NULL;
     if(argc == 5)
     {
 
-        FILE *fh = fopen(strcat(strcat(StrLineFM,".fmnsp"),argv[4]), "r");
+        FILE *fh = fopen(strcat(strcat(StrLineFM,".fmosp"),argv[4]), "r");
     }
     else if(argc == 4)
-        FILE *fh = fopen(strcat(StrLineFM, ".fmnsp"), "r");
+        FILE *fh = fopen(strcat(StrLineFM, ".fmosp"), "r");
 
     cout<<"FileName:"<<StrLineFM<<endl;
     csa = new FM();
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         csa = new FM(argv[1],atoi(argv[4])/2);
         etime = clock();
         csa->save(StrLineFM);
-    }    
+    }
         tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
     cout << argv[1] << endl;
     //cout <<"build time:"<< tcost << "sec" << endl;
@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             if(argc == 5)
                 num = atoi(argv[4]);
-            else 
+            else
                 num = 100;
             i64 *pos = csa->locating((const char *)searchT, num);
             delete []pos;
@@ -238,7 +238,7 @@ int main(int argc, char *argv[])
              st1.finish();
             // cout << "extracting:" << st1.value() / MAX / 1000 << "ms" << endl;
         }
-   
+
       delete csa;
       csa = NULL;
       fclose(fp2);
@@ -247,7 +247,7 @@ int main(int argc, char *argv[])
       searchT = NULL;
       randarray = NULL;
      //  cout << "--------------------------------------------------------------------" << endl;
-   
+
    // fclose(fp);
     return 0;
 }

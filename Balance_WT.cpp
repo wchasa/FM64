@@ -7,7 +7,7 @@ This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 or later of the License.
 #
-# Description: 
+# Description:
 =============================================*/
 #include"Balance_WT.h"
 int Balance_FM::TreeCode()
@@ -19,7 +19,7 @@ int Balance_FM::TreeCode()
 		cout<<"CreateBalanceTree failed"<<endl;
 		exit(0);
 	}
-	
+
 	int ret = GenerateBalCode(balTree);
 	if(ret < 0)
 	{
@@ -51,11 +51,11 @@ balanceTree Balance_FM::CreateBalanceTree()
 	}
 	if(root->setSize == 1)
 	{
-		//single char set 
+		//single char set
 		root->label = root->set[0];
 		return root;
 	}
-	
+
 	ret = RecurseCreate(root);
 	if(ret < 0)
 	{
@@ -91,7 +91,7 @@ int Balance_FM::RecurseCreate(balanceTree root)
 		cout<<"Balance_FM::recurseCreate:  Malloc failed"<<endl;
 		exit(0);
 	}
-	
+
 	balNode_t *rightNode =(balNode_t *)malloc(sizeof(balNode_t));
 	if(!rightNode)
 	{
@@ -108,10 +108,10 @@ int Balance_FM::RecurseCreate(balanceTree root)
 	int i=0;
 	for(i=0; i < leftNode->setSize; i++)
 		leftNode->set[i] = root->set[i];
-	
+
 	for(i=0; i < rightNode->setSize; i++)
 		rightNode->set[i] =root->set[i + root->setSize/2];
-	
+
 	root->leftChild = leftNode;
 	root->rightChild= rightNode;
 
@@ -150,7 +150,7 @@ int Balance_FM::GenerateBalCode(balanceTree tree)
 {
 	memset(codeTable,0,CHAR_SET_SIZE*CODE_MAX_LEN);
 	int ret=0;
-	
+
 	if(tree -> leftChild == NULL && tree -> rightChild == NULL)
 		ret = SigCharBalCode(tree);
 	else

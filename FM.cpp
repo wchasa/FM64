@@ -21,7 +21,7 @@ i64 FM::getN(){
 }
 
 int FM::getAlphabetSize(){
-	return wt.GetAlphabetsize();
+		return wt.GetAlphabetsize();
 }
 
 i64 FM::sizeInByte()
