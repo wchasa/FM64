@@ -27,6 +27,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include <sys/types.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <algorithm>
 #include<string.h>
 #include"BitMap.h"	
 #include"InArray.h"
@@ -40,17 +41,21 @@ the Free Software Foundation; either version 2 or later of the License.
 #include <pthread.h>
 #include "ThreadPool.h"
 #include <omp.h>
+#include <tuple>
 using namespace std;
 //#include"divsufsort_private.h"
 class ABS_FM
 {
 	public:
+        vector<i64> posToSample;
+        vector<string> v_random;
 		//D:SA数组采样步长,Rank采样步长D*16
 		ABS_FM(const char * filename,int block_size=256,int D=16);
 		ABS_FM(){};
 		virtual ~ABS_FM();
 		void Counting(const char * partten,i64 &num);
 		i64 * Locating(const char * pattern,i64 &num);
+        i64 * Locating(const char * pattern,i64 &num,saidx64_t* sa);
 		i64 * Locating_parrel(const char * pattern,i64 &num);
 		unsigned char* Extracting(i64 pos,i64 len);
 		unsigned char *Extracting_parrel(i64 pos, i64 len);
@@ -69,6 +74,7 @@ class ABS_FM
 		BitMap *GetRoot();
 		unsigned char * bwt;
 		void SASample(saidx64_t* SA);
+        void SASamplenew(saidx64_t* SA);
 	//test
 		 i64 SizeOfpart(BitMap * r,string str);
 		 map<i64,i64> BWTruns;
@@ -82,6 +88,7 @@ class ABS_FM
 		 i64 sizeOfSAL();
 		 i64 sizeOfRankL();
 		 i64 Lookup(i64 i);
+         i64 Lookup(i64 i,saidx64_t* SA);
 		 vector<i64> GetHittimes(){return v_hittimes;};
 		 //void ABS_FM::MapMerge(map<i64, i64> &map1, map<i64, i64> map2);
 		 //test

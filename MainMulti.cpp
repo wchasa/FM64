@@ -50,9 +50,11 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
+  //  using FM = FM;
+  //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
-		fprintf(stderr, "Usage: ./my_fm <file> <speedlevel>");
+		fprintf(stderr, "Usage: ./my_fm <file> <cx/bx> <randomseed> <option samplerate>");
 		exit(EXIT_FAILURE);
 	}
     timer st1,st2;
@@ -65,26 +67,26 @@ int main(int argc, char *argv[])
     string patten = "ABBA";
     FILE *fp,*fp_result;
     FM *csa = NULL;
-    char StrLineFM[1024];
+    char StrLineFM[1024]; 
     strcpy(StrLineFM,argv[1]);
     csa = NULL;
-    FILE *fh = fopen(strcat(StrLineFM, ".fmnsp"), "r");
+    if(argc == 5)
+    {
+
+        FILE *fh = fopen(strcat(strcat(StrLineFM,".fmnsp"),argv[4]), "r");
+    }
+    else if(argc == 4)
+        FILE *fh = fopen(strcat(StrLineFM, ".fmnsp"), "r");
+
+    cout<<"FileName:"<<StrLineFM<<endl;
     csa = new FM();
-   /* if(argc == 5)
-        if(csa->load(StrLineFM,atoi(argv[4]))==0){
-            stime = clock();
-            csa = new FM(argv[1],atoi(argv[4]));
-            etime = clock();
-            csa->save(StrLineFM);}
-            */
-    //if(argc == 4)
-        if(csa->load(StrLineFM)==0){
-            stime = clock();
-            csa = new FM(argv[1]);
-            etime = clock();
-            csa->save(StrLineFM);
-        }
-    tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
+    if(csa->load(StrLineFM)==0){
+        stime = clock();
+        csa = new FM(argv[1],atoi(argv[4])/2);
+        etime = clock();
+        csa->save(StrLineFM);
+    }    
+        tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
     cout << argv[1] << endl;
     //cout <<"build time:"<< tcost << "sec" << endl;
     //cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;

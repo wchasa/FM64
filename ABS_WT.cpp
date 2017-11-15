@@ -50,7 +50,7 @@ i64 GammaDecode(u64 * buff,i64 & index,ABS_FM * t)
 	int runs = Zeros(x>>16,t);
 	int bits = (runs<<1)+1;
 	index = index + bits;
-	return x>>(32-bits);
+ 	return x>>(32-bits);
 }
 
 
@@ -59,7 +59,6 @@ ABS_FM::ABS_FM(const char * filename,int block_size,int D)
 	this->block_size = block_size;
 	this->D =D*2;
 	cout<<"samplerate:"<<this->D<<endl;
-    cout<<"getfile"<<endl;
 	this->T=NULL;
 	T = Getfile(filename);
 	Inittable();
@@ -279,8 +278,24 @@ void ABS_FM::Counting(const char * pattern,i64 & num)
 	else
 		num = Right -Left +1;
 }
-
-
+i64 * ABS_FM::Locating(const char * pattern,i64 &num,saidx64_t* sa)
+{
+	i64 Left=1;
+	i64 Right = 0;
+	DrawBackSearch(pattern,Left,Right);
+	//cout<<"Left:"<<Left<<endl<<"Right:"<<Right<<endl;
+	if(Right < Left )
+	{
+		num=0;
+		return NULL;
+	}
+	num = Right - Left + 1;
+	i64 *pos =new i64[num];
+	for(int i=0;i<num;i++)
+		//pos[i]=Lookup(Left + i);
+		pos[i]=Lookup(Left+ i,sa);
+	return pos;
+}
 i64 * ABS_FM::Locating(const char * pattern,i64 &num)
 {
 	i64 Left=1;
@@ -670,32 +685,36 @@ unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 }
 
 int flag=0;
-/*
-i64 ABS_FM::Lookup(i64 i)
+
+// i64 ABS_FM::Lookup(i64 i)
+// {
+// 	//cout<<i<<"++"<<endl;
+// 	//if(v_hittimes.size()==0){
+// 	//	v_hittimes.insert(v_hittimes.begin(),n,0);
+// //	}
+// 	int ori_i = i;
+// 	//cout<<"i:"<<i;
+// 	int step = 0;
+// 	int D = this->D;
+// 	while(i%D!=0)
+// 	{
+// 	//	v_hittimes[i]++;
+// 		i=LF(i);
+// 		step =step +1;
+// 	//	cout<<",i:"<<i<<endl;
+// 	}
+// 	//cout<<",step:"<<step<<endl;
+// 	i=i/D;
+// 	//std::this_thread::sleep_for(std::chrono::milliseconds(10));
+// 	//if(i*D==418880)
+// 	//cout<<ori_i<<",step:"<<step<<",SAL Pos："<<i*D<<","<<(SAL->GetValue(i)+step)%n<<endl;
+// 	//cout<<(SAL->GetValue(i)+step)%n<<endl;
+// 	return (SAL->GetValue(i)+step)%n;
+// }
+i64 ABS_FM::Lookup(i64 i,saidx64_t* SA)
 {
-	//cout<<i<<"++"<<endl;
-	//if(v_hittimes.size()==0){
-	//	v_hittimes.insert(v_hittimes.begin(),n,0);
-//	}
-	int ori_i = i;
-	//cout<<"i:"<<i;
-	int step = 0;
-	int D = this->D;
-	while(i%D!=0)
-	{
-	//	v_hittimes[i]++;
-		i=LF(i);
-		step =step +1;
-	//	cout<<",i:"<<i<<endl;
-	}
-	//cout<<",step:"<<step<<endl;
-	i=i/D;
-	//std::this_thread::sleep_for(std::chrono::milliseconds(10));
-	//if(i*D==418880)
-	//cout<<ori_i<<",step:"<<step<<",SAL Pos："<<i*D<<","<<(SAL->GetValue(i)+step)%n<<endl;
-	//cout<<(SAL->GetValue(i)+step)%n<<endl;
-	return (SAL->GetValue(i)+step)%n;
-}*/
+	return (SA[i])%n;
+}
 i64 ABS_FM::Lookup(i64 i)
 {
 	int step = 0;
@@ -716,7 +735,7 @@ i64 ABS_FM::Lookup(i64 i)
 	//if(i*D==418880)
 	//cout<<ori_i<<",step:"<<step<<",SAL Pos："<<i*D<<","<<(SAL->GetValue(i)+step)%n<<endl;
 	//cout<<(SAL->GetValue(i)+step)%n<<endl;
-	return (SAL->GetValue(rank-1)*(this->D)+step)%n;
+	return (SAL->GetValue(rank-1)+step)%n;
 }
 int flag2 =0;
 //返回L串中c字符在位置pos_left 和pos_right之前出现的次数，结果由rank_left 和rank_right带回.
@@ -891,6 +910,8 @@ i64 ABS_FM::Occ(i64 & occ , unsigned char & label,i64 pos)
 	label = r->Label();
 	return 0;
 }
+
+extern int* generateRandom(int count,int seed);
 extern int length;
 //read filedate into T and cal Cumulative Frequency sum(C)
 unsigned char * ABS_FM::Getfile(const char *filename)
@@ -904,15 +925,23 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	}
 	fseeko(fp,0,SEEK_END);
 	n = ftello(fp)+1;
-	//n = n>READSIZE?READSIZE:n;
-	//n=n/2;
-//	length = n;
 	unsigned char * T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
 	int num=0;
 	num = fread(T,sizeof(uchar),n,fp);
 	T[n-1]=0;
+    int randcount =n/1000>1000?n/1000:1000;
+    int* randarray =  generateRandom(randcount,123);
+    unsigned char * searchT = new unsigned char[1024];
+    for(int i = 0;i<randcount;i++)
+    {
+        fseek(fp, randarray[i] % (n), SEEK_SET);
+        fread(searchT, sizeof(unsigned char), PATTENLEN, fp);
+        string strtxt((char*)searchT);
+        v_random.push_back(strtxt);
+
+    }
 	fclose(fp);
 	memset(charFreq,0,256*sizeof(i64));
 	memset(charMap,0,256*sizeof(bool));
@@ -997,7 +1026,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	{
 		if(charFreq[i]!=0)
 		{
-			code[i]=k-1;
+			code[i]=k-1;/
 			C[k]=pre + charFreq[i];
 			pre = C[k];
 			k++;
@@ -1021,6 +1050,7 @@ int ABS_FM::BWT(unsigned char *T,int * SA,unsigned char * bwt,int len)
 	return 0;
 }
 //WCH BWT64
+extern void quick_sort(i64 *s, i64 l, i64 r);
 int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t len)
 {
 	saidx64_t i=0;
@@ -1032,29 +1062,45 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 	}
 	return 0;
 }
-void ABS_FM::SASample(saidx64_t* SA)
+
+ void ABS_FM::SASample(saidx64_t* SA)
 {
 	int step1 =this->D;
-	//int step2 =this->D*16;
-	int datewidth = log2(n/step1)+1;
-	SAL=new InArray(n/step1+1,datewidth);//SA sample
-	SALPos = new InArray(n/step1+1,1);
 	unsigned char *pos = new unsigned char[n];
-	//for(i=0,j=0;i<n;i=i+step1,j++)
-	//	SAL->SetValue(j,SA[i]);
-	int j = 0 ;
-	//cout<<"SASample start"<<endl;
-	for(int i = 0 ;i<n;i++)
+	vector<i64> v_pos;
+	std::sort(posToSample.begin(),posToSample.end());
+    int prediv = 0;
+	for(int i = 0 ;i<posToSample.size();i++)
 	{
-		if(SA[i]%step1 == 0){
-			SAL->SetValue(j++,SA[i]/step1);
+        int currdiv = posToSample[i]/step1;
+		if(currdiv!=prediv)
+            cout<<"------------------------------------"<<endl;
+        cout<<posToSample[i]<<endl;
+        cout<<"******"<<posToSample[i]%64<<endl;
+        prediv = currdiv;
+	}
+	for(int i = 0;i<n;i++)
+	{
+		if(( SA[i]%step1 == 0  ||std::binary_search(posToSample.begin(),posToSample.end(),SA[i]))/* &&cc<sizeofSAL */){
+			v_pos.push_back(SA[i]);
 			pos[i] = '1';
-			//cout<<i<<endl;
 		}
 		else
 			pos[i] = '0';
 	}
-	//cout<<"SASample end"<<endl;
+	int datewidth = log2(n)+1;
+	int sizeofSAL = n/step1+1;
+	cout<<"sizeofsal:"<<sizeofSAL<<",sizeoftosample:"<<v_pos.size()<<endl;
+	SAL=new InArray(v_pos.size(),datewidth);//SA sample
+	SALPos = new InArray(v_pos.size(),1);
+	//for(i=0,j=0;i<n;i=i+step1,j++)
+	//	SAL->SetValue(j,SA[i]);
+	//int j = 0 ;
+	//cout<<"SASample start"<<endl;
+	for(int i = 0;i<v_pos.size();i++)
+	{
+		SAL->SetValue(i,v_pos[i]);
+	}
 	char ct[CHAR_SET_SIZE][CHAR_SET_SIZE];
 	memset(ct,0,sizeof(ct));
 	ct['1'][0] = '1';
@@ -1064,40 +1110,70 @@ void ABS_FM::SASample(saidx64_t* SA)
 	//ct['1'][1] = '1';
 	posroot = CreateWaveletTree(pos,n,ct);
 	int tpos ;
-	//cout<<"SA[1520]:"<<SA[1520]<<endl;
 	delete [] pos;
-	/*cout<<"posroot->Rank(58,tpos),"<<posroot->Rank(58,tpos)<<","<<endl<<tpos<<endl;
-	cout<<"posroot->Rank(60,tpos),"<<posroot->Rank(60,tpos)<<","<<tpos<<endl;
-	cout<<"posroot->Rank(93,tpos),"<<posroot->Rank(93,tpos)<<","<<tpos<<endl;
-	cout<<"posroot->Rank(70,tpos),"<<posroot->Rank(70,tpos)<<","<<tpos<<endl;
-	cout<<"posroot->Rank(80,tpos),"<<posroot->Rank(80,tpos)<<","<<tpos<<endl;
-	cout<<"posroot->Rank(90,tpos),"<<posroot->Rank(90,tpos)<<","<<tpos<<endl;
-	cout<<"posroot->Rank(100,tpos),"<<posroot->Rank(100,tpos)<<","<<tpos<<endl;
-*/
 }
+
+
+void ABS_FM::SASamplenew(saidx64_t* SA)
+{
+ //   int* randarray =  generateRandom(MAX,seed);
+	i64 num = 0;
+    vector<std::tuple<i64,i64>> v_pattern;
+    for(int i = 0;i<v_random.size();i++){
+	Counting(v_random[i].c_str(),num);
+	v_pattern.push_back(tuple<i64,i64>(i,num));
+    }
+	sort(v_pattern.begin(), v_pattern.end(),
+            [](const tuple<i64,i64>& a, const tuple<i64,i64>& b)
+            {
+                return std::get<1>(a) > std::get<1>(b);
+			});
+	// int total = 0;
+/* 	for(int i = 0 ;i<5;i++){
+		cout << std::get<0>(v_pattern[i] )<< ","<<v_random[std::get<0>(v_pattern[i])]<<"," << std::get<1>(v_pattern[i]) << endl;
+		//total += std::get<1>(v_pattern[i]);
+	} */
+	i64 salcount = n/this->D/9;
+	int patternIndex=0;
+	while(salcount>0&&patternIndex<v_pattern.size())
+	{
+		//cout<<"pattern:"<<v_random[std::get<0>(v_pattern[patternIndex])]<<endl;
+		i64 *pos = Locating((const char *)(v_random[std::get<0>(v_pattern[patternIndex])]).c_str(), num,SA);
+
+		//quick_sort(pos,0,num-1); 
+		for(int i =0;(i<num)&&(salcount>0);i++,salcount--){
+			posToSample.push_back(pos[i]);
+		}
+		patternIndex++;
+	}
+	sort(posToSample.begin(),posToSample.end());
+	SASample(SA);
+/* 	for(int i = 0;i<n;i++){
+		//cout<<setw(20)<<posToSample[i]<<","<<setw(20)<<posToSample[i]-posToSample[i-1]<<endl;
+
+	} */
+ }
+
 int ABS_FM::BuildTree(int speedlevel)
 {
 	saidx64_t* SA = new saidx64_t[n];
 	//int *SA = new int[n];
 	//for(i64 i = 0;i<n;i++)
-	//	SA[i] = n-i;
 	divsufsort64(T,SA,n);
 	//SA和Rank数组的采样
 	int step1 =this->D;
 	int step2 =this->D*16;
 	int datewidth = log2(n)+1;
-
+	//SASample(SA);
 	RankL=new InArray(n/step2+1,datewidth);//rank sample
-	SASample(SA);
 	i64 i=0;
 	i64 j=0;
-	/*SAL=new InArray(n/step1+1,datewidth);//SA sample
-	for(i=0,j=0;i<n;i=i+step1,j++)
-		{
-			SAL->SetValue(j,SA[i]);
-			cout<<SA[i]<<endl;
-		}*/
-
+	// SAL=new InArray(n/step1+1,datewidth);//SA sample
+	// for(i=0,j=0;i<n;i=i+step1,j++)
+	// 	{
+	// 		SAL->SetValue(j,SA[i]);
+	// 		cout<<SA[i]<<endl;
+	// 	}
 
 	for(i=0;i<n;i++)
 	{
@@ -1146,7 +1222,7 @@ int ABS_FM::BuildTree(int speedlevel)
 	TreeCode();
 	root=CreateWaveletTree(bwt,n,codeTable);
 //	cout<<"CreatWaveletTree"<<endl;
-
+	SASamplenew(SA);
 	//Test_L();
 	//Test_Occ();
 	//Test_Shape(root);
@@ -1226,8 +1302,9 @@ void ABS_FM::Test_L()
 		if(bwt[i]!=L(i))
 		{
 			cout<<bwt[i]<<" "<<L(i)<<" "<<i<<endl;
-			mis++;;
+			mis++;
 		}
+
 	}
 	cout<<"mis: "<<mis<<endl;
 }
@@ -1236,7 +1313,6 @@ void ABS_FM::Test_L()
 BitMap * ABS_FM::CreateWaveletTree(unsigned char * bwt,i64 n,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE])
 {
 	BitMap * root = NULL;
-
 	root = FullFillWTNode(bwt,n,0,ctable);
 	if(!root)
 	{

@@ -23,10 +23,6 @@
         "iomanip": "cpp",
         "sstream": "cpp",
         "istream": "cpp",
-<<<<<<< HEAD
         "limits": "cpp"
-=======
-        "fstream": "cpp"
->>>>>>> ed76dd4daf0a4274033cc7613d9bd7c33906bc22
     }
 }
