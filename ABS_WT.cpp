@@ -67,7 +67,7 @@ ABS_FM::ABS_FM(const char * filename,int block_size,int D)
 
 ABS_FM::~ABS_FM()
 {
-	DestroyWaveletTree();
+        DestroyWaveletTree();
 	if(T)
 		delete [] T;
 	if(bwt)
@@ -928,7 +928,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	unsigned char * T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
-	int num=0;
+    int num=0;
 	num = fread(T,sizeof(uchar),n,fp);
 	T[n-1]=0;
     int randcount =n/1000>1000?n/1000:1000;
@@ -1063,25 +1063,69 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 	return 0;
 }
 
+vector<i64> ABS_FM::preprogress(vector<i64> postosample)
+{
+    //int step  =this->D;
+    //for(int i =postosample.size()-1;i>=1;i--){
+        //if((postosample[i]/step==postosample[i-1]/step)&&
+           //( (postosample[i]/step-postosample[i-1]/step < step/2)||
+             //postosample[i]%step<step/10
+            //))
+        //{
+            //postosample[i] = -1;
+        //}
+    //}
+    int prediv = 0;
+    int step1 = this->D;
+    vector<tuple<i64,i64>> v_inpos;
+    cout<<"postpsamplesize:"<<postosample.size()<<endl;
+    for(int i = 0 ;i<postosample.size();i++)
+    {
+        int currdiv = posToSample[i]/step1;
+        if(currdiv!=prediv){//shows the div is all in v_inpos
+            cout<<i<<"---------------"<<currdiv*step1 <<"---------------------"<<endl;
+        }
+        cout<<postosample[i]<<endl;
+        cout<<"******"<<postosample[i]%step1<<endl;
+        v_inpos.push_back(make_tuple(i,postosample[i]%step1));
+        prediv = currdiv;
+    }
+    return postosample;
+}
+//{
+    //int prediv = 0;
+    //int step1 = this->D;
+    //vector<tuple<i64,i64>> v_inpos;
+    //cout<<"postpsamplesize:"<<postosample.size()<<endl;
+    //for(int i = 0 ;i<postosample.size();i++)
+    //{
+        //int currdiv = posToSample[i]/step1;
+        //if(currdiv!=prediv){//shows the div is all in v_inpos
+            ////cout<<i<<"---------------"<<currdiv*step1 <<"---------------------"<<endl;
+            //for(int j = postosample.size();j<1;j++){
+                
+            //}
+            //if
+            //v_inpos.clear();
+        //}
+        ////cout<<postosample[i]<<endl;
+        ////cout<<"******"<<postosample[i]%64<<endl;
+        //v_inpos.push_back(make_tuple(i,postosample[i]%64));
+        //prediv = currdiv;
+    //}
+    //return postosample;
+//}
+
  void ABS_FM::SASample(saidx64_t* SA)
 {
 	int step1 =this->D;
 	unsigned char *pos = new unsigned char[n];
 	vector<i64> v_pos;
 	std::sort(posToSample.begin(),posToSample.end());
-    int prediv = 0;
-	for(int i = 0 ;i<posToSample.size();i++)
-	{
-        int currdiv = posToSample[i]/step1;
-		if(currdiv!=prediv)
-            cout<<"------------------------------------"<<endl;
-        cout<<posToSample[i]<<endl;
-        cout<<"******"<<posToSample[i]%64<<endl;
-        prediv = currdiv;
-	}
+	vector<i64> v_inPos;
 	for(int i = 0;i<n;i++)
 	{
-		if(( SA[i]%step1 == 0  ||std::binary_search(posToSample.begin(),posToSample.end(),SA[i]))/* &&cc<sizeofSAL */){
+		if(( SA[i]%step1 == 0  ||std::binary_search(posToSample.begin(),posToSample.end(),SA[i]))){
 			v_pos.push_back(SA[i]);
 			pos[i] = '1';
 		}
@@ -1105,12 +1149,9 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 	memset(ct,0,sizeof(ct));
 	ct['1'][0] = '1';
 	ct['0'][0] = '0';
-	//ct['0'][0] = '1';
-	//ct['0'][1] = '0';
-	//ct['1'][1] = '1';
 	posroot = CreateWaveletTree(pos,n,ct);
 	int tpos ;
-	delete [] pos;
+delete [] pos;
 }
 
 
@@ -1129,17 +1170,13 @@ void ABS_FM::SASamplenew(saidx64_t* SA)
                 return std::get<1>(a) > std::get<1>(b);
 			});
 	// int total = 0;
-/* 	for(int i = 0 ;i<5;i++){
-		cout << std::get<0>(v_pattern[i] )<< ","<<v_random[std::get<0>(v_pattern[i])]<<"," << std::get<1>(v_pattern[i]) << endl;
-		//total += std::get<1>(v_pattern[i]);
-	} */
-	i64 salcount = n/this->D/9;
+	i64 salcount = n/this->D/4;
 	int patternIndex=0;
 	while(salcount>0&&patternIndex<v_pattern.size())
 	{
-		//cout<<"pattern:"<<v_random[std::get<0>(v_pattern[patternIndex])]<<endl;
+		//cout<<"patternInSASample:"<<v_random[std::get<0>(v_pattern[patternIndex])]<<","<<get<1>(v_pattern[patternIndex])<<endl;
 		i64 *pos = Locating((const char *)(v_random[std::get<0>(v_pattern[patternIndex])]).c_str(), num,SA);
-
+        
 		//quick_sort(pos,0,num-1); 
 		for(int i =0;(i<num)&&(salcount>0);i++,salcount--){
 			posToSample.push_back(pos[i]);
@@ -1147,6 +1184,7 @@ void ABS_FM::SASamplenew(saidx64_t* SA)
 		patternIndex++;
 	}
 	sort(posToSample.begin(),posToSample.end());
+    preprogress(posToSample);
 	SASample(SA);
 /* 	for(int i = 0;i<n;i++){
 		//cout<<setw(20)<<posToSample[i]<<","<<setw(20)<<posToSample[i]-posToSample[i-1]<<endl;
@@ -1156,7 +1194,7 @@ void ABS_FM::SASamplenew(saidx64_t* SA)
 
 int ABS_FM::BuildTree(int speedlevel)
 {
-	saidx64_t* SA = new saidx64_t[n];
+        saidx64_t* SA = new saidx64_t[n];
 	//int *SA = new int[n];
 	//for(i64 i = 0;i<n;i++)
 	divsufsort64(T,SA,n);
@@ -1218,21 +1256,13 @@ int ABS_FM::BuildTree(int speedlevel)
 	else
 		block_size=block_size*4;
 
-//	cout<<"block_size: "<<block_size<<endl;
 	TreeCode();
 	root=CreateWaveletTree(bwt,n,codeTable);
-//	cout<<"CreatWaveletTree"<<endl;
 	SASamplenew(SA);
 	//Test_L();
 	//Test_Occ();
 	//Test_Shape(root);
 
-//	delete [] T;
-//	T=NULL;
-//	delete [] SA;
-//	SA=NULL;
-//	delete[] bwt;
-//	bwt=NULL;
 
 	return 0;
 }
@@ -1518,9 +1548,6 @@ BitMap* ABS_FM::LoadWTTree(loadkit &s,int alphabetsize,uchar **tables)
 {
 	//读取数据，map的int域对应该节点的位置
 	int nodecount = 2*alphabetsize -1;
-
-//	cout<<alphabetsize<<endl;
-//	s.loadi32(nodecount);
 	int * p = new int[nodecount];
 	s.loadi32array(p,nodecount);
 	map<int,BitMap * > pmap;
@@ -1551,7 +1578,6 @@ BitMap* ABS_FM::LoadWTTree(loadkit &s,int alphabetsize,uchar **tables)
 		else
 			iter->second->Right(NULL);
 	}
-//	cout<<"767"<<endl;
 	f_iter = pmap.find(1);
 	if(f_iter !=pmap.end())
 		root = f_iter->second;
@@ -1563,8 +1589,6 @@ BitMap* ABS_FM::LoadWTTree(loadkit &s,int alphabetsize,uchar **tables)
 	}
 	delete [] p;
 	p = NULL;
-//	cout<<"778"<<endl;
-	return root;
 }
 
 int ABS_FM::Load(loadkit &s)
@@ -1630,7 +1654,6 @@ int ABS_FM::Load(loadkit &s)
 	//cout<<"cs"<<endl;
 	this->posroot=LoadWTTree(s,2,par);
 	this->root = LoadWTTree(s,alphabetsize,par);
-//	cout<<"835"<<endl;
 	T=NULL;
 	bwt=NULL;
 	return 0;
@@ -1683,7 +1706,6 @@ int ABS_FM::Save(savekit &s)
 	//for RankL
 	RankL->write(s);
 	//for WT tree
-//	cout<<"SaveWTTree"<<endl;
 	SaveWTTree(s,posroot);
 	SaveWTTree(s,this->root);
 	return 0;

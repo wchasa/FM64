@@ -90,6 +90,7 @@ class ABS_FM
 		 i64 Lookup(i64 i);
          i64 Lookup(i64 i,saidx64_t* SA);
 		 vector<i64> GetHittimes(){return v_hittimes;};
+         vector<i64> preprogress(vector<i64> postosample);
 		 //void ABS_FM::MapMerge(map<i64, i64> &map1, map<i64, i64> map2);
 		 //test
 	protected:

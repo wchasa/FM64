@@ -1,6 +1,6 @@
 //wch
 #include <stdlib.h>
-#include<iomanip>
+#include <iomanip>
 #include <string.h>
 #include "FM.h"
 #include <ctime>
@@ -72,17 +72,19 @@ int main(int argc, char *argv[])
     csa = NULL;
     if(argc == 5)
     {
-
-        FILE *fh = fopen(strcat(strcat(StrLineFM,".fmnsp"),argv[4]), "r");
+        FILE *fh = fopen(strcat(strcat(StrLineFM,".fmnnsp"),argv[4]), "r");
     }
     else if(argc == 4)
-        FILE *fh = fopen(strcat(StrLineFM, ".fmnsp"), "r");
+        FILE *fh = fopen(strcat(StrLineFM, ".fmnnsp"), "r");
 
     cout<<"FileName:"<<StrLineFM<<endl;
     csa = new FM();
     if(csa->load(StrLineFM)==0){
         stime = clock();
-        csa = new FM(argv[1],atoi(argv[4])/2);
+        if(argc ==5)
+            csa = new FM(argv[1],atoi(argv[4])/2);
+        else
+            csa = new FM(argv[1]);
         etime = clock();
         csa->save(StrLineFM);
     }    
@@ -90,7 +92,7 @@ int main(int argc, char *argv[])
     cout << argv[1] << endl;
     //cout <<"build time:"<< tcost << "sec" << endl;
     //cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;
-    cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatio()<<endl ;
+   // cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatio()<<endl ;
     int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
     int seed = atoi(argv[3]);
     csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
@@ -198,6 +200,7 @@ int main(int argc, char *argv[])
         cout << "extracting_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
     }
     if(strcmp(argv[2],"cx")==0){
+        i64 totalcount = 0;
         st1.start();
         cout<<length<<endl;
         for (int i2 = 0; i2 < MAX; i2++)
@@ -207,7 +210,10 @@ int main(int argc, char *argv[])
             i64 i ;
             num = 0;
             csa->counting((const char *)searchT,num);
+            totalcount+=num;
+           //cout<<"Pattern:"<<searchT<<",count:"<<num<<endl;
         }
+ //       cout<<"totalnum:"<<totalcount<<endl;
         st1.finish();
         cout << "count:" << st1.value()/MAX/1000<<"ms"<<endl;
         st1.start();
