@@ -951,9 +951,11 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	for(i32 i=0;i<256;i++)
 		if(charFreq[i])
 		{
+            cout<<i<<","<<(unsigned char)i<<","<<charFreq[i]<<endl;
 			this->alphabetsize++;
 			this->charMap[i]=true;
 		}
+    exit(1);
 	this->code = new short[256];
 	this->C = new i64[alphabetsize+1];
 	memset(C,0,(alphabetsize+1)*4);
