@@ -47,6 +47,7 @@ using namespace std;
 class ABS_FM
 {
 	public:
+        void PrePocess();
         vector<i64> posToSample;
         vector<string> v_random;
 		//D:SA数组采样步长,Rank采样步长D*16
