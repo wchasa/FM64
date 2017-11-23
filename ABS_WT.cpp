@@ -1062,7 +1062,57 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 	}
 	return 0;
 }
+void ABS_FM::PrePocess()
+{
+    int step = this->D;
+    int count = 0;
+    //sort(posToSample.begin(),posToSample.end());
+    cout<<"posToSample_pre:"<<posToSample.size();
+    i64 p= posToSample.size();
+    for(int i = p-1;i>0;i--){
+        if(posToSample[i]-1 == posToSample[i-1])
+            posToSample.erase(posToSample.begin()+i);
+        //if(posToSample[i]/step == posToSample[i-1]/step) {
+            //count =posToSample[i]-posToSample[i-1] ;
+            //if(count<step/2){
+               //posToSample.erase(posToSample.begin()+i);
+            //}
+            //else{
+                //count = 0;
+                //continue;
+            //}
 
+            //if(posToSample[i]%step<step/10){
+                //posToSample.erase(posToSample.begin()+i);
+            //}
+            //if(posToSample[i]/step-posToSample[i-1]/step < step/2){
+                //posToSample.erase(posToSample.begin()+i);
+            //}
+         //}
+    }
+
+    cout<<"posToSample_aft:"<<posToSample.size()<<endl;
+    //for(int i =posToSample.size()-1;i>=1;i--){
+        //if(posToSample[i]/step == posToSample[i-1]/step) {
+            //count =posToSample[i]-posToSample[i-1] ;
+            //if(count<step/2){
+                //posToSample[i] =0 ;
+            //}
+            //else{
+                //count = 0;
+                //continue;
+            //}
+
+            //if(posToSample[i]%step<step/10){
+                //posToSample[i] = 0;
+            //}
+            //if(posToSample[i]/step-posToSample[i-1]/step < step/2){
+                //posToSample[i] = 0;
+            //}
+         //}
+    //}
+    
+}
  void ABS_FM::SASample(saidx64_t* SA)
 {
 	int step1 =this->D;
@@ -1070,15 +1120,15 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 	vector<i64> v_pos;
 	std::sort(posToSample.begin(),posToSample.end());
     int prediv = 0;
-	for(int i = 0 ;i<posToSample.size();i++)
-	{
-        int currdiv = posToSample[i]/step1;
-		if(currdiv!=prediv)
-            cout<<"------------------------------------"<<endl;
-        cout<<posToSample[i]<<endl;
-        cout<<"******"<<posToSample[i]%64<<endl;
-        prediv = currdiv;
-	}
+	//for(int i = 0 ;i<posToSample.size();i++)
+	//{
+        //int currdiv = posToSample[i]/step1;
+		//if(currdiv!=prediv)
+            //cout<<"------------------------------------"<<endl;
+        //cout<<posToSample[i]<<endl;
+        //cout<<"******"<<posToSample[i]%64<<endl;
+        //prediv = currdiv;
+	//}
 	for(int i = 0;i<n;i++)
 	{
 		if(( SA[i]%step1 == 0  ||std::binary_search(posToSample.begin(),posToSample.end(),SA[i]))/* &&cc<sizeofSAL */){
@@ -1147,6 +1197,7 @@ void ABS_FM::SASamplenew(saidx64_t* SA)
 		patternIndex++;
 	}
 	sort(posToSample.begin(),posToSample.end());
+    PrePocess();
 	SASample(SA);
 /* 	for(int i = 0;i<n;i++){
 		//cout<<setw(20)<<posToSample[i]<<","<<setw(20)<<posToSample[i]-posToSample[i-1]<<endl;
@@ -1592,7 +1643,7 @@ int ABS_FM::Load(loadkit &s)
 		uchar len=0;
 		s.loadu8(len);
 		if(len!=0)
-		{
+        {
 			int bytes = len%8?len/8+1:len/8;
 			uchar * bits = new uchar[bytes];
 			s.loadu8array(bits,bytes);

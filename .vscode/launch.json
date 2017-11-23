@@ -7,7 +7,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/my_fm",
-            "args": ["/home/wch/testfile/proteins.100MB","cx","123"],
+            "args": ["/home/wch/testfile/bible","cx","123"],
           //  "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
           //  "environment": [],

@@ -47,6 +47,7 @@ using namespace std;
 class ABS_FM
 {
 	public:
+        void PrePocess();
         vector<i64> posToSample;
         vector<string> v_random;
 		//D:SA数组采样步长,Rank采样步长D*16
@@ -90,6 +91,7 @@ class ABS_FM
 		 i64 Lookup(i64 i);
          i64 Lookup(i64 i,saidx64_t* SA);
 		 vector<i64> GetHittimes(){return v_hittimes;};
+         void preprogress();
 		 //void ABS_FM::MapMerge(map<i64, i64> &map1, map<i64, i64> map2);
 		 //test
 	protected:

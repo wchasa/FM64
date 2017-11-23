@@ -1,7 +1,7 @@
 *.a
 *.o
-*.txt
 *.pdf
+*.txt
 *.fm*
 bible
 core
