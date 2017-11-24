@@ -30,6 +30,7 @@ void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 int* generateRandom(int count,int seed);
 int length = 100;
+int countLF= 0;
 struct timer{
     public:
     struct timeval begin, end;
@@ -90,7 +91,7 @@ int main(int argc, char *argv[])
     cout << argv[1] << endl;
     //cout <<"build time:"<< tcost << "sec" << endl;
     //cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;
-    cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatio()<<endl ;
+    //cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatio()<<endl ;
     int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
     int seed = atoi(argv[3]);
     csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
@@ -199,7 +200,7 @@ int main(int argc, char *argv[])
     }
     if(strcmp(argv[2],"cx")==0){
         st1.start();
-        cout<<length<<endl;
+        //cout<<length<<endl;
         for (int i2 = 0; i2 < MAX; i2++)
         {
             fseek(fp2, randarray[i2] % (n), SEEK_SET);
@@ -224,6 +225,7 @@ int main(int argc, char *argv[])
             pos = NULL;
         }
              st1.finish();
+             cout<<"countLF:"<<countLF<<endl;
              cout << "locating:" << st1.value()/MAX/1000<<"ms"<<endl;
              st1.start();
              for (int i2 = 0; i2 < MAX; i2++)

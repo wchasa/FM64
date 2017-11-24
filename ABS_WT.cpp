@@ -669,7 +669,7 @@ unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 }
 
 int flag=0;
-
+extern int countLF;
 i64 ABS_FM::Lookup(i64 i)
 {
 	//cout<<i<<"++"<<endl;
@@ -693,6 +693,7 @@ i64 ABS_FM::Lookup(i64 i)
 	//if(i*D==418880)
 	//cout<<ori_i<<",step:"<<step<<",SAL Pos："<<i*D<<","<<(SAL->GetValue(i)+step)%n<<endl;
 	//cout<<(SAL->GetValue(i)+step)%n<<endl;
+    countLF += step;
 	return (SAL->GetValue(i)+step)%n;
 }
 /*
