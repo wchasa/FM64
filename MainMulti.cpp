@@ -12,7 +12,7 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 1000
+//#define MAX 1000
 #define PATTENLEN 20
 #define PATTENLEN2 2
 void usage();
@@ -50,11 +50,14 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
+    int MAX =1000;
+    if(argc==6)
+        MAX = atoi(argv[5]);
   //  using FM = FM;
   //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
-		fprintf(stderr, "Usage: ./my_fm <file> <cx/bx> <randomseed> <option samplerate>");
+		fprintf(stderr, "Usage: ./my_fm <file> <cx/bx> <randomseed> <option samplerate>,<run times>");
 		exit(EXIT_FAILURE);
 	}
     timer st1,st2;
@@ -70,9 +73,8 @@ int main(int argc, char *argv[])
     char StrLineFM[1024]; 
     strcpy(StrLineFM,argv[1]);
     csa = NULL;
-    if(argc == 5)
+    if(argc >= 5)
     {
-
         FILE *fh = fopen(strcat(strcat(StrLineFM,".fmnsp"),argv[4]), "r");
     }
     else if(argc == 4)
