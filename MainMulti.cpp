@@ -205,6 +205,7 @@ int main(int argc, char *argv[])
         cout<<length<<endl;
         for (int i2 = 0; i2 < MAX; i2++)
         {
+            
             fseek(fp2, randarray[i2] % (n), SEEK_SET);
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             i64 i ;
@@ -239,7 +240,7 @@ int main(int argc, char *argv[])
                //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
              }
              st1.finish();
-            // cout << "extracting:" << st1.value() / MAX / 1000 << "ms" << endl;
+            cout << "extracting:" << st1.value() / MAX / 1000 << "ms" << endl;
         }
 
       delete csa;
