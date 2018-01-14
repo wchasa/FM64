@@ -28,7 +28,7 @@ void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
-int* generateRandom(int count,int seed);
+i64* generateRandom(int count,int seed,i64 n);
 int length = 100;
 struct timer{
     public:
@@ -50,10 +50,12 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
+    int MAX =1000;
+    if(argc==6)
+        MAX = atoi(argv[5]);
   //  using FM = FM;
   //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
-    int MAX = 1000;
     if(argc==6)
         MAX = atoi(argv[5]);
 	if(argc < 3){
@@ -97,7 +99,6 @@ int main(int argc, char *argv[])
     int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
     int seed = atoi(argv[3]);
     csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
-    int* randarray =  generateRandom(MAX,seed);
     FILE *fp2;
     if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
     {
@@ -105,7 +106,8 @@ int main(int argc, char *argv[])
         return -1;
     }
     fseek(fp2, 0, SEEK_END);
-    int n = ftell(fp2) + 1;
+    i64 n = ftell(fp2) ;
+    i64* randarray =  generateRandom(MAX,seed,n);
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
@@ -255,14 +257,14 @@ int main(int argc, char *argv[])
    // fclose(fp);
     return 0;
 }
-int* generateRandom(int count,int seed)
+i64* generateRandom(int count,int seed,i64 n)
 {
-    int* result = new int[count];
+    i64* result = new i64[count];
     srand(unsigned(seed));
 
     for(int i = 0;i<count;i++)
     {
-        result[i] = rand();
+        result[i] = rand()%n;
     }
     return result;
 }
