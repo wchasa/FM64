@@ -51,13 +51,16 @@ struct timer{
 int main(int argc, char *argv[])
 {
     int MAX =1000;
-    if(argc==6)
+    int BLOCK = 256;
+    if(argc==7){
+        BLOCK = atoi(argv[6]);
         MAX = atoi(argv[5]);
+    }
   //  using FM = FM;
   //  i64 totalsize = 0;
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
-		fprintf(stderr, "Usage: ./my_fm <file> <cx/bx> <randomseed> <option samplerate>,<run times>");
+		fprintf(stderr, "Usage: ./my_fm <file> <cx/bx> <randomseed> <option samplerate>,<run times> <blocksize>");
 		exit(EXIT_FAILURE);
 	}
     timer st1,st2;
@@ -84,7 +87,9 @@ int main(int argc, char *argv[])
     csa = new FM();
     if(csa->load(StrLineFM)==0){
         stime = clock();
-        csa = new FM(argv[1],atoi(argv[4])/2);
+        cout<<"BLOCKSIZE:"<<BLOCK<<endl;
+        cout<<"RUNTIME:"<<MAX<<endl;
+        csa = new FM(argv[1],BLOCK,atoi(argv[4])/2);
         etime = clock();
         csa->save(StrLineFM);
     }    
