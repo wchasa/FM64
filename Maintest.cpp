@@ -8,11 +8,11 @@
 #include <iostream>
 #include <string.h>
 #include <vector>
-#include <stdio.h>
+#include <stdio.h> 
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-//#define MAX 1000
+#define MAX 1000
 #define PATTENLEN 20
 #define PATTENLEN2 2
 void usage();
@@ -28,7 +28,7 @@ void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
-i64* generateRandom(int count,int seed,i64 n);
+int* generateRandom(int count,int seed);
 int length = 100;
 struct timer{
     public:
@@ -50,19 +50,10 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
-    int MAX =1000;
-    int BLOCK = 256;
-    if(argc==7){
-        BLOCK = atoi(argv[6]);
-        MAX = atoi(argv[5]);
-    }
-  //  using FM = FM;
-  //  i64 totalsize = 0;
+
 	i64 sumRun = 0,bitLen =0;
-    if(argc==6)
-        MAX = atoi(argv[5]);
 	if(argc < 3){
-		fprintf(stderr, "Usage: ./my_fm <file> <cx/bx> <randomseed> <option samplerate>,<run times> <blocksize>");
+		fprintf(stderr, "Usage: ./my_fm <file><randomseed><suffix><BLOCK><runtimes>");
 		exit(EXIT_FAILURE);
 	}
     timer st1,st2;
@@ -72,31 +63,27 @@ int main(int argc, char *argv[])
     string command;
     string result[2];
     string path,path2;
-    string patten = "ABBA";
     FILE *fp,*fp_result;
     FM *csa = NULL;
-    char StrLineFM[1024];
+    char StrLineFM[1024]; 
     strcpy(StrLineFM,argv[1]);
     csa = NULL;
-    if(argc >= 5)
-    {
-
-        FILE *fh = fopen(strcat(strcat(StrLineFM,".fmosp"),argv[4]), "r");
-    }
-    else if(argc == 4)
-        FILE *fh = fopen(strcat(StrLineFM, ".fmosp"), "r");
-
-    cout<<"FileName:"<<StrLineFM<<endl;
+    FILE *fh = fopen(strcat(strcat(StrLineFM, argv[3]),argv[4],) "r");
     csa = new FM();
-    if(csa->load(StrLineFM)==0){
-        stime = clock();
-        cout<<"BLOCKSIZE:"<<BLOCK<<endl;
-        cout<<"RUNTIME:"<<MAX<<endl;
-        csa = new FM(argv[1],BLOCK,atoi(argv[4])/2);
-        etime = clock();
-        csa->save(StrLineFM);
-    }
-        tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
+    if(argc >= 5)
+        if(csa->load(StrLineFM,atoi(argv[4]))==0){
+            stime = clock();
+            csa = new FM(argv[1],atoi(argv[4]));
+            etime = clock();
+            csa->save(StrLineFM);}  
+    //if(argc == 4)
+        if(csa->load(StrLineFM)==0){
+            stime = clock();
+            csa = new FM(argv[1]);
+            etime = clock();
+            csa->save(StrLineFM);
+        }    
+    tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
     cout << argv[1] << endl;
     //cout <<"build time:"<< tcost << "sec" << endl;
     //cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;
@@ -104,6 +91,7 @@ int main(int argc, char *argv[])
     int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
     int seed = atoi(argv[3]);
     csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
+    int* randarray =  generateRandom(MAX,seed);
     FILE *fp2;
     if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
     {
@@ -111,8 +99,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     fseek(fp2, 0, SEEK_END);
-    i64 n = ftell(fp2) ;
-    i64* randarray =  generateRandom(MAX,seed,n);
+    int n = ftell(fp2) + 1;
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
@@ -212,7 +199,6 @@ int main(int argc, char *argv[])
         cout<<length<<endl;
         for (int i2 = 0; i2 < MAX; i2++)
         {
-            
             fseek(fp2, randarray[i2] % (n), SEEK_SET);
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             i64 i ;
@@ -228,7 +214,7 @@ int main(int argc, char *argv[])
             fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
             if(argc == 5)
                 num = atoi(argv[4]);
-            else
+            else 
                 num = 100;
             i64 *pos = csa->locating((const char *)searchT, num);
             delete []pos;
@@ -247,9 +233,9 @@ int main(int argc, char *argv[])
                //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
              }
              st1.finish();
-            cout << "extracting:" << st1.value() / MAX / 1000 << "ms" << endl;
+            // cout << "extracting:" << st1.value() / MAX / 1000 << "ms" << endl;
         }
-
+   
       delete csa;
       csa = NULL;
       fclose(fp2);
@@ -258,18 +244,18 @@ int main(int argc, char *argv[])
       searchT = NULL;
       randarray = NULL;
      //  cout << "--------------------------------------------------------------------" << endl;
-
+   
    // fclose(fp);
     return 0;
 }
-i64* generateRandom(int count,int seed,i64 n)
+int* generateRandom(int count,int seed)
 {
-    i64* result = new i64[count];
+    int* result = new int[count];
     srand(unsigned(seed));
 
     for(int i = 0;i<count;i++)
     {
-        result[i] = rand()%n;
+        result[i] = rand();
     }
     return result;
 }
