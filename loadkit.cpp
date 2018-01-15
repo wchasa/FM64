@@ -28,7 +28,7 @@ loadkit::loadkit(const char * file)
 	this->r=fopen(file,"rb");
 	if(r==NULL)
 	{
-		cout<<"Fopen error"<<endl;
+		cout<<"open loadfile error,check whether the file is exist"<<endl;
 		exit(0);
 	}
 }
