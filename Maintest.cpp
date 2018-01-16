@@ -50,12 +50,75 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
-
 	i64 sumRun = 0,bitLen =0;
 	if(argc < 3){
-		fprintf(stderr, "Usage: ./my_fm <file><randomseed><suffix><BLOCK><runtimes>");
+		fprintf(stderr, "Usage: ./my_fm <file><randomseed><suffix><runtimes>");
 		exit(EXIT_FAILURE);
 	}
+    FM *csa = NULL;
+    
+    auto RUNTIME    = argv[5];
+    auto SUFFIX     = argv[3];
+    auto RANDOMSEED = argv[2];
+    auto FILENAME   = argv[1];
+    
+    auto SUFFIX32  = strcat(argv[3],"32");
+    auto SUFFIX64  = strcat(argv[3],"64");
+    auto SUFFIX128 = strcat(argv[3],"126");
+    auto SUFFIX256 = strcat(argv[3],"256");
+    cout<<SUFFIX256<<endl;
+    FILE *fopen = fopen(FILENAME,"r");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    timer st1,st2;
+    double stime,etime,tcost;
+    int *pos;
+    i64 num = 0;
+    string command;
+    string result[2];
+    string path,path2;
+    FILE *fp,*fp_result;
+    FM *csa = NULL;
+    char StrLineFM[1024
+    auto RUNTIME    = argv[5];
+    auto SUFFIX     = argv[3];
+    auto RANDOMSEED = argv[2];
+    auto FILENAME   = argv[1];
+    
+    auto SUFFIX32  = strcat(argv[3],"32");
+    auto SUFFIX64  = strcat(argv[3],"64");
+    auto SUFFIX128 = strcat(argv[3],"126");
+    auto SUFFIX256 = strcat(argv[3],"256");
+    cout<<SUFFIX256<<endl;
+    FILE *fopen = fopen(FILENAME,"r");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     timer st1,st2;
     double stime,etime,tcost;
     int *pos;

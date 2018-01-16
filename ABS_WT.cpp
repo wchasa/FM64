@@ -58,7 +58,7 @@ ABS_FM::ABS_FM(const char * filename,int block_size,int D)
 {
 	this->block_size = block_size;
 	this->D =D*2;
-	cout<<"samplerate:"<<this->D<<endl;
+	//cout<<"samplerate:"<<this->D<<endl;
 	this->T=NULL;
 	T = Getfile(filename);
 	Inittable();
