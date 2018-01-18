@@ -1072,23 +1072,6 @@ void ABS_FM::PrePocess()
     for(int i = p-1;i>0;i--){
         if(posToSample[i]-1 == posToSample[i-1])
             posToSample.erase(posToSample.begin()+i);
-        //if(posToSample[i]/step == posToSample[i-1]/step) {
-            //count =posToSample[i]-posToSample[i-1] ;
-            //if(count<step/2){
-               //posToSample.erase(posToSample.begin()+i);
-            //}
-            //else{
-                //count = 0;
-                //continue;
-            //}
-
-            //if(posToSample[i]%step<step/10){
-                //posToSample.erase(posToSample.begin()+i);
-            //}
-            //if(posToSample[i]/step-posToSample[i-1]/step < step/2){
-                //posToSample.erase(posToSample.begin()+i);
-            //}
-         //}
     }
 
     cout<<"posToSample_aft:"<<posToSample.size()<<endl;
