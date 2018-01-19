@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         stime = clock();
         csa = new FM(argv[1],atoi(BLOCKSIZE),SAMPLERATE);//argvs are filename , blocksize,samplerate
         etime = clock();
-        csa->save(StrLineFM);
+        //csa->save(StrLineFM);
     }
     tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
     int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
         fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
         i64 i ;
         num = 0;
-        csa->counting((const char *)searchT,num);
+        //csa->counting((const char *)searchT,num);
     }
     st1.finish();
     cout <<setw(20)<< "count time = " <<st1.value()/MAX/1000<<"ms"<<endl;
@@ -121,17 +121,17 @@ int main(int argc, char *argv[])
             num = atoi(argv[4]);
         else
             num = 100;
-        i64 *pos = csa->locating((const char *)searchT, num);
-        delete []pos;
-        pos = NULL;
+        //i64 *pos = csa->locating((const char *)searchT, num);
+        //delete []pos;
+        //pos = NULL;
     }
     st1.finish();
     cout <<setw(20)<< "Locating time = " << st1.value()/MAX/1000<<"ms"<<endl;
     st1.start();
     for (int i2 = 0; i2 < MAX; i2++){
-        unsigned char *p = csa->extracting(randarray[i2] % ((length-PATTENLEN2)), PATTENLEN2);
-        delete []p;
-        p = NULL;
+        //unsigned char *p = csa->extracting(randarray[i2] % ((length-PATTENLEN2)), PATTENLEN2);
+        //delete []p;
+        //p = NULL;
     }
     st1.finish();
     cout <<setw(20)<< "extracting time = " << st1.value() / MAX / 1000 << "ms" << endl;
