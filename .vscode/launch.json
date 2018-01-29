@@ -7,7 +7,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/my_fm",
-            "args": ["/home/wch/testfile/bible100","123","32","100","128"],
+            "args": ["/home/wch/testfile/bible","123","32","100","128"],
           //  "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
           //  "environment": [],

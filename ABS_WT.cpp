@@ -653,6 +653,7 @@ unsigned char* ABS_FM::Extracting_parrel(i64 pos,i64 len)
 
 
 
+
 unsigned char* ABS_FM::Extracting(i64 pos,i64 len)
 {
 	if(pos + len > n-1 || pos <0)
@@ -925,7 +926,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	}
 	fseeko(fp,0,SEEK_END);
 	n = ftello(fp)+1;
-	n--;
+	// n--;
 	unsigned char * T = new unsigned char[n];
 	fseeko(fp,0,SEEK_SET);
 	int e=0;
@@ -978,7 +979,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 /*unsigned char * ABS_FM::Getfile(const char *filename,int part,int pos)
 {
 	FILE * fp = fopen(filename,"r+");
-	if(fp==NULL)
+	// if(fp==NULL)
 	{
 		cout<<"Be sure the file is available"<<endl;
 		exit(0);
@@ -1060,6 +1061,9 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 		index = (SA[i]-1+len)%len;
 		bwt[i]=T[index];
 	}
+	FILE* file = fopen("l.txt","w+");
+	fwrite(bwt,sizeof(char),len,file);
+	fclose(file);
 	return 0;
 }
 
@@ -1081,29 +1085,259 @@ inline bool ABS_FM::KposIsSame(unsigned char *T,saidx64_t pos1,saidx64_t pos2,in
 	return T[pos1+K] == T[pos2+K];
 }
 inline bool ABS_FM::KposNeedTOTarvser(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K){
-	return (KposIsSame(T,pos1,pos2,K)&& KposIsSame(T,pos1,pos2,K/2) )
+	return (KposIsSame(T,pos1,pos2,K)&& KposIsSame(T,pos1,pos2,K/2) );
 }
-
-vector< vector<saidx64_t> > ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx64_t len,int K)
+bool ABS_FM::KlenAllSame(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K)
 {
-	auto twolensamepattern = Findtwosamppatern(T,SA,fl,n);
-	for(auto i : twolensamepattern){
-		for(auto j = get<0>(i);j<get<1>(i);j++){
-
+	bool result = true;
+	for(int i = 0 ;i< K ;i++){
+		if(T[pos1+i]==T[pos2+i]){
+			continue;
+		}
+		else{
+			result = false;
+			break;
 		}
 	}
+
+	return result;
 }
-vector< tuple<saidx64_t,saidx64_t> > ABS_FM::Findtwosamppatern(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx64_t len)
+
+ vector<saidx64_t> ABS_FM::GetSamplePos(vector< tuple<saidx64_t,saidx64_t> > vecPos_len,saidx64_t* sa,saidx64_t len)
+{
+	// posToSample.clear();
+	vector<saidx64_t> result;
+	sort(vecPos_len.begin(), vecPos_len.end(),
+            [](const tuple<saidx64_t,saidx64_t> & a, const tuple<saidx64_t,saidx64_t> & b)
+            {
+                return std::get<1>(a) > std::get<1>(b);
+			});
+	saidx64_t totalsample = len/D/1000;
+	saidx64_t countsample = 0;
+	for(auto i = 0;i<vecPos_len.size();i++){
+		auto startIndex = get<0>(vecPos_len[i]);
+		auto LenIndex   = get<1>(vecPos_len[i]);
+		// printf("pos:%d,len:%d\n",startIndex,LenIndex);
+		for(int j =0;j<LenIndex;j++){
+			result.push_back(sa[startIndex+j]);
+			countsample++;
+		}
+		if(totalsample<countsample){
+			break;
+		}
+	}
+	return result;
+}
+
+
+//void ABS_FM::MarixIteration(saidx64_t* fl,vector<saidx64_t> martix,saidx64_t len)
+//{
+    
+//}
+
+
+vector< saidx64_t > 
+ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx64_t len,int K)
+{
+    //init array of length 2
+	auto findtwo = Findtwosamppatern(T,sa,fl,len);
+	
+	vector<char> vec_flag(len,-1);
+	vector<saidx64_t> vec_map(len,-1);
+	auto zz = 0;
+	for(auto i : findtwo){
+		zz++;
+		auto j = get<0>(i);
+		auto z = get<1>(i);
+		if(j+z>len)
+			cout<<"error"<<__LINE__<<endl;
+		while(z>0)
+		{
+			vec_flag[j] = zz;
+			vec_map[j]  = fl[j];
+			// printf("vec_map[%d]:%d|\n",j,fl[j]);
+			j++;
+			z--;
+		}
+	}
+	//loop
+	auto vec_cur = findtwo;
+	vector< tuple<saidx64_t,saidx64_t> > vec_result;
+	for(int i =0;i<10;i++){
+		// printf("*******************\n");
+		// printf("loop time:%d       *\n",i);
+		// printf("*******************\n");
+		for(auto j :vec_cur){
+			auto startIndex = get<0>(j);
+			auto Interlen   = get<1>(j);
+			auto re_startIndex=-1;
+			auto re_count = 0;
+			for(int k = 0;k<Interlen;k++){
+ 				if(vec_map[startIndex+k+1]!=-1 && (vec_flag[vec_map[startIndex+k+1]] == vec_flag[vec_map[startIndex+k]])){
+					if(re_count==0){	
+						re_startIndex = startIndex+k;
+						re_count++;
+					}
+					re_count++;
+				}else{
+					if(re_count>10 && vec_map[re_startIndex] !=-1){//pattern must occur more then 10 
+
+						auto ele = make_tuple(re_startIndex,re_count);
+						vec_result.push_back(ele);
+						// printf("startindex:%d,len:%d\n",re_startIndex,re_count);
+						re_count =0;
+					}
+				}
+			}
+ 			if(re_count>10){
+				auto ele = make_tuple(re_startIndex,re_count);
+				// printf("startindex:%d,len:%d\n",re_startIndex,re_count);
+				vec_result.push_back(ele);
+				re_count =0;
+			}
+			re_count =0;
+		}
+		//init for next loop
+		vec_cur = vec_result;
+		vector<saidx64_t> vec_maptemp(len,-1);
+		for(auto i : vec_result){
+			zz++;
+			auto j = get<0>(i);
+			auto z = get<1>(i);
+			// if(j+z>len)
+				// cout<<"error"<<__LINE__<<endl;
+			while(z>0)
+			{
+				vec_flag[j] = zz;
+				vec_maptemp[j]  = vec_map[fl[j]];
+				//printf("vec_map[%d]:%d|\n",j,vec_map[j]);
+				j++;
+				z--;
+			}
+			//printf("---------------\n");
+		}
+		vec_result.clear();
+		vec_map=vec_maptemp;
+	}
+	for(auto i :vec_cur){
+		auto startindex = get<0>(i);
+		auto len        = get<1>(i);
+		// printf("-----------------------------\n");
+		// printf("line:%d,startindex:%d,length:%d\n",__LINE__,startindex,len);
+		for(int j =0;j<len;j++){
+			auto truepos = sa[startindex+j];
+			// printf("%.*s\n",20,T+truepos);
+		}
+	}
+	auto pos =GetSamplePos(vec_cur,sa,len);
+	sort(pos.begin(),pos.end());
+	return pos;
+}
+/*{
+    //init array of length 2
+	auto findtwo = Findtwosamppatern(T,sa,fl,len);
+    saidx64_t startindex = 0;
+    saidx64_t l = 0;
+    vector< tuple<saidx64_t,saidx64_t> > vectorInterpre = findtwo;
+    vector< tuple<saidx64_t,saidx64_t> > vectorIntercur;
+	vector<saidx64_t> vecFLpre(fl,fl+len);
+	vector<saidx64_t> vecFLCur(len,-1);
+	vector<saidx64_t> martix(len,-1);
+	//init martix let matix[i] present is belong to which index of vectorInter;
+	auto lenlen = 2;
+	for(int i = 0;i<2;i++)
+	{
+		martix.assign(martix.size(),-1);
+		int zz = 0;
+		for(auto i : vectorInterpre){
+			zz++;
+			auto j = get<0>(i);
+			auto z = get<1>(i);
+			if(j+z>len)
+				cout<<"error"<<__LINE__<<endl;
+			while(z>0)
+			{
+				martix[j++] = z--;
+			}
+		}
+        for(tuple<saidx64_t,saidx64_t>& j :vectorInterpre){
+			// cout<<tempcount++<<endl;
+            startindex = get<0>(j);
+			startindex = vecFLpre[startindex];
+            l = get<1>(j);
+			for(int jj = 0;jj<l-1;jj++){
+				if(martix[vecFLpre[startindex+jj]]>1){
+					auto curlen = martix[vecFLpre[startindex+jj]];
+					if(l-jj>=curlen&& curlen>1){
+						if(startindex+jj==89)
+							cout<<"error"<<__LINE__<<",Startindex="
+							<<startindex+jj<<",len="<<curlen<<",puls="<<startindex+jj+curlen-len<<endl;
+						vectorIntercur.push_back(make_tuple(get<0>(j)+jj,curlen));
+						jj+=curlen-1;
+					}
+					else{
+						if(l-jj>1){
+						if(startindex+jj==89)
+							cout<<"error"<<__LINE__<<",startindex = "<<startindex+jj<<
+							",len="<<l<<",plus="<<startindex+jj+l-len<<endl;
+						vectorIntercur.push_back(make_tuple(get<0>(j)+jj,l-jj));
+						jj+=l-1;
+						}
+					}
+				}
+			}
+		}
+		lenlen = lenlen+1;
+		cout<<endl;
+		vectorInterpre.clear();
+		vectorInterpre = vectorIntercur;
+		vectorIntercur.clear();
+		for(auto i :vectorInterpre){
+			if(len<get<0>(i))
+			{
+				cout<<"error"<<endl;
+			}
+		}
+		printf("---------------------\r\n");
+		printf("patternlen:%d\r\n",lenlen);
+		for(tuple<saidx64_t,saidx64_t> &i :vectorInterpre){
+        cout<<"startindex:"<<get<0>(i)<<",length:"<<get<1>(i)<<":";
+		for(int j = 0;j<get<1>(i);j++){
+			cout<<sa[get<0>(i)+j]<<",";
+			}
+			cout<<endl;
+		}
+    }
+
+	 exit(9);
+}*/
+// vector<saidx64_t> ABS_FM::InitMatrix(vector<tuple<saidx64_t,saidx64_t> > vectorInter,saidx64_t* sa,saidx64_t len)
+// {
+// 	vector<saidx64_t> result(len,-1);
+// 	saidx64_t index = 0;
+// 	for(auto i :vectorInter){
+// 		saidx64_t startindex = get<0>(i);
+// 		saidx64_t length= get<1>(i);
+// 		for(int j = 0;j<length;j++){
+// 			result[sa[]]
+// 		}
+// 	}
+// }
+
+vector< tuple<saidx64_t,saidx64_t> > 
+ABS_FM::Findtwosamppatern(unsigned char *T,saidx64_t* sa,saidx64_t* fl,i64 len)
 {	
     saidx64_t startindex = 0;
     saidx64_t count = 0;
     unsigned char * frechararray = new unsigned char[n];
     for(int i = 0 ; i < len ;i++){
         frechararray[i] = T[sa[i]];
-    }
-	for(int i = 0 ;i<len;i++){
-		cout<<"fl["<<i<<"] = "<< fl[i]<<endl;
+		// cout<<i<<"  "<<frechararray[i]<<endl;
 	}
+	
+	//for(int i = 0 ;i<len;i++){
+		////cout<<"fl["<<i<<"] = "<< fl[i]<<endl;
+	//}
     vector< tuple<saidx64_t,saidx64_t> > result;
     for(int i = 0 ; i < len ;i ++){
         if((frechararray[i]==frechararray[i+1]) && frechararray[fl[i]]==frechararray[fl[i+1]]){
@@ -1117,7 +1351,7 @@ vector< tuple<saidx64_t,saidx64_t> > ABS_FM::Findtwosamppatern(unsigned char *T,
             if(count>0){
                 auto ele = make_tuple(startindex,count);
                 result.push_back(ele);
-                cout<<"start:"<<startindex<<",count:"<<count<<endl;
+                // cout<<__LINE__<<"start:"<<startindex<<",count:"<<count<<endl;
 				count = 0;
             }
         }
@@ -1125,9 +1359,10 @@ vector< tuple<saidx64_t,saidx64_t> > ABS_FM::Findtwosamppatern(unsigned char *T,
     if(count>0){
         auto ele = make_tuple(startindex,count);
         result.push_back(ele);
-        cout<<"start:"<<startindex<<",count:"<<count<<endl;
+        // cout<<__LINE__<<"start:"<<startindex<<",count:"<<count<<endl;
     }
     count = 0;
+	delete []frechararray;
     return result;
 }
 
@@ -1137,13 +1372,15 @@ void ABS_FM::PrePocess()
     int step = this->D;
     int count = 0;
     //sort(posToSample.begin(),posToSample.end());
-    cout<<"posToSample_pre:"<<posToSample.size();
+    //cout<<"posToSample_pre:"<<posToSample.size()<<endl;
     i64 p= posToSample.size();
     for(int i = p-1;i>0;i--){
         if(posToSample[i]-1 == posToSample[i-1])
             posToSample.erase(posToSample.begin()+i);
     }
-
+    // for(auto i :posToSample){
+    //     cout<<i<<endl;
+    // }
     cout<<"posToSample_aft:"<<posToSample.size()<<endl;
 }
  void ABS_FM::SASample(saidx64_t* SA)
@@ -1153,17 +1390,20 @@ void ABS_FM::PrePocess()
 	vector<i64> v_pos;
 	std::sort(posToSample.begin(),posToSample.end());
     int prediv = 0;
+	saidx64_t mount = 0;
 	for(int i = 0;i<n;i++)
 	{
 		if(( SA[i]%step1 == 0  ||std::binary_search(posToSample.begin(),posToSample.end(),SA[i]))/* &&cc<sizeofSAL */){
 			v_pos.push_back(SA[i]);
 			pos[i] = '1';
+			mount++;
 		}
 		else
 			pos[i] = '0';
 	}
 	int datewidth = log2(n)+1;
 	int sizeofSAL = n/step1+1;
+	cout<<"samplemount:"<<mount<<endl;
 	cout<<"sizeofsal:"<<sizeofSAL<<",sizeoftosample:"<<v_pos.size()<<endl;
 	SAL=new InArray(v_pos.size(),datewidth);//SA sample
 	SALPos = new InArray(v_pos.size(),1);
@@ -1187,37 +1427,12 @@ void ABS_FM::PrePocess()
 void ABS_FM::SASamplenew(saidx64_t* SA)
 {
  //   int* randarray =  generateRandom(MAX,seed);
-	i64 num = 0;
-    vector<std::tuple<i64,i64>> v_pattern;
-
-    //for(int i = 0;i<v_random.size();i++){
-        //Counting(v_random[i].c_str(),num);
-        //v_pattern.push_back(tuple<i64,i64>(i,num));
-    //}
-	sort(v_pattern.begin(), v_pattern.end(),
-            [](const tuple<i64,i64>& a, const tuple<i64,i64>& b)
-            {
-                return std::get<1>(a) > std::get<1>(b);
-			});
-	// int total = 0;
-/* 	for(int i = 0 ;i<5;i++){
-		cout << std::get<0>(v_pattern[i] )<< ","<<v_random[std::get<0>(v_pattern[i])]<<"," << std::get<1>(v_pattern[i]) << endl;
-		//total += std::get<1>(v_pattern[i]);
-	} */
-	i64 salcount = n/this->D/9;
-	int patternIndex=0;
-	while(salcount>0&&patternIndex<v_pattern.size())
-	{
-		//cout<<"pattern:"<<v_random[std::get<0>(v_pattern[patternIndex])]<<endl;
-		i64 *pos = Locating((const char *)(v_random[std::get<0>(v_pattern[patternIndex])]).c_str(), num,SA);
-
-		//quick_sort(pos,0,num-1); 
-		for(int i =0;(i<num)&&(salcount>0);i++,salcount--){
-			posToSample.push_back(pos[i]);
-		}
-		patternIndex++;
-	}
+	// posTosample = KLengthPatternSearch(T,SA,fl,,K);
 	sort(posToSample.begin(),posToSample.end());
+    for(auto i:posToSample){
+		cout<<__LINE__<<":";
+        cout<<i<<endl;
+    }
     PrePocess();
 
 	SASample(SA);
@@ -1294,7 +1509,12 @@ int ABS_FM::BuildTree(int speedlevel)
 	
 	TreeCode();
 	root=CreateWaveletTree(bwt,n,codeTable);
-	auto kLenpatternpos = KLengthPatternSearch(T,SA,fl,n);
+	auto kLenpatternpos = KLengthPatternSearch(T,SA,fl,n,20);
+	posToSample = kLenpatternpos;
+    // cout<<"LINE:"<<__LINE__<<endl;
+    // for(auto i:posToSample){
+    //     cout<<i<<endl;
+    // }
 	SASamplenew(SA);
 //	delete [] T;
 //	T=NULL;
@@ -1757,3 +1977,4 @@ int ABS_FM::Save(savekit &s)
 	SaveWTTree(s,this->root);
 	return 0;
 }
+
