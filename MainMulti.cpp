@@ -78,14 +78,14 @@ int main(int argc, char *argv[])
     char StrLineFM[1024];
     strcpy(StrLineFM,FILENAME);
     csa = NULL;
-    strcat(strcat(StrLineFM,".fmosp_B"),BLOCKSIZE);
+    strcat(strcat(StrLineFM,".fmnncsp_B"),BLOCKSIZE);
     strcat(strcat(StrLineFM,"_R"),SRATE);
     csa = new FM();
     if(csa->load(StrLineFM)==0){
         stime = clock();
         csa = new FM(argv[1],atoi(BLOCKSIZE),SAMPLERATE);//argvs are filename , blocksize,samplerate
         etime = clock();
-        csa->save(StrLineFM);
+        // csa->save(StrLineFM);
     }
     tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
     int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     fseek(fp2, 0, SEEK_END);
-    i64 n = ftell(fp2) ;
+    i64 n = ftell(fp2);
     i64* randarray =  generateRandom(MAX,seed,n);
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);

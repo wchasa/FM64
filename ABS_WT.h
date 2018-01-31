@@ -14,7 +14,6 @@ the Free Software Foundation; either version 2 or later of the License.
 // #ifndef _GNU_SOURCE
 // #define _GNU_SOURCE /* for O_DIRECT */
 // #endif
-#include <cilk/cilk.h>
 #define __USE_FILE_OFFSET64
 #define __USE_LARGEFILE64
 #define _LARGEFILE64_SOURCE
@@ -48,7 +47,7 @@ class ABS_FM
 {
 	public:
         void PrePocess();
-        vector<i64> posToSample;
+        vector<saidx64_t> posToSample;
         vector<string> v_random;
 		//D:SA数组采样步长,Rank采样步长D*16
 		ABS_FM(const char * filename,int block_size=256,int D=16);
@@ -77,88 +76,94 @@ class ABS_FM
 		void SASample(saidx64_t* SA);
         void SASamplenew(saidx64_t* SA);
 	//test
-		 i64 SizeOfpart(BitMap * r,string str);
-		 map<i64,i64> BWTruns;
-		 map<i64, i64> MergeBitMapRuns(BitMap *r);
-		 map<i64, i64> getBitMapRuns();
-		 map<i64, i64> getBitnodeRuns();
-		 void getbwtRuns(unsigned char *bwt, int len);
-		 i64 SizeInBytePart_count(string str);
-		 map<i64,i64> MergeBitnodeRuns(BitMap *r);
-		 //map<i64, i64> MergeBitMapRuns(BitMap *r);
-		 i64 sizeOfSAL();
-		 i64 sizeOfRankL();
-		 i64 Lookup(i64 i);
-         i64 Lookup(i64 i,saidx64_t* SA);
-		 vector<i64> GetHittimes(){return v_hittimes;};
-         void preprogress();
-		 //void ABS_FM::MapMerge(map<i64, i64> &map1, map<i64, i64> map2);
-		 //test
+		i64 SizeOfpart(BitMap * r,string str);
+		map<i64,i64> BWTruns;
+		map<i64, i64> MergeBitMapRuns(BitMap *r);
+		map<i64, i64> getBitMapRuns();
+		map<i64, i64> getBitnodeRuns();
+		void getbwtRuns(unsigned char *bwt, int len);
+		i64 SizeInBytePart_count(string str);
+		map<i64,i64> MergeBitnodeRuns(BitMap *r);
+		//map<i64, i64> MergeBitMapRuns(BitMap *r);
+		i64 sizeOfSAL();
+		i64 sizeOfRankL();
+		i64 Lookup(i64 i);
+		i64 Lookup(i64 i,saidx64_t* SA);
+		vector<i64> GetHittimes(){return v_hittimes;};
+		void preprogress();
+		//void ABS_FM::MapMerge(map<i64, i64> &map1, map<i64, i64> map2);
+		//test
 	protected:
 		BitMap * root;
 		BitMap * posroot;
 		uchar * Z;
 	 	uchar * R;
-		 void Inittable();
-		 //int BuildTree();
+		void Inittable();
+		//int BuildTree();
 		vector<i64> v_hittimes;
-		 unsigned char *T;
+		unsigned char *T;
 
-		 unsigned char *filename;
-		 i64 n;		 //file size in byte
-		 int block_size; //the block_size of wavelettree's node.default 1024
-		 int D;		 //step of SAL
-		 InArray *SAL;   //the sampling of SA array
-		 InArray *RankL; // The sampling of the Rank Array
-		 InArray *SALPos;//Sample booleam;
-		 bool charMap[256];
-		 // if charMap[i] is true,char[i] is a member of alphabet
+		unsigned char *filename;
+		i64 n;		 //file size in byte
+		int block_size; //the block_size of wavelettree's node.default 1024
+		int D;		 //step of SAL
+		InArray *SAL;   //the sampling of SA array
+		InArray *RankL; // The sampling of the Rank Array
+		InArray *SALPos;//Sample booleam;
+		bool charMap[256];
+		// if charMap[i] is true,char[i] is a member of alphabet
 
-		 i64 *C; // Cumulative Frequency sum
-		 //wch
-		 //uchar *code;
-		 i16 *code;
-		 //wch
-		 i64 charFreq[CHAR_SET_SIZE];
-		 i32 alphabetsize;
-		 char codeTable[CHAR_SET_SIZE][CODE_MAX_LEN];
+		i64 *C; // Cumulative Frequency sum
+		//wch
+		//uchar *code;
+		i16 *code;
+		//wch
+		i64 charFreq[CHAR_SET_SIZE];
+		i32 alphabetsize;
+		char codeTable[CHAR_SET_SIZE][CODE_MAX_LEN];
 
-		 i64 Occ(i64 &rank, unsigned char &label, i64 pos);
-		 i64 Occ(unsigned char c, i64 pos);
-		 void Occ(unsigned char c, i64 pos_left, i64 pos_right, i64 &rank_left, i64 &rank_right);
-		 i64 LF(i64 i);
-		 unsigned char L(i64 i);
-		 i64 LookupALL(i64 startpos);
-		 void Lookup(i64 startpos,i64 endpos,vector<i64>& v_i64);
-		 //void Lookup(i64 startpos,vector<i64>& v_i64);
-		 virtual int TreeCode() { return -1; };
+		i64 Occ(i64 &rank, unsigned char &label, i64 pos);
+		i64 Occ(unsigned char c, i64 pos);
+		void Occ(unsigned char c, i64 pos_left, i64 pos_right, i64 &rank_left, i64 &rank_right);
+		i64 LF(i64 i);
+		unsigned char L(i64 i);
+		i64 LookupALL(i64 startpos);
+		void Lookup(i64 startpos,i64 endpos,vector<i64>& v_i64);
+		//void Lookup(i64 startpos,vector<i64>& v_i64);
+		virtual int TreeCode() { return -1; };
 
-		 int BWT(unsigned char *T, int *SA, unsigned char *bwt, int n);
-		 int BWT64(unsigned char *T, saidx64_t *SA, unsigned char *bwt, saidx64_t len);
-	//	 BitMap *CreateWaveletTree(unsigned char *bwt, i64 n,);
-		 BitMap *CreateWaveletTree(unsigned char *bwt, i64 n,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE]);
-		// BitMap *FullFillWTNode(unsigned char *bwt, i64 len, int level);
-		 BitMap * FullFillWTNode(unsigned char * buff,i64 len,int level,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE]);//ct = codetable
-		 int DestroyWaveletTree();
-		 int blog(int);
-		 unsigned char *Getfile(const char *filename);
-		 //unsigned char *Getfile(const char *filenam,int part,int pos);
-		 int SaveNodePosition(BitMap *, u32, savekit &);
-		 int SaveNodeData(BitMap *, savekit &s);
-		 int SaveWTTree(savekit &s,BitMap* r);
-		 BitMap* LoadWTTree(loadkit &s,int alphabetsize,uchar **tables = NULL);
+		int BWT(unsigned char *T, int *SA, unsigned char *bwt, int n);
+		int BWT64(unsigned char *T, saidx64_t *SA, unsigned char *bwt, saidx64_t len);
+		vector< tuple<saidx64_t,saidx64_t> > Findtwosamppatern(unsigned char *T,saidx64_t* sa,saidx64_t* fl,i64 len);
+		vector<saidx64_t > KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx64_t len,int K);
+		int GetFL(unsigned char *T, saidx64_t *SA, saidx64_t *fl, saidx64_t len);
+	//	BitMap *CreateWaveletTree(unsigned char *bwt, i64 n,);
+		BitMap *CreateWaveletTree(unsigned char *bwt, i64 n,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE]);
+	//  BitMap *FullFillWTNode(unsigned char *bwt, i64 len, int level);
+		BitMap * FullFillWTNode(unsigned char * buff,i64 len,int level,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE]);//ct = codetable
+		int DestroyWaveletTree();
+		int blog(int);
+		unsigned char *Getfile(const char *filename);
+		//unsigned char *Getfile(const char *filenam,int part,int pos);
+		int SaveNodePosition(BitMap *, u32, savekit &);
+		int SaveNodeData(BitMap *, savekit &s);
+		int SaveWTTree(savekit &s,BitMap* r);
+		BitMap* LoadWTTree(loadkit &s,int alphabetsize,uchar **tables = NULL);
 
-		 int TreeNodeCount(BitMap *root);
+		int TreeNodeCount(BitMap *root);
 
-		 int TreeSizeInByte(BitMap *r);
-		 //	int TreeSizeInByte();
-		 friend int GammaDecode(u64 *buff, int &index, ABS_FM *t);
-		 friend int Zeros(u16 x, ABS_FM *t);
-		 void Test_L();
-		 void Test_Occ();
-		 void Test_Shape(BitMap *);
-
-
+		int TreeSizeInByte(BitMap *r);
+		//	int TreeSizeInByte();
+		friend int GammaDecode(u64 *buff, int &index, ABS_FM *t);
+		friend int Zeros(u16 x, ABS_FM *t);
+		void Test_L();
+		void Test_Occ();
+		void Test_Shape(BitMap *r);
+		bool KposIsSame(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K);
+		bool KposNeedTOTarvser(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K);
+		bool KlenAllSame(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K);
+        vector<saidx64_t> GetSamplePos(vector< tuple<saidx64_t,saidx64_t> > vecPos_len,saidx64_t* sa,saidx64_t len);
+		inline bool JudgeTwoPosSame(saidx64_t &P1,saidx64_t &P2,vector<saidx64_t> & vec_map,vector<saidx64_t> &vec_flag);
 };
 #endif
 

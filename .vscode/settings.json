@@ -23,6 +23,9 @@
         "iomanip": "cpp",
         "sstream": "cpp",
         "istream": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "iostream": "cpp",
+        "functional": "cpp",
+        "future": "cpp"
     }
 }
