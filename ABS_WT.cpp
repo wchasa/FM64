@@ -1088,14 +1088,14 @@ int ABS_FM::BuildTree(int speedlevel)
 	int datewidth = log2(n)+1;
 
 	RankL=new InArray(n/step2+1,datewidth);//rank sample
-	//SASample(SA);
+	SASample(SA);
 	i64 i=0;
 	i64 j=0;
 	SAL=new InArray(n/step1+1,datewidth);//SA sample
-	for(i=0,j=0;i<n;i=i+step1,j++)
-		{
-			SAL->SetValue(j,SA[i]);
-		}
+	// for(i=0,j=0;i<n;i=i+step1,j++)
+	// 	{
+	// 		SAL->SetValue(j,SA[i]);
+	// 	}
 
 
 	for(i=0;i<n;i++)
@@ -1551,7 +1551,7 @@ int ABS_FM::Load(loadkit &s)
 	Inittable();
 	uchar * par[2]={Z,R};
 	//cout<<"cs"<<endl;
-//	this->posroot=LoadWTTree(s,2,par);
+	this->posroot=LoadWTTree(s,2,par);
 	this->root = LoadWTTree(s,alphabetsize,par);
 //	cout<<"835"<<endl;
 	T=NULL;
@@ -1607,7 +1607,7 @@ int ABS_FM::Save(savekit &s)
 	RankL->write(s);
 	//for WT tree
 //	cout<<"SaveWTTree"<<endl;
-//	SaveWTTree(s,posroot);
+	SaveWTTree(s,posroot);
 	SaveWTTree(s,this->root);
 	return 0;
 }
