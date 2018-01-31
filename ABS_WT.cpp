@@ -26,6 +26,7 @@ the Free Software Foundation; either version 2 or later of the License.
 //#define LOOP 35
 #define SIZE 1024
 #define READSIZE 1024*1024*200
+#define TEST
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -1134,15 +1135,32 @@ bool ABS_FM::KlenAllSame(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K)
 //{
     
 //}
+bool ABS_FM::JudgeTwoPosSame(saidx64_t &P1,saidx64_t &P2,vector<saidx64_t> & vec_map,vector<saidx64_t> &vec_flag)
+{
+	return (vec_flag[vec_map[P1]]>-1) && (vec_flag[vec_map[P1]] == vec_flag[vec_map[P2]]);
+}
 
-
+vector< saidx64_t > 
+ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx64_t len,int K)
+{
+	auto findtwo = Findtwosamppatern(T,sa,fl,len);
+	vector<saidx64_t> vec_flag(len,-1);
+	vector<saidx64_t> vec_map(len,-1);
+	vector<> vec_map(len,-1);
+}
+/*
 vector< saidx64_t > 
 ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx64_t len,int K)
 {
     //init array of length 2
 	auto findtwo = Findtwosamppatern(T,sa,fl,len);
-	
-	vector<char> vec_flag(len,-1);
+	for(auto i : findtwo){
+		cout<<"twopattern:Line:"<<__LINE__<<endl;
+		printf("startindex:%d,length:%d\n",get<0>(i),get<1>(i));
+		printf("turepos:%d\n",sa[get<0>(i)]);
+		printf("%.*s\n",5,T+sa[get<0>(i)]);
+	}
+	vector<saidx64_t> vec_flag(len,-1);
 	vector<saidx64_t> vec_map(len,-1);
 	auto zz = 0;
 	for(auto i : findtwo){
@@ -1154,67 +1172,84 @@ ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx6
 		while(z>0)
 		{
 			vec_flag[j] = zz;
-			vec_map[j]  = fl[j];
-			// printf("vec_map[%d]:%d|\n",j,fl[j]);
+			vec_map[j]  = fl[fl[j]];
+			printf("vec_map[%d]:%d|\n",j,vec_map[j]);
 			j++;
 			z--;
 		}
+		printf("---------------------\n");
 	}
 	//loop
 	auto vec_cur = findtwo;
 	vector< tuple<saidx64_t,saidx64_t> > vec_result;
-	for(int i =0;i<10;i++){
-		// printf("*******************\n");
-		// printf("loop time:%d       *\n",i);
-		// printf("*******************\n");
+	for(int i =0;i<3;i++){
+     #ifdef TEST
+		printf("*******************\n");
+		printf("loop time:%d       *\n",i);
+		printf("*******************\n");
+	#endif
 		for(auto j :vec_cur){
 			auto startIndex = get<0>(j);
 			auto Interlen   = get<1>(j);
-			auto re_startIndex=-1;
-			auto re_count = 0;
-			for(int k = 0;k<Interlen;k++){
- 				if(vec_map[startIndex+k+1]!=-1 && (vec_flag[vec_map[startIndex+k+1]] == vec_flag[vec_map[startIndex+k]])){
-					if(re_count==0){	
-						re_startIndex = startIndex+k;
-						re_count++;
+			auto endIndex   = startIndex + Interlen -1;
+			auto starttemp  = startIndex;
+			auto endtemp    = endIndex;
+			auto lenthofthisinterval =0;
+			bool hasSame= false;
+			for(int k = 0;k<Interlen;){
+				//init loop
+				auto curstartIndex = startIndex + k;
+				auto curend = 0;
+				starttemp = curstartIndex;
+				endtemp = endIndex;
+				hasSame = false ;
+				while(starttemp<=endtemp){
+					auto mid = (starttemp+endtemp)/2;
+					if(JudgeTwoPosSame(curstartIndex,mid,vec_map,vec_flag)){
+						starttemp = mid +1;
+						hasSame = true;
+						}
+					else{
+						endtemp = mid-1;
+						}
 					}
-					re_count++;
-				}else{
-					if(re_count>10 && vec_map[re_startIndex] !=-1){//pattern must occur more then 10 
-
-						auto ele = make_tuple(re_startIndex,re_count);
-						vec_result.push_back(ele);
-						// printf("startindex:%d,len:%d\n",re_startIndex,re_count);
-						re_count =0;
-					}
+				// lenthofthisinterval= (endtemp-startIndex-k+1==0)?1:endtemp-startIndex-k+1;
+				lenthofthisinterval = endtemp-startIndex-k+1;
+				if(lenthofthisinterval<=0)
+					cout<<__LINE__<<"ERROE lenthofthisinterval equal 0"<<endl;
+				if(!hasSame)
+					lenthofthisinterval=1;
+				if(lenthofthisinterval>1&&hasSame){//this two pos not same
+					auto ele = make_tuple(curstartIndex,lenthofthisinterval);
+					vec_result.push_back(ele);
+					#ifdef TEST						printf("startindex:%d,len:%d\n",curstartIndex,lenthofthisinterval);
+					#endif
+				}
+				k+=lenthofthisinterval;
 				}
 			}
- 			if(re_count>10){
-				auto ele = make_tuple(re_startIndex,re_count);
-				// printf("startindex:%d,len:%d\n",re_startIndex,re_count);
-				vec_result.push_back(ele);
-				re_count =0;
-			}
-			re_count =0;
-		}
 		//init for next loop
 		vec_cur = vec_result;
 		vector<saidx64_t> vec_maptemp(len,-1);
+	    fill(vec_flag.begin(),vec_flag.end(),-1);
 		for(auto i : vec_result){
 			zz++;
 			auto j = get<0>(i);
 			auto z = get<1>(i);
 			// if(j+z>len)
 				// cout<<"error"<<__LINE__<<endl;
-			while(z>0)
+			// while(z>0)
+			for(int kk = 0;kk<z ;kk++)
 			{
-				vec_flag[j] = zz;
-				vec_maptemp[j]  = vec_map[fl[j]];
-				//printf("vec_map[%d]:%d|\n",j,vec_map[j]);
-				j++;
-				z--;
+				vec_flag[j+kk] = zz;
+				vec_maptemp[j+kk]  = vec_map[vec_map[j+kk]];
+				#ifdef TEST
+					printf("vec_map[%d]:%d,%d|\n",j+kk,vec_maptemp[j+kk],vec_flag[j+kk]);
+				#endif 
 			}
-			//printf("---------------\n");
+			#ifdef TEST
+				printf("---------------\n");
+			#endif 
 		}
 		vec_result.clear();
 		vec_map=vec_maptemp;
@@ -1222,108 +1257,23 @@ ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx6
 	for(auto i :vec_cur){
 		auto startindex = get<0>(i);
 		auto len        = get<1>(i);
-		// printf("-----------------------------\n");
-		// printf("line:%d,startindex:%d,length:%d\n",__LINE__,startindex,len);
+		auto truepos = sa[startindex];
+		#ifdef TEST
+			printf("-----------------------------\n");
+			printf("line:%d,startindex:%d,length:%d\n",__LINE__,startindex,len);
+		#endif 
 		for(int j =0;j<len;j++){
 			auto truepos = sa[startindex+j];
-			// printf("%.*s\n",20,T+truepos);
+			#ifdef TEST
+				printf("pattern:%.*s\n",50,T+truepos);
+			#endif 
 		}
 	}
 	auto pos =GetSamplePos(vec_cur,sa,len);
 	sort(pos.begin(),pos.end());
 	return pos;
 }
-/*{
-    //init array of length 2
-	auto findtwo = Findtwosamppatern(T,sa,fl,len);
-    saidx64_t startindex = 0;
-    saidx64_t l = 0;
-    vector< tuple<saidx64_t,saidx64_t> > vectorInterpre = findtwo;
-    vector< tuple<saidx64_t,saidx64_t> > vectorIntercur;
-	vector<saidx64_t> vecFLpre(fl,fl+len);
-	vector<saidx64_t> vecFLCur(len,-1);
-	vector<saidx64_t> martix(len,-1);
-	//init martix let matix[i] present is belong to which index of vectorInter;
-	auto lenlen = 2;
-	for(int i = 0;i<2;i++)
-	{
-		martix.assign(martix.size(),-1);
-		int zz = 0;
-		for(auto i : vectorInterpre){
-			zz++;
-			auto j = get<0>(i);
-			auto z = get<1>(i);
-			if(j+z>len)
-				cout<<"error"<<__LINE__<<endl;
-			while(z>0)
-			{
-				martix[j++] = z--;
-			}
-		}
-        for(tuple<saidx64_t,saidx64_t>& j :vectorInterpre){
-			// cout<<tempcount++<<endl;
-            startindex = get<0>(j);
-			startindex = vecFLpre[startindex];
-            l = get<1>(j);
-			for(int jj = 0;jj<l-1;jj++){
-				if(martix[vecFLpre[startindex+jj]]>1){
-					auto curlen = martix[vecFLpre[startindex+jj]];
-					if(l-jj>=curlen&& curlen>1){
-						if(startindex+jj==89)
-							cout<<"error"<<__LINE__<<",Startindex="
-							<<startindex+jj<<",len="<<curlen<<",puls="<<startindex+jj+curlen-len<<endl;
-						vectorIntercur.push_back(make_tuple(get<0>(j)+jj,curlen));
-						jj+=curlen-1;
-					}
-					else{
-						if(l-jj>1){
-						if(startindex+jj==89)
-							cout<<"error"<<__LINE__<<",startindex = "<<startindex+jj<<
-							",len="<<l<<",plus="<<startindex+jj+l-len<<endl;
-						vectorIntercur.push_back(make_tuple(get<0>(j)+jj,l-jj));
-						jj+=l-1;
-						}
-					}
-				}
-			}
-		}
-		lenlen = lenlen+1;
-		cout<<endl;
-		vectorInterpre.clear();
-		vectorInterpre = vectorIntercur;
-		vectorIntercur.clear();
-		for(auto i :vectorInterpre){
-			if(len<get<0>(i))
-			{
-				cout<<"error"<<endl;
-			}
-		}
-		printf("---------------------\r\n");
-		printf("patternlen:%d\r\n",lenlen);
-		for(tuple<saidx64_t,saidx64_t> &i :vectorInterpre){
-        cout<<"startindex:"<<get<0>(i)<<",length:"<<get<1>(i)<<":";
-		for(int j = 0;j<get<1>(i);j++){
-			cout<<sa[get<0>(i)+j]<<",";
-			}
-			cout<<endl;
-		}
-    }
-
-	 exit(9);
-}*/
-// vector<saidx64_t> ABS_FM::InitMatrix(vector<tuple<saidx64_t,saidx64_t> > vectorInter,saidx64_t* sa,saidx64_t len)
-// {
-// 	vector<saidx64_t> result(len,-1);
-// 	saidx64_t index = 0;
-// 	for(auto i :vectorInter){
-// 		saidx64_t startindex = get<0>(i);
-// 		saidx64_t length= get<1>(i);
-// 		for(int j = 0;j<length;j++){
-// 			result[sa[]]
-// 		}
-// 	}
-// }
-
+*/
 vector< tuple<saidx64_t,saidx64_t> > 
 ABS_FM::Findtwosamppatern(unsigned char *T,saidx64_t* sa,saidx64_t* fl,i64 len)
 {	

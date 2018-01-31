@@ -163,6 +163,7 @@ class ABS_FM
 		bool KposNeedTOTarvser(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K);
 		bool KlenAllSame(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K);
         vector<saidx64_t> GetSamplePos(vector< tuple<saidx64_t,saidx64_t> > vecPos_len,saidx64_t* sa,saidx64_t len);
+		inline bool JudgeTwoPosSame(saidx64_t &P1,saidx64_t &P2,vector<saidx64_t> & vec_map,vector<saidx64_t> &vec_flag);
 };
 #endif
 

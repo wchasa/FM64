@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         stime = clock();
         csa = new FM(argv[1],atoi(BLOCKSIZE),SAMPLERATE);//argvs are filename , blocksize,samplerate
         etime = clock();
-        csa->save(StrLineFM);
+        // csa->save(StrLineFM);
     }
     tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
     int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
