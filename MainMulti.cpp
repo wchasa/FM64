@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <time.h>
 #include<sys/time.h>
+#include <string>
+#include <iostream>
+#include <fstream>
 using namespace std;
 //#define MAX 1000
 #define PATTENLEN 20
@@ -28,7 +31,7 @@ void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
-i64* generateRandom(int count,int seed,i64 n);
+i64* generateRandom(i64 count,i64 seed,i64 n);
 int length = 100;
 struct timer{
     public:
@@ -51,10 +54,20 @@ struct timer{
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
-    if(argc!=6){
-    fprintf(stderr, "Usage: ./my_fm <file> <randomseed> <option samplerate>,<run times> <blocksize>");
+    if(argc<6){
+    fprintf(stderr, "Usage: ./my_fm <file> <randomseed> <option samplerate>,<run times> <blocksize><randompath>");
     exit(EXIT_FAILURE);
     }
+//////////////  
+    std::ifstream input(argv[6]);
+    i64* randarray = new i64[100];
+    std::string line;
+    int index =0;
+    while( std::getline( input, line ) ) {
+        randarray[index++] = stoi(line);
+        cout<<randarray[index-1]<<endl;
+    }
+/////////
     auto BLOCKSIZE = (argv[5]);
     auto MAX = atoi(argv[4]);
     auto SAMPLERATE =atoi(argv[3])/2;
@@ -99,7 +112,7 @@ int main(int argc, char *argv[])
     }
     fseek(fp2, 0, SEEK_END);
     i64 n = ftell(fp2) ;
-    i64* randarray =  generateRandom(MAX,seed,n);
+    // i64* randarray =  generateRandom(MAX,seed,n);
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
@@ -122,6 +135,11 @@ int main(int argc, char *argv[])
         else
             num = 100;
         i64 *pos = csa->locating((const char *)searchT, num);
+        cout<<searchT<<":";
+        for(int i = 0;i<num;i++){
+            cout<<pos[i]<<" ";
+        }
+        cout<<endl;
         delete []pos;
         pos = NULL;
     }
@@ -152,14 +170,15 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-i64* generateRandom(int count,int seed,i64 n)
+i64* generateRandom(i64 count,i64 seed,i64 n)
 {
     i64* result = new i64[count];
     srand(unsigned(seed));
 
     for(int i = 0;i<count;i++)
     {
-        result[i] = rand()%n;
+        result[i] = rand()% n;
+        cout<< result[i]<<endl;
     }
     return result;
 }
@@ -229,7 +248,7 @@ void showpos(vector<int> ivector)
 	if ((i + 1) % 20 == 0)
 	{
 	    char command;
-	    cout << "-----------------more---------------------";
+	    // cout << "-----------------more---------------------";
 	    system("stty raw");
 	    command = getchar();
 	    cout << endl
