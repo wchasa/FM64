@@ -78,14 +78,14 @@ int main(int argc, char *argv[])
     char StrLineFM[1024];
     strcpy(StrLineFM,FILENAME);
     csa = NULL;
-    strcat(strcat(StrLineFM,".fmnncsp_B"),BLOCKSIZE);
+    strcat(strcat(StrLineFM,".fmnnc0sp_B"),BLOCKSIZE);
     strcat(strcat(StrLineFM,"_R"),SRATE);
     csa = new FM();
     if(csa->load(StrLineFM)==0){
         stime = clock();
         csa = new FM(argv[1],atoi(BLOCKSIZE),SAMPLERATE);//argvs are filename , blocksize,samplerate
         etime = clock();
-        // csa->save(StrLineFM);
+        csa->save(StrLineFM);
     }
     tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
     int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
