@@ -8,7 +8,11 @@
             "request": "launch",
             "program": "${workspaceRoot}/my_fm",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "args": ["/home/wch/testfile/bible","123","32","100","128"],
+=======
+            "args": ["/home/wch/testfile/bible100","123","32","100","512"],
+>>>>>>> newnewsample
 =======
             "args": ["/home/wch/testfile/bible100","123","32","100","512"],
 >>>>>>> newnewsample

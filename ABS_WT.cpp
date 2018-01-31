@@ -26,7 +26,8 @@ the Free Software Foundation; either version 2 or later of the License.
 //#define LOOP 35
 #define SIZE 1024
 #define READSIZE 1024*1024*200
-#define TEST
+#define TEST2 
+#define FINAL
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)
@@ -1143,23 +1144,49 @@ bool ABS_FM::JudgeTwoPosSame(saidx64_t &P1,saidx64_t &P2,vector<saidx64_t> & vec
 vector< saidx64_t > 
 ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx64_t len,int K)
 {
+
+    //init array of length 2
 	auto findtwo = Findtwosamppatern(T,sa,fl,len);
 	vector<saidx64_t> vec_flag(len,-1);
 	vector<saidx64_t> vec_map(len,-1);
-	vector<> vec_map(len,-1);
+	for(auto i : findtwo){
+		zz++;
+		auto j = get<0>(i);
+		auto z = get<1>(i);
+		if(j+z>len)
+			cout<<"error"<<__LINE__<<endl;
+		while(z>0)
+		{
+			vec_flag[j] = zz;
+			vec_map[j]  = fl[fl[j]];
+			#ifdef TEST
+				printf("vec_map[%d]:%d|\n",j,vec_map[j]);
+			#endif
+			j++;
+			z--;
+		}
+		#ifdef TEST
+			printf("---------------------\n");
+		#endif
+	}
+	for(int i = 0;i<3 ;i++){
+
+	}
+
+
 }
-/*
-vector< saidx64_t > 
+/*vector< saidx64_t > 
 ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx64_t len,int K)
 {
     //init array of length 2
 	auto findtwo = Findtwosamppatern(T,sa,fl,len);
-	for(auto i : findtwo){
-		cout<<"twopattern:Line:"<<__LINE__<<endl;
-		printf("startindex:%d,length:%d\n",get<0>(i),get<1>(i));
-		printf("turepos:%d\n",sa[get<0>(i)]);
-		printf("%.*s\n",5,T+sa[get<0>(i)]);
-	}
+	
+	// for(auto i : findtwo){
+	// 	cout<<"twopattern:Line:"<<__LINE__<<endl;
+	// 	printf("startindex:%d,length:%d\n",get<0>(i),get<1>(i));
+	// 	printf("turepos:%d\n",sa[get<0>(i)]);
+	// 	printf("%.*s\n",5,T+sa[get<0>(i)]);
+	// }
 	vector<saidx64_t> vec_flag(len,-1);
 	vector<saidx64_t> vec_map(len,-1);
 	auto zz = 0;
@@ -1173,17 +1200,21 @@ ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx6
 		{
 			vec_flag[j] = zz;
 			vec_map[j]  = fl[fl[j]];
-			printf("vec_map[%d]:%d|\n",j,vec_map[j]);
+			#ifdef TEST
+				printf("vec_map[%d]:%d|\n",j,vec_map[j]);
+			#endif
 			j++;
 			z--;
 		}
-		printf("---------------------\n");
+		#ifdef TEST
+			printf("---------------------\n");
+		#endif
 	}
 	//loop
 	auto vec_cur = findtwo;
 	vector< tuple<saidx64_t,saidx64_t> > vec_result;
 	for(int i =0;i<3;i++){
-     #ifdef TEST
+     #ifdef TEST2
 		printf("*******************\n");
 		printf("loop time:%d       *\n",i);
 		printf("*******************\n");
@@ -1191,6 +1222,9 @@ ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx6
 		for(auto j :vec_cur){
 			auto startIndex = get<0>(j);
 			auto Interlen   = get<1>(j);
+			#ifdef TEST2
+				printf("startindex = %d,Interlen = %d\n",startIndex,Interlen);
+			#endif // DEBUG
 			auto endIndex   = startIndex + Interlen -1;
 			auto starttemp  = startIndex;
 			auto endtemp    = endIndex;
@@ -1215,11 +1249,14 @@ ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx6
 					}
 				// lenthofthisinterval= (endtemp-startIndex-k+1==0)?1:endtemp-startIndex-k+1;
 				lenthofthisinterval = endtemp-startIndex-k+1;
-				if(lenthofthisinterval<=0)
+				if(lenthofthisinterval<=0){
+					#ifdef TEST
 					cout<<__LINE__<<"ERROE lenthofthisinterval equal 0"<<endl;
+					#endif
+				}
 				if(!hasSame)
 					lenthofthisinterval=1;
-				if(lenthofthisinterval>1&&hasSame){//this two pos not same
+				if(lenthofthisinterval>100&&hasSame){//this two pos not same
 					auto ele = make_tuple(curstartIndex,lenthofthisinterval);
 					vec_result.push_back(ele);
 					#ifdef TEST						printf("startindex:%d,len:%d\n",curstartIndex,lenthofthisinterval);
@@ -1244,7 +1281,7 @@ ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx6
 				vec_flag[j+kk] = zz;
 				vec_maptemp[j+kk]  = vec_map[vec_map[j+kk]];
 				#ifdef TEST
-					printf("vec_map[%d]:%d,%d|\n",j+kk,vec_maptemp[j+kk],vec_flag[j+kk]);
+					printf("20%[%d]:%d,%d|\n",j+kk,vec_maptemp[j+kk],vec_flag[j+kk]);
 				#endif 
 			}
 			#ifdef TEST
@@ -1258,13 +1295,13 @@ ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx6
 		auto startindex = get<0>(i);
 		auto len        = get<1>(i);
 		auto truepos = sa[startindex];
-		#ifdef TEST
+		#ifdef FINAL 
 			printf("-----------------------------\n");
 			printf("line:%d,startindex:%d,length:%d\n",__LINE__,startindex,len);
 		#endif 
 		for(int j =0;j<len;j++){
 			auto truepos = sa[startindex+j];
-			#ifdef TEST
+			#ifdef FINAL
 				printf("pattern:%.*s\n",50,T+truepos);
 			#endif 
 		}
@@ -1272,8 +1309,7 @@ ABS_FM::KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx6
 	auto pos =GetSamplePos(vec_cur,sa,len);
 	sort(pos.begin(),pos.end());
 	return pos;
-}
-*/
+}*/
 vector< tuple<saidx64_t,saidx64_t> > 
 ABS_FM::Findtwosamppatern(unsigned char *T,saidx64_t* sa,saidx64_t* fl,i64 len)
 {	
@@ -1379,10 +1415,10 @@ void ABS_FM::SASamplenew(saidx64_t* SA)
  //   int* randarray =  generateRandom(MAX,seed);
 	// posTosample = KLengthPatternSearch(T,SA,fl,,K);
 	sort(posToSample.begin(),posToSample.end());
-    for(auto i:posToSample){
-		cout<<__LINE__<<":";
-        cout<<i<<endl;
-    }
+    // for(auto i:posToSample){
+	// 	cout<<__LINE__<<":";
+    //     cout<<i<<endl;
+    // }
     PrePocess();
 
 	SASample(SA);
