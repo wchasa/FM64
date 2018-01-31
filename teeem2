@@ -1,0 +1,6 @@
+/home/wch/testfile/bible
+blocksize:512,runtimes:100,samplerate:32
+       count time = 0.06401ms
+    Locating time = 0.19345ms
+  extracting time = 0.66398ms
+   ration for all = 0.379039

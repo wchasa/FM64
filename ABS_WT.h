@@ -47,7 +47,7 @@ class ABS_FM
 {
 	public:
         void PrePocess();
-        vector<i64> posToSample;
+        vector<saidx64_t> posToSample;
         vector<string> v_random;
 		//D:SA数组采样步长,Rank采样步长D*16
 		ABS_FM(const char * filename,int block_size=256,int D=16);
@@ -134,8 +134,8 @@ class ABS_FM
 
 		int BWT(unsigned char *T, int *SA, unsigned char *bwt, int n);
 		int BWT64(unsigned char *T, saidx64_t *SA, unsigned char *bwt, saidx64_t len);
-		vector<tuple<saidx64_t ,saidx64_t> > Findtwosamppatern(unsigned char* T,saidx64_t *SA,saidx64_t* fl,saidx64_t len);
-		vector< vector<saidx64_t> > KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx64_t len,int K){
+		vector< tuple<saidx64_t,saidx64_t> > Findtwosamppatern(unsigned char *T,saidx64_t* sa,saidx64_t* fl,i64 len);
+		vector<saidx64_t > KLengthPatternSearch(unsigned char *T,saidx64_t* sa,saidx64_t* fl,saidx64_t len,int K);
 		int GetFL(unsigned char *T, saidx64_t *SA, saidx64_t *fl, saidx64_t len);
 	//	BitMap *CreateWaveletTree(unsigned char *bwt, i64 n,);
 		BitMap *CreateWaveletTree(unsigned char *bwt, i64 n,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE]);
@@ -158,9 +158,12 @@ class ABS_FM
 		friend int Zeros(u16 x, ABS_FM *t);
 		void Test_L();
 		void Test_Occ();
-		// void Test_Shape(BitMap *);
+		void Test_Shape(BitMap *r);
 		bool KposIsSame(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K);
 		bool KposNeedTOTarvser(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K);
+		bool KlenAllSame(unsigned char *T,saidx64_t pos1,saidx64_t pos2,int K);
+        vector<saidx64_t> GetSamplePos(vector< tuple<saidx64_t,saidx64_t> > vecPos_len,saidx64_t* sa,saidx64_t len);
+		inline bool JudgeTwoPosSame(saidx64_t &P1,saidx64_t &P2,vector<saidx64_t> & vec_map,vector<saidx64_t> &vec_flag);
 };
 #endif
 
