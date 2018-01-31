@@ -30,23 +30,23 @@ void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 i64* generateRandom(int count,int seed,i64 n);
 int length = 100;
-struct timer{
-    public:
-    struct timeval begin, end;
-    timer(){ gettimeofday(&begin, NULL); }
-    void start(){ gettimeofday(&begin, NULL); }
-    void finish(){ gettimeofday(&end, NULL); }
-    friend inline ostream & operator<<(ostream &os, timer &a){
-        double use = 1000000 * (a.end.tv_sec - a.begin.tv_sec) + a.end.tv_usec - a.begin.tv_usec;
-        use /= 1000000.0;
-        os << use;
-        return os;
-    }
-    double value(){
-        double use = 1000000 * (end.tv_sec - begin.tv_sec) + end.tv_usec - begin.tv_usec;
-        return use;
-    }
-};
+// struct timer{
+//     public:
+//     struct timeval begin, end;
+//     timer(){ gettimeofday(&begin, NULL); }
+//     void start(){ gettimeofday(&begin, NULL); }
+//     void finish(){ gettimeofday(&end, NULL); }
+//     friend inline ostream & operator<<(ostream &os, timer &a){
+//         double use = 1000000 * (a.end.tv_sec - a.begin.tv_sec) + a.end.tv_usec - a.begin.tv_usec;
+//         use /= 1000000.0;
+//         os << use;
+//         return os;
+//     }
+//     double value(){
+//         double use = 1000000 * (end.tv_sec - begin.tv_sec) + end.tv_usec - begin.tv_usec;
+//         return use;
+//     }
+// };
 
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
@@ -66,7 +66,6 @@ int main(int argc, char *argv[])
     cout<<",runtimes:"<<MAX;
     cout<<",samplerate:"<<SAMPLERATE*2<<endl;
     i64 sumRun = 0,bitLen =0;
-    timer st1,st2;
     double stime,etime,tcost;
     int *pos;
     i64 num = 0;
@@ -103,17 +102,21 @@ int main(int argc, char *argv[])
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
-    st1.start();
+    // st1.start();
+    long long timesum = 0;
     for (int i2 = 0; i2 < MAX; i2++) {
         fseek(fp2, randarray[i2] % (n), SEEK_SET);
         fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
         i64 i ;
         num = 0;
+
+        stime = clock();
         csa->counting((const char *)searchT,num);
+        etime = clock();
+        timesum +=etime-stime;
     }
-    st1.finish();
-    cout <<setw(20)<< "count time = " <<st1.value()/MAX/1000<<"ms"<<endl;
-    st1.start();
+    cout <<setw(20)<< "count time = " <<timesum*1.0/(MAX*CLOCKS_PER_SEC)<<"us"<<endl;
+    timesum = 0;
     for (int i2 = 0; i2 < MAX; i2++){
         fseek(fp2, randarray[i2] % (n), SEEK_SET);
         fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
@@ -121,20 +124,25 @@ int main(int argc, char *argv[])
             num = atoi(argv[4]);
         else
             num = 100;
+        stime = clock();
         i64 *pos = csa->locating((const char *)searchT, num);
+        etime = clock();
+        timesum +=etime-stime;
         delete []pos;
         pos = NULL;
     }
-    st1.finish();
-    cout <<setw(20)<< "Locating time = " << st1.value()/MAX/1000<<"ms"<<endl;
-    st1.start();
+    cout <<setw(20)<< "Locating time = " <<timesum*1.0/(MAX*CLOCKS_PER_SEC)<<"us"<<endl;
+    timesum = 0;
     for (int i2 = 0; i2 < MAX; i2++){
+
+        stime = clock();
         unsigned char *p = csa->extracting(randarray[i2] % ((length-PATTENLEN2)), PATTENLEN2);
+        etime = clock();
+        timesum +=etime-stime;
         delete []p;
         p = NULL;
     }
-    st1.finish();
-    cout <<setw(20)<< "extracting time = " << st1.value() / MAX / 1000 << "ms" << endl;
+    cout <<setw(20)<< "extracting time = " <<timesum*1.0/(MAX*CLOCKS_PER_SEC)<<"us"<<endl;
     //cout<<"FileName:"<<StrLineFM<<endl;
     FILE * FSAVED = fopen(StrLineFM,"r");
     fseek(FSAVED, 0, SEEK_END);
