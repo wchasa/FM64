@@ -30,8 +30,9 @@ void quicksort_v(vector<tuple<i64,i64>> v,i64 l,i64 r);//sort depend on tuple<0>
 void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
+vector<i64> GetRandom(char* charray,int MAX,int size);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
-i64* generateRandom(i64 count,i64 seed,i64 n);
+vector<i64> generateRandom(i64 count,i64 seed,i64 n);
 int length = 100;
 // struct timer{
 //     public:
@@ -55,26 +56,17 @@ int length = 100;
 int main(int argc, char *argv[])
 {
     if(argc<6){
-    fprintf(stderr, "Usage: ./my_fm <file> <randompath> <option samplerate>,<run times> <blocksize>");
+    fprintf(stderr, "Usage: ./my_fm <file> <randompath\randseed> <option samplerate>,<run times> <blocksize>");
     exit(EXIT_FAILURE);
     }
-//////////////  
-    std::ifstream input(argv[2]);
-    // i64* randarray = new i64[100];
-    vector<i64> randarray;
-    std::string line;
-    int index =0;
-    while( std::getline( input, line ) ) {
-        randarray.push_back(stoi(line));
-        // cout<<stoi(line)<<endl;
-    }
-/////////
     auto BLOCKSIZE = (argv[5]);
     auto MAX = atoi(argv[4]);
     auto SAMPLERATE =atoi(argv[3])/2;
     auto SRATE = argv[3];
     auto RANDOMSEED = atoi(argv[2]);
     auto FILENAME = (argv[1]);
+////////////// 
+/////////
     cout << argv[1] << endl;
     cout<<"blocksize:"<<BLOCKSIZE;
     cout<<",runtimes:"<<MAX;
@@ -112,7 +104,7 @@ int main(int argc, char *argv[])
     }
     fseek(fp2, 0, SEEK_END);
     i64 n = ftell(fp2) ;
-    // i64* randarray =  generateRandom(MAX,seed,n);
+    auto randarray =  GetRandom(argv[2],MAX,n);
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
@@ -175,15 +167,15 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-i64* generateRandom(i64 count,i64 seed,i64 n)
+vector<i64> generateRandom(i64 count,i64 seed,i64 n)
 {
-    i64* result = new i64[count];
+    vector<i64> result;
     srand(unsigned(seed));
-
+    cout<<"seed:"<<seed<<",fileseize:"<<n<<endl;
     for(int i = 0;i<count;i++)
     {
-        result[i] = rand()% n;
-        cout<< result[i]<<endl;
+        result.push_back( rand()% (n-50));
+        // cout<< result[i]<<endl;
     }
     return result;
 }
@@ -371,4 +363,24 @@ void quicksort_v(vector<tuple<i64,i64>> v,i64 l,i64 r)//sort depend on tuple<0>
 	quicksort_v(v, l, i - 1); // 递归调用
 	quicksort_v(v, i + 1, r);
     }
+}
+
+vector<i64> GetRandom(char* charray,int MAX,int size)
+{
+    vector<i64> randarray;
+    if(!isdigit(charray[0])){
+        std::ifstream input(charray);
+        // i64* randarray = new i64[100];
+        std::string line;
+        int index =0;
+        while( std::getline( input, line ) ) {
+            randarray.push_back(stoi(line));
+            }
+    }
+    else{
+        auto RADNOMSEED  = atoi(charray);
+        randarray = generateRandom(MAX,RADNOMSEED ,size);
+    // i64* randarray =  generateRandom(MAX,seed,n);
+    }
+    return randarray;
 }
