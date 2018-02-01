@@ -24,7 +24,7 @@ class WT_Handle
 	public:
 	ABS_FM * fm;
 		WT_Handle();
-		WT_Handle(const char * filename,int block_size=256,int D=32,int shape = 1,int speedlevel=1);
+		WT_Handle(const char * filename,int block_size=256,int D=16,int shape = 1,int speedlevel=1);
 		WT_Handle(const WT_Handle &);
 		WT_Handle & operator = (const WT_Handle & );
 		~WT_Handle();

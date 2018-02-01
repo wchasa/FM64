@@ -12,7 +12,7 @@
 #include <time.h>
 #include<sys/time.h>
 using namespace std;
-#define MAX 1000
+//#define MAX 1000
 #define PATTENLEN 20
 #define PATTENLEN2 2
 void usage();
@@ -28,34 +28,44 @@ void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
-int* generateRandom(int count,int seed);
+i64* generateRandom(int count,int seed,i64 n);
 int length = 100;
-struct timer{
-    public:
-    struct timeval begin, end;
-    timer(){ gettimeofday(&begin, NULL); }
-    void start(){ gettimeofday(&begin, NULL); }
-    void finish(){ gettimeofday(&end, NULL); }
-    friend inline ostream & operator<<(ostream &os, timer &a){
-        double use = 1000000 * (a.end.tv_sec - a.begin.tv_sec) + a.end.tv_usec - a.begin.tv_usec;
-        use /= 1000000.0;
-        os << use;
-        return os;
-    }
-    double value(){
-        double use = 1000000 * (end.tv_sec - begin.tv_sec) + end.tv_usec - begin.tv_usec;
-        return use;
-    }
-};
+// struct timer{
+//     public:
+//     struct timeval begin, end;
+//     timer(){ gettimeofday(&begin, NULL); }
+//     void start(){ gettimeofday(&begin, NULL); }
+//     void finish(){ gettimeofday(&end, NULL); }
+//     friend inline ostream & operator<<(ostream &os, timer &a){
+//         double use = 1000000 * (a.end.tv_sec - a.begin.tv_sec) + a.end.tv_usec - a.begin.tv_usec;
+//         use /= 1000000.0;
+//         os << use;
+//         return os;
+//     }
+//     double value(){
+//         double use = 1000000 * (end.tv_sec - begin.tv_sec) + end.tv_usec - begin.tv_usec;
+//         return use;
+//     }
+// };
+
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
-	i64 sumRun = 0,bitLen =0;
-	if(argc < 3){
-		fprintf(stderr, "Usage: ./my_fm <file> <speedlevel>");
-		exit(EXIT_FAILURE);
-	}
-    timer st1,st2;
+    if(argc!=6){
+    fprintf(stderr, "Usage: ./my_fm <file> <randomseed> <option samplerate>,<run times> <blocksize>");
+    exit(EXIT_FAILURE);
+    }
+    auto BLOCKSIZE = (argv[5]);
+    auto MAX = atoi(argv[4]);
+    auto SAMPLERATE =atoi(argv[3])/2;
+    auto SRATE = argv[3];
+    auto RANDOMSEED = atoi(argv[2]);
+    auto FILENAME = (argv[1]);
+    cout << argv[1] << endl;
+    cout<<"blocksize:"<<BLOCKSIZE;
+    cout<<",runtimes:"<<MAX;
+    cout<<",samplerate:"<<SAMPLERATE*2<<endl;
+    i64 sumRun = 0,bitLen =0;
     double stime,etime,tcost;
     int *pos;
     i64 num = 0;
@@ -63,36 +73,24 @@ int main(int argc, char *argv[])
     string result[2];
     string path,path2;
     string patten = "ABBA";
-    FILE *fp,*fp_result;
     FM *csa = NULL;
     char StrLineFM[1024];
-    strcpy(StrLineFM,argv[1]);
+    strcpy(StrLineFM,FILENAME);
     csa = NULL;
-    FILE *fh = fopen(strcat(StrLineFM, ".fmnsp"), "r");
+    strcat(strcat(StrLineFM,".fmnsp_B"),BLOCKSIZE);
+    strcat(strcat(StrLineFM,"_R"),SRATE);
     csa = new FM();
-   /* if(argc == 5)
-        if(csa->load(StrLineFM,atoi(argv[4]))==0){
-            stime = clock();
-            csa = new FM(argv[1],atoi(argv[4]));
-            etime = clock();
-            csa->save(StrLineFM);}
-            */
-    //if(argc == 4)
-        if(csa->load(StrLineFM)==0){
-            stime = clock();
-            csa = new FM(argv[1]);
-            etime = clock();
-            csa->save(StrLineFM);
-        }
+    if(csa->load(StrLineFM)==0){
+        stime = clock();
+        csa = new FM(argv[1],atoi(BLOCKSIZE),SAMPLERATE);//argvs are filename , blocksize,samplerate
+        // csa = new FM(argv[1]);//argvs are filename , blocksize,samplerate
+        etime = clock();
+        csa->save(StrLineFM);
+    }
     tcost = (double)(etime - stime) / CLOCKS_PER_SEC;
-    cout << argv[1] << endl;
-    //cout <<"build time:"<< tcost << "sec" << endl;
-    //cout << "File Size =" <<setw(10)<< csa->getN() << " Byte,TreeSize =" <<setw(10)<< csa->sizeInByteForCount() << " Byte,CompressRate = " <<setw(10)<< csa->compressRatioForCount() << endl;
-    cout << "File Size :" << csa->getN() << ",TreeSize:" << csa->sizeInByteForCount() << ",CompressRate:" << csa->compressRatio()<<endl ;
     int Plaincount, AL0, AL1, RL0, RL1, Fixcount;
     int seed = atoi(argv[3]);
     csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
-    int* randarray =  generateRandom(MAX,seed);
     FILE *fp2;
     if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
     {
@@ -100,163 +98,77 @@ int main(int argc, char *argv[])
         return -1;
     }
     fseek(fp2, 0, SEEK_END);
-    int n = ftell(fp2) + 1;
+    i64 n = ftell(fp2);
+    i64* randarray =  generateRandom(MAX,seed,n);
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
-    int e=0;
-    if(strcmp(argv[2],"test")==0)
-    {
-       // csa->Lookup(344860);
-        csa->Lookupall();
+    // st1.start();
+    long long timesum = 0;
+    for (int i2 = 0; i2 < MAX; i2++) {
+        fseek(fp2, randarray[i2] % (n), SEEK_SET);
+        fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+        i64 i ;
+        num = 0;
 
+        stime = clock();
+        csa->counting((const char *)searchT,num);
+        etime = clock();
+        timesum +=etime-stime;
     }
-    if(strcmp(argv[2],"bx")==0){
-        st1.start();
-        //cout<<length<<endl;
-        for (int i2 = 0; i2 < MAX; i2++)
-        {
-            fseek(fp2, randarray[i2] % (n), SEEK_SET);
-            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            // i64 num;
-            i64 i ;
-            num = 0;
-            csa->counting_parrel((const char *)searchT, num);
-
-            //i64 *pos = csa->counting((const char *)searchT,&num);
-            //cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-            }
-        st1.finish();
-        cout << "count_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
-        st1.start();
-        //#pragma omp parallel for num_threads(2) shared(randarray,fp2,csa)
-        for (int i2 = 0; i2 < MAX; i2++)
-        {
-       //     cout<<omp_get_thread_num()<<endl;
-            fseek(fp2, randarray[i2] % (n), SEEK_SET);
-            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            i64 *pos = csa->locating_parrel((const char *)searchT, num);
-
-//            #pragma omp parallel for
-//           for(int j = 0 ;j<csa->part;j++)
-//                {
-//                    i64 *pos = csa->fm[j].locating((const char *)searchT, num);
-//                    //delete [] pos;
-//                    //pos = NULL;
-//                }
-        delete [] pos;
+    cout <<setw(20)<< "count time = " <<timesum*1.0/(MAX*CLOCKS_PER_SEC)*1000000<<"us"<<endl;
+    timesum = 0;
+    for (int i2 = 0; i2 < MAX; i2++){
+        fseek(fp2, randarray[i2] % (n), SEEK_SET);
+        fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+        if(argc == 5)
+            num = atoi(argv[4]);
+        else
+            num = 100;
+        stime = clock();
+        i64 *pos = csa->locating((const char *)searchT, num);
+        etime = clock();
+        timesum +=etime-stime;
+        delete []pos;
         pos = NULL;
-           // cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-        }
-        st1.finish();
-        cout << "locating_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
-        st1.start();
-       /* for (int i2 = 0; i2 < MAX; i2++)
-        {
-            fseek(fp2, randarray[i2] % (n), SEEK_SET);
-            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-         //   unsigned char *p = csa->extracting_parrel(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
-           //   cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-        }
-        st1.finish();
-        cout << "extracting_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
-        */
     }
-     if(strcmp(argv[2],"px")==0){
-        st1.start();
-        //cout<<length<<endl;
-        for (int i2 = 0; i2 < MAX; i2++)
-        {
-            fseek(fp2, randarray[i2] % (n), SEEK_SET);
-            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            // i64 num;
-            i64 i ;
-            num = 0;
-            csa->counting_pool((const char *)searchT,num);
-            }
-        st1.finish();
-        cout << "count_pool:" << st1.value() / MAX / 1000 << "ms" << endl;
-        st1.start();
-        for (int i2 = 0; i2 < MAX; i2++)
-        {
-            fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            i64 *pos = csa->locating_pool((const char *)searchT, num);
-        }
-        st1.finish();
-        cout << "locating_pool:" << st1.value() / MAX / 1000 << "ms" << endl;
-        st1.start();
-        for (int i2 = 0; i2 < MAX; i2++)
-        {
-            fseek(fp2, randarray[i2] % (n), SEEK_SET);
-                fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            unsigned char *p = csa->extracting_parrel(randarray[i2] % (n-PATTENLEN2), PATTENLEN2);
-        }
-        st1.finish();
-        cout << "extracting_parrel:" << st1.value() / MAX / 1000 << "ms" << endl;
+    cout <<setw(20)<< "Locating time = " <<timesum*1.0/(MAX*CLOCKS_PER_SEC)*1000000<<"us"<<endl;
+    timesum = 0;
+    for (int i2 = 0; i2 < MAX; i2++){
+
+        stime = clock();
+        unsigned char *p = csa->extracting(randarray[i2] % ((length-PATTENLEN2)), PATTENLEN2);
+        etime = clock();
+        timesum +=etime-stime;
+        delete []p;
+        p = NULL;
     }
-    if(strcmp(argv[2],"cx")==0){
-        st1.start();
-        cout<<length<<endl;
-        for (int i2 = 0; i2 < MAX; i2++)
-        {
-            fseek(fp2, randarray[i2] % (n), SEEK_SET);
-            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            i64 i ;
-            num = 0;
-            csa->counting((const char *)searchT,num);
-        }
-        st1.finish();
-        cout << "count:" << st1.value()/MAX/1000<<"ms"<<endl;
-        st1.start();
-        for (int i2 = 0; i2 < MAX; i2++)
-        {
-            fseek(fp2, randarray[i2] % (n), SEEK_SET);
-            fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-            if(argc == 5)
-                num = atoi(argv[4]);
-            else
-                num = 100;
-            i64 *pos = csa->locating((const char *)searchT, num);
-            delete []pos;
-            pos = NULL;
-        }
-             st1.finish();
-             cout << "locating:" << st1.value()/MAX/1000<<"ms"<<endl;
-             st1.start();
-             for (int i2 = 0; i2 < MAX; i2++)
-             {
-             // fseek(fp2, randarray[i2] % (n), SEEK_SET);
-              //  fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-               unsigned char *p = csa->extracting(randarray[i2] % ((length-PATTENLEN2)), PATTENLEN2);
-               delete []p;
-               p = NULL;
-               //  cout<<"Patten:"<<setw(30)<<searchT<<",num:"<<setw(10)<<num<<endl;
-             }
-             st1.finish();
-            // cout << "extracting:" << st1.value() / MAX / 1000 << "ms" << endl;
-        }
-
-      delete csa;
-      csa = NULL;
-      fclose(fp2);
-      delete [] randarray;
-      delete [] searchT;
-      searchT = NULL;
-      randarray = NULL;
-     //  cout << "--------------------------------------------------------------------" << endl;
-
-   // fclose(fp);
+    cout <<setw(20)<< "extracting time = " <<timesum*1.0/(MAX*CLOCKS_PER_SEC)*1000000<<"us"<<endl;
+    //cout<<"FileName:"<<StrLineFM<<endl;
+    FILE * FSAVED = fopen(StrLineFM,"r");
+    fseek(FSAVED, 0, SEEK_END);
+    i64 savelen = ftello(FSAVED);
+    //cout << savelen<<endl;
+    cout<<setw(20)<<"ration for all = "<<savelen*1.0/n<<endl;
+    fclose(FSAVED);
+    delete csa;
+    csa = NULL;
+    fclose(fp2);
+    delete [] randarray;
+    delete [] searchT;
+    searchT = NULL;
+    randarray = NULL;
     return 0;
 }
-int* generateRandom(int count,int seed)
+
+i64* generateRandom(int count,int seed,i64 n)
 {
-    int* result = new int[count];
+    i64* result = new i64[count];
     srand(unsigned(seed));
 
     for(int i = 0;i<count;i++)
     {
-        result[i] = rand();
+        result[i] = rand()%n;
     }
     return result;
 }
