@@ -55,17 +55,18 @@ struct timer{
 int main(int argc, char *argv[])
 {
     if(argc<6){
-    fprintf(stderr, "Usage: ./my_fm <file> <randomseed> <option samplerate>,<run times> <blocksize><randompath>");
+    fprintf(stderr, "Usage: ./my_fm <file> <randompath> <option samplerate>,<run times> <blocksize>");
     exit(EXIT_FAILURE);
     }
 //////////////  
-    std::ifstream input(argv[6]);
-    i64* randarray = new i64[100];
+    std::ifstream input(argv[2]);
+    // i64* randarray = new i64[100];
+    vector<i64> randarray;
     std::string line;
     int index =0;
     while( std::getline( input, line ) ) {
-        randarray[index++] = stoi(line);
-        cout<<randarray[index-1]<<endl;
+        randarray.push_back(stoi(line));
+        // cout<<stoi(line)<<endl;
     }
 /////////
     auto BLOCKSIZE = (argv[5]);
@@ -135,11 +136,11 @@ int main(int argc, char *argv[])
         else
             num = 100;
         i64 *pos = csa->locating((const char *)searchT, num);
-        cout<<searchT<<":";
-        for(int i = 0;i<num;i++){
-            cout<<pos[i]<<" ";
-        }
-        cout<<endl;
+        // cout<<searchT<<":";
+        // for(int i = 0;i<num;i++){
+        //     cout<<pos[i]<<" ";
+        // }
+        // cout<<endl;
         delete []pos;
         pos = NULL;
     }
@@ -163,10 +164,10 @@ int main(int argc, char *argv[])
     delete csa;
     csa = NULL;
     fclose(fp2);
-    delete [] randarray;
+    // delete [] randarray;
     delete [] searchT;
     searchT = NULL;
-    randarray = NULL;
+    // randarray = NULL;
     return 0;
 }
 
