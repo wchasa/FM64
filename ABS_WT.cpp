@@ -59,7 +59,7 @@ ABS_FM::ABS_FM(const char * filename,int block_size,int D)
 	this->block_size = block_size;
 	this->D =D*2;
 	cout<<"samplerate:"<<this->D<<endl;
-    cout<<"getfile"<<endl;
+    // cout<<"getfile"<<endl;
 	this->T=NULL;
 	T = Getfile(filename);
 	Inittable();
@@ -1236,7 +1236,6 @@ void ABS_FM::Test_L()
 BitMap * ABS_FM::CreateWaveletTree(unsigned char * bwt,i64 n,char ctable[CHAR_SET_SIZE][CHAR_SET_SIZE])
 {
 	BitMap * root = NULL;
-
 	root = FullFillWTNode(bwt,n,0,ctable);
 	if(!root)
 	{
@@ -1608,7 +1607,7 @@ int ABS_FM::Save(savekit &s)
 	RankL->write(s);
 	//for WT tree
 //	cout<<"SaveWTTree"<<endl;
-	SaveWTTree(s,posroot);
+	// SaveWTTree(s,posroot);
 	SaveWTTree(s,this->root);
 	return 0;
 }

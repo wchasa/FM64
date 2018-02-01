@@ -52,7 +52,7 @@ the Free Software Foundation; either version 2 or later of the License.
 class FM
 {
 	public:
-		FM(const char * filename,int speedlevel=1);
+		FM(const char * filename,int BLOCK,int D,int speedlevel=1);
 		FM();
 		~FM(){};
 		FM(const FM & h):wt(h.wt){}

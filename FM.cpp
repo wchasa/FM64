@@ -12,7 +12,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include"FM.h"
 #include <stdio.h>
 #include <stdlib.h>
-FM::FM(const char *filename,int speedlevel):wt(filename,256,32,1,speedlevel){}
+FM::FM(const char *filename,int BLOCK,int D,int speedlevel):wt(filename,BLOCK,D,1,speedlevel){}
 //FM::FM(const char *filename,int speedlevel,int pos):wt(filename,256,16,1,speedlevel){}
 FM::FM():wt(){}
 
