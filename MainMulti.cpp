@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
     fseek(fp2, 0, SEEK_END);
     i64 n = ftell(fp2) ;
     // i64* randarray = new i64[100];
-    i64* randarray =  generateRandom(MAX,RANDOMSEED,n);
+    i64* randarray =  generateRandom(MAX,RANDOMSEED,csa->get_N());
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
@@ -174,7 +174,7 @@ i64* generateRandom(i64 count,i64 seed,i64 n)
 {
     i64* result = new i64[count];
     srand(unsigned(seed));
-    // cout<<"seed:"<<seed<<",n="<<n<<endl;
+    cout<<"seed:"<<seed<<",n="<<n<<endl;
     for(int i = 0;i<count;i++)
     {
         auto r = rand();
