@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <time.h>
 #include<sys/time.h>
+#include <string>
+#include <iostream>
+#include <fstream>
 using namespace std;
 //#define MAX 1000
 #define PATTENLEN 20
@@ -27,8 +30,9 @@ void quicksort_v(vector<tuple<i64,i64>> v,i64 l,i64 r);//sort depend on tuple<0>
 void compare(vector<int> ivector, int *pos, int num);
 void showpos(vector<int> ivector);
 void showpos(int *pos, int num);
+vector<i64> GetRandom(char* charray,int MAX,int size);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
-i64* generateRandom(int count,int seed,i64 n);
+vector<i64> generateRandom(i64 count,i64 seed,i64 n);
 int length = 100;
 // struct timer{
 //     public:
@@ -51,8 +55,8 @@ int length = 100;
 //argv[1] = filepath argv[2] = cx bx px argv[3] = seed argv[4] = fragpart
 int main(int argc, char *argv[])
 {
-    if(argc!=6){
-    fprintf(stderr, "Usage: ./my_fm <file> <randomseed> <option samplerate>,<run times> <blocksize>");
+    if(argc<6){
+    fprintf(stderr, "Usage: ./my_fm <file> <randompath\randseed> <option samplerate>,<run times> <blocksize>");
     exit(EXIT_FAILURE);
     }
     auto BLOCKSIZE = (argv[5]);
@@ -61,6 +65,8 @@ int main(int argc, char *argv[])
     auto SRATE = argv[3];
     auto RANDOMSEED = atoi(argv[2]);
     auto FILENAME = (argv[1]);
+////////////// 
+/////////
     cout << argv[1] << endl;
     cout<<"blocksize:"<<BLOCKSIZE;
     cout<<",runtimes:"<<MAX;
@@ -77,7 +83,7 @@ int main(int argc, char *argv[])
     char StrLineFM[1024];
     strcpy(StrLineFM,FILENAME);
     csa = NULL;
-    strcat(strcat(StrLineFM,".fmnnc0sp_B"),BLOCKSIZE);
+    strcat(strcat(StrLineFM,".fmnnsp_B"),BLOCKSIZE);
     strcat(strcat(StrLineFM,"_R"),SRATE);
     csa = new FM();
     if(csa->load(StrLineFM)==0){
@@ -97,26 +103,23 @@ int main(int argc, char *argv[])
         return -1;
     }
     fseek(fp2, 0, SEEK_END);
-    i64 n = ftell(fp2);
-    i64* randarray =  generateRandom(MAX,seed,n);
+    i64 n = ftell(fp2) ;
+    auto randarray =  GetRandom(argv[2],MAX,n);
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
-    // st1.start();
-    long long timesum = 0;
     for (int i2 = 0; i2 < MAX; i2++) {
         fseek(fp2, randarray[i2] % (n), SEEK_SET);
         fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
         i64 i ;
         num = 0;
-
-        stime = clock();
+        stime =clock();
         csa->counting((const char *)searchT,num);
-        etime = clock();
-        timesum +=etime-stime;
+        etime =clock();
+        tcost += etime - stime;
     }
-    cout <<setw(20)<< "count time = " <<timesum*1.0/(MAX*CLOCKS_PER_SEC)<<"us"<<endl;
-    timesum = 0;
+    cout <<setw(20)<< "count time = " <<tcost/MAX<<"us"<<endl;
+    tcost = 0;
     for (int i2 = 0; i2 < MAX; i2++){
         fseek(fp2, randarray[i2] % (n), SEEK_SET);
         fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
@@ -124,25 +127,29 @@ int main(int argc, char *argv[])
             num = atoi(argv[4]);
         else
             num = 100;
-        stime = clock();
+        stime =clock();
         i64 *pos = csa->locating((const char *)searchT, num);
-        etime = clock();
-        timesum +=etime-stime;
+        etime =clock();
+        tcost +=etime - stime ;
+        // cout<<searchT<<":";
+        // for(int i = 0;i<num;i++){
+        //     cout<<pos[i]<<" ";
+        // }
+        // cout<<endl;
         delete []pos;
         pos = NULL;
     }
-    cout <<setw(20)<< "Locating time = " <<timesum*1.0/(MAX*CLOCKS_PER_SEC)<<"us"<<endl;
-    timesum = 0;
+    cout <<setw(20)<< "Locating time = " << tcost/MAX<<"us"<<endl;
+    tcost = 0;
     for (int i2 = 0; i2 < MAX; i2++){
-
         stime = clock();
         unsigned char *p = csa->extracting(randarray[i2] % ((length-PATTENLEN2)), PATTENLEN2);
         etime = clock();
-        timesum +=etime-stime;
+        tcost += etime - stime ;
         delete []p;
         p = NULL;
     }
-    cout <<setw(20)<< "extracting time = " <<timesum*1.0/(MAX*CLOCKS_PER_SEC)<<"us"<<endl;
+    cout <<setw(20)<< "extracting time = " << tcost / MAX  << "us" << endl;
     //cout<<"FileName:"<<StrLineFM<<endl;
     FILE * FSAVED = fopen(StrLineFM,"r");
     fseek(FSAVED, 0, SEEK_END);
@@ -153,21 +160,21 @@ int main(int argc, char *argv[])
     delete csa;
     csa = NULL;
     fclose(fp2);
-    delete [] randarray;
+    // delete [] randarray;
     delete [] searchT;
     searchT = NULL;
-    randarray = NULL;
+    // randarray = NULL;
     return 0;
 }
 
-i64* generateRandom(int count,int seed,i64 n)
+vector<i64> generateRandom(i64 count,i64 seed,i64 n)
 {
-    i64* result = new i64[count];
+    vector<i64> result;
     srand(unsigned(seed));
-
     for(int i = 0;i<count;i++)
     {
-        result[i] = rand()%n;
+        result.push_back( rand()% (n-50));
+        // cout<< result[i]<<endl;
     }
     return result;
 }
@@ -237,7 +244,7 @@ void showpos(vector<int> ivector)
 	if ((i + 1) % 20 == 0)
 	{
 	    char command;
-	    cout << "-----------------more---------------------";
+	    // cout << "-----------------more---------------------";
 	    system("stty raw");
 	    command = getchar();
 	    cout << endl
@@ -355,4 +362,24 @@ void quicksort_v(vector<tuple<i64,i64>> v,i64 l,i64 r)//sort depend on tuple<0>
 	quicksort_v(v, l, i - 1); // 递归调用
 	quicksort_v(v, i + 1, r);
     }
+}
+
+vector<i64> GetRandom(char* charray,int MAX,int size)
+{
+    vector<i64> randarray;
+    if(!isdigit(charray[0])){
+        std::ifstream input(charray);
+        // i64* randarray = new i64[100];
+        std::string line;
+        int index =0;
+        while( std::getline( input, line ) ) {
+            randarray.push_back(stoi(line));
+            }
+    }
+    else{
+        auto RADNOMSEED  = atoi(charray);
+        randarray = generateRandom(MAX,RADNOMSEED ,size);
+    // i64* randarray =  generateRandom(MAX,seed,n);
+    }
+    return randarray;
 }

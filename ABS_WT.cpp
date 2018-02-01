@@ -26,8 +26,8 @@ the Free Software Foundation; either version 2 or later of the License.
 //#define LOOP 35
 #define SIZE 1024
 #define READSIZE 1024*1024*200
-#define TEST2 
-#define FINAL
+// #define TEST2 
+// #define FINAL
 u64 GetBits(u64 * buff,i64 &index,int bits)
 {
 	if((index & 0x3f) + bits < 65)

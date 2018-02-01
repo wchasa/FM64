@@ -26,6 +26,7 @@
         "limits": "cpp",
         "iostream": "cpp",
         "functional": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "chrono": "cpp"
     }
 }
