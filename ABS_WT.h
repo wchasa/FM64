@@ -68,7 +68,7 @@ class ABS_FM
 		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
 		BitMap *GetRoot();
 		unsigned char * bwt;
-		void SASample(saidx64_t* SA);
+		// void SASample(saidx64_t* SA);
 	//test
 		 i64 SizeOfpart(BitMap * r,string str);
 		 map<i64,i64> BWTruns;
@@ -87,7 +87,7 @@ class ABS_FM
 		 //test
 	protected:
 		BitMap * root;
-		BitMap * posroot;
+		// BitMap * posroot;
 		uchar * Z;
 	 	uchar * R;
 		 void Inittable();

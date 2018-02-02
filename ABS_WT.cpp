@@ -1032,49 +1032,49 @@ int ABS_FM::BWT64(unsigned char *T,saidx64_t * SA,unsigned char * bwt,saidx64_t 
 	}
 	return 0;
 }
-void ABS_FM::SASample(saidx64_t* SA)
-{
-	int step1 =this->D;
-	//int step2 =this->D*16;
-	int datewidth = log2(n/step1)+1;
-	SAL=new InArray(n/step1+1,datewidth);//SA sample
-	SALPos = new InArray(n/step1+1,1);
-	unsigned char *pos = new unsigned char[n];
-	//for(i=0,j=0;i<n;i=i+step1,j++)
-	//	SAL->SetValue(j,SA[i]);
-	int j = 0 ;
-	//cout<<"SASample start"<<endl;
-	for(int i = 0 ;i<n;i++)
-	{
-		if(SA[i]%step1 == 0){
-			SAL->SetValue(j++,SA[i]/step1);
-			pos[i] = '1';
-			//cout<<i<<endl;
-		}
-		else
-			pos[i] = '0';
-	}
-	//cout<<"SASample end"<<endl;
-	char ct[CHAR_SET_SIZE][CHAR_SET_SIZE];
-	memset(ct,0,sizeof(ct));
-	ct['1'][0] = '1';
-	ct['0'][0] = '0';
-	//ct['0'][0] = '1';
-	//ct['0'][1] = '0';
-	//ct['1'][1] = '1';
-	posroot = CreateWaveletTree(pos,n,ct);
-	int tpos ;
-	//cout<<"SA[1520]:"<<SA[1520]<<endl;
-	delete [] pos;
-	/*cout<<"posroot->Rank(58,tpos),"<<posroot->Rank(58,tpos)<<","<<endl<<tpos<<endl;
-	cout<<"posroot->Rank(60,tpos),"<<posroot->Rank(60,tpos)<<","<<tpos<<endl;
-	cout<<"posroot->Rank(93,tpos),"<<posroot->Rank(93,tpos)<<","<<tpos<<endl;
-	cout<<"posroot->Rank(70,tpos),"<<posroot->Rank(70,tpos)<<","<<tpos<<endl;
-	cout<<"posroot->Rank(80,tpos),"<<posroot->Rank(80,tpos)<<","<<tpos<<endl;
-	cout<<"posroot->Rank(90,tpos),"<<posroot->Rank(90,tpos)<<","<<tpos<<endl;
-	cout<<"posroot->Rank(100,tpos),"<<posroot->Rank(100,tpos)<<","<<tpos<<endl;
-*/
-}
+// void ABS_FM::SASample(saidx64_t* SA)
+// {
+// 	int step1 =this->D;
+// 	//int step2 =this->D*16;
+// 	int datewidth = log2(n/step1)+1;
+// 	SAL=new InArray(n/step1+1,datewidth);//SA sample
+// 	SALPos = new InArray(n/step1+1,1);
+// 	unsigned char *pos = new unsigned char[n];
+// 	//for(i=0,j=0;i<n;i=i+step1,j++)
+// 	//	SAL->SetValue(j,SA[i]);
+// 	int j = 0 ;
+// 	//cout<<"SASample start"<<endl;
+// 	for(int i = 0 ;i<n;i++)
+// 	{
+// 		if(SA[i]%step1 == 0){
+// 			SAL->SetValue(j++,SA[i]/step1);
+// 			pos[i] = '1';
+// 			//cout<<i<<endl;
+// 		}
+// 		else
+// 			pos[i] = '0';
+// 	}
+// 	//cout<<"SASample end"<<endl;
+// 	char ct[CHAR_SET_SIZE][CHAR_SET_SIZE];
+// 	memset(ct,0,sizeof(ct));
+// 	ct['1'][0] = '1';
+// 	ct['0'][0] = '0';
+// 	//ct['0'][0] = '1';
+// 	//ct['0'][1] = '0';
+// 	//ct['1'][1] = '1';
+// 	posroot = CreateWaveletTree(pos,n,ct);
+// 	int tpos ;
+// 	//cout<<"SA[1520]:"<<SA[1520]<<endl;
+// 	delete [] pos;
+// 	/*cout<<"posroot->Rank(58,tpos),"<<posroot->Rank(58,tpos)<<","<<endl<<tpos<<endl;
+// 	cout<<"posroot->Rank(60,tpos),"<<posroot->Rank(60,tpos)<<","<<tpos<<endl;
+// 	cout<<"posroot->Rank(93,tpos),"<<posroot->Rank(93,tpos)<<","<<tpos<<endl;
+// 	cout<<"posroot->Rank(70,tpos),"<<posroot->Rank(70,tpos)<<","<<tpos<<endl;
+// 	cout<<"posroot->Rank(80,tpos),"<<posroot->Rank(80,tpos)<<","<<tpos<<endl;
+// 	cout<<"posroot->Rank(90,tpos),"<<posroot->Rank(90,tpos)<<","<<tpos<<endl;
+// 	cout<<"posroot->Rank(100,tpos),"<<posroot->Rank(100,tpos)<<","<<tpos<<endl;
+// */
+// }
 int ABS_FM::BuildTree(int speedlevel)
 {
 	saidx64_t* SA = new saidx64_t[n];

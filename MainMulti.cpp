@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     char StrLineFM[1024];
     strcpy(StrLineFM,FILENAME);
     csa = NULL;
-    strcat(strcat(StrLineFM,".fmnsp_B"),BLOCKSIZE);
+    strcat(strcat(StrLineFM,".fmosp_B"),BLOCKSIZE);
     strcat(strcat(StrLineFM,"_R"),SRATE);
     csa = new FM();
     if(csa->load(StrLineFM)==0){
