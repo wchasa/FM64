@@ -911,7 +911,7 @@ i64 ABS_FM::Occ(i64 & occ , unsigned char & label,i64 pos)
 	return 0;
 }
 
-extern int* generateRandom(int count,int seed);
+extern int* generateRandom(i64 count,i64 seed,i64 size);
 extern int length;
 //read filedate into T and cal Cumulative Frequency sum(C)
 unsigned char * ABS_FM::Getfile(const char *filename)
@@ -932,7 +932,7 @@ unsigned char * ABS_FM::Getfile(const char *filename)
 	num = fread(T,sizeof(uchar),n,fp);
 	T[n-1]=0;
     int randcount =n/1000>1000?n/1000:1000;
-    int* randarray =  generateRandom(randcount,123);
+    int* randarray =  generateRandom(randcount,987,n);
     unsigned char * searchT = new unsigned char[1024];
     for(int i = 0;i<randcount;i++)
     {
