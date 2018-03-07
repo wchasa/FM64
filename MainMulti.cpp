@@ -33,6 +33,7 @@ void showpos(int *pos, int num);
 vector<i64> GetRandom(char* charray,int MAX,int size);
 int stupidRank(unsigned char* c,int length,int& ch,int pos);
 vector<i64> generateRandom(i64 count,i64 seed,i64 n);
+void get_patterns(const char *file,vector<string> &patterns, vector<i64> &pos,int seed,int runtime);
 int length = 100;
 // struct timer{
 //     public:
@@ -104,31 +105,37 @@ int main(int argc, char *argv[])
     }
     fseek(fp2, 0, SEEK_END);
     i64 n = ftell(fp2) ;
-    auto randarray =  GetRandom(argv[2],MAX,n);
+    // auto randarray =  GetRandom(argv[2],MAX,n);
+    vector<string> pattern; 
+	vector<i64> position;
+    get_patterns(argv[1], pattern, position,RANDOMSEED/*seed*/,MAX/*runtime*/ );
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
     for (int i2 = 0; i2 < MAX; i2++) {
-        fseek(fp2, randarray[i2] % (n), SEEK_SET);
-        fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
-        i64 i ;
         num = 0;
         stime =clock();
-        csa->counting((const char *)searchT,num);
+        csa->counting(pattern[i2].c_str(),num);
         etime =clock();
         tcost += etime - stime;
     }
     cout <<setw(20)<< "count time = " <<tcost/MAX<<"us"<<endl;
     tcost = 0;
     for (int i2 = 0; i2 < MAX; i2++){
-        fseek(fp2, randarray[i2] % (n), SEEK_SET);
-        fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
+ //       fseek(fp2, randarray[i2] % (n), SEEK_SET);
+ //       fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
         if(argc == 5)
             num = atoi(argv[4]);
         else
             num = 100;
         stime =clock();
-        i64 *pos = csa->locating((const char *)searchT, num);
+
+        i64 *pos = csa->locating(pattern[i2].c_str(), num);
+        cout<<pattern[i2].c_str()<<":"<<num<<":";
+        for(int iz = 0 ;iz<num;iz++){
+            cout<<pos[iz]<<",";
+        }
+        cout<<endl;
         etime =clock();
         tcost +=etime - stime ;
         // cout<<searchT<<":";
@@ -143,7 +150,7 @@ int main(int argc, char *argv[])
     tcost = 0;
     for (int i2 = 0; i2 < MAX; i2++){
         stime = clock();
-        unsigned char *p = csa->extracting(randarray[i2] % ((length-PATTENLEN2)), PATTENLEN2);
+        unsigned char *p = csa->extracting( position[i2],PATTENLEN2);
         etime = clock();
         tcost += etime - stime ;
         delete []p;
@@ -383,4 +390,33 @@ vector<i64> GetRandom(char* charray,int MAX,int size)
     // i64* randarray =  generateRandom(MAX,seed,n);
     }
     return randarray;
+}
+
+void get_patterns(const char *file,vector<string> &patterns, vector<i64> &pos,int seed,int runtime)
+{
+	srand(unsigned(seed));
+	FILE *fr = fopen(file, "r+"); 
+    // assert(fr);
+	fseek(fr, 0L, SEEK_END); 
+	i64 size = ftell(fr);
+	char *text = new char[size + 1]; text[size] = '\0';
+    rewind(fr);
+	auto readnum = fread(text, sizeof(char), size, fr);
+	string stext = text;
+	pos.clear();
+	i64 position; 
+	for(int i=0;i <runtime;i++)
+	{
+		position = rand() % (size-PATTENLEN);
+        /* cout<<position<<endl; */
+		if(position + PATTENLEN < size)
+		{
+			string tmp = stext.substr(position, PATTENLEN);
+            // cout<<tmp<<endl; 
+			patterns.push_back(tmp);
+			pos.push_back(position);
+		}
+	}
+	if(text) delete [] text;
+	if(fr) fclose(fr);
 }

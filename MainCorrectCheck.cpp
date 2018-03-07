@@ -54,13 +54,8 @@ int main(int argc, char *argv[])
 		  csa = new FM_NAME(argv[1]);
 		  etime = clock();
 		  csa->save(StrLineFM);
-<<<<<<< HEAD
 		}  
 	  
-=======
-		}
-
->>>>>>> tempnewsample
 	  fp = fopen(argv[1],"r+");
 	  fseek(fp,0,SEEK_END);
 	  i64 n = ftell(fp)+1;
