@@ -71,7 +71,8 @@ int main(int argc, char *argv[])
     cout << argv[1] << endl;
     cout<<"blocksize:"<<BLOCKSIZE;
     cout<<",runtimes:"<<MAX;
-    cout<<",samplerate:"<<SAMPLERATE*2<<endl;
+    cout<<",samplerate:"<<SAMPLERATE*2;
+    cout<<",randseed:"<<RANDOMSEED<<endl;
     i64 sumRun = 0,bitLen =0;
     double stime,etime,tcost;
     int *pos;
@@ -84,7 +85,7 @@ int main(int argc, char *argv[])
     char StrLineFM[1024];
     strcpy(StrLineFM,FILENAME);
     csa = NULL;
-    strcat(strcat(StrLineFM,".fmnsp_B"),BLOCKSIZE);
+    strcat(strcat(StrLineFM,".fmosp_B"),BLOCKSIZE);
     strcat(strcat(StrLineFM,"_R"),SRATE);
     csa = new FM();
     if(csa->load(StrLineFM)==0){
@@ -131,11 +132,11 @@ int main(int argc, char *argv[])
         stime =clock();
 
         i64 *pos = csa->locating(pattern[i2].c_str(), num);
-        cout<<pattern[i2].c_str()<<":"<<num<<":";
-        for(int iz = 0 ;iz<num;iz++){
-            cout<<pos[iz]<<",";
-        }
-        cout<<endl;
+        // cout<<pattern[i2].c_str()<<":"<<num<<":";
+        // for(int iz = 0 ;iz<num;iz++){
+        //     cout<<pos[iz]<<",";
+        // }
+        // cout<<endl;
         etime =clock();
         tcost +=etime - stime ;
         // cout<<searchT<<":";

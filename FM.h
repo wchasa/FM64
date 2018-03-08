@@ -47,7 +47,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include "ThreadPool.h"   // std::threadmak
 #include <thread>
 #include <unistd.h>
-#include <cilk/cilk.h>
+// #include <cilk/cilk.h>
 
 class FM
 {

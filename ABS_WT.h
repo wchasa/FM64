@@ -14,7 +14,6 @@ the Free Software Foundation; either version 2 or later of the License.
 // #ifndef _GNU_SOURCE
 // #define _GNU_SOURCE /* for O_DIRECT */
 // #endif
-#include <cilk/cilk.h>
 #define __USE_FILE_OFFSET64
 #define __USE_LARGEFILE64
 #define _LARGEFILE64_SOURCE
@@ -68,7 +67,7 @@ class ABS_FM
 		void Codedistribution(int &Plain, int &AL0, int &AL1, int &RL0, int &RL1, int &Fix);
 		BitMap *GetRoot();
 		unsigned char * bwt;
-		void SASample(saidx64_t* SA);
+		// void SASample(saidx64_t* SA);
 	//test
 		 i64 SizeOfpart(BitMap * r,string str);
 		 map<i64,i64> BWTruns;
@@ -87,7 +86,7 @@ class ABS_FM
 		 //test
 	protected:
 		BitMap * root;
-		BitMap * posroot;
+		// BitMap * posroot;
 		uchar * Z;
 	 	uchar * R;
 		 void Inittable();
