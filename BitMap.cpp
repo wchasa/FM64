@@ -313,7 +313,8 @@ void BitMap::Coding()
 			}
 		}
 		else//fixcoding
-		{
+		{	
+
 			FixSize += maxtotal;
 			Fixcount++;
 			if(firstbit == 0)
@@ -328,11 +329,13 @@ void BitMap::Coding()
 				}
 			space =space + maxtotal;
 			Append_g(temp,index2,maxrl);
+			cout<<__LINE__<<":fix"<<endl;
 			for(int i=0;i<k;i++)
 			{
-				//cout<<runs_tmp[i]<<endl;
+				cout<<runs_tmp[i]<<";";
 				Append_f(temp,index2,runs_tmp[i],maxrl);
 			}
+			cout<<endl;
 		}
 		//打表顺序，superblock在前,block在后.
 		if(index % step1 == 0)

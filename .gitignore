@@ -1,13 +1,10 @@
-<<<<<<< HEAD
-*.a
-*.o
-=======
 *.o
 *.a
->>>>>>> drawbacksearch
 *.txt
 *.pdf
 *.fm*
 bible
 core
 *.out
+*.json
+my_fm
