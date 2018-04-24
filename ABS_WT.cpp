@@ -738,7 +738,7 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 			//wch
 			{
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
-				//cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
+				cout<<"rank_right"<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
 				pos_left = rank_left -1;
 				pos_right = rank_right -1;
 
@@ -749,7 +749,7 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 			else if(pos_right > -1)//只查右分支
 			{
 				pos_right=r->Rank(pos_right)-1;
-				//cout<<flag2++<<"pos_right="<<setw(10)<<pos_right<<endl;
+				cout<<"pos_right="<<setw(10)<<pos_right<<endl;
 			}
 			else//该跳出循环了,此时pos_left 和pos_right都是-1.
 			{
@@ -763,7 +763,7 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 			//if(pos_left>-1 && pos_right >-1)
 			{
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
-			//	cout<<flag2++<<".char="<<setw(10)<<c<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
+				cout<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
 				pos_left = (pos_left+1) - rank_left-1;
 				pos_right= (pos_right+1)- rank_right-1;
 
@@ -775,7 +775,7 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 			else if(pos_right > -1)
 			{
 				pos_right = (pos_right+1)-r->Rank(pos_right)-1;
-				//cout<<flag2++<<"pos_right="<<setw(10)<<pos_right<<endl;
+				cout<<"pos_right="<<setw(10)<<pos_right<<endl;
 			}
 			else
 			{

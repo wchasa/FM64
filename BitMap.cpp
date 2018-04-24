@@ -362,7 +362,8 @@ void BitMap::Coding()
 		}
 		//p (int[256])*runs_tmp
 		// else if(maxtotal>=len && maxgaptotal >=len)//rl_gamma
-		else if(len==rl_g)//rl-gama
+		// else if(len==rl_g)//rl-gama
+		else if(1)
 		{
 			// cout<<__LINE__<<"RL"<<endl;
 			RLSize+=rl_g;
@@ -379,10 +380,10 @@ void BitMap::Coding()
 					cs =1;
 				}
 			space =space + rl_g;
-			if(rl_g!=len)
-			{
-				cout<<"rl_gama rl_g!=len!";
-			}
+			// if(rl_g!=len)
+			// {
+			// 	cout<<"rl_gama rl_g!=len!";
+			// }
 			for(int i=0;i<k;i++)
 			{
 				//cout<<runs_tmp[i]<<endl;
@@ -1319,7 +1320,7 @@ i64 BitMap::FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 }
 i64 BitMap::RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 {
-	cout<<__LINE__<<"RL_Rank"<<endl;
+	// cout<<__LINE__<<"RL_Rank"<<endl;
 	i64 rank=0;
 	i64 r=0;
 	i64 already = 0;
@@ -1379,13 +1380,13 @@ i64 BitMap::RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 					if((runs_num &0x01)==rl_type)
 					{
 						bit=1;
-						cout<<rank+bits_num<<endl;
+						// cout<<rank+bits_num<<endl;
 						return rank + bits_num;
 					}
 					else
 					{
 						bit=0;
-						cout<<rank<<endl;
+						// cout<<rank<<endl;
 						return rank;
 					}
 				}
@@ -1422,12 +1423,12 @@ i64 BitMap::RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 			if((runs_num&0x01)==rl_type)
 			{
 				bit =1;
-				cout<<rank+bits_num<<endl;
+				// cout<<rank+bits_num<<endl;
 				return rank + bits_num;
 			}
 			else
 			{
-				cout<<rank<<endl;
+				// cout<<rank<<endl;
 				bit=0;
 				return rank;
 			}
