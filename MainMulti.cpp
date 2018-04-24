@@ -100,8 +100,9 @@ int main(int argc, char *argv[])
     csa->Codedistribution(Plaincount, AL0, AL1, RL0, RL1, Fixcount);
     cout<<"Plain:"<<Plaincount<<endl;
     cout<<"ALL:"<<AL0+AL1<<endl;
-    cout<<"RL:"<<RL0+RL1<<endl;
+    cout<<"RL:"<<RL0<<endl;
     cout<<"fix:"<<Fixcount<<endl;
+    cout<<"fixgap:"<<RL1<<endl;
     FILE *fp2;
     if ((fp2 = fopen(argv[1], "r")) == NULL) //判断文件是否存在及可读
     {
@@ -121,11 +122,13 @@ int main(int argc, char *argv[])
         num = 0;
         stime =clock();
         csa->counting(pattern[i2].c_str(),num);
+        cout<<pattern[i2]<<":"<<num<<endl;
         etime =clock();
         tcost += etime - stime;
     }
     cout <<setw(20)<< "count time = " <<tcost/MAX<<"us"<<endl;
     tcost = 0;
+    /*
     for (int i2 = 0; i2 < MAX; i2++){
  //       fseek(fp2, randarray[i2] % (n), SEEK_SET);
  //       fread(searchT, sizeof(unsigned char), PATTENLEN, fp2);
@@ -162,7 +165,9 @@ int main(int argc, char *argv[])
         p = NULL;
     }
     cout <<setw(20)<< "extracting time = " << tcost / MAX  << "us" << endl;
+    */
     //cout<<"FileName:"<<StrLineFM<<endl;
+    cout<<setw(20)<<"ration for all = "<<csa->compressRatio()<<endl;
     FILE * FSAVED = fopen(StrLineFM,"r");
     fseek(FSAVED, 0, SEEK_END);
     i64 savelen = ftello(FSAVED);

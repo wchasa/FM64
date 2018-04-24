@@ -19,6 +19,8 @@ the Free Software Foundation; either version 2 or later of the License.
 #include<math.h>
 #include<iostream>
 #include <map>
+#include <vector>
+#include<assert.h>
 using namespace std;
 
 class BitMap
@@ -60,6 +62,7 @@ class BitMap
 		static i64 RL0 ;
 		static i64 RL1 ;
 		static i64 Fixcount;
+		static i64 Fixcountgap;
 		static i64 Plaincount;
 		static i64 plainSize;
 		static i64 FixSize;
@@ -118,6 +121,9 @@ private:
 		i64 FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit);
 		i64 FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type);
         void FRL_Rank(u64 *buff,i64 & index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type);
+		i64 FRL_Rank_gap(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit,int BlockLen);
+		i64 FRL_Rank_gap(u64 * buff,i64 & index,int bits_num,int rl_type,int BlockLen);
+        void FRL_Rank_gap(u64 *buff,i64 & index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type,int BlockLen);
 		//返回容量编码的串中，由index位置开始，bits位内的0的个数.
 		i64 RL0_Rank(u64 * buff,i64 & index,i64 bits_num);
 		i64 RL0_Rank(u64 * buff,i64 & index,i64 bits_num,int &bit);
@@ -137,10 +143,11 @@ private:
 		i64 Plain_Rank(u64 * buff,i64 &index,i64 bits);
 		i64 Plain_Bit(u64 * buff,i64 &index,i64 bits);
 		i64 Plain_Rank(u64 * buff,i64 &index,i64 bits,int & bit);
-
-		
+		vector<int> ConvertGapTODiv(vector<int> gaps,i64& firstbit);
+		vector<int> ConvertRLtoGap(int * run,int len,i64& firstbit);
+		vector<int> ConvertRLtoDiv(int * run,int len,i64& firstbit);
 		int level;//该串的层数.
-		
+		i64 GetCurrentBlocksize(i64 block_anchor,i64 superblock_anchor,i64 offset1,i64 preoffset);
 		unsigned char label;
 		//只有叶节点又意义，表示该节点代表的字符
 

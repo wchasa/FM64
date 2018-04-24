@@ -252,6 +252,8 @@ void ABS_FM::DrawBackSearch(const char * pattern,i64 & Left,i64 &Right)
 		Right =C[coding]+Occ(c,Right)-1;
 		i=i-1;
 	*/
+		if(Left == 2405788 && Right == 2406292)
+			cout<<__LINE__<<endl;
 		Occ(c,Left-1,Right,occ_left,occ_right);
 		//cout<<flag3++<<".occ_left:"<<setw(10)<<occ_left<<",occ_right"<<setw(10)<<occ_right<<",value"<<occ_right-occ_left<<endl;
 		Left = C[coding]+occ_left;
@@ -1316,7 +1318,7 @@ BitMap * ABS_FM::FullFillWTNode(unsigned char * buff,i64 len,int level,char ctab
 	//uchar * tables[5] = {this->zerostable,this->R1,this->R2,this->R3,this->R4};
 	uchar * tables[2] = {this->Z,this->R};
 	BitMap * node = new BitMap(CurrentBitBuff,CurrentBitLen,CurrentLevel,block_size,CurrentLabel,tables);
-
+	
 	if(leftLen !=0)
 	{
 		BitMap * left =FullFillWTNode(lptr,leftLen,level+1,ctable);

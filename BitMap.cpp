@@ -15,6 +15,7 @@ the Free Software Foundation; either version 2 or later of the License.
 #include <iomanip> 
 using namespace std;
 #define lookuptable
+const int FixLenBit = 3;
 inline int popcnt(unsigned long long int x)
 {
 	x = x -((x & 0xAAAAAAAAAAAAAAAA)>>1);
@@ -144,6 +145,50 @@ i32 BitMap::Block_size = 0;
 i32 BitMap::superblock_size = 0;
 map<i64,i64> BitMap::mapruns;
 map<i64,i64> BitMap::noteruns;
+vector<int> BitMap::ConvertGapTODiv(vector<int> gaps,i64& firstbit)
+{
+    vector<int> divs;
+	if(gaps.size()<=0)
+		return gaps;
+    divs.push_back(gaps[0]);
+    for(int i = 0 ;i<gaps.size()-1;i++){
+        divs.push_back(gaps[i+1] - gaps[i]);
+    }
+    return divs;
+}
+vector<int> BitMap::ConvertRLtoDiv(int * run,int len,i64& firstbit)
+{
+	return ConvertGapTODiv(ConvertRLtoGap(run,len,firstbit),firstbit);
+}
+vector<int> BitMap::ConvertRLtoGap(int * run,int len,i64& firstbit)
+{
+    vector<int> gaps1,gaps2;
+    int curpos = 0;
+    int curgap = 0;
+    // for(auto i : values){   
+    for(int i = 0;i<len;i++){   
+        for(int j = 0 ;j< run[i];j++){
+            if(curgap%2 ==0)
+                gaps1.push_back(curpos++);
+            else
+                gaps2.push_back(curpos++);
+            
+        }
+        curgap++;
+    }
+	// if(gaps1.size() == 0|| gaps2.size()==0){
+	// 	cout<<__LINE__<<":123"<<endl;
+	// }
+    if(gaps1.size()>gaps2.size()){
+		
+        return gaps2;
+	}
+    else{
+		firstbit = 1-firstbit;
+        return gaps1;
+	}
+
+}
 void BitMap::Coding()
 {
 	int u64Len =0;
@@ -166,13 +211,18 @@ void BitMap::Coding()
     nbit 	   = new InArray(2*(bitLen/step1)+2,blog(step1-step2));
 	Flag	   = new InArray(2*(bitLen/step1)+2,1);
 	int maxrl=0;
+	int divrl = 0;
+	int maxrlgap=0;
 	int maxtotal =0;
+	int rl_gap = 0;
+	int maxgaptotal =0;
 //wch add
 
 	i64 rank=0;
 	i64 space=0;
 	i64 bits =0;
 	i64 firstbit;
+	i64 gapfirstbit;
 	int rl_g=0;
 	int runs = 0;
 	int bit=0;
@@ -192,13 +242,17 @@ void BitMap::Coding()
 		if(index == bitLen)
 			break;
 		rl_g = 0;
+		rl_gap=0;
 		bits = 0;
 		firstbit = 0;
 		runs = 0;
 		firstbit = GetBit(data,index);
+		gapfirstbit = firstbit;
 		memset(runs_tmp,0,block_size*4);
 		maxrl=0;
 		maxtotal =0;
+		maxrlgap = 0;
+		maxgaptotal = 0;
 		k=0;
  		runs=0;
 		 //
@@ -225,19 +279,39 @@ void BitMap::Coding()
 		}
 
 		//wch 
-
+		auto gaps = ConvertRLtoDiv(runs_tmp,k,gapfirstbit);
+		// cout<<__LINE__<<"Div:size:"<<gaps.size()<<":";index>datanum-1
+		for(auto i : gaps){
+			// cout<<i<<";";
+			maxrlgap = max(maxrlgap,i);
+			rl_gap = rl_gap + 2*blog(i)-1;
+		}
+		// cout<<endl;
+		// cout<<__LINE__<<"runs:size:"<<k<<":";
 		for(int i=0;i<k;i++)
 			{
+				//  cout<<runs_tmp[i]<<";";
 				rl_g = rl_g + 2*blog(runs_tmp[i])-1;
 				maxrl = max(maxrl,runs_tmp[i]);
 			}
+			//  cout<<endl;
 			//maxtotal =blog(maxrl)*k;
 			maxrl = blog(maxrl);//maxrl bit length
-			maxtotal =2*blog(maxrl)-1+maxrl*k;
+			// maxtotal =FixLenBit+maxrl*k;
+			maxrlgap = blog(maxrlgap);
+			if(maxrlgap ==0){
+				maxrlgap=1;
+			}
+			maxgaptotal =FixLenBit+maxrlgap*gaps.size();
 		//wch
 		int thred=20;
 		//todo judge
 		int len = min(rl_g,block_size-thred);
+		// len = min(len,rl_gap);
+		// len = min(len,maxtotal);
+		len = min(len,maxgaptotal);
+		// cout<<"rl_g:"<<rl_g<<";maxtotal:"<<maxtotal<<";maxgtotalgap:"<<maxgaptotal<<endl;
+		// cout<<endl;
 		// if (maxtotal<len&&k!=1)
 		// {
 		// 	maxtotal =2*blog(maxrl)-1+blog(maxrl)*k;
@@ -245,6 +319,7 @@ void BitMap::Coding()
 		// }
 		if(k==1)
 		{
+			// cout<<__LINE__<<"ALL"<<endl;
 			if(firstbit==0)
 				{	
 					ALL0++;
@@ -262,6 +337,7 @@ void BitMap::Coding()
 
 		else if(len == (block_size-thred) || index == bitLen)//plain
 		{
+			// cout<<__LINE__<<"Plain"<<endl;
 			Plaincount++;
 			coding_style->SetValue((index-1)/block_size,2);
 			cs = 2;
@@ -285,13 +361,15 @@ void BitMap::Coding()
 				BitCopy(temp,index2,data[j]);
 		}
 		//p (int[256])*runs_tmp
-		else if(maxtotal>=len)//rl_gamma
+		// else if(maxtotal>=len && maxgaptotal >=len)//rl_gamma
+		else if(len==rl_g)//rl-gama
 		{
+			// cout<<__LINE__<<"RL"<<endl;
 			RLSize+=rl_g;
+			RL0++;
 			//Gamacount++;
 			if(firstbit == 0)
 				{
-					RL0++;
 					coding_style->SetValue((index-1)/block_size,0);//RLG0
 					cs = 0;
 				}
@@ -299,7 +377,6 @@ void BitMap::Coding()
 				{
 					coding_style->SetValue((index-1)/block_size,1);//RLG1
 					cs =1;
-					RL1++;
 				}
 			space =space + rl_g;
 			if(rl_g!=len)
@@ -312,30 +389,112 @@ void BitMap::Coding()
 				Append_g(temp,index2,runs_tmp[i]);
 			}
 		}
-		else//fixcoding
-		{	
+		// else if(len == rl_gap){
+		// 	RLSize+=rl_g;
+		// 	//Gamacount++;
+		// 	if(firstbit == 0)
+		// 		{
+		// 			RL0++;
+		// 			coding_style->SetValue((index-1)/block_size,0);//RLG0
+		// 			cs = 0;
+		// 		}
+		// 	else
+		// 		{
+		// 			coding_style->SetValue((index-1)/block_size,1);//RLG1
+		// 			cs =1;
+		// 			RL1++;
+		// 		}
+		// 	space =space + rl_g;
+		// 	if(rl_gap!=len)
+		// 	{
+		// 		cout<<"rl_gama rl_g!=len!";
+		// 	}
+		// 	for(int i=0;i<gaps.size();i++)
+		// 	{
+		// 		//cout<<runs_tmp[i]<<endl;
+		// 		Append_g(temp,index2,gaps[i]);
+		// 	}
+		// }
+		// else if(maxtotal == len)//fixcoding
+		// {	
+		// 	// cout<<"maxtotal:"<<maxtotal<<";";
+		// 	// cout<<"maxtotalgap:"<<maxgaptotal<<";";
+		// 	// cout<<"rllen:"<<rl_g<<";"<<endl;
+		// 	// if(maxrl == 8){
+		// 	// 	cout<<"HEADLEN:"<<maxrl<<endl;
+		// 	// }
+		// 	FixSize += maxtotal;
+		// 	Fixcount++;
+		// 	if(firstbit == 0)
+		// 	{
+		// 			coding_style->SetValue((index-1)/block_size,5);//Fix0
+		// 			cs =5;
+		// 	}
+		// 	else
+		// 		{
+		// 			coding_style->SetValue((index-1)/block_size,6);//Fix1
+		// 			cs =6;
+		// 		}
+		// 	space =space + maxtotal;
+		// 	// Append_g(temp,index2,maxrl);
+		// 	// if(maxrl>4)
+		// 	Append_f(temp,index2,maxrl,FixLenBit);
+		// 	// else
+		// 	// 	cout<<__LINE__<<"WRONG";
+		// 	// cout<<__LINE__<<":fix"<<endl;
+		// 	// cout<<"runs:"<<endl;
+		// 	for(int i=0;i<k;i++)
+		// 	{
+		// 		// cout<<runs_tmp[i]<<";";
+		// 		Append_f(temp,index2,runs_tmp[i],maxrl);
+		// 	}
+		// 	// cout<<endl;
+		// 	// cout<<"line"<<"divs"<<endl;
+		// 	// for(auto v : gaps)
+		// 	// 	cout<<v<<";";
+		// 	// cout<<endl;
+		// 	// cout<<endl;
 
-			FixSize += maxtotal;
-			Fixcount++;
-			if(firstbit == 0)
+		// }
+		else{	
+			// cout<<"maxtotal:"<<maxtotal<<";";
+			// cout<<"maxtotalgap:"<<maxgaptotal<<";";
+			// cout<<"rllen:"<<rl_g<<";"<<endl;
+			// cout<<__LINE__<<"fix"<<endl;
+			// if(maxrlgap == 8)
+			// 	cout<<"HEADLEN:"<<maxrlgap<<endl;
+			// FixSize += maxtotal;
+			RL1++;
+            auto indextemp = index2;
+			if(gapfirstbit == 0)
 			{
-					coding_style->SetValue((index-1)/block_size,5);//Fix0
+					coding_style->SetValue((index-1)/block_size,5);//记录０的位置
 					cs =5;
 			}
 			else
 				{
-					coding_style->SetValue((index-1)/block_size,6);//Fix1
+					coding_style->SetValue((index-1)/block_size,6);//记录１的位置
 					cs =6;
 				}
-			space =space + maxtotal;
-			Append_g(temp,index2,maxrl);
-			cout<<__LINE__<<":fix"<<endl;
-			for(int i=0;i<k;i++)
+			space =space + maxgaptotal;
+			// Append_g(temp,index2,maxrlgap);
+			Append_f(temp,index2,maxrlgap-1,FixLenBit);
+			// if(maxrl>4)
+			// 	Append_f(temp,index2,maxrl-5,2);
+			// else
+			// 	cout<<__LINE__<<"WRONG";
+			// cout<<__LINE__<<":fix"<<endl;
+			// cout<<"runs:"<<endl;
+			u64* temp3 = new u64[10];
+			memset(temp3,0,sizeof(u64)*10);
+			i64 index3g = 0;
+			Append_f(temp3,index3g,maxrlgap-1,FixLenBit);
+			for(int i=0;i<gaps.size();i++)
 			{
-				cout<<runs_tmp[i]<<";";
-				Append_f(temp,index2,runs_tmp[i],maxrl);
+				// cout<<gaps[i]<<";";
+				Append_f(temp,index2,gaps[i],maxrlgap);
 			}
-			cout<<endl;
+
 		}
 		//打表顺序，superblock在前,block在后.
 		if(index % step1 == 0)
@@ -347,7 +506,8 @@ void BitMap::Coding()
 			superblock->SetValue(2*(index/step1)+1,pre_space);
 		}
 		if(index % step2 ==0)
-		{
+		{	
+			// assert(space-pre_space<256);
 			block->SetValue(2*(index/step2),rank - pre_rank);
 			block->SetValue(2*(index/step2)+1,space - pre_space);
 		}
@@ -479,6 +639,7 @@ BitMap::~BitMap()
 //todo
 i64 BitMap::Rank(i64 pos,int & bit)
 {
+	assert(0);
 	if(pos < 0 || pos > bitLen)
 	{
 		cerr<<"BitMap::Rank(i64, int&) error parmater"<<endl;
@@ -499,6 +660,7 @@ i64 BitMap::Rank(i64 pos,int & bit)
 		i64 overloop          = (pos+1)%block_size ;
 		i64 index             = (offset &0x3f);
 		i64 rank              = 0;
+		i64 curblocksize 	  = GetCurrentBlocksize(block_anchor,superblock_anchor,offset1,offset);
 		switch(type)
 		{
 			case 0:rank = RL_Rank(buff,index,overloop,0,bit);break;
@@ -506,8 +668,8 @@ i64 BitMap::Rank(i64 pos,int & bit)
 			case 2:rank = Plain_Rank(buff,index,overloop,bit);break;
 			case 3:rank = 0;bit=0;break;
 			case 4:rank = overloop;bit = 1;break;
-			case 5:rank = FRL_Rank(buff,index,overloop,0,bit);break;
-			case 6:rank = FRL_Rank(buff,index,overloop,1,bit);break;
+			case 5:rank = FRL_Rank_gap(buff,index,overloop,0,bit,curblocksize);break;
+			case 6:rank = FRL_Rank_gap(buff,index,overloop,1,bit,curblocksize);break;
 		}
 		//cout<<"Rank="<<rank_base+rank<<endl;
 		return rank_base + rank;
@@ -546,7 +708,6 @@ void BitMap::Rank(i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
 	rank_left= Rank(pos_left);
 	rank_right=Rank(pos_right);
 */
-	
 	if(pos_left<0 || pos_right <0 || pos_left > bitLen || pos_right > bitLen)
 	{
 		cerr<<"BitMap::Rank(int,int,int&,int&) error parmater"<<endl;
@@ -554,14 +715,16 @@ void BitMap::Rank(i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
 	}
 
 	int block_anchor = (pos_left+1)/block_size;
-	if(block_anchor==(pos_right+1)/block_size)
+	if(block_anchor==(pos_right+1)/block_size)//同一个超快内
 	{
 		int superblock_anchor=(pos_left+1)/super_block_size;
 		int rank_base = superblock->GetValue(superblock_anchor<<1)+block->GetValue(block_anchor<<1);
-		int offset = superblock->GetValue((superblock_anchor<<1)+1)+block->GetValue((block_anchor<<1)+1);
+		int offset1 = superblock->GetValue((superblock_anchor<<1)+1);
+		int offset = offset1+block->GetValue((block_anchor<<1)+1);
 		int type = coding_style->GetValue(block_anchor);
 		int overloop_left = (pos_left+1)%block_size;
 		int overloop_right= (pos_right+1)%block_size;
+		i64 curblocksize = GetCurrentBlocksize(block_anchor,superblock_anchor,offset1,offset);
 		buff = data+ (offset>>6);
 		i64 index = (offset&0x3f);
 		rank_left = rank_right =rank_base;
@@ -574,8 +737,8 @@ void BitMap::Rank(i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
 				case 2:Plain_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right);break;
 				case 3:break;
 				case 4:rank_left +=overloop_left;rank_right += overloop_right;break;
-				case 5:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,0);break;
-				case 6:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,1);break;
+				case 5:FRL_Rank_gap(buff,index,overloop_left,overloop_right,rank_left,rank_right,0,curblocksize);break;
+				case 6:FRL_Rank_gap(buff,index,overloop_left,overloop_right,rank_left,rank_right,1,curblocksize);break;
 			}
 			return ;
 		}
@@ -598,7 +761,18 @@ void BitMap::Rank(i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
 
 }
 
-
+i64 BitMap::GetCurrentBlocksize(i64 block_anchor,i64 superblock_anchor,i64 offset1,i64 preoffset)
+{
+	i64 offset_1 = 0;
+	if (((block_anchor+1)<<1) >block->Getdatanum()-1)
+		cout<<endl;
+	else if((block_anchor+1) % 64  != 0)
+		offset_1 = offset1 + block->GetValue(((block_anchor+1)<<1)+1);
+	else
+		offset_1 = superblock->GetValue(((superblock_anchor+1)<<1)+1);
+	
+	return offset_1 -preoffset;
+}
 i64 BitMap::Rank(i64 pos)
 {//bug:type value is different;
 	if (pos<0 || pos > bitLen)
@@ -617,6 +791,14 @@ i64 BitMap::Rank(i64 pos)
 	i64 rank_base = rank1 + block->GetValue(block_anchor<<1);
 	i64 offset    = offset1 + block->GetValue((block_anchor<<1)+1);
 	
+	// i64 offset_1    = 0;
+	i64 curblocksize = GetCurrentBlocksize(block_anchor,superblock_anchor,offset1,offset);
+	// cout<<offset_1-offset<<endl;
+	// if(offset>offset_1)
+	// {
+	// 	cout<<__LINE__<<"wrong"<<endl;
+	// }
+	
 	buff = data + (offset>>6);
 	int overloop = (pos+1)%block_size ;
 	i64 index = (offset & 0x3f);
@@ -629,8 +811,8 @@ i64 BitMap::Rank(i64 pos)
 			case 2:rank_base += Plain_Rank(buff,index,overloop);break;//plain
 			case 3:break;//ALL0
 			case 4:rank_base += overloop;break;//ALL1
-			case 5:rank_base += FRL_Rank(buff,index,overloop,0);break;//fix0
-			case 6:rank_base += FRL_Rank(buff,index,overloop,1);break;//fix1
+			case 5:rank_base += FRL_Rank_gap(buff,index,overloop,0,curblocksize);break;//fix0
+			case 6:rank_base += FRL_Rank_gap(buff,index,overloop,1,curblocksize);break;//fix1
 		}
 	}
 	return rank_base;
@@ -775,6 +957,32 @@ i64 BitMap::RL0_Bit(u64 * buff,i64 &index,i64 bits_num)
 			return 1;
 	}
 }
+// i64 BitMap::FRL0_Bit_gap(u64 * buff,i64 &index,i64 bits_num,int len)
+// {
+// 	//int rank = 0;
+// 	int bit_count =0;
+// 	//int bits = 0;
+// 	//int  bits = 0;
+// 	//get block len
+// 	int len = 0; 
+// 	int value = 0;	
+// 	u32 x = GetBits(buff,index,32);
+// 	int runs = Zeros(x>>16);
+// 	int bits = (runs<<1)+1;
+// 	index = index + bits;
+// 	value = x>>(32-bits);
+// 	while(true)
+// 	{
+// 		bits=FixedDecode(buff,index,value);
+// 		bit_count = bit_count + bits;
+// 		if(bit_count >= bits_num)
+// 			return  0;
+// 		bits=FixedDecode(buff,index,value);
+// 		bit_count = bit_count + bits;
+// 		if(bit_count >= bits_num)
+// 			return 1;
+// 	}
+// }
 i64 BitMap::FRL0_Bit(u64 * buff,i64 &index,i64 bits_num)
 {
 	//int rank = 0;
@@ -1053,6 +1261,18 @@ i64 BitMap::FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type)
 	int bit=0;
 	return FRL_Rank(buff,index,bits_num,rl_type,bit);
 }
+i64 BitMap::FRL_Rank_gap(u64 * buff,i64 & index,int bits_num,int rl_type,int Blocklen)
+{
+	int bit=0;
+	return FRL_Rank_gap(buff,index,bits_num,rl_type,bit,Blocklen);
+}
+
+i64 BitMap::FRL_Rank_gap(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit,int Blocklen)
+{
+	i64 rrank =0,lrank = 0;
+	FRL_Rank_gap(buff,index,0,bits_num,lrank,rrank,rl_type,Blocklen);
+    return rrank-lrank;
+}
 i64 BitMap::FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 {
 	//cout<<"FRL_Rank"<<endl;
@@ -1062,8 +1282,8 @@ i64 BitMap::FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 	int len    = 0; 
 	int Fixlen = 0;	
 	u64 x      = GetBits(buff,index,64);
-	int runs   = 64-blog64(x);
-	int bits   = (runs<<1)+1;
+	// int runs   = 64-blog64(x);
+	int bits   = 3;
 	offset 	  +=  bits;
 	index     +=  bits;
 	Fixlen     = x>>(64-bits);
@@ -1099,7 +1319,7 @@ i64 BitMap::FRL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 }
 i64 BitMap::RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 {
-	//cout<<"RL_Rank"<<endl;
+	cout<<__LINE__<<"RL_Rank"<<endl;
 	i64 rank=0;
 	i64 r=0;
 	i64 already = 0;
@@ -1159,11 +1379,13 @@ i64 BitMap::RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 					if((runs_num &0x01)==rl_type)
 					{
 						bit=1;
+						cout<<rank+bits_num<<endl;
 						return rank + bits_num;
 					}
 					else
 					{
 						bit=0;
+						cout<<rank<<endl;
 						return rank;
 					}
 				}
@@ -1200,10 +1422,12 @@ i64 BitMap::RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 			if((runs_num&0x01)==rl_type)
 			{
 				bit =1;
+				cout<<rank+bits_num<<endl;
 				return rank + bits_num;
 			}
 			else
 			{
+				cout<<rank<<endl;
 				bit=0;
 				return rank;
 			}
@@ -1228,8 +1452,8 @@ void BitMap::FRL_Rank(u64 *buff,i64 &index,int bits_left,int bits_right,i64 &ran
 	i64 len    = 0; 
 	i64 Fixlen = 0;	
 	u64 x      = GetBits(buff,index,64);
-	int runs   = 64-blog64(x);
-	int bits   = (runs<<1)+1;
+	// int runs   = 64-blog64(x);
+	int bits   = 3;
 	offset 	  +=  bits;
 	index     +=  bits;
 	Fixlen     = x>>(64-bits);
@@ -1272,13 +1496,75 @@ void BitMap::FRL_Rank(u64 *buff,i64 &index,int bits_left,int bits_right,i64 &ran
 				rank_right += rank1;
 			return ;
 		}
-
-	//	cout<<"rl_type="<<setw(10)<<rl_type<<";value="<<setw(10)<<value<<endl;
 		rl_type = 1-rl_type;
 		
 	}
-	//bit = rl_type;
-	//return rank1;
+}
+
+void BitMap::FRL_Rank_gap(u64 *buff,i64 &index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type,int Blocklen)
+{
+/*	
+	int old_index = index;
+	rank_left+=RL_Rank(buff,old_index,bits_left,rl_type);
+	//index = old_index;
+	rank_right+=RL_Rank(buff,index,bits_right,rl_type);
+*/	
+	bool left  = true;
+	i64 offset = 0;//当前６４ｂｉｔ已经读取的位数
+	i64 curpos = 0 ;//读取ｆｉｘ编码比特长度
+	i64 rank1  = 0;
+	i64 value  = 0;
+	i64 len    = 0; 
+	i64 Fixlen = 0;	
+	u64 x      = GetBits(buff,index,64);//
+	// int runs   = 64-blog64(x);
+	int bits   = FixLenBit;
+	offset 	  +=  bits;
+	index     +=  bits;
+	// rl_type -= 5;//
+    // curpos    += bits;
+	Fixlen     = (x>>(64-bits))+1;
+    while(curpos< bits_left ){
+        if(offset + Fixlen >64){
+            x = GetBits(buff,index,64);
+            offset = 0;
+        }
+		value   =  (x>>(64-offset))&((1<<(Fixlen))-1);
+        rank1++;
+        offset += Fixlen;
+        curpos +=value;
+        index  +=Fixlen;
+        }
+
+    if(rl_type == 1 )
+        rank_left  =(rank1 );
+    else
+        rank_left = bits_left - rank1;
+
+	while(true){
+        if(offset + Fixlen >64){//当前的６４比特已经读完
+            x = GetBits(buff,index,64);
+            offset = 0;
+        }
+		offset += Fixlen;
+        index  +=Fixlen;
+		value   =  (x>>(64-offset))&((1<<(Fixlen))-1);
+        curpos +=value;
+		if(	Fixlen*(rank1) + FixLenBit >= Blocklen ||  curpos>= bits_right  ){
+			// if(Fixlen*(rank1+1) + FixLenBit == Blocklen || curpos == bits_right)
+			// if(curpos == bits_right)
+				// rank1++;
+			break;
+        	}
+		rank1++;
+		}
+
+    if(rl_type == 1 )
+        rank_right=(rank1 );
+    else
+        rank_right= bits_right - rank1;
+	cout<<__LINE__<<"FRLRANK:";
+	cout<<rank_left<<";"<<rank_right<<endl;
 }
 
 void BitMap::RL_Rank(u64 * buff,i64 & index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type)
@@ -1290,6 +1576,7 @@ void BitMap::RL_Rank(u64 * buff,i64 & index,int bits_left,int bits_right,i64 &ra
 	rank_right+=RL_Rank(buff,index,bits_right,rl_type);
 */
 	
+	cout<<__LINE__<<"RLRANK"<<endl;
 	i64 rank = 0;//记录到解码位置的rank值
 	//int rank_diff = 0;//记录left-right之间的rank值
 	i64 r = 0;

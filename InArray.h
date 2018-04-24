@@ -36,6 +36,7 @@ public:
 	u64 GetValue2(u64 index);
 	i64 write(savekit & s);
 	i64 load(loadkit & s);
+	i64 Getdatanum(){return datanum;}
 private:
 	u32 * data;
     u64 datanum;
