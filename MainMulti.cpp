@@ -118,11 +118,11 @@ int main(int argc, char *argv[])
     unsigned char * searchT = new unsigned char[1024];
     memset(searchT,0,1024);
     fseeko(fp2, 0, SEEK_SET);
-    for (int i2 = 0; i2 < MAX; i2++) {
+    for (int i2 = 4; i2 < MAX; i2++) {
         num = 0;
         stime =clock();
         csa->counting(pattern[i2].c_str(),num);
-        cout<<pattern[i2]<<":"<<num<<endl;
+        // cout<<pattern[i2]<<":"<<num<<endl;
         etime =clock();
         tcost += etime - stime;
     }
@@ -168,12 +168,12 @@ int main(int argc, char *argv[])
     */
     //cout<<"FileName:"<<StrLineFM<<endl;
     cout<<setw(20)<<"ration for all = "<<csa->compressRatio()<<endl;
-    FILE * FSAVED = fopen(StrLineFM,"r");
-    fseek(FSAVED, 0, SEEK_END);
-    i64 savelen = ftello(FSAVED);
+    // FILE * FSAVED = fopen(StrLineFM,"r");
+    // fseek(FSAVED, 0, SEEK_END);
+    // i64 savelen = ftello(FSAVED);
     //cout << savelen<<endl;
-    cout<<setw(20)<<"ration for all = "<<savelen*1.0/n<<endl;
-    fclose(FSAVED);
+    // cout<<setw(20)<<"ration for all = "<<savelen*1.0/n<<endl;
+    // fclose(FSAVED);
     delete csa;
     csa = NULL;
     fclose(fp2);

@@ -151,6 +151,8 @@ private:
 		unsigned char label;
 		//只有叶节点又意义，表示该节点代表的字符
 
+		void FRL_Rank_gapsingle(u64 *buff,i64 &index,u64 &x,i64& offset,i64 &curpos,i64 Fixlen,int bits_pos,i64 &rank,i64 & rank1,int rl_type,int Blocklen);
+		// void FRL_Rank_gapsingle(u64 *buff,i64 &index,i64 offset,i64 Fixlen,i64 &curpos,i64 x,int bits_pos,i64 &rank_pos,i64& rank1,int rl_type,int Blocklen);
 		unsigned long long int * data;
 		//0,1串的压缩存储体.
 

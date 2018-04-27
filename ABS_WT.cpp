@@ -252,8 +252,8 @@ void ABS_FM::DrawBackSearch(const char * pattern,i64 & Left,i64 &Right)
 		Right =C[coding]+Occ(c,Right)-1;
 		i=i-1;
 	*/
-		if(Left == 2405788 && Right == 2406292)
-			cout<<__LINE__<<endl;
+		// if(Left == 2405788 && Right == 2406292)
+		// 	cout<<__LINE__<<endl;
 		Occ(c,Left-1,Right,occ_left,occ_right);
 		//cout<<flag3++<<".occ_left:"<<setw(10)<<occ_left<<",occ_right"<<setw(10)<<occ_right<<",value"<<occ_right-occ_left<<endl;
 		Left = C[coding]+occ_left;
@@ -737,8 +737,11 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 			//if(pos_left>-1 && pos_right >-1) //left right 都有待查找
 			//wch
 			{
+				// if(pos_left==1171579){
+				// 	cout<<"123:"<<__LINE__;
+				// }
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
-				cout<<"rank_right"<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
+				// cout<<__LINE__<<":"<<pos_left<<";"<<pos_right<<";"<<rank_left<<";"<<rank_right<<endl;
 				pos_left = rank_left -1;
 				pos_right = rank_right -1;
 
@@ -748,8 +751,9 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 			}
 			else if(pos_right > -1)//只查右分支
 			{
+				// cout<<pos_right<<";";
 				pos_right=r->Rank(pos_right)-1;
-				cout<<"pos_right="<<setw(10)<<pos_right<<endl;
+				// cout<<__LINE__<<pos_right<<endl;
 			}
 			else//该跳出循环了,此时pos_left 和pos_right都是-1.
 			{
@@ -760,10 +764,13 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 		else //编码是0,走左分支.
 		{
 			if(pos_left>-1 && pos_right >-1&&(pos_left<pos_right))
-			//if(pos_left>-1 && pos_right >-1)
+			// if(pos_left>-1 && pos_right >-1)
 			{
+				// if(pos_left==326028){
+				// 	cout<<"123:"<<__LINE__;
+				// }
 				r->Rank(pos_left,pos_right,rank_left,rank_right);
-				cout<<";rank_right="<<setw(10)<<rank_right<<";rank_left="<<setw(10)<<rank_left<<endl;
+				// cout<<__LINE__<<":"<<pos_left<<";"<<pos_right<<";"<<rank_left<<";"<<rank_right<<endl;
 				pos_left = (pos_left+1) - rank_left-1;
 				pos_right= (pos_right+1)- rank_right-1;
 
@@ -774,8 +781,9 @@ void ABS_FM::Occ(unsigned char c,i64 pos_left,i64 pos_right,i64 &rank_left,i64 &
 			}
 			else if(pos_right > -1)
 			{
+				// cout<<pos_right<<";";
 				pos_right = (pos_right+1)-r->Rank(pos_right)-1;
-				cout<<"pos_right="<<setw(10)<<pos_right<<endl;
+				// cout<<__LINE__<<":"<<pos_right<<endl;
 			}
 			else
 			{

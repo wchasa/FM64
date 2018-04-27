@@ -725,7 +725,7 @@ void BitMap::Rank(i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
 		int type = coding_style->GetValue(block_anchor);
 		int overloop_left = (pos_left+1)%block_size;
 		int overloop_right= (pos_right+1)%block_size;
-		i64 curblocksize = GetCurrentBlocksize(block_anchor,superblock_anchor,offset1,offset);
+		// i64 curblocksize = GetCurrentBlocksize(block_anchor,superblock_anchor,offset1,offset);
 		buff = data+ (offset>>6);
 		i64 index = (offset&0x3f);
 		rank_left = rank_right =rank_base;
@@ -738,8 +738,9 @@ void BitMap::Rank(i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
 				case 2:Plain_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right);break;
 				case 3:break;
 				case 4:rank_left +=overloop_left;rank_right += overloop_right;break;
-				case 5:FRL_Rank_gap(buff,index,overloop_left,overloop_right,rank_left,rank_right,0,curblocksize);break;
-				case 6:FRL_Rank_gap(buff,index,overloop_left,overloop_right,rank_left,rank_right,1,curblocksize);break;
+				case 5:case 6:
+				 	i64 curblocksize = GetCurrentBlocksize(block_anchor,superblock_anchor,offset1,offset);
+					FRL_Rank_gap(buff,index,overloop_left,overloop_right,rank_left,rank_right,type-5,curblocksize);break;
 			}
 			return ;
 		}
@@ -750,8 +751,9 @@ void BitMap::Rank(i64 pos_left,i64 pos_right,i64 &rank_left,i64 &rank_right)
 			case 2:rank_right += Plain_Rank(buff,index,overloop_right);break;
 			case 3:break;
 			case 4:rank_right += overloop_right;break;
-			case 5:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,0);break;
-			case 6:FRL_Rank(buff,index,overloop_left,overloop_right,rank_left,rank_right,1);break;
+			case 5:case 6:
+			i64 curblocksize = GetCurrentBlocksize(block_anchor,superblock_anchor,offset1,offset);
+			FRL_Rank_gap(buff,index,overloop_left,overloop_right,rank_left,rank_right,type-5,curblocksize);break;
 		}
 	}
 	else
@@ -766,8 +768,8 @@ i64 BitMap::GetCurrentBlocksize(i64 block_anchor,i64 superblock_anchor,i64 offse
 {
 	i64 offset_1 = 0;
 	if (((block_anchor+1)<<1) >block->Getdatanum()-1)
-		cout<<endl;
-	else if((block_anchor+1) % 64  != 0)
+		cout<<__LINE__<<endl;
+	if((block_anchor+1) % 16  != 0)
 		offset_1 = offset1 + block->GetValue(((block_anchor+1)<<1)+1);
 	else
 		offset_1 = superblock->GetValue(((superblock_anchor+1)<<1)+1);
@@ -793,7 +795,6 @@ i64 BitMap::Rank(i64 pos)
 	i64 offset    = offset1 + block->GetValue((block_anchor<<1)+1);
 	
 	// i64 offset_1    = 0;
-	i64 curblocksize = GetCurrentBlocksize(block_anchor,superblock_anchor,offset1,offset);
 	// cout<<offset_1-offset<<endl;
 	// if(offset>offset_1)
 	// {
@@ -812,8 +813,9 @@ i64 BitMap::Rank(i64 pos)
 			case 2:rank_base += Plain_Rank(buff,index,overloop);break;//plain
 			case 3:break;//ALL0
 			case 4:rank_base += overloop;break;//ALL1
-			case 5:rank_base += FRL_Rank_gap(buff,index,overloop,0,curblocksize);break;//fix0
-			case 6:rank_base += FRL_Rank_gap(buff,index,overloop,1,curblocksize);break;//fix1
+			case 5:case 6:
+			i64 curblocksize = GetCurrentBlocksize(block_anchor,superblock_anchor,offset1,offset);
+			rank_base += FRL_Rank_gap(buff,index,overloop,type-5,curblocksize);break;//fix0 fix1
 		}
 	}
 	return rank_base;
@@ -1437,6 +1439,7 @@ i64 BitMap::RL_Rank(u64 * buff,i64 & index,int bits_num,int rl_type,int &bit)
 		x=(x<<step);
 	}
 }
+
 //todo
 void BitMap::FRL_Rank(u64 *buff,i64 &index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type)
 {
@@ -1502,16 +1505,42 @@ void BitMap::FRL_Rank(u64 *buff,i64 &index,int bits_left,int bits_right,i64 &ran
 	}
 }
 
+void BitMap::FRL_Rank_gapsingle(u64 *buff,i64 &index,u64 &x,i64& offset,i64 &curpos,i64 Fixlen,int bits_pos,i64 &rank_pos,i64 & rank1,int rl_type,int Blocklen)
+{
+	i64 value = 0;
+	while(true){
+        if(offset + Fixlen >64){//当前的６４比特已经读完
+            x = GetBits(buff,index,64);
+            offset = 0;
+        }
+		offset += Fixlen;
+        index  +=Fixlen;
+		value   =  (x>>(64-offset))&((1<<(Fixlen))-1);
+        curpos +=value;
+		if(	Fixlen*(rank1) + FixLenBit >= Blocklen ||  curpos>= bits_pos){
+			// if(Fixlen*(rank1+1) + FixLenBit == Blocklen || curpos == bits_right)
+			// if(curpos == bits_right)
+				// rank1++;
+            offset -= Fixlen;
+            index  -=Fixlen;
+            curpos -=value;
+			break;
+        	}
+		rank1++;
+	}
+
+    if(rl_type == 1 )
+        rank_pos +=(rank1 );
+    else
+        rank_pos += bits_pos - rank1;
+	/* cout<<__LINE__<<"FRLRANK:"; */
+	/* cout<<rank_left<<";"<<rank_right<<endl; */
+}
+
+
 void BitMap::FRL_Rank_gap(u64 *buff,i64 &index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type,int Blocklen)
 {
-/*	
-	int old_index = index;
-	rank_left+=RL_Rank(buff,old_index,bits_left,rl_type);
-	//index = old_index;
-	rank_right+=RL_Rank(buff,index,bits_right,rl_type);
-*/	
-	bool left  = true;
-	i64 offset = 0;//当前６４ｂｉｔ已经读取的位数
+    i64 offset = 0;//当前６４ｂｉｔ已经读取的位数
 	i64 curpos = 0 ;//读取ｆｉｘ编码比特长度
 	i64 rank1  = 0;
 	i64 value  = 0;
@@ -1522,51 +1551,77 @@ void BitMap::FRL_Rank_gap(u64 *buff,i64 &index,int bits_left,int bits_right,i64 
 	int bits   = FixLenBit;
 	offset 	  +=  bits;
 	index     +=  bits;
-	// rl_type -= 5;//
-    // curpos    += bits;
+	rl_type = 1-rl_type;//
+    //curpos    += bits;
 	Fixlen     = (x>>(64-bits))+1;
-    while(curpos< bits_left ){
-        if(offset + Fixlen >64){
-            x = GetBits(buff,index,64);
-            offset = 0;
-        }
-		value   =  (x>>(64-offset))&((1<<(Fixlen))-1);
-        rank1++;
-        offset += Fixlen;
-        curpos +=value;
-        index  +=Fixlen;
-        }
-
-    if(rl_type == 1 )
-        rank_left  =(rank1 );
-    else
-        rank_left = bits_left - rank1;
-
-	while(true){
-        if(offset + Fixlen >64){//当前的６４比特已经读完
-            x = GetBits(buff,index,64);
-            offset = 0;
-        }
-		offset += Fixlen;
-        index  +=Fixlen;
-		value   =  (x>>(64-offset))&((1<<(Fixlen))-1);
-        curpos +=value;
-		if(	Fixlen*(rank1) + FixLenBit >= Blocklen ||  curpos>= bits_right  ){
-			// if(Fixlen*(rank1+1) + FixLenBit == Blocklen || curpos == bits_right)
-			// if(curpos == bits_right)
-				// rank1++;
-			break;
-        	}
-		rank1++;
-		}
-
-    if(rl_type == 1 )
-        rank_right=(rank1 );
-    else
-        rank_right= bits_right - rank1;
-	cout<<__LINE__<<"FRLRANK:";
-	cout<<rank_left<<";"<<rank_right<<endl;
+    FRL_Rank_gapsingle(buff,index,x,offset,curpos,Fixlen,bits_left,rank_left,rank1,rl_type,Blocklen);
+    FRL_Rank_gapsingle(buff,index,x,offset,curpos,Fixlen,bits_right,rank_right,rank1,rl_type,Blocklen);
 }
+/*void BitMap::FRL_Rank_gap(u64 *buff,i64 &index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type,int Blocklen)*/
+/*{
+/*	
+/*	int old_index = index;*/
+/*	rank_left+=RL_Rank(buff,old_index,bits_left,rl_type);*/
+/*	//index = old_index;*/
+/*	rank_right+=RL_Rank(buff,index,bits_right,rl_type);*/
+/*	
+/*	bool left  = true;*/
+/*	i64 offset = 0;//当前６４ｂｉｔ已经读取的位数*/
+/*	i64 curpos = 0 ;//读取ｆｉｘ编码比特长度*/
+/*	i64 rank1  = 0;*/
+/*	i64 value  = 0;*/
+/*	i64 len    = 0;*/ 
+/*	i64 Fixlen = 0;*/	
+/*	u64 x      = GetBits(buff,index,64);//*/
+/*	// int runs   = 64-blog64(x);*/
+/*	int bits   = FixLenBit;*/
+/*	offset 	  +=  bits;*/
+/*	index     +=  bits;*/
+/*	rl_type = 1-rl_type;//*/
+/*    //curpos    += bits;*/
+/*	Fixlen     = (x>>(64-bits))+1;*/
+/*    while(curpos< bits_left ){*/
+/*        if(offset + Fixlen >64){*/
+/*            x = GetBits(buff,index,64);*/
+/*            offset = 0;*/
+/*        }*/
+/*		value   =  (x>>(64-offset))&((1<<(Fixlen))-1);*/
+/*        rank1++;*/
+/*        offset += Fixlen;*/
+/*        curpos +=value;*/
+/*        index  +=Fixlen;*/
+/*    }*/
+
+/*    if(rl_type == 1 )*/
+/*        rank_left  +=(rank1 );*/
+/*    else*/
+/*        rank_left += bits_left - rank1;*/
+
+/*	while(true){*/
+/*        if(offset + Fixlen >64){//当前的６４比特已经读完*/
+/*            x = GetBits(buff,index,64);*/
+/*            offset = 0;*/
+/*        }*/
+/*		offset += Fixlen;*/
+/*        index  +=Fixlen;*/
+/*		value   =  (x>>(64-offset))&((1<<(Fixlen))-1);*/
+/*        curpos +=value;*/
+/*		if(	Fixlen*(rank1) + FixLenBit >= Blocklen ||  curpos>= bits_right  ){*/
+/*			// if(Fixlen*(rank1+1) + FixLenBit == Blocklen || curpos == bits_right)*/
+/*			// if(curpos == bits_right)*/
+/*				// rank1++;*/
+/*			break;*/
+/*        	}*/
+/*		rank1++;*/
+/*	}*/
+
+/*    if(rl_type == 1 )*/
+/*        rank_right +=(rank1 );*/
+/*    else*/
+/*        rank_right += bits_right - rank1;*/
+/*	cout<<__LINE__<<"FRLRANK:";*/
+/*	cout<<rank_left<<";"<<rank_right<<endl;*/
+/*}*/
 
 void BitMap::RL_Rank(u64 * buff,i64 & index,int bits_left,int bits_right,i64 &rank_left,i64 &rank_right,int rl_type)
 {
@@ -1577,7 +1632,7 @@ void BitMap::RL_Rank(u64 * buff,i64 & index,int bits_left,int bits_right,i64 &ra
 	rank_right+=RL_Rank(buff,index,bits_right,rl_type);
 */
 	
-	cout<<__LINE__<<"RLRANK"<<endl;
+	// cout<<__LINE__<<"RLRANK"<<endl;
 	i64 rank = 0;//记录到解码位置的rank值
 	//int rank_diff = 0;//记录left-right之间的rank值
 	i64 r = 0;
